@@ -4,5 +4,7 @@ http://pragmatastic.blogspot.com/2010/07/adding-project-local-libraries-to-maven
 + how to initialize a trove array
 
 
-+ assembly ; build standalone dist with dependencies
-mvn assembly:single
++  standalone dist with dependencies
+mvn package
+
+mvn test

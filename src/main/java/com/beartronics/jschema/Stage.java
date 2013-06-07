@@ -14,15 +14,19 @@ public class Stage
     public ArrayList<Action> actions = new ArrayList<Action>();
     public ArrayList<Item> items     = new ArrayList<Item>();
 
-    int nitems = 10;
-    int nschemas = 10;
+    int nitems = 0;
+    int nschemas = 0;
 
     public Stage() {
 
     }
 
     public void initWorld(int n) {
-        System.out.println("initializing world "+ this);
+        System.out.println("initializing world "+ this + ", n = "+n);
+
+        nitems = n;
+        nschemas = n;
+
         initItems();
         initSchemas();
     }
