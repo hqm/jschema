@@ -12,11 +12,14 @@ public class Schema {
     int id = 0;
     
     // The items in this schema's context list
-    TIntArrayList posContext = new TIntArrayList();
-    TIntArrayList negContext = new TIntArrayList();
+    ArrayList<Item> posContext = new ArrayList<Item>();
+    ArrayList<Item> negContext = new ArrayList<Item>();
     // The items in this schema's result list
-    TIntArrayList posResult  = new TIntArrayList();
-    TIntArrayList negResult  = new TIntArrayList();
+    ArrayList<Item> posResult  = new ArrayList<Item>();
+    ArrayList<Item> negResult  = new ArrayList<Item>();
+
+  // Also known as the 'reifier' item
+    Item syntheticItem = null;
 
     // reliability statistics
     int succeededWithActivation   = 0;
@@ -34,30 +37,10 @@ public class Schema {
     // correlation, reliability, duration, cost
 
     // Extended Context counters
-    TIntArrayList XCposTransitionWithAction = new TIntArrayList();
-    TIntArrayList XCposTransitionWithoutAction = new TIntArrayList();
-
-    TIntArrayList XCnegTransitionWithAction = new TIntArrayList();
-    TIntArrayList XCnegTranstitionWithoutAction = new TIntArrayList();
-
-    TIntArrayList XCremainPosWithAction = new TIntArrayList();
-    TIntArrayList XCremainPosWithoutAction = new TIntArrayList();
-
-    TIntArrayList XCremainNegWithAction = new TIntArrayList();
-    TIntArrayList XCremainNegWithoutAction = new TIntArrayList();
+    ExtendedCR xcontent = new ExtendedCR();
 
     // Extended Result counters
-    TIntArrayList XRposTransitionWithAction = new TIntArrayList();
-    TIntArrayList XRposTransitionWithoutAction = new TIntArrayList();
-
-    TIntArrayList XRnegTransitionWithAction = new TIntArrayList();
-    TIntArrayList XRnegTranstitionWithoutAction = new TIntArrayList();
-
-    TIntArrayList XRremainPosWithAction = new TIntArrayList();
-    TIntArrayList XRremainPosWithoutAction = new TIntArrayList();
-
-    TIntArrayList XRremainNegWithAction = new TIntArrayList();
-    TIntArrayList XRremainNegWithoutAction = new TIntArrayList();
+    ExtendedCR xresult = new ExtendedCR();
 
     // List of schemas who override this schema;
     TIntArrayList XOverride = new TIntArrayList();

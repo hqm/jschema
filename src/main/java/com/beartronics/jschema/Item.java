@@ -6,7 +6,7 @@ import java.util.List;
 public class Item {
     String name;
     float  value;
-    int    index;
+    int    id;
     ItemType type;
 
     public static enum ItemType {
@@ -16,20 +16,20 @@ public class Item {
 
     Item(String name, int index, float value, ItemType type) {
         this.name = name;
-        this.index = index;
+        this.id = index;
         this.value = value;
         this.type = type;
     }
 
     Item(String name, int index, float value) {
         this.name = name;
-        this.index = index;
+        this.id = index;
         this.value = value;
         this.type = ItemType.PRIMITIVE;
     }
 
     public String toString() {
-        return "[Item"+index+" "+name+": "+value+"]";
+        return "[Item"+id+" "+name+": "+value+"]";
     }
 
 }
