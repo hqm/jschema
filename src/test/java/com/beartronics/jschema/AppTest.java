@@ -29,10 +29,14 @@ public class AppTest
     }
 
     /**
-     * Rigourous Test :-)
+     * Tests go here
      */
     public void testApp()
     {
-        assertTrue( true );
+        App app = new App();
+        app.init();
+        assertEquals("Initial number of items must be as configured", app.stage.nitems, app.stage.items.size());
+        assertEquals("Initial number of actions must be as configured", app.stage.nactions, app.stage.actions.size());
+        assertEquals("Initial number of schemas must be equal to nactions", app.stage.actions.size(), app.stage.schemas.size());
     }
 }

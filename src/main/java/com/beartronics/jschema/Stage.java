@@ -3,6 +3,11 @@ package com.beartronics.jschema;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
+import com.typesafe.config.*;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /**
  * Hello world!
@@ -10,23 +15,33 @@ import java.util.ArrayList;
  */
 public class Stage
 {
+    final Logger logger =
+        LoggerFactory.getLogger(Stage.class);
+
+
     public ArrayList<Schema> schemas = new ArrayList<Schema>();
     public ArrayList<Action> actions = new ArrayList<Action>();
     public ArrayList<Item> items     = new ArrayList<Item>();
 
-    int nitems = 0;
-    int nschemas = 0;
+    int nitems;    
+    int nschemas;
+    int nactions;
 
-    public Stage() {
+    Config config;
 
+    public Stage(Config conf) {
+        config = conf;
+        nitems = config.getInt("n-items");
+        nactions = config.getInt("n-actions");
     }
 
-    public void initWorld(int n) {
-        System.out.println("initializing world "+ this + ", n = "+n);
+    public void run() {
+        System.err.println("stage.run not yet implemented");
+    }
 
-        nitems = n;
-        nschemas = n;
-
+    public void initWorld() {
+        logger.info("Initializing world "+ this + ", nitems = "+nitems + ", nactions = "+nactions);
+        nschemas = nactions;
         initItems();
         initSchemas();
     }
@@ -49,7 +64,7 @@ public class Stage
     }
 
     public String toString() {
-        return String.format("{{ stage %s: nitems=%d schemas=%d }}", this.hashCode(), nitems,nschemas);
+        return String.format("{{ stage %s: nitems=%d nactions=%d schemas=%d }}", this.hashCode(), nitems,nactions,nschemas);
     }
 
 }

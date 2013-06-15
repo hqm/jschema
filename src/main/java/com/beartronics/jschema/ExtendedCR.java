@@ -26,7 +26,7 @@ public class ExtendedCR {
     TIntArrayList remainedOnActionTaken = new TIntArrayList();
     TIntArrayList remainedOnActionNotTaken = new TIntArrayList();
 
-    Tintarraylist remainedOffActionTaken = new TIntArrayList();
+    TIntArrayList remainedOffActionTaken = new TIntArrayList();
     TIntArrayList remainedOffActionNotTaken = new TIntArrayList();
 
     void ensureCapacity(int n) {
@@ -38,12 +38,6 @@ public class ExtendedCR {
         remainedOnActionNotTaken.ensureCapacity(n);
         remainedOffActionTaken.ensureCapacity(n);
         remainedOffActionNotTaken.ensureCapacity(n);
-    // we should do a check to make sure that the item we're adding has the index we expect
-        if (offToOnActionTaken.size() != item.id) {
-            logger.debug("addSchema new schema index "+ item.id +
-                         " does not match extended context/result size " +
-                         offToOnActionTaken.size());
-        }
     }
 
 }

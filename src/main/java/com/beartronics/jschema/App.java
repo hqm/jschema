@@ -10,36 +10,39 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- *
+ * Main class for schema mechanism implementation
  */
 public class App 
 {
     final Logger logger =
         LoggerFactory.getLogger(App.class);
 
-    Config config;
-
     public static void main( String[] args )
     {
         App app = new App();
-        app.run(100);
+        app.init();
+        app.run();
     }
 
     Stage stage;
 
+
+    Config config;
+
     public App() {
+        // load config file
         config = ConfigFactory.load();
         config.checkValid(ConfigFactory.defaultReference(), "application");
     }
 
-    public void run(int n) {
-        logger.info("The setting 'foo' is: " + config.getString("foo"));
-        logger.info("The setting 'bar' is: " + config.getString("bar"));
-        logger.info( "creating schemas n="+n );
+    public void init() {
+        stage = new Stage(config);
+        stage.initWorld();
+    }
 
-        stage = new Stage();
 
-        stage.initWorld(n);
+    public void run() {
+        stage.run();
     }
 
 }
