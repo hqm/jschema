@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+// Holds the extended context or result arrays
 public class ExtendedCR {
 
     final Logger logger =
@@ -25,18 +26,18 @@ public class ExtendedCR {
     TIntArrayList remainedOnActionTaken = new TIntArrayList();
     TIntArrayList remainedOnActionNotTaken = new TIntArrayList();
 
-    TIntArrayList remainedOffActionTaken = new TIntArrayList();
+    Tintarraylist remainedOffActionTaken = new TIntArrayList();
     TIntArrayList remainedOffActionNotTaken = new TIntArrayList();
 
-    void addItem(Item item) {
-        offToOnActionTaken.add(0);
-        offToOnActionNotTaken.add(0);
-        onToOffActionTaken.add(0);
-        onToOffActionNotTaken.add(0);
-        remainedOnActionTaken.add(0);
-        remainedOnActionNotTaken.add(0);
-        remainedOffActionTaken.add(0);
-        remainedOffActionNotTaken.add(0);
+    void ensureCapacity(int n) {
+        offToOnActionTaken.ensureCapacity(n);
+        offToOnActionNotTaken.ensureCapacity(n);
+        onToOffActionTaken.ensureCapacity(n);
+        onToOffActionNotTaken.ensureCapacity(n);
+        remainedOnActionTaken.ensureCapacity(n);
+        remainedOnActionNotTaken.ensureCapacity(n);
+        remainedOffActionTaken.ensureCapacity(n);
+        remainedOffActionNotTaken.ensureCapacity(n);
     // we should do a check to make sure that the item we're adding has the index we expect
         if (offToOnActionTaken.size() != item.id) {
             logger.debug("addSchema new schema index "+ item.id +

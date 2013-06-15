@@ -37,7 +37,7 @@ public class Schema {
     // correlation, reliability, duration, cost
 
     // Extended Context counters
-    ExtendedCR xcontent = new ExtendedCR();
+    ExtendedCR xcontext = new ExtendedCR();
 
     // Extended Result counters
     ExtendedCR xresult = new ExtendedCR();
@@ -52,10 +52,14 @@ public class Schema {
         this.action = action;
     }
 
+    public void ensureCapacity(int n) {
+        xcontext.ensureCapacity(n);
+        xresult.ensureCapacity(n);
+    }
+
     // Initialize this schema, for this stage
     public void initialize(Stage stage) {
         // create extended context, result arrays
-        
     }
 
     public String toString() {
