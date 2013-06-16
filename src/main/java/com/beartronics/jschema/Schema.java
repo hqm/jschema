@@ -18,13 +18,14 @@ public class Schema {
     ArrayList<Item> posResult  = new ArrayList<Item>();
     ArrayList<Item> negResult  = new ArrayList<Item>();
 
-  // Also known as the 'reifier' item
+    // The synthetic item which is controlled by this schema's successful activation.
+    // Also known as the 'reifier' item
     Item syntheticItem = null;
 
     // reliability statistics
     int succeededWithActivation   = 0;
-    int failedWithActivation      = 0; // number of times activation failed
     int succededWithoutActivation = 0;
+    int failedWithActivation      = 0; // number of times activation failed
 
     // Parent schema from which we were spun off
     Schema parent = null;

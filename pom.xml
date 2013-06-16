@@ -24,7 +24,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>com.beartronics.jschema.App</mainClass>
+              <mainClass>com.beartronics.jschema.JSchema</mainClass>
             </manifest>
           </archive>
         </configuration>
@@ -36,7 +36,7 @@
         <executions>
           <execution>
             <configuration>
-              <mainClass>com.beartronics.jschema.App</mainClass>
+              <mainClass>com.beartronics.jschema.JSchema</mainClass>
             </configuration>
             <goals>
               <goal>one-jar</goal>

@@ -1,5 +1,4 @@
 package com.beartronics.jschema;
-
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
 
