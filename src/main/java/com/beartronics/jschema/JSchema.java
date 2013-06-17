@@ -53,7 +53,7 @@ public class JSchema extends PApplet {
 
     }
 
-    int clock = 0;
+    public int clock = 0;
     public void draw() {
         sms.draw();
         clock++;

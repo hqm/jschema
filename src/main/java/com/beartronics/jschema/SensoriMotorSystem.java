@@ -12,6 +12,8 @@ import org.jbox2d.common.*;
 import org.jbox2d.dynamics.*;
 import java.util.*;
 
+import processing.core.*;
+
 
 public class SensoriMotorSystem {
 
@@ -43,8 +45,12 @@ public class SensoriMotorSystem {
         boundaries = new ArrayList<Boundary>();
 
         // Add a bunch of fixed boundaries
-        boundaries.add(new Boundary(app, app.width/4,app.height-5,app.width/2-50,10));
-        boundaries.add(new Boundary(app, 3*app.width/4,app.height-50,app.width/2-50,10));
+        boundaries.add(new Boundary(app, app.width/4-50, app.height-5, app.width/2-50, 10f ));
+        boundaries.add(new Boundary(app, app.width*(3/4f)+50, app.height-5, app.width/2-50, 10f ));
+
+        boundaries.add(new Boundary(app, app.width/4, app.height-100, 10f, 200f ));
+        boundaries.add(new Boundary(app, app.width*(3f/4f), app.height-100f, 10f, 200f ));
+
     }
 
     void draw() {
@@ -54,8 +60,8 @@ public class SensoriMotorSystem {
         box2d.step();
 
         // Boxes fall from the top every so often
-        if (app.random(1) < 0.2) {
-            Box p = new Box(app, app.width/2,30);
+        if ((app.random(1) < 0.2) && (app.mousePressed && (app.mouseButton == PConstants.LEFT)) ) {
+            Box p = new Box(app, app.mouseX,app.mouseY);
             boxes.add(p);
         }
 
