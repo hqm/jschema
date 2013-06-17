@@ -8,3 +8,6 @@ http://pragmatastic.blogspot.com/2010/07/adding-project-local-libraries-to-maven
 mvn package
 
 mvn test
+
+
+java -classpath ${JCP} com.beartronics.jschema.JSchema

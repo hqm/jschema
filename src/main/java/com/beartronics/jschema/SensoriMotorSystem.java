@@ -19,8 +19,9 @@ public class SensoriMotorSystem {
     public PBox2D box2d;
     public JSchema app;
 
-    public SensoriMotorSystem(JSchema app) {
-        this.app = app;
+    public SensoriMotorSystem(JSchema a) {
+        this.app = a;
+        System.out.println("SensoriMotorSystem constructor this.app = "+this.app);
     }
 
     // A list we'll use to track fixed objects

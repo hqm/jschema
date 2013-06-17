@@ -30,6 +30,7 @@ class Box {
     PBox2D box2d;
     // Constructor
     Box(JSchema app, float x, float y) {
+        this.app = app;
         this.box2d = app.box2d;
         w = app.random(4, 16);
         h = app.random(4, 16);

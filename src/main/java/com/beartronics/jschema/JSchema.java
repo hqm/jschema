@@ -37,16 +37,22 @@ public class JSchema extends PApplet {
     }
 
     public void setup() {
+        size(1280, 640);
+        smooth();
+        background(255);
+
         sms = new SensoriMotorSystem(this);
         stage = new Stage(sms);
         stage.initWorld(10, 10);
 
-        size(1280, 640);
-        smooth();
-        background(255);
+        sms.setupDisplay();
+
     }
 
+    int clock = 0;
     public void draw() {
+        sms.draw();
+        clock++;
     }
 
 

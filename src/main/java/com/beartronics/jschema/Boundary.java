@@ -30,8 +30,9 @@ class Boundary {
     Body b;
     JSchema app;
 
-    Boundary(JSchema app, float x_,float y_, float w_, float h_) {
-        this.box2d = app.box2d;
+    Boundary(JSchema app_, float x_,float y_, float w_, float h_) {
+        app = app_;
+        box2d = app.box2d;
         x = x_;
         y = y_;
         w = w_;
@@ -44,7 +45,6 @@ class Boundary {
         float box2dH = box2d.scalarPixelsToWorld(h/2);
         // We're just a box
         sd.setAsBox(box2dW, box2dH);
-
 
         // Create the body
         BodyDef bd = new BodyDef();
