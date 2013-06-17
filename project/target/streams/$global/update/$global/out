@@ -7,12 +7,51 @@
 [0m[[0mdebug[0m] [0mresolving dependencies for configuration 'compile'[0m
 [0m[[0mdebug[0m] [0m== resolving dependencies for default#default-81e018;0.1-SNAPSHOT [compile][0m
 [0m[[0mdebug[0m] [0mloadData of default#default-81e018;0.1-SNAPSHOT of rootConf=compile[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#default-81e018;0.1-SNAPSHOT->com.eed3si9n#sbt-assembly;0.9.0 [compile->default(compile)][0m
+[0m[[0mdebug[0m] [0mloadData of com.eed3si9n#sbt-assembly;0.9.0 of rootConf=compile[0m
+[0m[[0mdebug[0m] [0m	using sbt-chain to resolve com.eed3si9n#sbt-assembly;0.9.0[0m
+[0m[[0minfo[0m] [0mResolving com.eed3si9n#sbt-assembly;0.9.0 ...[0m
+[0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: com.eed3si9n#sbt-assembly;0.9.0 {compile=[default(compile)]}[0m
+[0m[[0mdebug[0m] [0msbt-chain: no namespace defined: using system[0m
+[0m[[0mdebug[0m] [0m	no ivy file in cache for com.eed3si9n#sbt-assembly;0.9.0: tried /Users/hqm/.ivy2/cache/scala_2.9.2/sbt_0.12/com.eed3si9n/sbt-assembly/ivy-0.9.0.xml[0m
+[0m[[0mdebug[0m] [0msbt-chain: no latest strategy defined: using default[0m
+[0m[[0mdebug[0m] [0mtypesafe-ivy-releases: no namespace defined: using system[0m
+[0m[[0mdebug[0m] [0m	no ivy file in cache for com.eed3si9n#sbt-assembly;0.9.0: tried /Users/hqm/.ivy2/cache/scala_2.9.2/sbt_0.12/com.eed3si9n/sbt-assembly/ivy-0.9.0.xml[0m
+[0m[[0mdebug[0m] [0m	 trying http://repo.typesafe.com/typesafe/ivy-releases/com.eed3si9n/sbt-assembly/scala_2.9.2/sbt_0.12/0.9.0/ivys/ivy.xml[0m
+[0m[[0mdebug[0m] [0m		tried http://repo.typesafe.com/typesafe/ivy-releases/com.eed3si9n/sbt-assembly/scala_2.9.2/sbt_0.12/0.9.0/ivys/ivy.xml[0m
+[0m[[0mdebug[0m] [0mHTTP response status: 404 url=http://repo.typesafe.com/typesafe/ivy-releases/com.eed3si9n/sbt-assembly/scala_2.9.2/sbt_0.12/0.9.0/ivys/ivy.xml[0m
+[0m[[0mdebug[0m] [0mCLIENT ERROR: Not Found url=http://repo.typesafe.com/typesafe/ivy-releases/com.eed3si9n/sbt-assembly/scala_2.9.2/sbt_0.12/0.9.0/ivys/ivy.xml[0m
+[0m[[0mdebug[0m] [0m	typesafe-ivy-releases: resource not reachable for com.eed3si9n#sbt-assembly;0.9.0: res=http://repo.typesafe.com/typesafe/ivy-releases/com.eed3si9n/sbt-assembly/scala_2.9.2/sbt_0.12/0.9.0/ivys/ivy.xml[0m
+[0m[[0mdebug[0m] [0m	typesafe-ivy-releases: no ivy file found for com.eed3si9n#sbt-assembly;0.9.0[0m
+[0m[[0mdebug[0m] [0msbt-plugin-releases: no namespace defined: using system[0m
+[0m[[0mdebug[0m] [0m	no ivy file in cache for com.eed3si9n#sbt-assembly;0.9.0: tried /Users/hqm/.ivy2/cache/scala_2.9.2/sbt_0.12/com.eed3si9n/sbt-assembly/ivy-0.9.0.xml[0m
+[0m[[0mdebug[0m] [0m	 trying http://scalasbt.artifactoryonline.com/scalasbt/sbt-plugin-releases/com.eed3si9n/sbt-assembly/scala_2.9.2/sbt_0.12/0.9.0/ivys/ivy.xml[0m
+[0m[[0mdebug[0m] [0m		tried http://scalasbt.artifactoryonline.com/scalasbt/sbt-plugin-releases/com.eed3si9n/sbt-assembly/scala_2.9.2/sbt_0.12/0.9.0/ivys/ivy.xml[0m
+[0m[[0mdebug[0m] [0m	sbt-plugin-releases: found md file for com.eed3si9n#sbt-assembly;0.9.0[0m
+[0m[[0mdebug[0m] [0m		=> http://scalasbt.artifactoryonline.com/scalasbt/sbt-plugin-releases/com.eed3si9n/sbt-assembly/scala_2.9.2/sbt_0.12/0.9.0/ivys/ivy.xml (0.9.0)[0m
+[0m[[0mdebug[0m] [0m	parser = ivy parser[0m
+[0m[[0mdebug[0m] [0m	no ivy file in cache for com.eed3si9n#sbt-assembly;0.9.0: tried /Users/hqm/.ivy2/cache/scala_2.9.2/sbt_0.12/com.eed3si9n/sbt-assembly/ivy-0.9.0.xml[0m
+[0m[[0mdebug[0m] [0mdownloading http://scalasbt.artifactoryonline.com/scalasbt/sbt-plugin-releases/com.eed3si9n/sbt-assembly/scala_2.9.2/sbt_0.12/0.9.0/ivys/ivy.xml ...[0m
+[0m[[0mdebug[0m] [0m	sbt-plugin-releases: downloading http://scalasbt.artifactoryonline.com/scalasbt/sbt-plugin-releases/com.eed3si9n/sbt-assembly/scala_2.9.2/sbt_0.12/0.9.0/ivys/ivy.xml[0m
+[0m[[0mdebug[0m] [0m		to /Users/hqm/.ivy2/cache/scala_2.9.2/sbt_0.12/com.eed3si9n/sbt-assembly/ivy-0.9.0.xml.original.part[0m
+[0m[[0mdebug[0m] [0msha1 file found for http://scalasbt.artifactoryonline.com/scalasbt/sbt-plugin-releases/com.eed3si9n/sbt-assembly/scala_2.9.2/sbt_0.12/0.9.0/ivys/ivy.xml: checking...[0m
+[0m[[0mdebug[0m] [0m	sbt-plugin-releases: downloading http://scalasbt.artifactoryonline.com/scalasbt/sbt-plugin-releases/com.eed3si9n/sbt-assembly/scala_2.9.2/sbt_0.12/0.9.0/ivys/ivy.xml.sha1[0m
+[0m[[0mdebug[0m] [0m		to /var/folders/qp/wbv_m3mn04j3wmkjc_xb_20r0000gn/T/ivytmp2636924754263931175sha1[0m
+[0m[[0mdebug[0m] [0msha1 OK for http://scalasbt.artifactoryonline.com/scalasbt/sbt-plugin-releases/com.eed3si9n/sbt-assembly/scala_2.9.2/sbt_0.12/0.9.0/ivys/ivy.xml[0m
+[0m[[0mdebug[0m] [0m	[SUCCESSFUL ] com.eed3si9n#sbt-assembly;0.9.0!ivy.xml(ivy.original) (467ms)[0m
+[0m[[0mdebug[0m] [0mpost 1.3 ivy file: using exact as default matcher[0m
+[0m[[0mdebug[0m] [0m	default-cache: parsed downloaded md file for com.eed3si9n#sbt-assembly;0.9.0; parsed=com.eed3si9n#sbt-assembly;0.9.0[0m
+[0m[[0mdebug[0m] [0m	checking com.eed3si9n#sbt-assembly;0.9.0 from sbt-plugin-releases against [none][0m
+[0m[[0mdebug[0m] [0m	module revision kept as first found: com.eed3si9n#sbt-assembly;0.9.0 from sbt-plugin-releases[0m
+[0m[[0mdebug[0m] [0m	found com.eed3si9n#sbt-assembly;0.9.0 in sbt-plugin-releases[0m
 [0m[[0mdebug[0m] [0mresolving dependencies for configuration 'runtime'[0m
 [0m[[0mdebug[0m] [0m== resolving dependencies for default#default-81e018;0.1-SNAPSHOT [runtime][0m
 [0m[[0mdebug[0m] [0mloadData of default#default-81e018;0.1-SNAPSHOT of rootConf=runtime[0m
 [0m[[0mdebug[0m] [0m== resolving dependencies for default#default-81e018;0.1-SNAPSHOT [compile][0m
 [0m[[0mdebug[0m] [0mloadData of default#default-81e018;0.1-SNAPSHOT of rootConf=runtime[0m
 [0m[[0mdebug[0m] [0mruntime is loaded and no conf to load.  Skip loading[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#default-81e018;0.1-SNAPSHOT->com.eed3si9n#sbt-assembly;0.9.0 [compile->default(compile)][0m
+[0m[[0mdebug[0m] [0mloadData of com.eed3si9n#sbt-assembly;0.9.0 of rootConf=runtime[0m
 [0m[[0mdebug[0m] [0mresolving dependencies for configuration 'test'[0m
 [0m[[0mdebug[0m] [0m== resolving dependencies for default#default-81e018;0.1-SNAPSHOT [test][0m
 [0m[[0mdebug[0m] [0mloadData of default#default-81e018;0.1-SNAPSHOT of rootConf=test[0m
@@ -22,6 +61,8 @@
 [0m[[0mdebug[0m] [0m== resolving dependencies for default#default-81e018;0.1-SNAPSHOT [compile][0m
 [0m[[0mdebug[0m] [0mloadData of default#default-81e018;0.1-SNAPSHOT of rootConf=test[0m
 [0m[[0mdebug[0m] [0mtest is loaded and no conf to load.  Skip loading[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#default-81e018;0.1-SNAPSHOT->com.eed3si9n#sbt-assembly;0.9.0 [compile->default(compile)][0m
+[0m[[0mdebug[0m] [0mloadData of com.eed3si9n#sbt-assembly;0.9.0 of rootConf=test[0m
 [0m[[0mdebug[0m] [0mresolving dependencies for configuration 'provided'[0m
 [0m[[0mdebug[0m] [0m== resolving dependencies for default#default-81e018;0.1-SNAPSHOT [provided][0m
 [0m[[0mdebug[0m] [0mloadData of default#default-81e018;0.1-SNAPSHOT of rootConf=provided[0m
@@ -30,13 +71,10 @@
 [0m[[0mdebug[0m] [0m	using sbt-chain to resolve org.scala-sbt#sbt;0.12.2[0m
 [0m[[0minfo[0m] [0mResolving org.scala-sbt#sbt;0.12.2 ...[0m
 [0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: org.scala-sbt#sbt;0.12.2 {provided=[default(compile)]}[0m
-[0m[[0mdebug[0m] [0msbt-chain: no namespace defined: using system[0m
 [0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/sbt/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0mpost 1.3 ivy file: using exact as default matcher[0m
 [0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#sbt;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/sbt/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0msbt-chain: module revision found in cache: org.scala-sbt#sbt;0.12.2[0m
-[0m[[0mdebug[0m] [0msbt-chain: no latest strategy defined: using default[0m
-[0m[[0mdebug[0m] [0mtypesafe-ivy-releases: no namespace defined: using system[0m
 [0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/sbt/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#sbt;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/sbt/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0m	typesafe-ivy-releases: revision in cache: org.scala-sbt#sbt;0.12.2[0m
@@ -1358,6 +1396,8 @@
 [0m[[0mdebug[0m] [0m== resolving dependencies for default#default-81e018;0.1-SNAPSHOT [compile][0m
 [0m[[0mdebug[0m] [0mloadData of default#default-81e018;0.1-SNAPSHOT of rootConf=compile-internal[0m
 [0m[[0mdebug[0m] [0mcompile-internal is loaded and no conf to load.  Skip loading[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#default-81e018;0.1-SNAPSHOT->com.eed3si9n#sbt-assembly;0.9.0 [compile->default(compile)][0m
+[0m[[0mdebug[0m] [0mloadData of com.eed3si9n#sbt-assembly;0.9.0 of rootConf=compile-internal[0m
 [0m[[0mdebug[0m] [0m== resolving dependencies for default#default-81e018;0.1-SNAPSHOT [optional][0m
 [0m[[0mdebug[0m] [0mloadData of default#default-81e018;0.1-SNAPSHOT of rootConf=compile-internal[0m
 [0m[[0mdebug[0m] [0mcompile-internal is loaded and no conf to load.  Skip loading[0m
@@ -2194,6 +2234,8 @@
 [0m[[0mdebug[0m] [0m== resolving dependencies for default#default-81e018;0.1-SNAPSHOT [compile][0m
 [0m[[0mdebug[0m] [0mloadData of default#default-81e018;0.1-SNAPSHOT of rootConf=runtime-internal[0m
 [0m[[0mdebug[0m] [0mruntime-internal is loaded and no conf to load.  Skip loading[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#default-81e018;0.1-SNAPSHOT->com.eed3si9n#sbt-assembly;0.9.0 [compile->default(compile)][0m
+[0m[[0mdebug[0m] [0mloadData of com.eed3si9n#sbt-assembly;0.9.0 of rootConf=runtime-internal[0m
 [0m[[0mdebug[0m] [0m== resolving dependencies for default#default-81e018;0.1-SNAPSHOT [optional][0m
 [0m[[0mdebug[0m] [0mloadData of default#default-81e018;0.1-SNAPSHOT of rootConf=runtime-internal[0m
 [0m[[0mdebug[0m] [0mruntime-internal is loaded and no conf to load.  Skip loading[0m
@@ -2209,6 +2251,8 @@
 [0m[[0mdebug[0m] [0m== resolving dependencies for default#default-81e018;0.1-SNAPSHOT [compile][0m
 [0m[[0mdebug[0m] [0mloadData of default#default-81e018;0.1-SNAPSHOT of rootConf=test-internal[0m
 [0m[[0mdebug[0m] [0mtest-internal is loaded and no conf to load.  Skip loading[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#default-81e018;0.1-SNAPSHOT->com.eed3si9n#sbt-assembly;0.9.0 [compile->default(compile)][0m
+[0m[[0mdebug[0m] [0mloadData of com.eed3si9n#sbt-assembly;0.9.0 of rootConf=test-internal[0m
 [0m[[0mdebug[0m] [0m== resolving dependencies for default#default-81e018;0.1-SNAPSHOT [optional][0m
 [0m[[0mdebug[0m] [0mloadData of default#default-81e018;0.1-SNAPSHOT of rootConf=test-internal[0m
 [0m[[0mdebug[0m] [0mtest-internal is loaded and no conf to load.  Skip loading[0m
@@ -3048,14 +3092,18 @@
 [0m[[0mdebug[0m] [0mresolving dependencies for configuration 'pom'[0m
 [0m[[0mdebug[0m] [0m== resolving dependencies for default#default-81e018;0.1-SNAPSHOT [pom][0m
 [0m[[0mdebug[0m] [0mloadData of default#default-81e018;0.1-SNAPSHOT of rootConf=pom[0m
-[0m[[0mdebug[0m] [0mNbr of module to sort : 41[0m
+[0m[[0mdebug[0m] [0mNbr of module to sort : 42[0m
+[0m[[0mdebug[0m] [0mSort dependencies of : com.eed3si9n#sbt-assembly;0.9.0 / Number of dependencies = 2[0m
+[0m[[0mdebug[0m] [0mNon matching revision detected when sorting.  com.eed3si9n#sbt-assembly depends on org.scala-sbt#sbt;0.12.1, doesn't match org.scala-sbt#sbt;0.12.2[0m
+[0m[[0mdebug[0m] [0mSort dependencies of : org.scala-lang#scala-library;2.9.2 / Number of dependencies = 0[0m
+[0m[[0mdebug[0m] [0mSort done for : org.scala-lang#scala-library;2.9.2[0m
+[0m[[0mdebug[0m] [0mSort done for : com.eed3si9n#sbt-assembly;0.9.0[0m
 [0m[[0mdebug[0m] [0mSort dependencies of : org.scala-sbt#sbt;0.12.2 / Number of dependencies = 6[0m
 [0m[[0mdebug[0m] [0mSort dependencies of : org.scala-sbt#main;0.12.2 / Number of dependencies = 12[0m
 [0m[[0mdebug[0m] [0mSort dependencies of : org.scala-sbt#actions;0.12.2 / Number of dependencies = 16[0m
 [0m[[0mdebug[0m] [0mSort dependencies of : org.scala-sbt#classpath;0.12.2 / Number of dependencies = 5[0m
 [0m[[0mdebug[0m] [0mSort dependencies of : org.scala-sbt#launcher-interface;0.12.2 / Number of dependencies = 1[0m
-[0m[[0mdebug[0m] [0mSort dependencies of : org.scala-lang#scala-library;2.9.2 / Number of dependencies = 0[0m
-[0m[[0mdebug[0m] [0mSort done for : org.scala-lang#scala-library;2.9.2[0m
+[0m[[0mdebug[0m] [0mModule descriptor is processed : org.scala-lang#scala-library;2.9.2[0m
 [0m[[0mdebug[0m] [0mSort done for : org.scala-sbt#launcher-interface;0.12.2[0m
 [0m[[0mdebug[0m] [0mSort dependencies of : org.scala-sbt#interface;0.12.2 / Number of dependencies = 1[0m
 [0m[[0mdebug[0m] [0mModule descriptor is processed : org.scala-lang#scala-library;2.9.2[0m
@@ -3291,6 +3339,16 @@
 [0m[[0mdebug[0m] [0morg.scala-lang#scala-compiler;2.9.2 in compile-internal: excluding org.scala-lang#scala-compiler;2.9.2!scala-compiler.jar[0m
 [0m[[0mdebug[0m] [0m	resolved ivy file produced in /Users/hqm/src/jschema/project/target/resolution-cache/default/default-81e018/scala_2.9.2/sbt_0.12/0.1-SNAPSHOT/resolved.xml.xml[0m
 [0m[[0mdebug[0m] [0m:: downloading artifacts ::[0m
+[0m[[0mdebug[0m] [0m	 trying http://scalasbt.artifactoryonline.com/scalasbt/sbt-plugin-releases/com.eed3si9n/sbt-assembly/scala_2.9.2/sbt_0.12/0.9.0/jars/sbt-assembly.jar[0m
+[0m[[0mdebug[0m] [0m		tried http://scalasbt.artifactoryonline.com/scalasbt/sbt-plugin-releases/com.eed3si9n/sbt-assembly/scala_2.9.2/sbt_0.12/0.9.0/jars/sbt-assembly.jar[0m
+[0m[[0minfo[0m] [0mdownloading http://scalasbt.artifactoryonline.com/scalasbt/sbt-plugin-releases/com.eed3si9n/sbt-assembly/scala_2.9.2/sbt_0.12/0.9.0/jars/sbt-assembly.jar ...[0m
+[0m[[0mdebug[0m] [0m	sbt-plugin-releases: downloading http://scalasbt.artifactoryonline.com/scalasbt/sbt-plugin-releases/com.eed3si9n/sbt-assembly/scala_2.9.2/sbt_0.12/0.9.0/jars/sbt-assembly.jar[0m
+[0m[[0mdebug[0m] [0m		to /Users/hqm/.ivy2/cache/scala_2.9.2/sbt_0.12/com.eed3si9n/sbt-assembly/jars/sbt-assembly-0.9.0.jar.part[0m
+[0m[[0mdebug[0m] [0msha1 file found for http://scalasbt.artifactoryonline.com/scalasbt/sbt-plugin-releases/com.eed3si9n/sbt-assembly/scala_2.9.2/sbt_0.12/0.9.0/jars/sbt-assembly.jar: checking...[0m
+[0m[[0mdebug[0m] [0m	sbt-plugin-releases: downloading http://scalasbt.artifactoryonline.com/scalasbt/sbt-plugin-releases/com.eed3si9n/sbt-assembly/scala_2.9.2/sbt_0.12/0.9.0/jars/sbt-assembly.jar.sha1[0m
+[0m[[0mdebug[0m] [0m		to /var/folders/qp/wbv_m3mn04j3wmkjc_xb_20r0000gn/T/ivytmp1184013279043428515sha1[0m
+[0m[[0mdebug[0m] [0msha1 OK for http://scalasbt.artifactoryonline.com/scalasbt/sbt-plugin-releases/com.eed3si9n/sbt-assembly/scala_2.9.2/sbt_0.12/0.9.0/jars/sbt-assembly.jar[0m
+[0m[[0minfo[0m] [0m	[SUCCESSFUL ] com.eed3si9n#sbt-assembly;0.9.0!sbt-assembly.jar (1417ms)[0m
 [0m[[0mdebug[0m] [0m	[NOT REQUIRED] org.scala-sbt#sbt;0.12.2!sbt.jar[0m
 [0m[[0mdebug[0m] [0morg.scala-lang#scala-library;2.9.2 in test-internal: excluding org.scala-lang#scala-library;2.9.2!scala-library.jar[0m
 [0m[[0mdebug[0m] [0morg.scala-lang#scala-library;2.9.2 in provided: excluding org.scala-lang#scala-library;2.9.2!scala-library.jar[0m
@@ -3299,8 +3357,8 @@
 [0m[[0mdebug[0m] [0morg.scala-lang#scala-library;2.9.2 in provided: excluding org.scala-lang#scala-library;2.9.2!scala-library.jar[0m
 [0m[[0mdebug[0m] [0morg.scala-lang#scala-library;2.9.2 in compile-internal: excluding org.scala-lang#scala-library;2.9.2!scala-library.jar[0m
 [0m[[0mdebug[0m] [0m	[NOT REQUIRED] org.scala-sbt#main;0.12.2!main.jar[0m
-[0m[[0mdebug[0m] [0m	[NOT REQUIRED] org.scala-sbt#compiler-interface;0.12.2!compiler-interface-bin.jar[0m
 [0m[[0mdebug[0m] [0m	[NOT REQUIRED] org.scala-sbt#compiler-interface;0.12.2!compiler-interface-src.jar[0m
+[0m[[0mdebug[0m] [0m	[NOT REQUIRED] org.scala-sbt#compiler-interface;0.12.2!compiler-interface-bin.jar[0m
 [0m[[0mdebug[0m] [0m	[NOT REQUIRED] org.scala-sbt#precompiled-2_8_2;0.12.2!compiler-interface-bin.jar[0m
 [0m[[0mdebug[0m] [0m	[NOT REQUIRED] org.scala-sbt#precompiled-2_10_0;0.12.2!compiler-interface-bin.jar[0m
 [0m[[0mdebug[0m] [0m	[NOT REQUIRED] org.scala-sbt#actions;0.12.2!actions.jar[0m
@@ -3343,12 +3401,18 @@
 [0m[[0mdebug[0m] [0m	[NOT REQUIRED] org.scala-sbt#cache;0.12.2!cache.jar[0m
 [0m[[0mdebug[0m] [0m	[NOT REQUIRED] org.scala-sbt#test-agent;0.12.2!test-agent.jar[0m
 [0m[[0mdebug[0m] [0m	[NOT REQUIRED] org.scala-tools.testing#test-interface;0.5!test-interface.jar[0m
-[0m[[0mdebug[0m] [0m:: resolution report :: resolve 1476ms :: artifacts dl 37ms[0m
-[0m[[0mdebug[0m] [0mNbr of module to sort : 0[0m
+[0m[[0mdebug[0m] [0m:: resolution report :: resolve 3950ms :: artifacts dl 1447ms[0m
+[0m[[0mdebug[0m] [0mNbr of module to sort : 1[0m
+[0m[[0mdebug[0m] [0mSort dependencies of : com.eed3si9n#sbt-assembly;0.9.0 / Number of dependencies = 2[0m
+[0m[[0mdebug[0m] [0mSort done for : com.eed3si9n#sbt-assembly;0.9.0[0m
 [0m[[0mdebug[0m] [0m	report for default#default-81e018;0.1-SNAPSHOT compile produced in /Users/hqm/src/jschema/project/target/resolution-cache/reports/default-default-81e018/compile-resolved.xml[0m
-[0m[[0mdebug[0m] [0mNbr of module to sort : 0[0m
+[0m[[0mdebug[0m] [0mNbr of module to sort : 1[0m
+[0m[[0mdebug[0m] [0mSort dependencies of : com.eed3si9n#sbt-assembly;0.9.0 / Number of dependencies = 2[0m
+[0m[[0mdebug[0m] [0mSort done for : com.eed3si9n#sbt-assembly;0.9.0[0m
 [0m[[0mdebug[0m] [0m	report for default#default-81e018;0.1-SNAPSHOT runtime produced in /Users/hqm/src/jschema/project/target/resolution-cache/reports/default-default-81e018/runtime-resolved.xml[0m
-[0m[[0mdebug[0m] [0mNbr of module to sort : 0[0m
+[0m[[0mdebug[0m] [0mNbr of module to sort : 1[0m
+[0m[[0mdebug[0m] [0mSort dependencies of : com.eed3si9n#sbt-assembly;0.9.0 / Number of dependencies = 2[0m
+[0m[[0mdebug[0m] [0mSort done for : com.eed3si9n#sbt-assembly;0.9.0[0m
 [0m[[0mdebug[0m] [0m	report for default#default-81e018;0.1-SNAPSHOT test produced in /Users/hqm/src/jschema/project/target/resolution-cache/reports/default-default-81e018/test-resolved.xml[0m
 [0m[[0mdebug[0m] [0mNbr of module to sort : 41[0m
 [0m[[0mdebug[0m] [0mSort dependencies of : org.scala-sbt#sbt;0.12.2 / Number of dependencies = 6[0m
@@ -3588,14 +3652,18 @@
 [0m[[0mdebug[0m] [0m	report for default#default-81e018;0.1-SNAPSHOT provided produced in /Users/hqm/src/jschema/project/target/resolution-cache/reports/default-default-81e018/provided-resolved.xml[0m
 [0m[[0mdebug[0m] [0mNbr of module to sort : 0[0m
 [0m[[0mdebug[0m] [0m	report for default#default-81e018;0.1-SNAPSHOT optional produced in /Users/hqm/src/jschema/project/target/resolution-cache/reports/default-default-81e018/optional-resolved.xml[0m
-[0m[[0mdebug[0m] [0mNbr of module to sort : 41[0m
+[0m[[0mdebug[0m] [0mNbr of module to sort : 42[0m
+[0m[[0mdebug[0m] [0mSort dependencies of : com.eed3si9n#sbt-assembly;0.9.0 / Number of dependencies = 2[0m
+[0m[[0mdebug[0m] [0mNon matching revision detected when sorting.  com.eed3si9n#sbt-assembly depends on org.scala-sbt#sbt;0.12.1, doesn't match org.scala-sbt#sbt;0.12.2[0m
+[0m[[0mdebug[0m] [0mSort dependencies of : org.scala-lang#scala-library;2.9.2 / Number of dependencies = 0[0m
+[0m[[0mdebug[0m] [0mSort done for : org.scala-lang#scala-library;2.9.2[0m
+[0m[[0mdebug[0m] [0mSort done for : com.eed3si9n#sbt-assembly;0.9.0[0m
 [0m[[0mdebug[0m] [0mSort dependencies of : org.scala-sbt#sbt;0.12.2 / Number of dependencies = 6[0m
 [0m[[0mdebug[0m] [0mSort dependencies of : org.scala-sbt#main;0.12.2 / Number of dependencies = 12[0m
 [0m[[0mdebug[0m] [0mSort dependencies of : org.scala-sbt#actions;0.12.2 / Number of dependencies = 16[0m
 [0m[[0mdebug[0m] [0mSort dependencies of : org.scala-sbt#classpath;0.12.2 / Number of dependencies = 5[0m
 [0m[[0mdebug[0m] [0mSort dependencies of : org.scala-sbt#launcher-interface;0.12.2 / Number of dependencies = 1[0m
-[0m[[0mdebug[0m] [0mSort dependencies of : org.scala-lang#scala-library;2.9.2 / Number of dependencies = 0[0m
-[0m[[0mdebug[0m] [0mSort done for : org.scala-lang#scala-library;2.9.2[0m
+[0m[[0mdebug[0m] [0mModule descriptor is processed : org.scala-lang#scala-library;2.9.2[0m
 [0m[[0mdebug[0m] [0mSort done for : org.scala-sbt#launcher-interface;0.12.2[0m
 [0m[[0mdebug[0m] [0mSort dependencies of : org.scala-sbt#interface;0.12.2 / Number of dependencies = 1[0m
 [0m[[0mdebug[0m] [0mModule descriptor is processed : org.scala-lang#scala-library;2.9.2[0m
@@ -3824,16 +3892,22 @@
 [0m[[0mdebug[0m] [0mModule descriptor is processed : org.scala-sbt#precompiled-2_8_2;0.12.2[0m
 [0m[[0mdebug[0m] [0mModule descriptor is processed : org.scala-sbt#precompiled-2_10_0;0.12.2[0m
 [0m[[0mdebug[0m] [0m	report for default#default-81e018;0.1-SNAPSHOT compile-internal produced in /Users/hqm/src/jschema/project/target/resolution-cache/reports/default-default-81e018/compile-internal-resolved.xml[0m
-[0m[[0mdebug[0m] [0mNbr of module to sort : 0[0m
+[0m[[0mdebug[0m] [0mNbr of module to sort : 1[0m
+[0m[[0mdebug[0m] [0mSort dependencies of : com.eed3si9n#sbt-assembly;0.9.0 / Number of dependencies = 2[0m
+[0m[[0mdebug[0m] [0mSort done for : com.eed3si9n#sbt-assembly;0.9.0[0m
 [0m[[0mdebug[0m] [0m	report for default#default-81e018;0.1-SNAPSHOT runtime-internal produced in /Users/hqm/src/jschema/project/target/resolution-cache/reports/default-default-81e018/runtime-internal-resolved.xml[0m
-[0m[[0mdebug[0m] [0mNbr of module to sort : 41[0m
+[0m[[0mdebug[0m] [0mNbr of module to sort : 42[0m
+[0m[[0mdebug[0m] [0mSort dependencies of : com.eed3si9n#sbt-assembly;0.9.0 / Number of dependencies = 2[0m
+[0m[[0mdebug[0m] [0mNon matching revision detected when sorting.  com.eed3si9n#sbt-assembly depends on org.scala-sbt#sbt;0.12.1, doesn't match org.scala-sbt#sbt;0.12.2[0m
+[0m[[0mdebug[0m] [0mSort dependencies of : org.scala-lang#scala-library;2.9.2 / Number of dependencies = 0[0m
+[0m[[0mdebug[0m] [0mSort done for : org.scala-lang#scala-library;2.9.2[0m
+[0m[[0mdebug[0m] [0mSort done for : com.eed3si9n#sbt-assembly;0.9.0[0m
 [0m[[0mdebug[0m] [0mSort dependencies of : org.scala-sbt#sbt;0.12.2 / Number of dependencies = 6[0m
 [0m[[0mdebug[0m] [0mSort dependencies of : org.scala-sbt#main;0.12.2 / Number of dependencies = 12[0m
 [0m[[0mdebug[0m] [0mSort dependencies of : org.scala-sbt#actions;0.12.2 / Number of dependencies = 16[0m
 [0m[[0mdebug[0m] [0mSort dependencies of : org.scala-sbt#classpath;0.12.2 / Number of dependencies = 5[0m
 [0m[[0mdebug[0m] [0mSort dependencies of : org.scala-sbt#launcher-interface;0.12.2 / Number of dependencies = 1[0m
-[0m[[0mdebug[0m] [0mSort dependencies of : org.scala-lang#scala-library;2.9.2 / Number of dependencies = 0[0m
-[0m[[0mdebug[0m] [0mSort done for : org.scala-lang#scala-library;2.9.2[0m
+[0m[[0mdebug[0m] [0mModule descriptor is processed : org.scala-lang#scala-library;2.9.2[0m
 [0m[[0mdebug[0m] [0mSort done for : org.scala-sbt#launcher-interface;0.12.2[0m
 [0m[[0mdebug[0m] [0mSort dependencies of : org.scala-sbt#interface;0.12.2 / Number of dependencies = 1[0m
 [0m[[0mdebug[0m] [0mModule descriptor is processed : org.scala-lang#scala-library;2.9.2[0m
@@ -4070,5 +4144,5 @@
 [0m[[0mdebug[0m] [0m	report for default#default-81e018;0.1-SNAPSHOT docs produced in /Users/hqm/src/jschema/project/target/resolution-cache/reports/default-default-81e018/docs-resolved.xml[0m
 [0m[[0mdebug[0m] [0mNbr of module to sort : 0[0m
 [0m[[0mdebug[0m] [0m	report for default#default-81e018;0.1-SNAPSHOT pom produced in /Users/hqm/src/jschema/project/target/resolution-cache/reports/default-default-81e018/pom-resolved.xml[0m
-[0m[[0mdebug[0m] [0m	resolve done (1476ms resolve - 37ms download)[0m
+[0m[[0mdebug[0m] [0m	resolve done (3950ms resolve - 1447ms download)[0m
 [0m[[0minfo[0m] [0mDone updating.[0m

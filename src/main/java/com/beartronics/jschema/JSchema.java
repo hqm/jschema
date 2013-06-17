@@ -23,12 +23,16 @@ import java.io.InputStream;
 import java.io.OutputStream; 
 import java.io.IOException; 
 
+
 public class JSchema extends PApplet {
 
+    public static JSchema app;
+    public SensoriMotorSystem sms;
+    public Stage stage;
 
-    SensoriMotorSystem sms;
-    Stage stage;
-
+    public JSchema() {
+        JSchema.app = this;
+    }
     PBox2D box2d = null;
 
     PBox2D createBox2D() {
@@ -37,7 +41,7 @@ public class JSchema extends PApplet {
     }
 
     public void setup() {
-        size(1280, 640);
+        size(1024, 300);
         smooth();
         background(255);
 
@@ -60,9 +64,9 @@ public class JSchema extends PApplet {
      //    String[] appletArgs = new String[] { "--full-screen", "--bgcolor=#666666", "--stop-color=#cccccc", "com.beartronics.jschema.JSchema" };
      String[] appletArgs = new String[] { "--bgcolor=#666666", "--stop-color=#cccccc", "com.beartronics.jschema.JSchema" };
     if (passedArgs != null) {
-      PApplet.main(concat(appletArgs, passedArgs));
+        PApplet.main(concat(appletArgs, passedArgs));
     } else {
-      PApplet.main(appletArgs);
+        PApplet.main(appletArgs);
     }
   }
 

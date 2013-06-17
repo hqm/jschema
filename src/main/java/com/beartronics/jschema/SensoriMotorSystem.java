@@ -25,9 +25,9 @@ public class SensoriMotorSystem {
     }
 
     // A list we'll use to track fixed objects
-    ArrayList<Boundary> boundaries;
+    public ArrayList<Boundary> boundaries;
     // A list for all of our rectangles
-    ArrayList<Box> boxes;
+    public ArrayList<Box> boxes;
 
     void setupDisplay() {
         // Initialize box2d physics and create the world
