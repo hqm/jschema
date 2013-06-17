@@ -10,6 +10,14 @@ import org.jbox2d.collision.shapes.*;
 import org.jbox2d.common.*;
 import org.jbox2d.dynamics.*;
 
+
+import processing.core.*;
+import processing.core.PConstants.*; 
+import processing.data.*; 
+import processing.event.*; 
+import processing.opengl.*; 
+
+
 // A rectangular box
 class Box {
 
@@ -18,12 +26,13 @@ class Box {
     float w;
     float h;
 
+    JSchema app;
     PBox2D box2d;
     // Constructor
-    Box(PBox2D box2d, float x, float y) {
-        this.box2d = box2d;
-        w = random(4, 16);
-        h = random(4, 16);
+    Box(JSchema app, float x, float y) {
+        this.box2d = app.box2d;
+        w = app.random(4, 16);
+        h = app.random(4, 16);
         // Add the box to the box2d world
         makeBody(new Vec2(x, y), w, h);
     }
@@ -38,7 +47,7 @@ class Box {
         // Let's find the screen position of the particle
         Vec2 pos = box2d.getBodyPixelCoord(body);
         // Is it off the bottom of the screen?
-        if (pos.y > height+w*h) {
+        if (pos.y > app.height+w*h) {
             killBody();
             return true;
         }
@@ -52,14 +61,14 @@ class Box {
         // Get its angle of rotation
         float a = body.getAngle();
 
-        rectMode(CENTER);
-        pushMatrix();
-        translate(pos.x, pos.y);
-        rotate(-a);
-        fill(175);
-        stroke(0);
-        rect(0, 0, w, h);
-        popMatrix();
+        app.rectMode(PConstants.CENTER);
+        app.pushMatrix();
+        app.translate(pos.x, pos.y);
+        app.rotate(-a);
+        app.fill(175);
+        app.stroke(0);
+        app.rect(0, 0, w, h);
+        app.popMatrix();
     }
 
     // This function adds the rectangle to the box2d world
@@ -76,8 +85,8 @@ class Box {
         fd.shape = sd;
         // Parameters that affect physics
         fd.density = 1;
-        fd.friction = 0.3;
-        fd.restitution = 0.5;
+        fd.friction = 0.3f;
+        fd.restitution = 0.5f;
 
         // Define the body and make it from the shape
         BodyDef bd = new BodyDef();
@@ -88,9 +97,10 @@ class Box {
         body.createFixture(fd);
 
         // Give it some initial random velocity
-        body.setLinearVelocity(new Vec2(random(-5, 5), random(2, 5)));
-        body.setAngularVelocity(random(-5, 5));
+        body.setLinearVelocity(new Vec2(app.random(-5, 5), app.random(2, 5)));
+        body.setAngularVelocity(app.random(-5, 5));
     }
+
 }
 
 

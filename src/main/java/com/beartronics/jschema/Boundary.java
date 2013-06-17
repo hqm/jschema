@@ -8,6 +8,13 @@ import org.jbox2d.collision.shapes.*;
 import org.jbox2d.common.*;
 import org.jbox2d.dynamics.*;
 
+import processing.core.*;
+import processing.core.PConstants; 
+import processing.data.*; 
+import processing.event.*; 
+import processing.opengl.*; 
+
+
 // A fixed boundary class
 
 class Boundary {
@@ -21,9 +28,10 @@ class Boundary {
     PBox2D box2d;
     // But we also have to make a body for box2d to know about it
     Body b;
+    JSchema app;
 
-    Boundary(PApplet canvas, PBox2D box2d, float x_,float y_, float w_, float h_) {
-        this.box2d = box2d;
+    Boundary(JSchema app, float x_,float y_, float w_, float h_) {
+        this.box2d = app.box2d;
         x = x_;
         y = y_;
         w = w_;
@@ -50,10 +58,10 @@ class Boundary {
 
     // Draw the boundary, if it were at an angle we'd have to do something fancier
     void display() {
-        fill(0);
-        stroke(0);
-        rectMode(CENTER);
-        rect(x,y,w,h);
+        app.fill(0);
+        app.stroke(0);
+        app.rectMode(PConstants.CENTER);
+        app.rect(x,y,w,h);
     }
 
 }

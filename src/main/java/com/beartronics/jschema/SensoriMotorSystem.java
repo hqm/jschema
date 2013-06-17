@@ -12,13 +12,14 @@ import org.jbox2d.common.*;
 import org.jbox2d.dynamics.*;
 import java.util.*;
 
+
 public class SensoriMotorSystem {
 
     // A reference to our box2d world
     public PBox2D box2d;
-    public PApplet app;
+    public JSchema app;
 
-    public SensoriMotorSystem(PApplet app) {
+    public SensoriMotorSystem(JSchema app) {
         this.app = app;
     }
 
@@ -28,22 +29,21 @@ public class SensoriMotorSystem {
     ArrayList<Box> boxes;
 
     void setupDisplay() {
-        app.smooth();
-
-    // Initialize box2d physics and create the world
-        box2d = new PBox2D(app);
+        // Initialize box2d physics and create the world
+        box2d = app.createBox2D();
         // Initialize box2d physics and create the world
         box2d.createWorld();
         // We are setting a custom gravity
         box2d.setGravity(0, -10);
 
+        app.smooth();
         // Create ArrayLists  
         boxes = new ArrayList<Box>();
         boundaries = new ArrayList<Boundary>();
 
         // Add a bunch of fixed boundaries
-        boundaries.add(new Boundary(box2d, width/4,height-5,width/2-50,10));
-        boundaries.add(new Boundary(box2d, 3*width/4,height-50,width/2-50,10));
+        boundaries.add(new Boundary(app, app.width/4,app.height-5,app.width/2-50,10));
+        boundaries.add(new Boundary(app, 3*app.width/4,app.height-50,app.width/2-50,10));
     }
 
     void draw() {
@@ -53,8 +53,8 @@ public class SensoriMotorSystem {
         box2d.step();
 
         // Boxes fall from the top every so often
-        if (random(1) < 0.2) {
-            Box p = new Box(box2d, width/2,30);
+        if (app.random(1) < 0.2) {
+            Box p = new Box(app, app.width/2,30);
             boxes.add(p);
         }
 

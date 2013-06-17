@@ -3299,8 +3299,8 @@
 [0m[[0mdebug[0m] [0morg.scala-lang#scala-library;2.9.2 in provided: excluding org.scala-lang#scala-library;2.9.2!scala-library.jar[0m
 [0m[[0mdebug[0m] [0morg.scala-lang#scala-library;2.9.2 in compile-internal: excluding org.scala-lang#scala-library;2.9.2!scala-library.jar[0m
 [0m[[0mdebug[0m] [0m	[NOT REQUIRED] org.scala-sbt#main;0.12.2!main.jar[0m
-[0m[[0mdebug[0m] [0m	[NOT REQUIRED] org.scala-sbt#compiler-interface;0.12.2!compiler-interface-src.jar[0m
 [0m[[0mdebug[0m] [0m	[NOT REQUIRED] org.scala-sbt#compiler-interface;0.12.2!compiler-interface-bin.jar[0m
+[0m[[0mdebug[0m] [0m	[NOT REQUIRED] org.scala-sbt#compiler-interface;0.12.2!compiler-interface-src.jar[0m
 [0m[[0mdebug[0m] [0m	[NOT REQUIRED] org.scala-sbt#precompiled-2_8_2;0.12.2!compiler-interface-bin.jar[0m
 [0m[[0mdebug[0m] [0m	[NOT REQUIRED] org.scala-sbt#precompiled-2_10_0;0.12.2!compiler-interface-bin.jar[0m
 [0m[[0mdebug[0m] [0m	[NOT REQUIRED] org.scala-sbt#actions;0.12.2!actions.jar[0m
@@ -3343,7 +3343,7 @@
 [0m[[0mdebug[0m] [0m	[NOT REQUIRED] org.scala-sbt#cache;0.12.2!cache.jar[0m
 [0m[[0mdebug[0m] [0m	[NOT REQUIRED] org.scala-sbt#test-agent;0.12.2!test-agent.jar[0m
 [0m[[0mdebug[0m] [0m	[NOT REQUIRED] org.scala-tools.testing#test-interface;0.5!test-interface.jar[0m
-[0m[[0mdebug[0m] [0m:: resolution report :: resolve 1534ms :: artifacts dl 61ms[0m
+[0m[[0mdebug[0m] [0m:: resolution report :: resolve 1476ms :: artifacts dl 37ms[0m
 [0m[[0mdebug[0m] [0mNbr of module to sort : 0[0m
 [0m[[0mdebug[0m] [0m	report for default#default-81e018;0.1-SNAPSHOT compile produced in /Users/hqm/src/jschema/project/target/resolution-cache/reports/default-default-81e018/compile-resolved.xml[0m
 [0m[[0mdebug[0m] [0mNbr of module to sort : 0[0m
@@ -4070,5 +4070,5 @@
 [0m[[0mdebug[0m] [0m	report for default#default-81e018;0.1-SNAPSHOT docs produced in /Users/hqm/src/jschema/project/target/resolution-cache/reports/default-default-81e018/docs-resolved.xml[0m
 [0m[[0mdebug[0m] [0mNbr of module to sort : 0[0m
 [0m[[0mdebug[0m] [0m	report for default#default-81e018;0.1-SNAPSHOT pom produced in /Users/hqm/src/jschema/project/target/resolution-cache/reports/default-default-81e018/pom-resolved.xml[0m
-[0m[[0mdebug[0m] [0m	resolve done (1534ms resolve - 61ms download)[0m
+[0m[[0mdebug[0m] [0m	resolve done (1476ms resolve - 37ms download)[0m
 [0m[[0minfo[0m] [0mDone updating.[0m
