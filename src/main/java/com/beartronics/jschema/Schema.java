@@ -23,9 +23,9 @@ public class Schema {
     Item syntheticItem = null;
 
     // reliability statistics
-    int succeededWithActivation   = 0;
-    int succededWithoutActivation = 0;
-    int failedWithActivation      = 0; // number of times activation failed
+    float succeededWithActivation   = 0;
+    float succededWithoutActivation = 0;
+    float failedWithActivation      = 0; // number of times activation failed
 
     // Parent schema from which we were spun off
     Schema parent = null;
@@ -36,6 +36,16 @@ public class Schema {
     float value = 0;
     // See pp. 55
     // correlation, reliability, duration, cost
+    float duration = Float.POSITIVE_INFINITY;
+    float cost = 0;
+
+    float correlation() {
+        /* ratio of the probability that a transition to the result state happens
+           when our action is taken, to the probability that the result state happens
+           when our context is satisfied but the action is not taken (i.e., we are applicable but not activated)
+        */
+        return (succeededWithActivation / succededWithoutActivation);
+    }
 
     // Extended Context counters
     ExtendedCR xcontext = new ExtendedCR();
@@ -53,6 +63,7 @@ public class Schema {
         this.stage = stage;
         this.id = index;
         this.action = action;
+        syntheticItem = stage.makeSyntheticItem(this);
     }
 
     public void ensureCapacity(int n) {

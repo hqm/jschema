@@ -3,6 +3,7 @@ package com.beartronics.jschema;
 import java.util.Iterator;
 import java.util.List;
 
+
 public class Item {
     String name;
     float  value;
@@ -12,7 +13,6 @@ public class Item {
     public static enum ItemType {
         PRIMITIVE, SYNTHETIC
     }
-
 
     Item(String name, int index, float value, ItemType type) {
         this.name = name;

@@ -32,8 +32,8 @@ class Box {
     Box(JSchema app, float x, float y) {
         this.app = app;
         this.box2d = app.box2d;
-        w = app.random(4, 16);
-        h = app.random(4, 16);
+        w = app.random(16, 64);
+        h = app.random(16, 64);
         // Add the box to the box2d world
         makeBody(new Vec2(x, y), w, h);
     }
