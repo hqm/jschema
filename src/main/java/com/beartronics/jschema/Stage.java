@@ -54,9 +54,9 @@ public class Stage
 
   void initSchemas() {
     for (int i = 0; i < nschemas; i++) {
-      Action action = new Action(String.format(Integer.toString(i), i), i);
-      Schema schema = new Schema(i, action);
-      schema.initialize(this);
+        Action action = new Action(this, String.format(Integer.toString(i), i), i);
+        Schema schema = new Schema(this, i, action);
+      schema.initialize();
       actions.add(action);
       schemas.add(schema);
     }

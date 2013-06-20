@@ -47,8 +47,10 @@ public class Schema {
     TIntArrayList XOverride = new TIntArrayList();
 
     Action action = null;
+    Stage stage = null;
 
-    public Schema(int index, Action action) {
+    public Schema(Stage stage, int index, Action action) {
+        this.stage = stage;
         this.id = index;
         this.action = action;
     }
@@ -59,7 +61,7 @@ public class Schema {
     }
 
     // Initialize this schema, for this stage
-    public void initialize(Stage stage) {
+    public void initialize() {
         // create extended context, result arrays
     }
 
