@@ -59,6 +59,22 @@ public class JSchema extends PApplet {
         clock++;
     }
 
+    public void keyPressed() {
+        sms.keyPressed();
+    }
+        
+    public void keyReleased() {
+        sms.keyReleased();
+    }
+
+    public void mousePressed() {
+        sms.mousePressed();
+    }
+
+    public void mouseReleased() {
+        sms.mouseReleased();
+    }
+
 
  static public void main(String[] passedArgs) {
      //    String[] appletArgs = new String[] { "--full-screen", "--bgcolor=#666666", "--stop-color=#cccccc", "com.beartronics.jschema.JSchema" };

@@ -38,9 +38,35 @@ class Box {
         makeBody(new Vec2(x, y), w, h);
     }
 
+    boolean contains(float x, float y) {
+        Vec2 worldPoint = box2d.coordPixelsToWorld(x, y);
+        Fixture f = body.getFixtureList();
+        boolean inside = f.testPoint(worldPoint);
+        return inside;
+    }
+
     // This function removes the particle from the box2d world
     void killBody() {
         box2d.destroyBody(body);
+    }
+
+    // Forces a move to this position, may cause non-physical behavior.
+    void moveTo(float x, float y) {
+        Vec2 worldPoint = box2d.coordPixelsToWorld(x, y);
+        body.setAngularVelocity(0);
+        body.setTransform(worldPoint, body.getAngle());
+
+    }
+
+    void rotate(float a) {
+        float r = body.getAngle();
+        r += Math.toRadians(a);
+        Vec2 pos = body.getPosition();
+        body.setTransform(pos, r);
+    }
+
+    void setActive(boolean a) {
+        body.setActive(a);
     }
 
     // Is the particle ready for deletion?
@@ -98,9 +124,12 @@ class Box {
         body.createFixture(fd);
 
         // Give it some initial random velocity
-        body.setLinearVelocity(new Vec2(app.random(-5, 5), app.random(2, 5)));
-        body.setAngularVelocity(app.random(-5, 5));
+        //body.setLinearVelocity(new Vec2(app.random(-5, 5), app.random(2, 5)));
+        //body.setAngularVelocity(app.random(-5, 5));
     }
+
+
+
 
 }
 

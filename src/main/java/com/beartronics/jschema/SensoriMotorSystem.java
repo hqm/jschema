@@ -31,6 +31,11 @@ public class SensoriMotorSystem {
     // A list for all of our rectangles
     public ArrayList<Box> boxes;
 
+    // A list for all particle systems
+    ArrayList<ParticleSystem> systems;
+
+    PFont font;
+
     void setupDisplay() {
         // Initialize box2d physics and create the world
         box2d = app.createBox2D();
@@ -51,21 +56,91 @@ public class SensoriMotorSystem {
         boundaries.add(new Boundary(app, app.width/4, app.height-100, 10f, 200f ));
         boundaries.add(new Boundary(app, app.width*(3f/4f), app.height-100f, 10f, 200f ));
 
+        systems = new ArrayList<ParticleSystem>();
+        font = app.createFont("Monospaced", 10);
+        app.textFont(font);
+
     }
 
-    void draw() {
-        app.background(255);
+    int downKeys[] = new int[1024];
 
-        // We must always step through time!
-        box2d.step();
+    public void keyPressed() {
+        app.println(new Integer(app.keyCode));
+        downKeys[app.keyCode] = 1;
 
-        // Boxes fall from the top every so often
-        if ((app.random(1) < 0.2) && (app.mousePressed && (app.mouseButton == PConstants.LEFT)) ) {
+        // rotates the grasped object with arrow keys
+        if (grabbedBox != null) {
+            if (app.keyCode == PConstants.LEFT) {
+                grabbedBox.rotate(10);
+            } else if (app.keyCode == PConstants.RIGHT) {
+                grabbedBox.rotate(-10);
+            } 
+        }
+    }
+        
+    public void keyReleased() {
+        downKeys[app.keyCode] = 0;
+    }
+    
+    boolean isKeyDown(int k) {
+        return downKeys[k] == 1;
+    }
+
+    Box grabbedBox = null;
+
+    void mouseReleased() {
+        if (grabbedBox != null) {
+            grabbedBox.setActive(true);
+            grabbedBox = null;
+        }
+    }
+
+    // return first box found which contains point (x, y)
+    Box findBox(ArrayList<Box> boxlist, float x, float y) {
+        for (Box b: boxlist) {
+            if (b.contains(x, y)) {
+                return b;
+            }
+        }
+        return null;
+    }
+
+
+    void mousePressed() {
+        // Add a new Particle System whenever the mouse is clicked
+        System.out.println("key = "+app.keyCode);
+        //        if (app.keyCode == 'l') {
+        //            systems.add(new ParticleSystem(app, 0, new PVector(app.mouseX,app.mouseY)));
+
+        // create a box when alt-clicked
+        if (isKeyDown(PConstants.ALT)) {
             Box p = new Box(app, app.mouseX,app.mouseY);
             boxes.add(p);
         }
 
-        // Display all the boundaries
+        Box touching = findBox(boxes, app.mouseX, app.mouseY);
+        if (app.mousePressed && (touching != null)) {
+            touching.moveTo(app.mouseX, app.mouseY);
+            touching.setActive(false);
+            grabbedBox = touching;
+        }
+
+
+    }
+
+    void draw() {
+        app.fill(255,2);
+        app.rect(0,0,app.width,app.height);
+
+        app.text("Alt-click to create box, click to grasp, left and right arrow to rotate", 10,12);
+        if (app.mousePressed && (grabbedBox != null)) {
+            grabbedBox.moveTo(app.mouseX, app.mouseY);
+        }
+
+        // We must always step through time!
+        box2d.step();
+
+             // Display all the boundaries
         for (Boundary wall: boundaries) {
             wall.display();
         }
@@ -82,6 +157,14 @@ public class SensoriMotorSystem {
             if (b.done()) {
                 boxes.remove(i);
             }
+        }
+
+         // Run all the particle systems
+        for (ParticleSystem system: systems) {
+            system.run();
+
+            int n = (int) app.random(0,2);
+            system.addParticles(n);
         }
     }
 
