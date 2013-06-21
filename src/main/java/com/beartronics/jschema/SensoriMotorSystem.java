@@ -77,17 +77,18 @@ public class SensoriMotorSystem {
     }
     void initialBoxes() {
         Box p;
-        boxes.add(new Box(app, 500, 10, 64, 64, 1));
-        boxes.add(new Box(app, 500, 10, 64, 64, 1));
-        boxes.add(new Box(app, 500, 10, 64, 64, 1));
-        boxes.add(new Box(app, 500, 10, 64, 64, 2));
-        boxes.add(new Box(app, 500, 10, 64, 64, 3));
-        boxes.add(new Box(app, 500, 10, 64, 64, 4));
+        int bottom = app.height;
+        boxes.add(new Box(app, 500, bottom -10, 64, 64, 1));
+        boxes.add(new Box(app, 500, bottom-10, 64, 64, 1));
+        boxes.add(new Box(app, 500, bottom-10, 64, 64, 1));
+        boxes.add(new Box(app, 500, bottom-10, 64, 64, 2));
+        boxes.add(new Box(app, 500, bottom-10, 64, 64, 3));
+        boxes.add(new Box(app, 500, bottom-10, 64, 64, 4));
 
-        boxes.add(new Box(app, 900, 40, 400, 5, 4));
-        boxes.add(new Box(app, 1000, 10, 20, 64, 4));
-        boxes.add(new Box(app, 1000, 10, 20, 50, 4));
-        boxes.add(new Box(app, 1000, 10, 20, 100, 4));
+        boxes.add(new Box(app, 900, bottom-40, 400, 5, 4));
+        boxes.add(new Box(app, 1000, bottom-10, 20, 64, 4));
+        boxes.add(new Box(app, 1000, bottom-10, 20, 50, 4));
+        boxes.add(new Box(app, 1000, bottom-10, 20, 100, 4));
         
     }
 

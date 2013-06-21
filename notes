@@ -14,7 +14,7 @@ Models:
 
 Motor output:
 
-Arms are set as two joints and a hand:
+System has two arms. Each has two joints and a hand:
 
   Gross motor action: upper arm, moves to a quadrant of screen, say 1/10 quantized
 
