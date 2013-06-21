@@ -56,14 +56,6 @@ public class SensoriMotorSystem {
         boxes = new ArrayList<Box>();
         boundaries = new ArrayList<Boundary>();
 
-        // Add a bunch of fixed boundaries
-        boundaries.add(new Boundary(app, app.width/2, app.height-5, app.width, 10f ));
-        boundaries.add(new Boundary(app, 5, app.height-100, 10f, 200f ));
-        boundaries.add(new Boundary(app, app.width-5, app.height-100, 10f, 200f ));
-
-
-        boundaries.add(new Boundary(app, app.width/4, app.height-50, 10f, 100f ));
-
         systems = new ArrayList<ParticleSystem>();
         font = app.createFont("Monospaced", 12);
         app.textFont(font);
@@ -71,12 +63,38 @@ public class SensoriMotorSystem {
         // Make the spring (it doesn't really get initialized until the mouse is clicked)
         spring = new Spring(app);
 
+        initialBoundaries();
+        initialBoxes();
+
     }
+
+    void initialBoundaries() {
+        // Add a bunch of fixed boundaries
+        boundaries.add(new Boundary(app, app.width/2, app.height-5, app.width, 10f ));
+        boundaries.add(new Boundary(app, 5, app.height-100, 10f, 200f ));
+        boundaries.add(new Boundary(app, app.width-5, app.height-100, 10f, 200f ));
+        boundaries.add(new Boundary(app, app.width/4, app.height-50, 10f, 100f ));
+    }
+    void initialBoxes() {
+        Box p;
+        boxes.add(new Box(app, 500, 10, 64, 64, 1));
+        boxes.add(new Box(app, 500, 10, 64, 64, 1));
+        boxes.add(new Box(app, 500, 10, 64, 64, 1));
+        boxes.add(new Box(app, 500, 10, 64, 64, 2));
+        boxes.add(new Box(app, 500, 10, 64, 64, 3));
+        boxes.add(new Box(app, 500, 10, 64, 64, 4));
+
+        boxes.add(new Box(app, 900, 40, 400, 5, 4));
+        boxes.add(new Box(app, 1000, 10, 20, 64, 4));
+        boxes.add(new Box(app, 1000, 10, 20, 50, 4));
+        boxes.add(new Box(app, 1000, 10, 20, 100, 4));
+        
+    }
+
 
     int downKeys[] = new int[1024];
 
     public void keyPressed() {
-        app.println(new Integer(app.keyCode));
         downKeys[app.keyCode] = 1;
 
         // rotates the grasped object with arrow keys
@@ -101,7 +119,9 @@ public class SensoriMotorSystem {
 
     void mouseReleased() {
         if (grabbedBox != null) {
+            grabbedBox.setSensor(false);
             grabbedBox = null;
+
         }
 
         spring.destroy();
@@ -121,12 +141,11 @@ public class SensoriMotorSystem {
 
     void mousePressed() {
         // Add a new Particle System whenever the mouse is clicked
-        System.out.println("key = "+app.keyCode);
         //        if (app.keyCode == 'l') {
         //            systems.add(new ParticleSystem(app, 0, new PVector(app.mouseX,app.mouseY)));
 
         // create a box when control-clicked
-        if (isKeyDown(PConstants.CONTROL)) {
+        if (isKeyDown(PConstants.ALT)) {
             float w = app.random(16, 256);
             float h = app.random(16, 64);
             float density = app.random(1, 4);
@@ -140,6 +159,9 @@ public class SensoriMotorSystem {
             grabbedBox = touching;
             // And if so, bind the mouse location to the box with a spring
             spring.bind(app.mouseX,app.mouseY,grabbedBox);
+            if (isKeyDown(PConstants.CONTROL)) {
+                grabbedBox.setSensor(true);
+            }
         }
 
     }
@@ -155,7 +177,7 @@ public class SensoriMotorSystem {
         spring.update(app.mouseX,app.mouseY);
 
 
-        app.text("Ctrl-click to create box, click to grasp, left and right arrow to rotate", 10,12);
+        app.text("alt-click to create box, click to grasp, ctrl-click to lift, left and right arrow to rotate", 10,12);
 
         // We must always step through time!
         box2d.step();

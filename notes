@@ -25,6 +25,8 @@ Arms are set as two joints and a hand:
 
   Gross and fine joints have control over force left,right, up/down
 
+  "Lift" pulls a block out of the plane so it can be moved over other blocks.
+
   - The motor system provides both force and a targeted 'move to proprioceptive position' function. E.g., 
   we've got a fairly high level motor system.
 

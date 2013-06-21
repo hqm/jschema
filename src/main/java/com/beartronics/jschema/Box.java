@@ -26,14 +26,15 @@ class Box {
     float w;
     float h;
     float density;
+    Fixture fixture;
 
     JSchema app;
     PBox2D box2d;
     // Constructor
     Box(JSchema app, float x, float y, float w, float h, float density) {
         this.app = app;
-        this.density = density;
         this.box2d = app.box2d;
+        this.density = density;
         this.w = w;
         this.h = h;
         // Add the box to the box2d world
@@ -65,6 +66,10 @@ class Box {
         r += Math.toRadians(a);
         Vec2 pos = body.getPosition();
         body.setTransform(pos, r);
+    }
+
+    void setSensor(boolean v) {
+        fixture.setSensor(v);
     }
 
     void setActive(boolean a) {
@@ -124,7 +129,7 @@ class Box {
         bd.position.set(box2d.coordPixelsToWorld(center));
 
         body = box2d.createBody(bd);
-        body.createFixture(fd);
+        fixture = body.createFixture(fd);
 
         // Give it some initial random velocity
         //body.setLinearVelocity(new Vec2(app.random(-5, 5), app.random(2, 5)));
