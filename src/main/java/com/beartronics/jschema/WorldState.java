@@ -1,0 +1,25 @@
+package com.beartronics.jschema;
+
+import pbox2d.*;
+import org.jbox2d.collision.shapes.*;
+import org.jbox2d.common.*;
+import org.jbox2d.dynamics.*;
+import java.util.*;
+
+import org.jbox2d.dynamics.joints.*;
+import org.jbox2d.collision.shapes.Shape;
+
+import processing.core.*;
+
+
+public class WorldState {
+
+    ArrayList<SensorInput> inputList = new ArrayList<SensorInput>();
+    
+    ArrayList<MotorAction> outputList = new ArrayList<MotorAction>();
+
+    WorldState() {
+        
+    }
+
+}

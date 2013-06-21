@@ -42,6 +42,8 @@ System has two arms. Each has two joints and a hand:
 Also see Vision system, there is 'motor control' of internal pipeline vision filters, you can
 choose which ones go into pipeline
 
+Vocal: phoneme output
+
 Sensor inputs:
 
   Proprioception: 
@@ -86,4 +88,49 @@ Vision
 Audio
 
   Basic frequency burst (pop, click, boom), localization from auditory system to a quadrant
+  Phoneme inputs
 
+
+
+================================================================
+
+How is sensorimotor info passed to schema engine? 
+
+class SensoryInput {
+      int id; // a unique id for this input
+      boolean value;
+      boolean changed;
+}
+
+class MotorAction {
+      int id; // unique id for this output
+      boolean value;
+}
+
+class WorldState {
+
+      ArrayList<SensoryInput> inputList = new ArrayList<SensoryInput>();
+
+      ArrayList<MotorAction> outputList = new ArrayList<MotorAction>();
+
+}
+
+
+
+
+================
+Questions:
+
+How do infants learn to keep still? I.e., it's important to only be moving a few things at time, initially.
+So you need to keep most of the body still. And for fine motor activity need to keep the gross motor joints still.
+
+How much of that is built in? You need to set the opposing muscles at
+exactly the same force to maintain constant proprioceptive input. In
+terms of schema, what are the interesting schemas being learned there,
+to maintain that invariant input? Why is it interesting to the Schema mechanism to learn
+to keep limbs still by default?  Or to keep head aligned with an object to keep it centered in fovea? 
+
+
+
+
+ 
