@@ -12,6 +12,9 @@ import org.jbox2d.common.*;
 import org.jbox2d.dynamics.*;
 import java.util.*;
 
+import org.jbox2d.dynamics.joints.*;
+import org.jbox2d.collision.shapes.Shape;
+
 import processing.core.*;
 
 
@@ -33,6 +36,10 @@ public class SensoriMotorSystem {
 
     // A list for all particle systems
     ArrayList<ParticleSystem> systems;
+
+
+    // The Spring that will attach to the box from the mouse
+    Spring spring;
 
     PFont font;
 
@@ -60,6 +67,9 @@ public class SensoriMotorSystem {
         systems = new ArrayList<ParticleSystem>();
         font = app.createFont("Monospaced", 12);
         app.textFont(font);
+
+        // Make the spring (it doesn't really get initialized until the mouse is clicked)
+        spring = new Spring(app);
 
     }
 
@@ -91,13 +101,15 @@ public class SensoriMotorSystem {
 
     void mouseReleased() {
         if (grabbedBox != null) {
-            grabbedBox.setActive(true);
             grabbedBox = null;
         }
+
+        spring.destroy();
+        
     }
 
     // return first box found which contains point (x, y)
-    Box findBox(ArrayList<Box> boxlist, float x, float y) {
+    Box findBoxAt(ArrayList<Box> boxlist, float x, float y) {
         for (Box b: boxlist) {
             if (b.contains(x, y)) {
                 return b;
@@ -123,25 +135,27 @@ public class SensoriMotorSystem {
             boxes.add(p);
         }
 
-        Box touching = findBox(boxes, app.mouseX, app.mouseY);
+        Box touching = findBoxAt(boxes, app.mouseX, app.mouseY);
         if (app.mousePressed && (touching != null)) {
-            touching.moveTo(app.mouseX, app.mouseY);
-            touching.setActive(false);
             grabbedBox = touching;
+            // And if so, bind the mouse location to the box with a spring
+            spring.bind(app.mouseX,app.mouseY,grabbedBox);
         }
 
-
     }
+
 
     void draw() {
         app.rectMode(PConstants.CORNER);
         app.background(255);
         app.fill(0);
 
+
+        // Always alert the spring to the new mouse location
+        spring.update(app.mouseX,app.mouseY);
+
+
         app.text("Ctrl-click to create box, click to grasp, left and right arrow to rotate", 10,12);
-        if (app.mousePressed && (grabbedBox != null)) {
-            grabbedBox.moveTo(app.mouseX, app.mouseY);
-        }
 
         // We must always step through time!
         box2d.step();
@@ -164,6 +178,9 @@ public class SensoriMotorSystem {
                 boxes.remove(i);
             }
         }
+
+        // Draw the spring (it only appears when active)
+        spring.display();
 
          // Run all the particle systems
         for (ParticleSystem system: systems) {
