@@ -41,7 +41,7 @@ public class JSchema extends PApplet {
     }
 
     public void setup() {
-        size(1024, 300);
+        size(1200, 480);
         smooth();
         background(255);
 
@@ -50,6 +50,7 @@ public class JSchema extends PApplet {
         stage.initWorld(10, 10);
 
         sms.setupDisplay();
+        frameRate(512);
 
     }
 

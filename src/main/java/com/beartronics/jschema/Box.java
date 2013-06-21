@@ -25,17 +25,19 @@ class Box {
     Body body;
     float w;
     float h;
+    float density;
 
     JSchema app;
     PBox2D box2d;
     // Constructor
-    Box(JSchema app, float x, float y) {
+    Box(JSchema app, float x, float y, float w, float h, float density) {
         this.app = app;
+        this.density = density;
         this.box2d = app.box2d;
-        w = app.random(16, 64);
-        h = app.random(16, 64);
+        this.w = w;
+        this.h = h;
         // Add the box to the box2d world
-        makeBody(new Vec2(x, y), w, h);
+        makeBody(new Vec2(x, y), w, h, density);
     }
 
     boolean contains(float x, float y) {
@@ -92,14 +94,14 @@ class Box {
         app.pushMatrix();
         app.translate(pos.x, pos.y);
         app.rotate(-a);
-        app.fill(175);
+        app.fill(255 - app.map(density, 0, 5, 0, 255));
         app.stroke(0);
         app.rect(0, 0, w, h);
         app.popMatrix();
     }
 
     // This function adds the rectangle to the box2d world
-    void makeBody(Vec2 center, float w_, float h_) {
+    void makeBody(Vec2 center, float w_, float h_, float density) {
 
         // Define a polygon (this is what we use for a rectangle)
         PolygonShape sd = new PolygonShape();
@@ -111,9 +113,10 @@ class Box {
         FixtureDef fd = new FixtureDef();
         fd.shape = sd;
         // Parameters that affect physics
+        //fd.density = density;
         fd.density = 1;
-        fd.friction = 0.3f;
-        fd.restitution = 0.5f;
+        fd.friction = 0.6f;
+        fd.restitution = 0.3f;
 
         // Define the body and make it from the shape
         BodyDef bd = new BodyDef();

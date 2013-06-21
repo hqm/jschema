@@ -50,14 +50,15 @@ public class SensoriMotorSystem {
         boundaries = new ArrayList<Boundary>();
 
         // Add a bunch of fixed boundaries
-        boundaries.add(new Boundary(app, app.width/4-50, app.height-5, app.width/2-50, 10f ));
-        boundaries.add(new Boundary(app, app.width*(3/4f)+50, app.height-5, app.width/2-50, 10f ));
+        boundaries.add(new Boundary(app, app.width/2, app.height-5, app.width, 10f ));
+        boundaries.add(new Boundary(app, 5, app.height-100, 10f, 200f ));
+        boundaries.add(new Boundary(app, app.width-5, app.height-100, 10f, 200f ));
 
-        boundaries.add(new Boundary(app, app.width/4, app.height-100, 10f, 200f ));
-        boundaries.add(new Boundary(app, app.width*(3f/4f), app.height-100f, 10f, 200f ));
+
+        boundaries.add(new Boundary(app, app.width/4, app.height-50, 10f, 100f ));
 
         systems = new ArrayList<ParticleSystem>();
-        font = app.createFont("Monospaced", 10);
+        font = app.createFont("Monospaced", 12);
         app.textFont(font);
 
     }
@@ -112,9 +113,13 @@ public class SensoriMotorSystem {
         //        if (app.keyCode == 'l') {
         //            systems.add(new ParticleSystem(app, 0, new PVector(app.mouseX,app.mouseY)));
 
-        // create a box when alt-clicked
-        if (isKeyDown(PConstants.ALT)) {
-            Box p = new Box(app, app.mouseX,app.mouseY);
+        // create a box when control-clicked
+        if (isKeyDown(PConstants.CONTROL)) {
+            float w = app.random(16, 256);
+            float h = app.random(16, 64);
+            float density = app.random(1, 4);
+            app.println("new box "+ app.mouseX + ", "+ app.mouseY +", "+ w +"," + h +" density="+density);
+            Box p = new Box(app, app.mouseX,app.mouseY, w, h, density);
             boxes.add(p);
         }
 
@@ -129,10 +134,11 @@ public class SensoriMotorSystem {
     }
 
     void draw() {
-        app.fill(255,2);
-        app.rect(0,0,app.width,app.height);
+        app.rectMode(PConstants.CORNER);
+        app.background(255);
+        app.fill(0);
 
-        app.text("Alt-click to create box, click to grasp, left and right arrow to rotate", 10,12);
+        app.text("Ctrl-click to create box, click to grasp, left and right arrow to rotate", 10,12);
         if (app.mousePressed && (grabbedBox != null)) {
             grabbedBox.moveTo(app.mouseX, app.mouseY);
         }
