@@ -1,0 +1,87 @@
+
+sbt
+run
+
+
+What is the API to the sensorimotor system? 
+
+Models:
+  blocks with friction, density, texture
+
+   server can implementat 'sticky' blocks
+
+
+
+Motor output:
+
+Arms are set as two joints and a hand:
+
+  Gross motor action: upper arm, moves to a quadrant of screen, say 1/10 quantized
+
+  Fine motor action: lower arm, moves 1/10 of quadrant
+
+  Rotator Joints at the shoulder and elbow, i.e., there is redundancy for reaching a point but that
+  allows for better reuse of relative motion schemas
+
+  Gross and fine joints have control over force left,right, up/down
+
+  - The motor system provides both force and a targeted 'move to proprioceptive position' function. E.g., 
+  we've got a fairly high level motor system.
+
+  hand: grasp, ungrasp, rotate left, rotate right
+    grasp and rotate force is controllable over some range
+
+
+    HEAD: rotatation , translation
+
+    Gaze: 10x10 gross angle quantization
+    	  10x10 fine angle position
+
+Also see Vision system, there is 'motor control' of internal pipeline vision filters, you can
+choose which ones go into pipeline
+
+Sensor inputs:
+
+  Proprioception: 
+     10x10 location for gross motor system - divided into x,y axis? 
+     10x10 location for fine motor system 
+     shoulder and elbow joint position
+
+Force/touch
+
+     force on shoulder joint, x, y, rotation
+
+     force on elbox x,y,rotation
+
+     force on wrist join rotation, x, y 
+
+     force on grasp
+
+     touch on fingers, texture, temperature, heat conductivity, on fingers. 
+
+     
+
+Vision
+
+  modules:
+
+  broad-area vision - blob detection per quadrant, a couple of bits of color/grayscale
+
+  fovea operations:
+
+     closed area fill - is area at fovea closed? 
+     are there any bits on at the fovea ; color, density, texture (image morphology bank of filters)
+
+  filter system (image morphology)
+    prescale
+    erode/dilate
+        
+
+   motion tracking; attention focus points on fovea and broad-area peripheral vision  when motion is sensed
+
+   trajectory - when motion detected, a motion vector input is stimulated
+
+Audio
+
+  Basic frequency burst (pop, click, boom), localization from auditory system to a quadrant
+
