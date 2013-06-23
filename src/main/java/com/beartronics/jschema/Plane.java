@@ -27,7 +27,6 @@ public class Plane {
 
     public Plane(JSchema a) {
         this.app = a;
-        this.box2d = app.createBox2D();
         System.out.println("Plane constructor this.app = "+this.app);
     }
 
@@ -54,11 +53,12 @@ public class Plane {
     PFont font;
 
     void setup() {
+        box2d = app.createBox2D();
+
         box2d.createWorld();
         // We are setting a custom gravity
         box2d.setGravity(0, -10);
 
-        app.smooth();
         // Create ArrayLists  
         physobjs = new ArrayList<Object2D>();
         boundaries = new ArrayList<Boundary>();
@@ -193,6 +193,9 @@ public class Plane {
 
 
     void draw() {
+        // Always alert the spring to the new mouse location
+        spring.update(app.mouseX,app.mouseY);
+
         box2d.step();
 
         // Display all the boundaries
