@@ -36,11 +36,11 @@ public class SensoriMotorSystem {
     void setupDisplay() {
         // Initialize box2d physics and create the world
         plane1 = new Plane(app);
-        //        plane2 = new Plane(app);
+        plane2 = new Plane(app);
 
         // Initialize box2d physics and create the world
+        planes.add(plane2);
         planes.add(plane1);
-        //        planes.add(plane2);
         
         for (Plane plane: planes) {
             plane.setup();
@@ -55,9 +55,30 @@ public class SensoriMotorSystem {
         plane1.initialPhysobjs();
         plane1.initialGrippers();
 
+        // TODO add grippers
+        plane2.initialBoundaries2();
+        //plane2.addBox(500, 100, 100, 100, 4);
+        plane2.addBox(800, 100, 100, 100, 4, app.color(255,40,30));
+        //plane2.addBox(900, 100, 50, 50, 7);
+        plane2.addBox(1000, 100, 50, 50, 8, app.color(87,191,22));
+
         worldState = new WorldState();
 
     }
+
+    void draw() {
+        app.rectMode(PConstants.CORNER);
+        app.background(255);
+        app.fill(0);
+
+        app.text("alt-click to create box, click to grasp, ctrl-click to lift, left and right arrow to rotate", 10,12);
+
+        for (Plane plane: planes) {
+            plane.draw();
+        }
+    }
+
+
 
     int downKeys[] = new int[1024];
 
@@ -83,18 +104,6 @@ public class SensoriMotorSystem {
         plane1.mousePressed();
     }
 
-    void draw() {
-        app.rectMode(PConstants.CORNER);
-        app.background(255);
-        app.fill(0);
-
-        app.text("alt-click to create box, click to grasp, ctrl-click to lift, left and right arrow to rotate", 10,12);
-
-        plane1.draw();
-        for (Plane plane: planes) {
-            //            plane.draw();
-        }
-    }
 
     WorldState worldState;
 

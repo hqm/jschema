@@ -30,6 +30,8 @@ public class Plane {
         System.out.println("Plane constructor this.app = "+this.app);
     }
 
+    boolean transparent = false;
+
     // A list we'll use to track fixed objects
     public ArrayList<Boundary> boundaries;
     // A list for all of our rectangles
@@ -80,6 +82,28 @@ public class Plane {
         boundaries.add(new Boundary(app, box2d, app.width/4, app.height-50, 10f, 100f ));
     }
 
+    void initialBoundaries2() {
+        // Add a bunch of fixed boundaries
+        // bottom
+        boundaries.add(new Boundary(app, box2d, app.width/2, app.height-5, app.width, 10f ));
+
+        //left
+        boundaries.add(new Boundary(app, box2d, 5,           app.height-200, 10f, 400f ));
+        //right
+        boundaries.add(new Boundary(app, box2d, app.width-5, app.height-200, 10f, 400f ));
+
+
+        // obstacle
+        //boundaries.add(new Boundary(app, box2d, app.width/4, app.height-50, 10f, 100f ));
+    }
+
+
+    void setTransparent(boolean v) {
+        app.println("setTransparent "+v);
+        this.transparent = v;
+    }
+
+
     void initialGrippers() {
         int bottom = app.height;
         gripper1 = new Box(app, box2d, 500, bottom -200, 32, 32, 5, app.color(0,255,0));
@@ -89,29 +113,50 @@ public class Plane {
 
     }
 
+    void addBoundary(float x, float y,float w,float h) {
+        boundaries.add(new Boundary(app, box2d, x, y, w, h ));
+    }
+
+    void addBox(float x, float y,float w,float h, float density) {
+        int bottom = app.height;
+        physobjs.add(new Box(app, box2d, x, bottom - y, w, h, density));
+    }
+    void addBox(float x, float y,float w,float h, float density, int color) {
+        int bottom = app.height;
+        physobjs.add(new Box(app, box2d, x, bottom - y, w, h, density, color));
+    }
+
+
+
+    void addBall(float x, float y,float r) {
+        int bottom = app.height;
+        physobjs.add(new Ball(app, box2d, x, bottom - y, r));
+    }
+
+        
     void initialPhysobjs() {
         int bottom = app.height;
         physobjs.add(new Box(app, box2d, 500, bottom -10, 64, 64, 1));
         physobjs.add(new Box(app, box2d, 500, bottom-10, 64, 64, 2));
         physobjs.add(new Box(app, box2d, 500, bottom-10, 32, 32, 2));
         physobjs.add(new Box(app, box2d, 500, bottom-10, 64, 64, 2));
-        physobjs.add(new Box(app, box2d, 500, bottom-10, 32, 32, 2));
+        //physobjs.add(new Box(app, box2d, 500, bottom-10, 32, 32, 2));
         physobjs.add(new Box(app, box2d, 500, bottom-10, 64, 64, 1));
-        physobjs.add(new Box(app, box2d, 500, bottom-10, 64, 64, 4));
-        physobjs.add(new Box(app, box2d, 500, bottom-10, 64, 64, 8));
+        //        physobjs.add(new Box(app, box2d, 500, bottom-10, 64, 64, 10));
+        physobjs.add(new Box(app, box2d, 500, bottom-10, 64, 64, 10));
 
         physobjs.add(new Box(app, box2d, 900, bottom-40, 400, 5, 6));
-        physobjs.add(new Box(app, box2d, 1000, bottom-10, 20, 64, 8));
-        physobjs.add(new Box(app, box2d, 1000, bottom-10, 20, 50, 8));
-        physobjs.add(new Box(app, box2d, 1000, bottom-10, 20, 100, 8));
+        //physobjs.add(new Box(app, box2d, 1000, bottom-10, 20, 64, 8));
+        //        physobjs.add(new Box(app, box2d, 1000, bottom-10, 20, 50, 8));
+        //physobjs.add(new Box(app, box2d, 1000, bottom-10, 20, 100, 8));
 
 
         physobjs.add(new Ball(app, box2d, 1000, bottom-100, 40));
         physobjs.add(new Ball(app, box2d, 800, bottom-100, 40));
         physobjs.add(new Ball(app, box2d, 800, bottom-100, 40));
-        physobjs.add(new Ball(app, box2d, 800, bottom-200, 20));
-        physobjs.add(new Ball(app, box2d, 800, bottom-200, 20));
-        physobjs.add(new Ball(app, box2d, 800, bottom-200, 20));
+        //        physobjs.add(new Ball(app, box2d, 800, bottom-200, 20));
+        //physobjs.add(new Ball(app, box2d, 800, bottom-200, 20));
+        //physobjs.add(new Ball(app, box2d, 800, bottom-200, 20));
         
     }
 
@@ -128,10 +173,17 @@ public class Plane {
                 grabbedThing.rotate(-10);
             } 
         }
+        if (app.keyCode == PConstants.SHIFT) {
+            setTransparent(true);
+        }
+
     }
         
     public void keyReleased() {
         downKeys[app.keyCode] = 0;
+        if (app.keyCode == PConstants.SHIFT) {
+            setTransparent(false);
+        }
     }
     
     boolean isKeyDown(int k) {

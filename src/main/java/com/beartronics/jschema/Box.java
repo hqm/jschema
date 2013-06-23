@@ -24,7 +24,7 @@ class Box extends Object2D {
     // We need to keep track of a Body and a width and height
     float w;
     float h;
-
+    float alpha = 255;
     final static int MAX_DENSITY = 10;
 
     // Constructor
@@ -45,6 +45,9 @@ class Box extends Object2D {
         this.density = density;
         this.w = w;
         this.h = h;
+
+        this.alpha = app.map(density, 0, MAX_DENSITY, 0, 255);
+
         // Add the box to the box2d world
         makeBody(new Vec2(x, y), w, h, density);
     }
@@ -58,15 +61,16 @@ class Box extends Object2D {
         // Get its angle of rotation
         float a = body.getAngle();
 
+        app.pushStyle();
         app.rectMode(PConstants.CENTER);
         app.pushMatrix();
         app.translate(pos.x, pos.y);
         app.rotate(-a);
-        float alpha = app.map(density, 0, MAX_DENSITY, 0, 255);
         app.fill(app.red(color), app.green(color), app.blue(color), alpha);
         app.stroke(0);
         app.rect(0, 0, w, h);
         app.popMatrix();
+        app.popStyle();
     }
 
     // This function adds the rectangle to the box2d world
