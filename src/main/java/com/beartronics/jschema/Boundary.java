@@ -30,9 +30,9 @@ class Boundary {
     Body b;
     JSchema app;
 
-    Boundary(JSchema app_, PBox2D box2d, float x_,float y_, float w_, float h_) {
-        app = app_;
-        box2d = box2d;
+    Boundary(Plane p, float x_,float y_, float w_, float h_) {
+        app = p.app;
+        box2d = p.box2d;
         x = x_;
         y = y_;
         w = w_;

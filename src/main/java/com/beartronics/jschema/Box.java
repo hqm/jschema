@@ -28,19 +28,19 @@ class Box extends Object2D {
     final static int MAX_DENSITY = 10;
 
     // Constructor
-    Box(JSchema app, PBox2D box2d, float x, float y, float w, float h, float density) {
-        _Box(app, box2d, x,y,w,h,density);
+    Box(Plane p, float x, float y, float w, float h, float density) {
+        super(p);
+        _Box(p, x,y,w,h,density);
     }
 
 
-    Box(JSchema app, PBox2D box2d, float x, float y, float w, float h, float density, int color) {
-        _Box(app, box2d, x,y,w,h,density);
+    Box(Plane p, float x, float y, float w, float h, float density, int color) {
+        super(p);
+        _Box(p, x,y,w,h,density);
         this.color = color;
     }
 
-    void _Box(JSchema app, PBox2D box2d, float x, float y, float w, float h, float density) {
-        this.app = app;
-        this.box2d = box2d;
+    void _Box(Plane p, float x, float y, float w, float h, float density) {
         this.color = app.color(0,0,0);
         this.density = density;
         this.w = w;
@@ -66,7 +66,7 @@ class Box extends Object2D {
         app.pushMatrix();
         app.translate(pos.x, pos.y);
         app.rotate(-a);
-        app.fill(app.red(color), app.green(color), app.blue(color), alpha);
+        app.fill(app.red(color), app.green(color), app.blue(color), (float)(plane.alpha/255.0) * alpha);
         app.stroke(0);
         app.rect(0, 0, w, h);
         app.popMatrix();

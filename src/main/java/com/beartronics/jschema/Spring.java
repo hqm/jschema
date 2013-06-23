@@ -33,9 +33,8 @@ class Spring extends Object2D {
 
     // Constructor
 
-    Spring(JSchema app, PBox2D box2d) {
-        this.app = app;
-        this.box2d = box2d;
+    Spring(Plane p) {
+        super(p);
         // At first it doesn't exist
         mouseJoint = null;
     }

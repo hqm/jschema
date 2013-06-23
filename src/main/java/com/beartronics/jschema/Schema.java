@@ -54,6 +54,7 @@ public class Schema {
     ExtendedCR xresult = new ExtendedCR();
 
     // List of schemas who override this schema;
+    // defer to these more specific schemas when they are also applicable
     TIntArrayList XOverride = new TIntArrayList();
 
     Action action = null;

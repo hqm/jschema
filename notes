@@ -4,6 +4,8 @@ run
 
 There are two world Planes - front and back
 
++ world needs background spatial markers for navigation
+
 
 What is the API to the sensorimotor system? 
 
@@ -136,3 +138,7 @@ to keep limbs still by default?  Or to keep head aligned with an object to keep 
 
 
  
+
+
+call Hal Abelson
+
