@@ -56,8 +56,12 @@ public class JSchema extends PApplet {
 
     public int clock = 0;
     public void draw() {
-        sms.draw();
-        clock++;
+        try {
+            sms.draw();
+            clock++;
+        } catch (Exception e) {
+            app.println("JSchema top-level caught exception "+e);
+        }
     }
 
     public void keyPressed() {

@@ -24,20 +24,15 @@ import processing.opengl.*;
 
 // A Particle
 
-class Particle {
+class Particle extends Object2D {
 
     // We need to keep track of a Body
-    Body body;
-    JSchema app;
-    PBox2D box2d;
-
-
     PVector[] trail;
 
     // Constructor
-    Particle(JSchema app, float x_, float y_) {
+    Particle(JSchema app, PBox2D box2d, float x_, float y_) {
         this.app = app;
-        this.box2d = app.box2d;
+        this.box2d = box2d;
 
         float x = x_;
         float y = y_;

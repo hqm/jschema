@@ -19,35 +19,28 @@ import processing.opengl.*;
 
 
 // A rectangular box
-class Box {
+class Box extends Object2D {
 
     // We need to keep track of a Body and a width and height
-    Body body;
     float w;
     float h;
-    float density;
-    Fixture fixture;
 
     final static int MAX_DENSITY = 10;
 
-    int color;
-
-    JSchema app;
-    PBox2D box2d;
     // Constructor
-    Box(JSchema app, float x, float y, float w, float h, float density) {
-        _Box(app, x,y,w,h,density);
+    Box(JSchema app, PBox2D box2d, float x, float y, float w, float h, float density) {
+        _Box(app, box2d, x,y,w,h,density);
     }
 
 
-    Box(JSchema app, float x, float y, float w, float h, float density, int color) {
-        _Box(app, x,y,w,h,density);
+    Box(JSchema app, PBox2D box2d, float x, float y, float w, float h, float density, int color) {
+        _Box(app, box2d, x,y,w,h,density);
         this.color = color;
     }
 
-    void _Box(JSchema app, float x, float y, float w, float h, float density) {
+    void _Box(JSchema app, PBox2D box2d, float x, float y, float w, float h, float density) {
         this.app = app;
-        this.box2d = app.box2d;
+        this.box2d = box2d;
         this.color = app.color(0,0,0);
         this.density = density;
         this.w = w;
@@ -57,52 +50,6 @@ class Box {
     }
     
 
-    boolean contains(float x, float y) {
-        Vec2 worldPoint = box2d.coordPixelsToWorld(x, y);
-        Fixture f = body.getFixtureList();
-        boolean inside = f.testPoint(worldPoint);
-        return inside;
-    }
-
-    // This function removes the particle from the box2d world
-    void killBody() {
-        box2d.destroyBody(body);
-    }
-
-    // Forces a move to this position, may cause non-physical behavior.
-    void moveTo(float x, float y) {
-        Vec2 worldPoint = box2d.coordPixelsToWorld(x, y);
-        body.setAngularVelocity(0);
-        body.setTransform(worldPoint, body.getAngle());
-
-    }
-
-    void rotate(float a) {
-        float r = body.getAngle();
-        r += Math.toRadians(a);
-        Vec2 pos = body.getPosition();
-        body.setTransform(pos, r);
-    }
-
-    void setSensor(boolean v) {
-        fixture.setSensor(v);
-    }
-
-    void setActive(boolean a) {
-        body.setActive(a);
-    }
-
-    // Is the particle ready for deletion?
-    boolean done() {
-        // Let's find the screen position of the particle
-        Vec2 pos = box2d.getBodyPixelCoord(body);
-        // Is it off the bottom of the screen?
-        if (pos.y > app.height+w*h) {
-            killBody();
-            return true;
-        }
-        return false;
-    }
 
     // Drawing the box
     void display() {

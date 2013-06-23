@@ -26,18 +26,16 @@ import processing.opengl.*;
 
 // Class to describe the spring joint (displayed as a line)
 
-class Spring {
+class Spring extends Object2D {
 
     // This is the box2d object we need to create
     MouseJoint mouseJoint;
 
-    JSchema app;
-    PBox2D box2d;
     // Constructor
 
-    Spring(JSchema app) {
+    Spring(JSchema app, PBox2D box2d) {
         this.app = app;
-        this.box2d = app.box2d;
+        this.box2d = box2d;
         // At first it doesn't exist
         mouseJoint = null;
     }
@@ -72,19 +70,19 @@ class Spring {
     // This is the key function where
     // we attach the spring to an x,y location
     // and the Box object's location
-    void bind(float x, float y, Box box) {
+    void bind(float x, float y, Object2D obj) {
         // Define the joint
         MouseJointDef md = new MouseJointDef();
         // Body A is just a fake ground body for simplicity (there isn't anything at the mouse)
         md.bodyA = box2d.getGroundBody();
-        // Body 2 is the box's boxy
-        md.bodyB = box.body;
+        // Body 2 is the obj's objy
+        md.bodyB = obj.body;
         // Get the mouse location in world coordinates
         Vec2 mp = box2d.coordPixelsToWorld(x,y);
         // And that's the target
         md.target.set(mp);
         // Some stuff about how strong and bouncy the spring should be
-        md.maxForce = 1000.0f * box.body.m_mass;
+        md.maxForce = 1000.0f * obj.body.m_mass;
         md.frequencyHz = 5.0f;
         md.dampingRatio = 0.9f;
 

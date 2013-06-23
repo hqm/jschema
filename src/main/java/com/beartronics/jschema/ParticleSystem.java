@@ -27,24 +27,19 @@ import processing.opengl.*;
 // A class to describe a group of Particles
 // An ArrayList is used to manage the list of Particles 
 
-class ParticleSystem  {
-
-    JSchema app;
-    PBox2D box2d;
-
+class ParticleSystem  extends Object2D{
 
     ArrayList<Particle> particles;    // An ArrayList for all the particles
     PVector origin;         // An origin point for where particles are birthed
 
-    ParticleSystem(JSchema app, int num, PVector v) {
+    ParticleSystem(JSchema app, PBox2D box2d, int num, PVector v) {
         this.app = app;
-        this.box2d = app.box2d;
 
         particles = new ArrayList<Particle>();             // Initialize the ArrayList
         origin = v.get();                        // Store the origin point
 
         for (int i = 0; i < num; i++) {
-            particles.add(new Particle(app, origin.x,origin.y));    // Add "num" amount of particles to the ArrayList
+            particles.add(new Particle(app, box2d, origin.x,origin.y));    // Add "num" amount of particles to the ArrayList
         }
     }
 
@@ -66,7 +61,7 @@ class ParticleSystem  {
 
     void addParticles(int n) {
         for (int i = 0; i < n; i++) {
-            particles.add(new Particle(app, origin.x,origin.y));
+            particles.add(new Particle(app, box2d, origin.x,origin.y));
         }
     }
 
@@ -79,5 +74,7 @@ class ParticleSystem  {
             return false;
         }
     }
+
+    void display() { }
 
 }
