@@ -48,6 +48,10 @@ class Spring extends Object2D {
         }
     }
 
+    Spring moveToPlane(Plane p) {
+        return this;
+    }
+
     void display() {
         if (mouseJoint != null) {
             // We can get the two anchor points

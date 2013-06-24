@@ -25,8 +25,11 @@ public class Plane {
     public PBox2D box2d;
     public JSchema app;
 
-    public Plane(JSchema a) {
+    int borderColor = 0;
+
+    public Plane(JSchema a, int color) {
         this.app = a;
+        this.borderColor = color;
 
         System.out.println("Plane constructor this.app = "+this.app);
     }
@@ -38,9 +41,6 @@ public class Plane {
     public ArrayList<Boundary> boundaries;
     // A list for all of our rectangles
     public ArrayList<Object2D> physobjs;
-
-    // A list for all particle systems
-    ArrayList<ParticleSystem> systems;
 
 
     // The Spring that will attach to the box from the mouse
@@ -61,42 +61,15 @@ public class Plane {
 
         box2d.createWorld();
         // We are setting a custom gravity
-        box2d.setGravity(0, -10);
+        box2d.setGravity(0, -40);
 
         // Create ArrayLists  
         physobjs = new ArrayList<Object2D>();
         boundaries = new ArrayList<Boundary>();
 
-        systems = new ArrayList<ParticleSystem>();
         // Make the spring (it doesn't really get initialized until the mouse is clicked)
         spring = new Spring(this);
         worldState = new WorldState();
-    }
-
-    void initialBoundaries() {
-        // Add a bunch of fixed boundaries
-        boundaries.add(new Boundary(this, app.width/2, app.height-5, app.width, 10f ));
-
-        boundaries.add(new Boundary(this, 5,           app.height-200, 10f, 400f ));
-        boundaries.add(new Boundary(this, app.width-5, app.height-200, 10f, 400f ));
-
-
-        boundaries.add(new Boundary(this, app.width/4, app.height-50, 10f, 100f ));
-    }
-
-    void initialBoundaries2() {
-        // Add a bunch of fixed boundaries
-        // bottom
-        boundaries.add(new Boundary(this, app.width/2, app.height-5, app.width, 10f ));
-
-        //left
-        boundaries.add(new Boundary(this, 5,           app.height-200, 10f, 400f ));
-        //right
-        boundaries.add(new Boundary(this, app.width-5, app.height-200, 10f, 400f ));
-
-
-        // obstacle
-        //boundaries.add(new Boundary(this, app.width/4, app.height-50, 10f, 100f ));
     }
 
 
@@ -111,6 +84,13 @@ public class Plane {
                 
     }
 
+    void removeObject(Object2D obj) {
+        physobjs.remove(obj);
+    }
+
+    void addObject(Object2D obj) {
+        physobjs.add(obj);
+    }
 
     void initialGrippers() {
         int bottom = app.height;
@@ -121,53 +101,29 @@ public class Plane {
 
     }
 
-    void addBoundary(float x, float y,float w,float h) {
-        boundaries.add(new Boundary(this, x, y, w, h ));
+    Boundary addBoundary(float x, float y,float w,float h) {
+        Boundary b = new Boundary(this, x, y, w, h );
+        boundaries.add(b);
+        return b;
     }
 
-    void addBox(float x, float y,float w,float h, float density) {
-        int bottom = app.height;
-        physobjs.add(new Box(this, x, bottom - y, w, h, density));
-    }
-    void addBox(float x, float y,float w,float h, float density, int color) {
-        int bottom = app.height;
-        physobjs.add(new Box(this, x, bottom - y, w, h, density, color));
+    Box addBox(float x, float y,float w,float h, float density) {
+        Box box = new Box(this, x,  y, w, h, density);
+        physobjs.add(box);
+        return box;
     }
 
-
-
-    void addBall(float x, float y,float r) {
-        int bottom = app.height;
-        physobjs.add(new Ball(this, x, bottom - y, r));
+    Box addBox(float x, float y,float w,float h, float density, int color) {
+        Box box = new Box(this, x, y, w, h, density, color);
+        physobjs.add(box);
+        return box;
     }
-
-        
-    void initialPhysobjs() {
-        int bottom = app.height;
-        physobjs.add(new Box(this, 500, bottom -10, 64, 64, 1));
-        physobjs.add(new Box(this, 500, bottom-10, 64, 64, 2));
-        physobjs.add(new Box(this, 500, bottom-10, 32, 32, 2));
-        physobjs.add(new Box(this, 500, bottom-10, 64, 64, 2));
-        //physobjs.add(new Box(this, 500, bottom-10, 32, 32, 2));
-        physobjs.add(new Box(this, 500, bottom-10, 64, 64, 1));
-        //        physobjs.add(new Box(this, 500, bottom-10, 64, 64, 10));
-        physobjs.add(new Box(this, 500, bottom-10, 64, 64, 10));
-
-        physobjs.add(new Box(this, 900, bottom-40, 400, 5, 6));
-        //physobjs.add(new Box(this, 1000, bottom-10, 20, 64, 8));
-        //        physobjs.add(new Box(this, 1000, bottom-10, 20, 50, 8));
-        //physobjs.add(new Box(this, 1000, bottom-10, 20, 100, 8));
-
-
-        physobjs.add(new Ball(this, 1000, bottom-100, 40));
-        physobjs.add(new Ball(this, 800, bottom-100, 40));
-        physobjs.add(new Ball(this, 800, bottom-100, 40));
-        //        physobjs.add(new Ball(this, 800, bottom-200, 20));
-        //physobjs.add(new Ball(this, 800, bottom-200, 20));
-        //physobjs.add(new Ball(this, 800, bottom-200, 20));
-        
+    
+    Ball addBall(float x, float y,float r) {
+        Ball b = new Ball(this, x, y, r);
+        physobjs.add(b);
+        return b;
     }
-
 
     int downKeys[] = new int[1024];
 
@@ -201,14 +157,19 @@ public class Plane {
     Object2D grabbedThing = null;
 
     void mouseReleased() {
+        dropObject();
+    }
+
+    void dropObject() {
         if (grabbedThing != null) {
             grabbedThing.setSensor(false);
             grabbedThing = null;
 
         }
-
-        spring.destroy();
-        
+        if (spring != null) {
+            spring.destroy();
+            spring = null;
+        }
     }
 
     // return first box found which contains point (x, y)
@@ -227,7 +188,7 @@ public class Plane {
         //        if (app.keyCode == 'l') {
         //            systems.add(new ParticleSystem(app, 0, new PVector(app.mouseX,app.mouseY)));
 
-        // create a box when control-clicked
+        // create a box when alt-clicked
         if (isKeyDown(PConstants.ALT)) {
             float w = app.random(16, 256);
             float h = app.random(16, 64);
@@ -241,9 +202,7 @@ public class Plane {
         app.println("plane mousePressed touching="+touching);
         if (app.mousePressed && (touching != null)) {
             app.println("grabbed "+touching);
-            grabbedThing = touching;
-            // And if so, bind the mouse location to the box with a spring
-            spring.bind(app.mouseX,app.mouseY,grabbedThing);
+            graspObject(touching);
             if (isKeyDown(PConstants.CONTROL)) {
                 grabbedThing.setSensor(true);
             }
@@ -251,6 +210,18 @@ public class Plane {
 
     }
 
+    void graspObject(Object2D thing) {
+        if (spring == null) {
+            spring = new Spring(this);
+        }
+        spring.bind(app.mouseX,app.mouseY,thing);
+        grabbedThing = thing;
+    }
+
+
+    void step() {
+        box2d.step();
+    }
 
     void draw() {
         app.pushStyle();
@@ -258,7 +229,9 @@ public class Plane {
             app.fill(0,100);
         }
         // Always alert the spring to the new mouse location
-        spring.update(app.mouseX,app.mouseY);
+        if (spring != null) {
+            spring.update(app.mouseX,app.mouseY);
+        }
 
         box2d.step();
 
@@ -282,15 +255,10 @@ public class Plane {
         }
 
         // Draw the spring (it only appears when active)
-        spring.display();
-
-        // Run all the particle systems
-        for (ParticleSystem system: systems) {
-            system.run();
-
-            int n = (int) app.random(0,2);
-            system.addParticles(n);
+        if (spring != null) {
+            spring.display();
         }
+
         app.popStyle();
     }
 

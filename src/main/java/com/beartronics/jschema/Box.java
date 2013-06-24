@@ -49,7 +49,7 @@ class Box extends Object2D {
         this.alpha = app.map(density, 0, MAX_DENSITY, 0, 255);
 
         // Add the box to the box2d world
-        makeBody(new Vec2(x, y), w, h, density);
+        makeBody(box2d, new Vec2(x, y), w, h, density);
     }
     
 
@@ -67,19 +67,33 @@ class Box extends Object2D {
         app.translate(pos.x, pos.y);
         app.rotate(-a);
         app.fill(app.red(color), app.green(color), app.blue(color), (float)(plane.alpha/255.0) * alpha);
-        app.stroke(0);
+        app.strokeWeight(2);
+        app.stroke(plane.borderColor);
         app.rect(0, 0, w, h);
         app.popMatrix();
         app.popStyle();
     }
 
+    Box moveToPlane(Plane newPlane) {
+        plane.removeObject(this);
+        float a = getAngle();
+        Vec2 pos = box2d.getBodyPixelCoord(body);
+        // delete us from this plane box2d world
+        killBody();
+        // create new body in target plane
+        this.plane = newPlane;
+        Box b = newPlane.addBox(pos.x, pos.y, w, h, density, color);
+        b.setAngle(a);
+        return b;
+    }
+
     // This function adds the rectangle to the box2d world
-    void makeBody(Vec2 center, float w_, float h_, float density) {
+    void makeBody(PBox2D world, Vec2 center, float w_, float h_, float density) {
 
         // Define a polygon (this is what we use for a rectangle)
         PolygonShape sd = new PolygonShape();
-        float box2dW = box2d.scalarPixelsToWorld(w_/2);
-        float box2dH = box2d.scalarPixelsToWorld(h_/2);
+        float box2dW = world.scalarPixelsToWorld(w_/2);
+        float box2dH = world.scalarPixelsToWorld(h_/2);
         sd.setAsBox(box2dW, box2dH);
 
         // Define a fixture
@@ -94,9 +108,9 @@ class Box extends Object2D {
         // Define the body and make it from the shape
         BodyDef bd = new BodyDef();
         bd.type = BodyType.DYNAMIC;
-        bd.position.set(box2d.coordPixelsToWorld(center));
+        bd.position.set(world.coordPixelsToWorld(center));
 
-        body = box2d.createBody(bd);
+        body = world.createBody(bd);
         fixture = body.createFixture(fd);
 
         // Give it some initial random velocity
