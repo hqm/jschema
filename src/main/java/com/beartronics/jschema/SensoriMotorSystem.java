@@ -139,11 +139,20 @@ public class SensoriMotorSystem {
             currentPlane = next;
         }
         currentPlane.keyPressed();
+        if (app.keyCode == PConstants.SHIFT) {
+            plane1.setTransparent(true);
+        }
+
+
     }
         
     public void keyReleased() {
         downKeys[app.keyCode] = 0;
         currentPlane.keyReleased();
+        if (app.keyCode == PConstants.SHIFT) {
+            plane1.setTransparent(false);
+        }
+
     }
     
     boolean isKeyDown(int k) {

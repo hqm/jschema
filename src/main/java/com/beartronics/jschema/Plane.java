@@ -137,17 +137,10 @@ public class Plane {
                 grabbedThing.rotate(-10);
             } 
         }
-        if (app.keyCode == PConstants.SHIFT) {
-            setTransparent(true);
-        }
-
     }
         
     public void keyReleased() {
         downKeys[app.keyCode] = 0;
-        if (app.keyCode == PConstants.SHIFT) {
-            setTransparent(false);
-        }
     }
     
     boolean isKeyDown(int k) {
