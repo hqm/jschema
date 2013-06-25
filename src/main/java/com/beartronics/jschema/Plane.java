@@ -25,6 +25,9 @@ public class Plane {
     public PBox2D box2d;
     public JSchema app;
 
+    float xpos = 0;
+    float ypos = 0;
+
     int borderColor = 0;
 
     public Plane(JSchema a, int color) {
@@ -61,7 +64,7 @@ public class Plane {
 
         box2d.createWorld();
         // We are setting a custom gravity
-        box2d.setGravity(0, -40);
+        box2d.setGravity(0, -10);
 
         // Create ArrayLists  
         physobjs = new ArrayList<Object2D>();
@@ -102,7 +105,12 @@ public class Plane {
     }
 
     Boundary addBoundary(float x, float y,float w,float h) {
-        Boundary b = new Boundary(this, x, y, w, h );
+        return addBoundary(x, y, w, h, 0 );
+    }
+
+
+    Boundary addBoundary(float x, float y,float w,float h, int color) {
+        Boundary b = new Boundary(this, x, y, w, h, color );
         boundaries.add(b);
         return b;
     }
@@ -131,9 +139,9 @@ public class Plane {
         downKeys[app.keyCode] = 1;
         // rotates the grasped object with arrow keys
         if (grabbedThing != null) {
-            if (app.keyCode == PConstants.LEFT) {
+            if (app.key == 'l') {
                 grabbedThing.rotate(10);
-            } else if (app.keyCode == PConstants.RIGHT) {
+            } else if (app.key == 'r') {
                 grabbedThing.rotate(-10);
             } 
         }
@@ -186,12 +194,12 @@ public class Plane {
             float w = app.random(16, 256);
             float h = app.random(16, 64);
             float density = app.random(1, 10);
-            app.println("new box "+ app.mouseX + ", "+ app.mouseY +", "+ w +"," + h +" density="+density);
-            Box p = new Box(this, app.mouseX,app.mouseY, w, h, density);
+            app.println("new box "+ mouseX() + ", "+ mouseY() +", "+ w +"," + h +" density="+density);
+            Box p = new Box(this, mouseX(),mouseY(), w, h, density);
             physobjs.add(p);
         }
 
-        Object2D touching = findObjAt(physobjs, app.mouseX, app.mouseY);
+        Object2D touching = findObjAt(physobjs, mouseX(), mouseY());
         app.println("plane mousePressed touching="+touching);
         if (app.mousePressed && (touching != null)) {
             app.println("grabbed "+touching);
@@ -203,27 +211,43 @@ public class Plane {
 
     }
 
+    float mouseX() {
+        return app.mouseX + xpos;
+    }
+
+    float mouseY() {
+        return app.mouseY + ypos;
+    }
+
     void graspObject(Object2D thing) {
         if (spring == null) {
             spring = new Spring(this);
         }
-        spring.bind(app.mouseX,app.mouseY,thing);
+        spring.bind(mouseX(),mouseY(),thing);
         grabbedThing = thing;
     }
 
+    void setTranslation(float dx, float dy) {
+        xpos = dx;
+        ypos = dy;
+    }
 
     void step() {
         box2d.step();
     }
 
     void draw() {
+        app.pushMatrix();
+        app.translate(-xpos,0);
+
+
         app.pushStyle();
         if (transparent) {
             app.fill(0,100);
         }
         // Always alert the spring to the new mouse location
         if (spring != null) {
-            spring.update(app.mouseX,app.mouseY);
+            spring.update(mouseX(),mouseY());
         }
 
         box2d.step();
@@ -253,6 +277,10 @@ public class Plane {
         }
 
         app.popStyle();
+
+        app.popMatrix();
+
+
     }
 
     WorldState worldState;

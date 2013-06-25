@@ -24,19 +24,34 @@ class Boundary {
     float y;
     float w;
     float h;
+    int color = 0;
   
     PBox2D box2d;
     // But we also have to make a body for box2d to know about it
     Body b;
     JSchema app;
 
+    void setColor(int color) {
+        this.color = color;
+    }
+
     Boundary(Plane p, float x_,float y_, float w_, float h_) {
+        _Boundary(p,x_,y_,w_,h_,0);
+    }
+
+    Boundary(Plane p, float x_,float y_, float w_, float h_, int color) {
+        _Boundary(p,x_,y_,w_,h_,color);
+    }
+
+
+    void _Boundary(Plane p, float x_,float y_, float w_, float h_, int color) {
         app = p.app;
         box2d = p.box2d;
         x = x_;
         y = y_;
         w = w_;
         h = h_;
+        this.color = color;
 
         // Define the polygon
         PolygonShape sd = new PolygonShape();
@@ -58,7 +73,7 @@ class Boundary {
 
     // Draw the boundary, if it were at an angle we'd have to do something fancier
     void display() {
-        app.fill(0);
+        app.fill(color);
         app.stroke(0);
         app.rectMode(PConstants.CENTER);
         app.rect(x,y,w,h);

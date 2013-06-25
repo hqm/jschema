@@ -27,6 +27,30 @@ public class SensoriMotorSystem {
     public Plane plane0; // back plane
     public Plane plane1; // front plane
 
+    final int WORLD_WIDTH = 4096;
+
+    // Position of body in world
+    float xpos = 0;
+    float ypos = 0;
+
+    // horizontal scroll speed for debugging
+    float scrollspeed = 25.0f;
+
+    ////////////////////////////////////////////////////////////////
+    // Head and Eyes Controls
+
+    // Computed from head gross and fine angles
+    float gazeXpos = 400;
+    float gazeYpos = 200;
+    
+    float headAzimuthAngle = 0;
+    float headElevationAngle =0;
+
+    // angles
+    float gazeAzimuthAngle = 0;
+    float gazeElevationAngle = 0;
+
+
     public SensoriMotorSystem(JSchema a) {
         this.app = a;
         System.out.println("SensoriMotorSystem constructor this.app = "+this.app);
@@ -36,11 +60,14 @@ public class SensoriMotorSystem {
     ArrayList<Plane> planes = new ArrayList<Plane>();
     Plane currentPlane;
 
+    int marker_color;
+
     void setupDisplay() {
         // Initialize box2d physics and create the world
         plane0 = new Plane(app, app.color(255, 55, 55));
         plane1 = new Plane(app, app.color(0,0,0));
 
+        marker_color = app.color(189,22,198,128);
         // Initialize box2d physics and create the world
         planes.add(plane0);
         planes.add(plane1);
@@ -71,39 +98,78 @@ public class SensoriMotorSystem {
 
     }
 
+    void setTranslation(float dx, float dy) {
+        for (Plane plane: planes) {
+            plane.setTranslation(dx,dy);
+        }
+    }
+
+
+
     void initialBoundaries(Plane p) {
         // Add a bunch of fixed boundaries
-        p.addBoundary(app.width/2, app.height-5, app.width, 10f );
-        p.addBoundary(5,           app.height-200, 10f, 400f );
-        p.addBoundary(app.width-5, app.height-200, 10f, 400f );
-        p.addBoundary(app.width/4, app.height-50, 10f, 100f );
+        p.addBoundary(WORLD_WIDTH/2, app.height-5, WORLD_WIDTH, 10f );
+        p.addBoundary(5,           app.height-200, 10f, 1200f );
+        p.addBoundary(WORLD_WIDTH-5, app.height-200, 10f, 1200f );
+        p.addBoundary(400, app.height-50, 10f, 100f );
+        p.addBoundary(800, app.height-80, 10f, 160f );
+        p.addBoundary(1200, app.height-100, 10f, 200f );
+
+        // add markers to help locate position
+
+        for (int x = 200; x < WORLD_WIDTH; x+=200) {
+            p.addBoundary(x, app.height-400, 20+x/100f, 20+x/50f, marker_color );
+        }
+
     }
 
     void initialPhysobjs(Plane p) {
         int bottom = app.height;
         p.addBox(500, bottom -10, 64, 64, 1);
         p.addBox(500, bottom-10, 64, 64, 2);
-        p.addBox(500, bottom-10, 32, 32, 2);
-        p.addBox(500, bottom-10, 64, 64, 2);
-        p.addBox(500, bottom-10, 64, 64, 1);
-        p.addBox(500, bottom-10, 64, 64, 10);
-        p.addBox(900, bottom-40, 400, 5, 6);
+        p.addBox(800, bottom-10, 32, 32, 2);
+        p.addBox(1200, bottom-10, 64, 64, 2);
+        p.addBox(1500, bottom-10, 64, 64, 1);
+        p.addBox(2000, bottom-10, 64, 64, 10);
+        p.addBox(300, bottom-200, 400, 5, 6);
         p.addBall(1000, bottom-100, 40);
-        p.addBall(800, bottom-100, 40);
-        p.addBall(800, bottom-100, 40);
+        p.addBall(100, bottom-100, 40);
+        p.addBall(200, bottom-100, 40);
+        p.addBall(500, bottom-100, 30);
     }
 
     void draw() {
+
         app.rectMode(PConstants.CORNER);
         app.background(255);
         app.fill(0);
 
-        app.text("alt-click to create box, click to grasp, ctrl-click to lift, left and right arrow to rotate, shift for transparent", 10,12);
-        app.text("plane="+planes.indexOf(currentPlane), 10,22);
+        app.text("alt-click to create box, click to grasp, ctrl-click to lift, left and right arrow to rotate, shift for transparent", 20,12);
+        app.text("plane="+planes.indexOf(currentPlane), 20,22);
+        app.text("xpos="+xpos,20,32);
 
         for (Plane plane: planes) {
             plane.draw();
         }
+
+
+        // draw viewport and gaze location
+        drawViewPort();
+
+    }
+
+    void drawViewPort() {
+        float dx, dy;
+        dx = gazeXpos;
+        dy = gazeYpos;
+
+        app.strokeWeight(1);
+        app.stroke(app.color(128,128,128,200));
+        app.line(xpos + dx - 50, ypos+dy-50,
+                 xpos + dx + 50, ypos+dy+50);
+        app.line(xpos + dx + 50, ypos+dy-50,
+                 xpos + dx - 50, ypos+dy+50);
+        
     }
 
 
@@ -124,9 +190,16 @@ public class SensoriMotorSystem {
         return planes.get(idx);
     }
 
+
     public void keyPressed() {
         downKeys[app.keyCode] = 1;
-        if (app.keyCode == PConstants.UP || app.keyCode == PConstants.DOWN) {
+        if (app.keyCode == PConstants.LEFT) {
+            xpos = (float)Math.max(0,xpos-scrollspeed);
+            setTranslation(xpos,ypos);
+        } else if (app.keyCode == PConstants.RIGHT) {
+            xpos = (float)Math.min(WORLD_WIDTH-app.width,xpos+scrollspeed);
+            setTranslation(xpos,ypos);
+        } else if (app.keyCode == PConstants.UP || app.keyCode == PConstants.DOWN) {
             // If we're grasping an object, move it to next plane
             Plane next = app.keyCode == PConstants.UP ? nextPlane() : prevPlane();
             if (currentPlane.grabbedThing != null) {
@@ -140,7 +213,9 @@ public class SensoriMotorSystem {
         }
         currentPlane.keyPressed();
         if (app.keyCode == PConstants.SHIFT) {
-            plane1.setTransparent(true);
+            for (Plane plane: planes) {
+                plane.setTransparent(true);
+            }
         }
 
 
@@ -150,7 +225,9 @@ public class SensoriMotorSystem {
         downKeys[app.keyCode] = 0;
         currentPlane.keyReleased();
         if (app.keyCode == PConstants.SHIFT) {
-            plane1.setTransparent(false);
+            for (Plane plane: planes) {
+                plane.setTransparent(false);
+            }
         }
 
     }
