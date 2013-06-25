@@ -17,14 +17,11 @@ import processing.opengl.*;
 
 // A fixed boundary class
 
-class Boundary {
+class Boundary extends Object2D {
 
     // A boundary is a simple rectangle with x,y,width,and height
     float x;
     float y;
-    float w;
-    float h;
-    int color = 0;
   
     PBox2D box2d;
     // But we also have to make a body for box2d to know about it
@@ -36,10 +33,12 @@ class Boundary {
     }
 
     Boundary(Plane p, float x_,float y_, float w_, float h_) {
+        super(p);
         _Boundary(p,x_,y_,w_,h_,0);
     }
 
     Boundary(Plane p, float x_,float y_, float w_, float h_, int color) {
+        super(p);
         _Boundary(p,x_,y_,w_,h_,color);
     }
 
@@ -69,6 +68,7 @@ class Boundary {
     
         // Attached the shape to the body using a Fixture
         b.createFixture(sd,1);
+        b.setUserData(this);
     }
 
     // Draw the boundary, if it were at an angle we'd have to do something fancier

@@ -14,12 +14,17 @@ import java.util.*;
 
 import org.jbox2d.dynamics.joints.*;
 import org.jbox2d.collision.shapes.Shape;
+import org.jbox2d.dynamics.contacts.*;
+import org.jbox2d.callbacks.ContactListener;
+import org.jbox2d.callbacks.ContactImpulse;
+import org.jbox2d.collision.Manifold;
+
 
 import processing.core.*;
 
 
 // A Plane holds a surface of 2d objects
-public class Plane {
+public class Plane implements ContactListener {
 
     // A reference to our box2d world
     public PBox2D box2d;
@@ -29,6 +34,7 @@ public class Plane {
     float ypos = 0;
 
     int borderColor = 0;
+
 
     public Plane(JSchema a, int color) {
         this.app = a;
@@ -63,6 +69,10 @@ public class Plane {
         box2d = app.createBox2D();
 
         box2d.createWorld();
+
+        box2d.world.setContactListener(this);
+
+
         // We are setting a custom gravity
         box2d.setGravity(0, -10);
 
@@ -315,6 +325,41 @@ public class Plane {
 
         
 
+    }
+
+
+    // Collision event functions!
+    public void beginContact(Contact cp) {
+        // Get both fixtures
+        Fixture f1 = cp.getFixtureA();
+        Fixture f2 = cp.getFixtureB();
+        // Get both bodies
+        Body b1 = f1.getBody();
+        Body b2 = f2.getBody();
+
+        // Get our objects that reference these bodies
+        Object2D o1 = (Object2D) b1.getUserData();
+        Object2D o2 = (Object2D) b2.getUserData();
+
+        app.println("beginContact "+cp +" o1="+o1+" o2="+o2);
+
+        if (o1.getClass() == Box.class && o2.getClass() == Box.class) {
+            Box p1 = (Box) o1;
+            //            p1.setColor(app.color(0,0,255));
+            Box p2 = (Box) o2;
+            //            p2.setColor(app.color(0,0,255));
+        }
+    }
+
+    // Objects stop touching each other
+    public void endContact(Contact cp) {
+    }
+
+    public void postSolve(Contact c, ContactImpulse ci) {
+    }
+
+
+    public void preSolve(Contact c, Manifold m) {
     }
 
 

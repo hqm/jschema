@@ -60,6 +60,7 @@ public class JSchema extends PApplet {
             sms.draw();
             clock++;
         } catch (Exception e) {
+            e.printStackTrace();
             app.println("JSchema top-level caught exception "+e);
         }
     }
