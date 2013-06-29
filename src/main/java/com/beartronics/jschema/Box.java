@@ -50,7 +50,6 @@ class Box extends Object2D {
 
         // Add the box to the box2d world
         makeBody(box2d, new Vec2(x, y), w, h, density);
-        body.setUserData(this);
     }
     
     void setColor(int c) {
@@ -122,6 +121,7 @@ class Box extends Object2D {
         // Give it some initial random velocity
         //body.setLinearVelocity(new Vec2(app.random(-5, 5), app.random(2, 5)));
         //body.setAngularVelocity(app.random(-5, 5));
+        super.makeBody();
     }
 
     public String toString() {

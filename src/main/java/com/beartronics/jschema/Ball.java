@@ -37,7 +37,6 @@ public class Ball extends Object2D {
         r = r_;
         // This function puts the particle in the Box2d world
         makeBody(box2d, x,y,r);
-        body.setUserData(this);
     }
 
 
@@ -101,6 +100,7 @@ public class Ball extends Object2D {
         // Give it a random initial velocity (and angular velocity)
         body.setLinearVelocity(new Vec2(app.random(-10f,10f),app.random(5f,10f)));
         body.setAngularVelocity(app.random(-10,10));
+        super.makeBody();
     }
 
 

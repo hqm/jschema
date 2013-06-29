@@ -25,7 +25,6 @@ class Boundary extends Object2D {
   
     PBox2D box2d;
     // But we also have to make a body for box2d to know about it
-    Body b;
     JSchema app;
 
     void setColor(int color) {
@@ -64,11 +63,11 @@ class Boundary extends Object2D {
         BodyDef bd = new BodyDef();
         bd.type = BodyType.STATIC;
         bd.position.set(box2d.coordPixelsToWorld(x,y));
-        b = box2d.createBody(bd);
+        body = box2d.createBody(bd);
     
         // Attached the shape to the body using a Fixture
-        b.createFixture(sd,1);
-        b.setUserData(this);
+        body.createFixture(sd,1);
+        super.makeBody();
     }
 
     // Draw the boundary, if it were at an angle we'd have to do something fancier

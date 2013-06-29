@@ -40,6 +40,11 @@ abstract class Object2D {
         this.app = plane.app;
         this.box2d = plane.box2d;
     }
+
+    // Call this after creating body
+    void makeBody() {
+        body.setUserData(this);
+    }
         
     boolean contains(float x, float y) {
         Vec2 worldPoint = box2d.coordPixelsToWorld(x, y);

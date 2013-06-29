@@ -133,7 +133,10 @@ public class Plane implements ContactListener {
             showContacts(pickedThing);
             if (app.key == 'g') {
                 graspContacts(pickedThing);
+            } else if (app.key == 'd') {
+                removeJoints(pickedThing);
             }
+            
         }
     }
 
@@ -186,7 +189,7 @@ public class Plane implements ContactListener {
         return null;
     }
 
-    // adds DistanceJoint between thing and any bodies it touches
+    // adds WeldJoint between thing and any bodies it touches
     void graspContacts(Object2D thing) {
         app.println("********\nGrasp Contacts for "+thing);
         ContactEdge cedge = thing.body.getContactList();
@@ -198,6 +201,22 @@ public class Plane implements ContactListener {
             cedge = cedge.next;
         }
     }
+
+
+    // remove all joints 
+    void removeJoints(Object2D thing) {
+        JointEdge jedge = thing.body.getJointList();
+        ArrayList<Joint> jlist = new ArrayList<Joint>();
+        while (jedge != null) {
+            jlist.add(jedge.joint);
+            jedge = jedge.next;
+        }
+        for (Joint j: jlist) {
+            box2d.world.destroyJoint(j);
+        }
+    }
+
+
 
 
     void mousePressed() {
