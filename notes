@@ -36,6 +36,8 @@ System has two arms. Each has two joints and a hand:
 
   hand: grasp, ungrasp, rotate left, rotate right
     grasp and rotate force is controllable over some range
+     -- the 'grasp' operation gives a force feedback of "grip" when there is an object touching, with force sensation
+        proportional to the gripping force, like when you squeeze a block with you fingers.
 
 
     HEAD: rotatation , translation

@@ -77,6 +77,9 @@ class Box extends Object2D {
         app.popStyle();
     }
 
+    // To move to another plane, we have to destroy the object in this plane, and
+    // create a copy of it in the target plane.
+    // Returns the new Box that was created in the target plane.
     Box moveToPlane(Plane newPlane) {
         plane.removeObject(this);
         float a = getAngle();

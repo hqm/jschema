@@ -60,6 +60,9 @@ public class SensoriMotorSystem {
     ArrayList<Plane> planes = new ArrayList<Plane>();
     Plane currentPlane;
 
+    Box hand1;
+    Box hand2;
+
     int marker_color;
 
     void setupDisplay() {
@@ -86,7 +89,12 @@ public class SensoriMotorSystem {
         initialBoundaries(plane1);
         initialBoundaries(plane0);
         initialPhysobjs(plane1);
-        plane1.initialGrippers();
+
+        // hands start out in plane1
+        hand1 = plane1.addBox( 500, 200, 32, 32, 5, app.color(0,255,0));
+        hand2 = plane1.addBox( 800, 200, 32, 32, 5, app.color(255,0,0));
+        hand1.alpha = 255;
+        hand2.alpha = 255;
 
         // TODO add grippers
         //plane2.addBox(500, 100, 100, 100, 4);
@@ -108,11 +116,17 @@ public class SensoriMotorSystem {
 
     void initialBoundaries(Plane p) {
         // Add a bunch of fixed boundaries
+        // floor
         p.addBoundary(WORLD_WIDTH/2, app.height-5, WORLD_WIDTH, 10f );
+        // left wall
         p.addBoundary(5,           app.height-200, 10f, 1200f );
+        // right wall
         p.addBoundary(WORLD_WIDTH-5, app.height-200, 10f, 1200f );
-        p.addBoundary(400, app.height-50, 10f, 100f );
-        p.addBoundary(800, app.height-80, 10f, 160f );
+
+
+        p.addBoundary(100, app.height-50, 10f, 100f );
+        p.addBoundary(160, app.height-50, 10f, 100f );
+        p.addBoundary(900, app.height-80, 10f, 160f );
         p.addBoundary(1200, app.height-100, 10f, 200f );
 
         // add markers to help locate position
@@ -131,10 +145,11 @@ public class SensoriMotorSystem {
         p.addBox(1200, bottom-10, 64, 64, 2);
         p.addBox(1500, bottom-10, 64, 64, 1);
         p.addBox(2000, bottom-10, 64, 64, 10);
+        p.addBox(300, bottom-200, 200, 5, 6);
         p.addBox(300, bottom-200, 400, 5, 6);
         p.addBall(1000, bottom-100, 40);
-        p.addBall(100, bottom-100, 40);
         p.addBall(200, bottom-100, 40);
+        p.addBall(250, bottom-100, 40);
         p.addBall(500, bottom-100, 30);
     }
 
@@ -200,14 +215,14 @@ public class SensoriMotorSystem {
             xpos = (float)Math.min(WORLD_WIDTH-app.width,xpos+scrollspeed);
             setTranslation(xpos,ypos);
         } else if (app.keyCode == PConstants.UP || app.keyCode == PConstants.DOWN) {
-            // If we're grasping an object, move it to next plane
+            // If we're interactively grasping an object with the mouse, move it to next plane
             Plane next = app.keyCode == PConstants.UP ? nextPlane() : prevPlane();
-            if (currentPlane.grabbedThing != null) {
-                Object2D obj = currentPlane.grabbedThing;
-                currentPlane.dropObject();
+            if (currentPlane.pickedThing != null) {
+                Object2D obj = currentPlane.pickedThing;
+                currentPlane.mouseDropObject();
                 Object2D newObj = obj.moveToPlane(next);
                 app.println("newObj = "+newObj+" next="+next+" ... grasping on next plane");
-                next.graspObject(newObj);
+                next.mouseGraspObject(newObj);
             }
             currentPlane = next;
         }

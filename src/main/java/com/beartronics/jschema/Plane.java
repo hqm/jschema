@@ -35,6 +35,8 @@ public class Plane implements ContactListener {
 
     int borderColor = 0;
 
+    // For debugging, the user can grab an object with the mouse interactively
+    Object2D pickedThing = null;
 
     public Plane(JSchema a, int color) {
         this.app = a;
@@ -50,18 +52,6 @@ public class Plane implements ContactListener {
     public ArrayList<Boundary> boundaries;
     // A list for all of our rectangles
     public ArrayList<Object2D> physobjs;
-
-
-    // The Spring that will attach to the box from the mouse
-    Spring spring;
-    Spring gripperSpring1;
-    Spring gripperSpring2;
-
-    // The hands. Can be lifted 'out of the plane' by setting the body sensor flag on their fixture
-    // Can sense collisions while lifted, equivalent to dragging hand over a surface.
-
-    Object2D gripper1;
-    Object2D gripper2;
 
     PFont font;
 
@@ -81,7 +71,6 @@ public class Plane implements ContactListener {
         boundaries = new ArrayList<Boundary>();
 
         // Make the spring (it doesn't really get initialized until the mouse is clicked)
-        spring = new Spring(this);
         worldState = new WorldState();
     }
 
@@ -105,14 +94,6 @@ public class Plane implements ContactListener {
         physobjs.add(obj);
     }
 
-    void initialGrippers() {
-        int bottom = app.height;
-        gripper1 = new Box(this, 500, bottom -200, 32, 32, 5, app.color(0,255,0));
-        physobjs.add(gripper1);
-        gripper2 = new Box(this, 800, bottom -200, 32, 32, 5, app.color(255,0,0));
-        physobjs.add(gripper2);
-
-    }
 
     Boundary addBoundary(float x, float y,float w,float h) {
         return addBoundary(x, y, w, h, 0 );
@@ -146,16 +127,29 @@ public class Plane implements ContactListener {
     int downKeys[] = new int[1024];
 
     public void keyPressed() {
+        app.println("key "+app.keyCode);
         downKeys[app.keyCode] = 1;
-        // rotates the grasped object with arrow keys
-        if (grabbedThing != null) {
-            if (app.key == 'l') {
-                grabbedThing.rotate(10);
-            } else if (app.key == 'r') {
-                grabbedThing.rotate(-10);
-            } 
+        if (pickedThing != null) {
+            showContacts(pickedThing);
+            if (app.key == 'g') {
+                graspContacts(pickedThing);
+            }
         }
     }
+
+    void showContacts(Object2D thing) {
+        app.println("********\nContacts for "+thing);
+        ContactEdge cedge = thing.body.getContactList();
+        while (cedge != null) {
+            Contact c = cedge.contact;
+            Object2D other = (Object2D) cedge.other.getUserData();
+            app.println(" obj "+other);
+            cedge = cedge.next;
+        }
+    }
+
+
+
         
     public void keyReleased() {
         downKeys[app.keyCode] = 0;
@@ -165,21 +159,20 @@ public class Plane implements ContactListener {
         return downKeys[k] == 1;
     }
 
-    Object2D grabbedThing = null;
-
     void mouseReleased() {
-        dropObject();
+        mouseDropObject();
     }
 
-    void dropObject() {
-        if (grabbedThing != null) {
-            grabbedThing.setSensor(false);
-            grabbedThing = null;
+    void mouseGraspObject(Object2D thing) {
+        thing.bindMouseJoint(mouseX(),mouseY(),thing);
+        pickedThing = thing;
+    }
 
-        }
-        if (spring != null) {
-            spring.destroy();
-            spring = null;
+    void mouseDropObject() {
+        if (pickedThing != null) {
+            pickedThing.destroyMouseJoint();
+            pickedThing.setSensor(false);
+            pickedThing = null;
         }
     }
 
@@ -191,6 +184,19 @@ public class Plane implements ContactListener {
             }
         }
         return null;
+    }
+
+    // adds DistanceJoint between thing and any bodies it touches
+    void graspContacts(Object2D thing) {
+        app.println("********\nGrasp Contacts for "+thing);
+        ContactEdge cedge = thing.body.getContactList();
+        while (cedge != null) {
+            Contact c = cedge.contact;
+            Object2D other = (Object2D) cedge.other.getUserData();
+            app.println("binding to obj "+other);
+            thing.bindWeldJoint(thing, other);
+            cedge = cedge.next;
+        }
     }
 
 
@@ -213,9 +219,9 @@ public class Plane implements ContactListener {
         app.println("plane mousePressed touching="+touching);
         if (app.mousePressed && (touching != null)) {
             app.println("grabbed "+touching);
-            graspObject(touching);
+            mouseGraspObject(touching);
             if (isKeyDown(PConstants.CONTROL)) {
-                grabbedThing.setSensor(true);
+                pickedThing.setSensor(true);
             }
         }
 
@@ -229,14 +235,6 @@ public class Plane implements ContactListener {
         return app.mouseY + ypos;
     }
 
-    void graspObject(Object2D thing) {
-        if (spring == null) {
-            spring = new Spring(this);
-        }
-        spring.bind(mouseX(),mouseY(),thing);
-        grabbedThing = thing;
-    }
-
     void setTranslation(float dx, float dy) {
         xpos = dx;
         ypos = dy;
@@ -246,7 +244,28 @@ public class Plane implements ContactListener {
         box2d.step();
     }
 
+    float ROTATIONAL_IMPULSE = 100f;
+    float ROTATION_INCR = 0.1f;
+    int L_KEY = 76;
+    int R_KEY = 82;
     void draw() {
+
+        // rotates the grasped object with arrow keys
+        if (pickedThing != null) {
+            if (isKeyDown(L_KEY)) {
+                pickedThing.body.setAngularVelocity(0);
+                pickedThing.body.applyAngularImpulse (ROTATIONAL_IMPULSE);
+                pickedThing.rotate(ROTATION_INCR);
+            } else if (isKeyDown(R_KEY)) {
+                pickedThing.body.setAngularVelocity(0);
+                pickedThing.body.applyAngularImpulse (-ROTATIONAL_IMPULSE);
+                pickedThing.rotate(-ROTATION_INCR);
+            } 
+        }
+
+
+
+
         app.pushMatrix();
         app.translate(-xpos,0);
 
@@ -256,8 +275,8 @@ public class Plane implements ContactListener {
             app.fill(0,100);
         }
         // Always alert the spring to the new mouse location
-        if (spring != null) {
-            spring.update(mouseX(),mouseY());
+        if (pickedThing != null) {
+            pickedThing.updateMouseJointPos(mouseX(),mouseY());
         }
 
         box2d.step();
@@ -281,10 +300,6 @@ public class Plane implements ContactListener {
             }
         }
 
-        // Draw the spring (it only appears when active)
-        if (spring != null) {
-            spring.display();
-        }
 
         app.popStyle();
 
@@ -341,7 +356,7 @@ public class Plane implements ContactListener {
         Object2D o1 = (Object2D) b1.getUserData();
         Object2D o2 = (Object2D) b2.getUserData();
 
-        app.println("beginContact "+cp +" o1="+o1+" o2="+o2);
+        //app.println("beginContact "+cp +" o1="+o1+" o2="+o2);
 
         if (o1.getClass() == Box.class && o2.getClass() == Box.class) {
             Box p1 = (Box) o1;
