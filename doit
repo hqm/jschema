@@ -1,0 +1,5 @@
+require 'java'
+Java::com.beartronics.jschema.JSchema.main(nil)
+$app = Java::com.beartronics.jschema.JSchema.app
+$sms = $app.sms
+
