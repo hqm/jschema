@@ -27,11 +27,14 @@ public class SensoriMotorSystem {
     public Plane plane0; // back plane
     public Plane plane1; // front plane
 
-    final int WORLD_WIDTH = 4096;
+    int WORLD_WIDTH = 4096;
+    int WORLD_HEIGHT = 800;
 
     // Position of body in world
     float xpos = 300;
     float ypos = 300;
+    float bodyWidth = 600;
+    float bodyHeight = 600;
 
     // horizontal scroll speed for debugging
     float scrollspeed = 25.0f;
@@ -40,8 +43,8 @@ public class SensoriMotorSystem {
     // Head and Eyes Controls
 
     // Computed from head gross and fine angles
-    float gazeXpos = 400;
-    float gazeYpos = 200;
+    float gazeXpos = 0;
+    float gazeYpos = 0;
     
     float headAzimuthAngle = 0;
     float headElevationAngle =0;
@@ -50,23 +53,12 @@ public class SensoriMotorSystem {
     float gazeAzimuthAngle = 0;
     float gazeElevationAngle = 0;
 
-    Box hand1;
-    Box hand2;
-
-    // The hands are held in position by a MouseJoint to the handx,handy positions
-    Vec2 hand1AbsPos = new Vec2(xpos,ypos);
-    Vec2 hand2AbdPos = new Vec2(xpos,ypos);
+    Hand hand1;
+    Hand hand2;
 
     // arms can reach max of 300 px in from body center
-    int reachMaxX = 300;
-    int reachMaxY = 300;
-
-    // Vector of (gross,fine) hand position
-    Vec2 hand1XPos = new Vec2(0,0);
-    Vec2 hand1YPos = new Vec2(0,0);
-    Vec2 hand2XPos = new Vec2(0,0);
-    Vec2 hand2YPos = new Vec2(0,0);
-
+    int reachX = 300;
+    int reachY = 300;
 
     public SensoriMotorSystem(JSchema a) {
         this.app = a;
@@ -114,8 +106,8 @@ public class SensoriMotorSystem {
         initialPhysobjs(plane1);
 
         // hands start out in plane1
-        hand1 = plane1.addBox( 500, 200, 32, 32, 5, app.color(0,255,0));
-        hand2 = plane1.addBox( 800, 200, 32, 32, 5, app.color(255,0,0));
+        hand1 = plane1.addHand( 500, 200, 32, 32, 5, app.color(0,255,0));
+        hand2 = plane1.addHand( 800, 200, 32, 32, 5, app.color(255,0,0));
         hand1.alpha = 255;
         hand2.alpha = 255;
         hand1.setFixedRotation(true);
@@ -186,6 +178,9 @@ public class SensoriMotorSystem {
         app.text("plane="+planes.indexOf(currentPlane), 20,22);
         app.text("xpos="+xpos,20,32);
 
+        hand1.updatePosition(xpos,ypos);
+        hand2.updatePosition(xpos,ypos);
+
         for (Plane plane: planes) {
             plane.draw();
         }
@@ -197,17 +192,25 @@ public class SensoriMotorSystem {
     }
 
     void drawViewPort() {
+        // draw where the gaze is centered
         float dx, dy;
         dx = gazeXpos;
         dy = gazeYpos;
+        float cx = app.width/2;
+        float cy = app.height/2;
 
         app.strokeWeight(1);
         app.stroke(app.color(128,128,128,200));
-        app.line(xpos + dx - 50, ypos+dy-50,
-                 xpos + dx + 50, ypos+dy+50);
-        app.line(xpos + dx + 50, ypos+dy-50,
-                 xpos + dx - 50, ypos+dy+50);
+        app.line(cx + dx - 50, cy-dy-50,
+                 cx + dx + 50, cy-dy+50);
+        app.line(cx + dx + 50, cy-dy-50,
+                 cx + dx - 50, cy-dy+50);
         
+
+        // draw the max range the hands can move
+        
+
+
     }
 
 
@@ -229,13 +232,23 @@ public class SensoriMotorSystem {
     }
 
 
+    void moveBody(float dx, float dy) {
+        xpos += dx;
+        xpos = (float)Math.max(0,xpos);
+        xpos = (float)Math.min(WORLD_WIDTH-bodyWidth/2,xpos);
+
+        ypos += dy;
+        ypos = (float)Math.max(WORLD_HEIGHT-bodyHeight/2,ypos);
+        ypos = (float)Math.min(0+bodyHeight/2,ypos);
+    }
+
     public void keyPressed() {
         downKeys[app.keyCode] = 1;
         if (app.keyCode == PConstants.LEFT) {
-            xpos = (float)Math.max(0,xpos-scrollspeed);
+            moveBody(-scrollspeed,0);
             setTranslation(xpos,ypos);
         } else if (app.keyCode == PConstants.RIGHT) {
-            xpos = (float)Math.min(WORLD_WIDTH-app.width,xpos+scrollspeed);
+            moveBody(scrollspeed,0);
             setTranslation(xpos,ypos);
         } else if (app.keyCode == PConstants.UP || app.keyCode == PConstants.DOWN) {
             // If we're interactively grasping an object with the mouse, move it to next plane

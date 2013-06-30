@@ -134,19 +134,19 @@ abstract class Object2D {
     // This is the key function where
     // we attach the spring to an x,y location
     // and the Box object's location
-    void bindMouseJoint(float x, float y, Object2D obj) {
+    void bindMouseJoint(float x, float y) {
         // Define the joint
         MouseJointDef md = new MouseJointDef();
         // Body A is just a fake ground body for simplicity (there isn't anything at the mouse)
         md.bodyA = box2d.getGroundBody();
         // Body 2 is the obj's objy
-        md.bodyB = obj.body;
+        md.bodyB = body;
         // Get the mouse location in world coordinates
         Vec2 mp = box2d.coordPixelsToWorld(x,y);
         // And that's the target
         md.target.set(mp);
         // Some stuff about how strong and bouncy the spring should be
-        md.maxForce = 1000.0f * obj.body.m_mass;
+        md.maxForce = 1000.0f * body.m_mass;
         md.frequencyHz = 5.0f;
         md.dampingRatio = 0.9f;
 

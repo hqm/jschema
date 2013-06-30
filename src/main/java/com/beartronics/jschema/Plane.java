@@ -121,6 +121,12 @@ public class Plane implements ContactListener {
         return box;
     }
 
+    Hand addHand(float x, float y,float w,float h, float density, int color) {
+        Hand hand = new Hand(this, x,  y, w, h, density, color);
+        physobjs.add(hand);
+        return hand;
+    }
+
     CustomShape1 addCustomShape1(float x, float y, int color) {
         CustomShape1 c = new CustomShape1(this, x,  y, color);
         physobjs.add(c);
@@ -143,7 +149,7 @@ public class Plane implements ContactListener {
     int downKeys[] = new int[1024];
 
     public void keyPressed() {
-        app.println("key "+app.keyCode);
+        //app.println("key "+app.keyCode);
         downKeys[app.keyCode] = 1;
         if (pickedThing != null) {
             showContacts(pickedThing);
@@ -183,7 +189,7 @@ public class Plane implements ContactListener {
     }
 
     void mouseGraspObject(Object2D thing) {
-        thing.bindMouseJoint(mouseX(),mouseY(),thing);
+        thing.bindMouseJoint(mouseX(),mouseY());
         pickedThing = thing;
     }
 
@@ -302,6 +308,7 @@ public class Plane implements ContactListener {
 
 
         app.pushMatrix();
+        // We can only move horizontally for now
         app.translate(-xpos,0);
 
 
