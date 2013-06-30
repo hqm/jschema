@@ -22,12 +22,12 @@ import processing.opengl.*;
 public class Hand extends Box {
 
     // Vector of (gross,fine) body-relative hand position
-    int grossX   = 0;
-    int fineX    = 0;
-    int grossY   = 0;
-    int fineY    = 0;
-    float handForceX = 0;
-    float handForceY = 0;
+    public int grossX   = 0;
+    public int fineX    = 0;
+    public int grossY   = 0;
+    public int fineY    = 0;
+    public float handForceX = 0;
+    public float handForceY = 0;
 
     float GROSS_DIST = 10;
 

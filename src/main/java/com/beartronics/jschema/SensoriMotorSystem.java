@@ -31,8 +31,8 @@ public class SensoriMotorSystem {
     int WORLD_HEIGHT = 800;
 
     // Position of body in world
-    float xpos = 300;
-    float ypos = 300;
+    public float xpos = 300;
+    public float ypos = 300;
     float bodyWidth = 600;
     float bodyHeight = 600;
 
