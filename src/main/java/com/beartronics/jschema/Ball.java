@@ -110,7 +110,7 @@ public class Ball extends Object2D {
         // Get its angle of rotation
         float a = body.getAngle();
         float alpha = app.map(density, 0, MAX_DENSITY, 0, 255);
-        return String.format("{Ball x,y=(%f, %f) r=(%f) rot=%f density=%f color=%x, alpha=%f}",pos.x,pos.y,r,a,density,color,alpha);
+        return String.format("{Ball %d x,y=(%f, %f) r=(%f) rot=%f density=%f color=%x, alpha=%f}",index, pos.x,pos.y,r,a,density,color,alpha);
     }
 
 

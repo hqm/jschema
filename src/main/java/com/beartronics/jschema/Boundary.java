@@ -78,6 +78,13 @@ class Boundary extends Object2D {
         app.rect(x,y,w,h);
     }
 
+
+    public String toString() {
+        // We look at each body and get its screen position
+        Vec2 pos = box2d.getBodyPixelCoord(body);
+        // Get its angle of rotation
+        return String.format("{Boundary %d x,y=(%f, %f) }",index, pos.x,pos.y);
+    }
 }
 
 

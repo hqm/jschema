@@ -30,8 +30,8 @@ public class SensoriMotorSystem {
     final int WORLD_WIDTH = 4096;
 
     // Position of body in world
-    float xpos = 0;
-    float ypos = 0;
+    float xpos = 300;
+    float ypos = 300;
 
     // horizontal scroll speed for debugging
     float scrollspeed = 25.0f;
@@ -50,18 +50,41 @@ public class SensoriMotorSystem {
     float gazeAzimuthAngle = 0;
     float gazeElevationAngle = 0;
 
+    Box hand1;
+    Box hand2;
+
+    // The hands are held in position by a MouseJoint to the handx,handy positions
+    Vec2 hand1AbsPos = new Vec2(xpos,ypos);
+    Vec2 hand2AbdPos = new Vec2(xpos,ypos);
+
+    // arms can reach max of 300 px in from body center
+    int reachMaxX = 300;
+    int reachMaxY = 300;
+
+    // Vector of (gross,fine) hand position
+    Vec2 hand1XPos = new Vec2(0,0);
+    Vec2 hand1YPos = new Vec2(0,0);
+    Vec2 hand2XPos = new Vec2(0,0);
+    Vec2 hand2YPos = new Vec2(0,0);
+
 
     public SensoriMotorSystem(JSchema a) {
         this.app = a;
         System.out.println("SensoriMotorSystem constructor this.app = "+this.app);
     }
 
+    Object2D findObj(int index) {
+        for (Plane plane: planes) {
+            Object2D o = plane.findObj(index);
+            if (o != null) { return o; }
+        }
+        return null;
+    }
+
+
     PFont font;
     ArrayList<Plane> planes = new ArrayList<Plane>();
     Plane currentPlane;
-
-    Box hand1;
-    Box hand2;
 
     int marker_color;
 
@@ -95,11 +118,11 @@ public class SensoriMotorSystem {
         hand2 = plane1.addBox( 800, 200, 32, 32, 5, app.color(255,0,0));
         hand1.alpha = 255;
         hand2.alpha = 255;
+        hand1.setFixedRotation(true);
+        hand2.setFixedRotation(true);
 
-        // TODO add grippers
-        //plane2.addBox(500, 100, 100, 100, 4);
+
         plane0.addBox(800, 100, 100, 100, 4, app.color(255,40,30));
-        //plane2.addBox(900, 100, 50, 50, 7);
         plane0.addBox(1000, 100, 50, 50, 8, app.color(87,191,22));
 
         worldState = new WorldState();
@@ -111,7 +134,6 @@ public class SensoriMotorSystem {
             plane.setTranslation(dx,dy);
         }
     }
-
 
 
     void initialBoundaries(Plane p) {
@@ -151,6 +173,7 @@ public class SensoriMotorSystem {
         p.addBall(200, bottom-100, 40);
         p.addBall(250, bottom-100, 40);
         p.addBall(500, bottom-100, 30);
+        p.addCustomShape1(50,bottom-100,app.color(123,201,122));
     }
 
     void draw() {
@@ -293,6 +316,8 @@ public class SensoriMotorSystem {
         
 
     }
+
+
 
 
 }

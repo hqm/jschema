@@ -23,7 +23,7 @@ import processing.opengl.*;
 abstract class Object2D {
 
     // We need to keep track of a Body and a width and height
-    Body body;
+    public Body body;
     float density;
     Fixture fixture;
     int color;
@@ -34,11 +34,14 @@ abstract class Object2D {
     MouseJoint mouseJoint;
     WeldJoint weldJoint;
     DistanceJoint distanceJoint;
+    int index;
+    static int counter = 0;
 
     Object2D(Plane p) {
         this.plane = p;
         this.app = plane.app;
         this.box2d = plane.box2d;
+        this.index = Object2D.counter++;
     }
 
     // Call this after creating body

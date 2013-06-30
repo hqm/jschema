@@ -19,7 +19,7 @@ import processing.opengl.*;
 
 
 // A rectangular box
-class Box extends Object2D {
+public class Box extends Object2D {
 
     // We need to keep track of a Body and a width and height
     float w;
@@ -130,7 +130,7 @@ class Box extends Object2D {
         // Get its angle of rotation
         float a = body.getAngle();
         float alpha = app.map(density, 0, MAX_DENSITY, 0, 255);
-        return String.format("{BOX x,y=(%f, %f) w,h=(%f, %f) rot=%f density=%f color=%x, alpha=%f}",pos.x,pos.y,w,h,a,density,color,alpha);
+        return String.format("{BOX %d x,y=(%f, %f) w,h=(%f, %f) rot=%f density=%f color=%x, alpha=%f}",index, pos.x,pos.y,w,h,a,density,color,alpha);
     }
 
 

@@ -23,7 +23,6 @@ import java.io.InputStream;
 import java.io.OutputStream; 
 import java.io.IOException; 
 
-
 public class JSchema extends PApplet {
 
     public static JSchema app;
@@ -80,7 +79,6 @@ public class JSchema extends PApplet {
     public void mouseReleased() {
         sms.mouseReleased();
     }
-
 
  static public void main(String[] passedArgs) {
      //    String[] appletArgs = new String[] { "--full-screen", "--bgcolor=#666666", "--stop-color=#cccccc", "com.beartronics.jschema.JSchema" };

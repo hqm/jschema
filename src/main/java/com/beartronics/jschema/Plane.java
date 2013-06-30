@@ -55,6 +55,15 @@ public class Plane implements ContactListener {
 
     PFont font;
 
+    Object2D findObj(int index) {
+        for (Object2D obj: physobjs) {
+            if (obj.index == index) {
+                return obj;
+            }
+        }
+        return null;
+    }
+
     void setup() {
         box2d = app.createBox2D();
 
@@ -111,6 +120,13 @@ public class Plane implements ContactListener {
         physobjs.add(box);
         return box;
     }
+
+    CustomShape1 addCustomShape1(float x, float y, int color) {
+        CustomShape1 c = new CustomShape1(this, x,  y, color);
+        physobjs.add(c);
+        return c;
+    }
+
 
     Box addBox(float x, float y,float w,float h, float density, int color) {
         Box box = new Box(this, x, y, w, h, density, color);

@@ -10,8 +10,11 @@ public class SchemaTest extends TestCase {
     }
 
     public void testCreate() throws Exception {
-        Action a = new Action("testaction", 0);
-        Schema s = new Schema(259, a);
+        JSchema app = new JSchema();
+        SensoriMotorSystem sms = new SensoriMotorSystem(app);
+        Stage stage = new Stage(sms);
+        Action a = new Action(stage, "testaction", 0);
+        Schema s = new Schema(stage, 259, a);
         assertEquals( 259 , s.id );
     }
 }
