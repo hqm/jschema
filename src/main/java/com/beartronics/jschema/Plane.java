@@ -413,6 +413,12 @@ public class Plane implements ContactListener {
     }
 
     public void postSolve(Contact c, ContactImpulse ci) {
+        // To convert impulse into force, divide it by time step.: F = p / dt
+        app.print("postSolve "+c+"  ci=[");
+        for (float i: ci.normalImpulses) {
+            app.print(i+", ");
+        }
+        app.println("]");
     }
 
 

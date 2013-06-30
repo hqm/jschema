@@ -10,6 +10,8 @@ import org.jbox2d.collision.shapes.*;
 import org.jbox2d.common.*;
 import org.jbox2d.dynamics.*;
 import org.jbox2d.dynamics.joints.*;
+import org.jbox2d.dynamics.contacts.*;
+import java.util.*;
 
 import processing.core.PApplet;
 import processing.core.*;
@@ -55,6 +57,21 @@ abstract class Object2D {
         boolean inside = f.testPoint(worldPoint);
         return inside;
     }
+
+    public ArrayList<Contact> getContactList() {
+        ArrayList<Contact> objs = new  ArrayList<Contact>();        
+        ContactEdge cedge = body.getContactList();
+        while (cedge != null) {
+            Contact c = cedge.contact;
+            Object2D other = (Object2D) cedge.other.getUserData();
+            objs.add(c);
+            cedge = cedge.next;
+        }
+        return objs;
+    }
+
+
+
 
     // This function removes the particle from the box2d world
     void killBody() {
@@ -195,7 +212,6 @@ abstract class Object2D {
         Vec2 p1, p2, d;
         // Define the joint
         DistanceJointDef djd = new DistanceJointDef();
-        // Body A is just a fake ground body for simplicity (there isn't anything at the mouse)
         djd.bodyA = objA.body;
         // Body 2 is the obj's objy
         djd.bodyB = objB.body;

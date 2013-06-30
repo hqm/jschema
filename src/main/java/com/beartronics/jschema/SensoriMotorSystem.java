@@ -53,12 +53,15 @@ public class SensoriMotorSystem {
     float gazeAzimuthAngle = 0;
     float gazeElevationAngle = 0;
 
-    Hand hand1;
-    Hand hand2;
+    public Hand hand1;
+    public Hand hand2;
 
-    // arms can reach max of 300 px in from body center
-    int reachX = 300;
-    int reachY = 300;
+    // max number of gross and fine motor steps that arms can take
+    int reachX = 10;
+    int reachY = 10;
+    // arm motor step size
+    int dGross = 100;
+    int dFine = 10;
 
     public SensoriMotorSystem(JSchema a) {
         this.app = a;
@@ -168,6 +171,14 @@ public class SensoriMotorSystem {
         p.addCustomShape1(50,bottom-100,app.color(123,201,122));
     }
 
+    String showHandForces() {
+        Vec2 f1 = hand1.getForces();
+        Vec2 f2 = hand2.getForces();
+        String hforces = String.format("hand1 Fx=%f Fy=%f, hand2 Fx=%f, Fy=%f,", f1.x, f1.y, f2.x, f2.y);
+        return hforces;
+    }
+
+
     void draw() {
 
         app.rectMode(PConstants.CORNER);
@@ -177,6 +188,7 @@ public class SensoriMotorSystem {
         app.text("alt-click to create box, click to grasp, ctrl-click to lift, left and right arrow to rotate, shift for transparent", 20,12);
         app.text("plane="+planes.indexOf(currentPlane), 20,22);
         app.text("xpos="+xpos,20,32);
+        app.text(showHandForces(),20,42);
 
         hand1.updatePosition(xpos,ypos);
         hand2.updatePosition(xpos,ypos);
