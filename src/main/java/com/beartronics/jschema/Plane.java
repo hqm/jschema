@@ -18,6 +18,7 @@ import org.jbox2d.dynamics.contacts.*;
 import org.jbox2d.callbacks.ContactListener;
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.collision.Manifold;
+import org.jbox2d.collision.ManifoldPoint;
 
 
 import processing.core.*;
@@ -412,13 +413,29 @@ public class Plane implements ContactListener {
     public void endContact(Contact cp) {
     }
 
+
+    // Gives us a chance to find the normal forces on contacting objects
     public void postSolve(Contact c, ContactImpulse ci) {
-        // To convert impulse into force, divide it by time step.: F = p / dt
-        app.print("postSolve "+c+"  ci=[");
-        for (float i: ci.normalImpulses) {
-            app.print(i+", ");
+        Fixture f1 = c.getFixtureA();
+        Fixture f2 = c.getFixtureB();
+        // Get both bodies
+        Body b1 = f1.getBody();
+        Body b2 = f2.getBody();
+
+        // Get our objects that reference these bodies
+        Object2D o1 = (Object2D) b1.getUserData();
+        Object2D o2 = (Object2D) b2.getUserData();
+
+        if (o1 == app.sms.hand1 || o1 == app.sms.hand2 ) {
+            Manifold m = c.getManifold();
+            Vec2 totalImpulse = new Vec2(0,0);
+            Vec2 lnormal = m.localNormal;
+            for (ManifoldPoint pt: m.points) {
+                float normalImpulse = pt.normalImpulse;
+                totalImpulse.addLocal(lnormal.mul(normalImpulse));
+            }
+            ((Hand) o1).netForce = totalImpulse;
         }
-        app.println("]");
     }
 
 

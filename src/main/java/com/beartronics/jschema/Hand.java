@@ -32,6 +32,8 @@ public class Hand extends Box {
     public float handForceX = 0;
     public float handForceY = 0;
 
+    public Vec2 netForce = new Vec2();
+    
     float GROSS_DIST = 100;
     float FINE_DIST = 10;
 
@@ -87,13 +89,8 @@ public class Hand extends Box {
 
 
     // Looks at all contacts on the hand and adds up all the forces
-    public Vec2 getForces() {
-        Vec2 fv = new Vec2(0,0);
-
-        for (Contact c: getContactList()) {
-            
-        }
-        return fv;
+    public Vec2 getNetForce() {
+        return netForce;
     }
 
     /**

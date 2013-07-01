@@ -172,8 +172,8 @@ public class SensoriMotorSystem {
     }
 
     String showHandForces() {
-        Vec2 f1 = hand1.getForces();
-        Vec2 f2 = hand2.getForces();
+        Vec2 f1 = hand1.getNetForce();
+        Vec2 f2 = hand2.getNetForce();
         String hforces = String.format("hand1 Fx=%f Fy=%f, hand2 Fx=%f, Fy=%f,", f1.x, f1.y, f2.x, f2.y);
         return hforces;
     }
