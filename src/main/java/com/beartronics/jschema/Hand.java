@@ -11,6 +11,7 @@ import org.jbox2d.common.*;
 import org.jbox2d.dynamics.*;
 import java.util.*;
 import org.jbox2d.dynamics.contacts.*;
+import org.jbox2d.dynamics.joints.*;
 
 
 import processing.core.PApplet;
@@ -49,22 +50,53 @@ public class Hand extends Box {
     }
 
     // Creates the spring joints that hold the hands at fixed positions.
-    void setupMouseJoint() {
+    public void setupMouseJoint() {
         Vec2 pos = box2d.getBodyPixelCoord(body);
         bindMouseJoint(pos.x, pos.y);
     }
 
+    /** Releases motor control of the hand (by destroying its mouse joint)
+       Call setupMouseJoint to restore control of the hand to motor system.
+    */
+    public void relax() {
+        destroyMouseJoint();
+    }
+
+    /** Find all objects we are grasping, and welds them to anything they are touching (except us).
+       returns true if any objects were welded.
+     */
+    public boolean weldGraspedObjects () {
+        boolean anyAttached = false;
+        for (Object2D obj: getWeldedObjects()) {
+            anyAttached = true;
+            obj.weldContacts(this);
+        }
+        return anyAttached;
+    }
+
+
+    /**
+       Finds any objects we're grasping, and deletes any weld joints they have, except to us.
+     */
+    public boolean unWeldGraspedObjects () {
+        boolean anyAttached = false;
+        for (Object2D obj: getWeldedObjects()) {
+            anyAttached = true;
+            obj.removeWeldJoints(this);
+        }
+        return anyAttached;
+    }
 
     // Takes a gross and fine delta motion, enforce max reach limit
-    void moveHorizontal(float dgx, float dfx) {
+    public void moveHorizontal(float dgx, float dfx) {
         float reachX = app.sms.reachX;
         float dGross = app.sms.dGross;
         float dFine  = app.sms.dFine;
 
         grossX += dgx;
         fineX += dfx;
-        if (grossX > reachX/2) { grossX = reachX/2; }
-        if (grossX < -reachX/2) { grossX = -reachX/2; }
+        if (grossX > reachX/2)   { grossX = reachX/2; }
+        if (grossX < -reachX/2)  { grossX = -reachX/2; }
         if (fineX > reachX/2) { fineX = reachX/2; }
         if (fineX < -reachX/2) { fineX = -reachX/2; }
 
@@ -72,17 +104,18 @@ public class Hand extends Box {
     }
 
     // Takes a gross and fine delta motion, enforce max reach limit
-    void moveVertical(float dgy, float dfy) {
+    public void moveVertical(float dgy, float dfy) {
         float reachY = app.sms.reachY;
         float dGross = app.sms.dGross;
         float dFine  = app.sms.dFine;
 
         grossY += dgy;
         fineY += dfy;
-        if (grossY > reachY/2f) { grossY = reachY/2f; }
-        if (grossY < -reachY/2f) { grossY = -reachY/2f; }
-        if (fineY > reachY/2f) { fineY = reachY/2f; }
-        if (fineY < -reachY/2f) { fineY = -reachY/2f; }
+        if (grossY > reachY/2)   { grossY = reachY/2; }
+        if (grossY < -reachY/2)  { grossY = -reachY/2; }
+        if (fineY > reachY/2) { fineY = reachY/2; }
+        if (fineY < -reachY/2) { fineY = -reachY/2; }
+
 
         updatePosition(app.sms.xpos, app.sms.ypos);
     }
@@ -142,7 +175,11 @@ public class Hand extends Box {
         // Get its angle of rotation
         float a = body.getAngle();
         float alpha = app.map(density, 0, MAX_DENSITY, 0, 255);
-        return String.format("{BOX %d x,y=(%f, %f) w,h=(%f, %f) rot=%f density=%f color=%x, alpha=%f}",index, pos.x,pos.y,w,h,a,density,color,alpha);
+        StringBuilder grasps = new StringBuilder();
+        for (Object2D obj: getWeldedObjects()) {
+            grasps.append(obj.toString() +", ");
+        }
+        return String.format("{HAND %d x,y=(%f, %f) w,h=(%f, %f) rot=%f density=%f color=%x, alpha=%f grasping[%s]}",index, pos.x,pos.y,w,h,a,density,color,alpha, grasps);
     }
 
 

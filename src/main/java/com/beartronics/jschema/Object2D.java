@@ -58,20 +58,6 @@ abstract class Object2D {
         return inside;
     }
 
-    public ArrayList<Contact> getContactList() {
-        ArrayList<Contact> objs = new  ArrayList<Contact>();        
-        ContactEdge cedge = body.getContactList();
-        while (cedge != null) {
-            Contact c = cedge.contact;
-            Object2D other = (Object2D) cedge.other.getUserData();
-            objs.add(c);
-            cedge = cedge.next;
-        }
-        return objs;
-    }
-
-
-
 
     // This function removes the particle from the box2d world
     void killBody() {
@@ -100,6 +86,10 @@ abstract class Object2D {
 
     void setFixedRotation(boolean v) {
         body.setFixedRotation(v);
+    }
+
+    Vec2 getPosition() {
+        return box2d.getBodyPixelCoord(body);
     }
 
     void rotate(float a) {
@@ -194,8 +184,6 @@ abstract class Object2D {
         wd.collideConnected = false;
         wd.initialize(obj1.body, obj2.body, obj1.body.getWorldCenter());
         weldJoint = (WeldJoint) box2d.world.createJoint(wd);
-
-
     }
 
     void destroyWeldJoint() {
@@ -204,6 +192,73 @@ abstract class Object2D {
             weldJoint = null;
         }
     }
+
+    /* Get list of contacting Object2Ds */
+    public ArrayList<Object2D> getWeldedObjects() {
+        JointEdge jedge = body.getJointList();
+        ArrayList<Joint> jlist = new ArrayList<Joint>();
+        while (jedge != null) {
+            jlist.add(jedge.joint);
+            jedge = jedge.next;
+        }
+
+        ArrayList<Object2D> objs = new  ArrayList<Object2D>();
+        for (Joint j: jlist) {
+            if (j instanceof WeldJoint) {
+                Body bA = j.getBodyB();
+                Body bB = j.getBodyA();
+                Body b = (bA == body ? bB : bA);
+                Object2D other = (Object2D) b.getUserData();
+                app.print(String.format("getWeldedObjects bA=%s bB=%s", bA,bB));
+                if (other != null) {
+                    app.println(String.format("... obj=%s", other));
+                    objs.add(other);
+                } else {
+                    app.println(" ... null obj");
+                }
+            }
+        }
+        return objs;
+    }
+
+    
+    boolean removeWeldJoints() {
+        return removeWeldJoints(null);
+    }
+
+    /** Remove all weld joints except to the body IGNORE
+        @param ignore do not destroy a joint if it goes to object IGNORE
+     @return true if an object was unwelded
+*/
+    boolean removeWeldJoints(Object2D ignore) {
+        boolean removed = false;
+        JointEdge jedge = body.getJointList();
+        ArrayList<Joint> jlist = new ArrayList<Joint>();
+        while (jedge != null) {
+            jlist.add(jedge.joint);
+            jedge = jedge.next;
+        }
+        for (Joint j: jlist) {
+            if (j instanceof WeldJoint) {
+                Body bA = j.getBodyB();
+                Body bB = j.getBodyA();
+                Object2D oA = null;
+                Object2D oB = null;
+                if (bA != null) {
+                    oA = (Object2D) bA.getUserData();
+                }
+                if (bB != null) {
+                    oB = (Object2D) bB.getUserData();
+                }
+                if (oA != ignore && oB != ignore) {
+                    removed = true;
+                    box2d.world.destroyJoint(j);
+                }
+            }
+        }
+        return removed;
+    }
+
 
 
     ////////////////////////////////////////////////////////////////
@@ -223,6 +278,43 @@ abstract class Object2D {
         // Make the joint!
         distanceJoint = (DistanceJoint) box2d.world.createJoint(djd);
     }
+
+    void weldContacts() {
+        weldContacts(null);
+    }
+
+
+    // adds WeldJoint between thing and any bodies it touches
+    void weldContacts(Object2D ignore) {
+        app.println("********\nGrasp Contacts for "+this);
+        ContactEdge cedge = body.getContactList();
+        while (cedge != null) {
+            Contact c = cedge.contact;
+            Object2D other = (Object2D) cedge.other.getUserData();
+            if (other != ignore && other != null) {
+                app.println("welding "+this+" to obj "+other);
+
+                bindWeldJoint(this, other);
+            }
+            cedge = cedge.next;
+        }
+    }
+
+
+
+    void removeAllJoints() {
+        JointEdge jedge = body.getJointList();
+        ArrayList<Joint> jlist = new ArrayList<Joint>();
+        while (jedge != null) {
+            jlist.add(jedge.joint);
+            jedge = jedge.next;
+        }
+        for (Joint j: jlist) {
+            box2d.world.destroyJoint(j);
+        }
+    }
+
+
 
 
 

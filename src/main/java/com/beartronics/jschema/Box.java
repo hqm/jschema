@@ -130,7 +130,7 @@ public class Box extends Object2D {
         // Get its angle of rotation
         float a = body.getAngle();
         float alpha = app.map(density, 0, MAX_DENSITY, 0, 255);
-        return String.format("{BOX %d x,y=(%f, %f) w,h=(%f, %f) rot=%f density=%f color=%x, alpha=%f}",index, pos.x,pos.y,w,h,a,density,color,alpha);
+        return String.format("{BOX %d x,y=(%2f, %2f) w,h=(%2f, %2f) rot=%2f density=%2f color=%x, alpha=%2f}",index, pos.x,pos.y,w,h,a,density,color,alpha);
     }
 
 

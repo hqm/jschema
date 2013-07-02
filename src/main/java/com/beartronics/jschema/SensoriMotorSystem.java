@@ -187,7 +187,7 @@ public class SensoriMotorSystem {
 
         app.text("alt-click to create box, click to grasp, ctrl-click to lift, left and right arrow to rotate, shift for transparent", 20,12);
         app.text("plane="+planes.indexOf(currentPlane), 20,22);
-        app.text("xpos="+xpos,20,32);
+        app.text("xpos="+xpos+ "   ypos="+ypos,20,32);
         app.text(showHandForces(),20,42);
 
         hand1.updatePosition(xpos,ypos);
