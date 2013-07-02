@@ -49,7 +49,8 @@ public class Hand extends Box {
         setupMouseJoint();
     }
 
-    // Creates the spring joints that hold the hands at fixed positions.
+    /** Creates the spring joints that sets the hand at fixed position relative to body.
+     */
     public void setupMouseJoint() {
         Vec2 pos = box2d.getBodyPixelCoord(body);
         bindMouseJoint(pos.x, pos.y);
@@ -58,7 +59,7 @@ public class Hand extends Box {
     /** Releases motor control of the hand (by destroying its mouse joint)
        Call setupMouseJoint to restore control of the hand to motor system.
     */
-    public void relax() {
+    public void relaxMouseJoint() {
         destroyMouseJoint();
     }
 
@@ -74,9 +75,19 @@ public class Hand extends Box {
         return anyAttached;
     }
 
+    /**
+     * Welds all contacting objects to this hand.
+     */
+    public ArrayList<Object2D> grasp() {
+        return weldContacts();
+    }
+
+    public void ungrasp() {
+        removeWeldJoints(this);
+    }
 
     /**
-       Finds any objects we're grasping, and deletes any weld joints they have, except to us.
+       Finds any objects we're grasping, and deletes any weld joints they have, except the weld to the hand.
      */
     public boolean unWeldGraspedObjects () {
         boolean anyAttached = false;
@@ -87,8 +98,11 @@ public class Hand extends Box {
         return anyAttached;
     }
 
-    // Takes a gross and fine delta motion, enforce max reach limit
-    public void moveHorizontal(float dgx, float dfx) {
+    /** Takes a gross and fine delta motion, enforce max reach limit
+        @param dgx gross motion delta
+        @param dfx fine motion delta
+    */
+    public void hjog(float dgx, float dfx) {
         float reachX = app.sms.reachX;
         float dGross = app.sms.dGross;
         float dFine  = app.sms.dFine;
@@ -103,8 +117,11 @@ public class Hand extends Box {
         updatePosition(app.sms.xpos, app.sms.ypos);
     }
 
-    // Takes a gross and fine delta motion, enforce max reach limit
-    public void moveVertical(float dgy, float dfy) {
+    /** Takes a gross and fine delta motion, enforce max reach limit
+        @param dgx gross motion delta
+        @param dfx fine motion delta
+     */
+     public void vjog(float dgy, float dfy) {
         float reachY = app.sms.reachY;
         float dGross = app.sms.dGross;
         float dFine  = app.sms.dFine;
@@ -121,7 +138,7 @@ public class Hand extends Box {
     }
 
 
-    // Looks at all contacts on the hand and adds up all the forces
+    /** Sum of all forces of contacting objects  on the hand*/
     public Vec2 getNetForce() {
         return netForce;
     }

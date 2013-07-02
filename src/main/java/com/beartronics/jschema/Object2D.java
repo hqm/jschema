@@ -34,7 +34,7 @@ abstract class Object2D {
     float w,h;
     Plane plane;
     MouseJoint mouseJoint;
-    WeldJoint weldJoint;
+    WeldJoint gripJoint;
     DistanceJoint distanceJoint;
     int index;
     static int counter = 0;
@@ -179,21 +179,29 @@ abstract class Object2D {
     ////////////////////////////////////////////////////////////////
     // Weld Joints
 
-    void bindWeldJoint(Object2D obj1, Object2D obj2) {
+    /** Welds two objects together with a WeldJoint
+     * param obj1
+     * param obj2
+     */
+    void weld(Object2D obj1, Object2D obj2) {
         WeldJointDef wd = new WeldJointDef();
         wd.collideConnected = false;
         wd.initialize(obj1.body, obj2.body, obj1.body.getWorldCenter());
-        weldJoint = (WeldJoint) box2d.world.createJoint(wd);
+        gripJoint = (WeldJoint) box2d.world.createJoint(wd);
     }
 
+
+    /** Remove the WeldJoint we use for gripping. Used primarily by the Hand class.
+     */
     void destroyWeldJoint() {
-        if (weldJoint != null) {
-            box2d.world.destroyJoint(weldJoint);
-            weldJoint = null;
+        if (gripJoint != null) {
+
+            box2d.world.destroyJoint(gripJoint);
+            gripJoint = null;
         }
     }
 
-    /* Get list of contacting Object2Ds */
+    /** Returns list of contacting Object2Ds */
     public ArrayList<Object2D> getWeldedObjects() {
         JointEdge jedge = body.getJointList();
         ArrayList<Joint> jlist = new ArrayList<Joint>();
@@ -221,16 +229,18 @@ abstract class Object2D {
         return objs;
     }
 
-    
-    boolean removeWeldJoints() {
+    /** Remove all weld joints from this body
+     * @return true if an object was unwelded
+     */
+    public boolean removeWeldJoints() {
         return removeWeldJoints(null);
     }
 
     /** Remove all weld joints except to the body IGNORE
-        @param ignore do not destroy a joint if it goes to object IGNORE
-     @return true if an object was unwelded
-*/
-    boolean removeWeldJoints(Object2D ignore) {
+     * @param ignore do not destroy a joint if it goes to object IGNORE
+     * @return true if an object was unwelded
+     */
+    public boolean removeWeldJoints(Object2D ignore) {
         boolean removed = false;
         JointEdge jedge = body.getJointList();
         ArrayList<Joint> jlist = new ArrayList<Joint>();
@@ -279,13 +289,20 @@ abstract class Object2D {
         distanceJoint = (DistanceJoint) box2d.world.createJoint(djd);
     }
 
-    void weldContacts() {
-        weldContacts(null);
+    /** Adds WeldJoint between thing and any bodies it is contacting
+     * @return list of objects it welded to
+     */
+    ArrayList<Object2D> weldContacts() {
+        return weldContacts(null);
     }
 
 
-    // adds WeldJoint between thing and any bodies it touches
-    void weldContacts(Object2D ignore) {
+    /** Adds WeldJoint between thing and any bodies it is contacting
+     * @param ignore do not weld to this object, if supplied
+     * @return list of objects it welded to
+     */
+    ArrayList<Object2D> weldContacts(Object2D ignore) {
+        ArrayList<Object2D> objs = new ArrayList<Object2D>();
         app.println("********\nGrasp Contacts for "+this);
         ContactEdge cedge = body.getContactList();
         while (cedge != null) {
@@ -293,15 +310,17 @@ abstract class Object2D {
             Object2D other = (Object2D) cedge.other.getUserData();
             if (other != ignore && other != null) {
                 app.println("welding "+this+" to obj "+other);
-
-                bindWeldJoint(this, other);
+                objs.add(other);
+                weld(this, other);
             }
             cedge = cedge.next;
         }
+        return objs;
     }
 
-
-
+    /**
+     * Destroys every joint in the body's contact list.
+     */
     void removeAllJoints() {
         JointEdge jedge = body.getJointList();
         ArrayList<Joint> jlist = new ArrayList<Joint>();
