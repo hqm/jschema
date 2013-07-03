@@ -31,9 +31,6 @@ public class Plane implements ContactListener {
     public PBox2D box2d;
     public JSchema app;
 
-    float xpos = 0;
-    float ypos = 0;
-
     int borderColor = 0;
 
     // For debugging, the user can grab an object with the mouse interactively
@@ -241,16 +238,21 @@ public class Plane implements ContactListener {
     }
 
     float mouseX() {
-        return app.mouseX + xpos;
+        float v = app.mouseX + translateX - (app.width/2);
+        return v;
     }
 
     float mouseY() {
-        return app.mouseY + ypos;
+        float v = app.mouseY;
+        return v;
     }
 
+    float translateX;
+    float translateY;
+
     void setTranslation(float x, float y) {
-        xpos = x;
-        ypos = y;
+        translateX = x;
+        translateY = y;
     }
 
     void step() {
@@ -280,8 +282,7 @@ public class Plane implements ContactListener {
 
 
         app.pushMatrix();
-        app.translate(-xpos,0);
-        app.translate(-ypos,0);
+        app.translate(-translateX+(app.width/2), 0);
 
 
         app.pushStyle();
@@ -387,38 +388,8 @@ public class Plane implements ContactListener {
 
     // Gives us a chance to find the normal forces on contacting objects
     public void postSolve(Contact c, ContactImpulse ci) {
-        Fixture f1 = c.getFixtureA();
-        Fixture f2 = c.getFixtureB();
-        // Get both bodies
-        Body b1 = f1.getBody();
-        Body b2 = f2.getBody();
 
-        Manifold m = c.getManifold();
-
-        // Get our objects that reference these bodies
-        Object2D o1 = (Object2D) b1.getUserData();
-        Object2D o2 = (Object2D) b2.getUserData();
-
-        if ((o1 == app.sms.hand1) || (o1 == app.sms.hand2)) {
-            addNormalImpulses(m, (Hand) o1);
-        }
-
-        if ((o2 == app.sms.hand1) || (o2 == app.sms.hand2)) {
-            addNormalImpulses(m, (Hand) o2);
-        }
     }
-
-    void addNormalImpulses(Manifold m, Hand h) {
-        Vec2 totalImpulse = h.netForce;
-        Vec2 lnormal = m.localNormal;
-        for (ManifoldPoint pt: m.points) {
-            float normalImpulse = pt.normalImpulse;
-            totalImpulse.addLocal(lnormal.mul(normalImpulse));
-            app.println("adding normal impulse to "+h+" += "+normalImpulse+" ==> "+totalImpulse);
-        }
-    }
-
-
 
     public void preSolve(Contact c, Manifold m) {
     }

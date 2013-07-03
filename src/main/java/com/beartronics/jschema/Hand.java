@@ -33,13 +33,6 @@ public class Hand extends Box {
     public float handForceX = 0;
     public float handForceY = 0;
 
-    public Vec2 netForce = new Vec2();
-
-    public void resetNetForce() {
-        netForce.x = 0;
-        netForce.y = 0;
-    }
-    
     float GROSS_DIST = 100;
     float FINE_DIST = 10;
 
@@ -145,7 +138,7 @@ public class Hand extends Box {
 
     /** Sum of all forces of contacting objects  on the hand*/
     public Vec2 getNetForce() {
-        return netForce;
+        return getNormalForces(this);
     }
 
     /**

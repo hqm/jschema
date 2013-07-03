@@ -11,7 +11,9 @@ import org.jbox2d.common.*;
 import org.jbox2d.dynamics.*;
 import org.jbox2d.dynamics.joints.*;
 import org.jbox2d.dynamics.contacts.*;
+import org.jbox2d.collision.*;
 import java.util.*;
+
 
 import processing.core.PApplet;
 import processing.core.*;
@@ -331,6 +333,22 @@ abstract class Object2D {
         for (Joint j: jlist) {
             box2d.world.destroyJoint(j);
         }
+    }
+
+    public Vec2 getNormalForces(Object2D thing) {
+        Vec2 totalImpulse = new Vec2(0,0);
+        ContactEdge cedge = thing.body.getContactList();
+        while (cedge != null) {
+            Contact c = cedge.contact;
+            Manifold m = c.getManifold();
+            Vec2 lnormal = m.localNormal;
+            for (ManifoldPoint pt: m.points) {
+                float normalImpulse = pt.normalImpulse;
+                totalImpulse.addLocal(lnormal.mul(normalImpulse));
+            }
+            cedge = cedge.next;
+        }
+        return totalImpulse;
     }
 
 
