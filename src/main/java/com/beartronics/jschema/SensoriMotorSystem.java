@@ -57,11 +57,11 @@ public class SensoriMotorSystem {
     public Hand hand2;
 
     // max number of gross and fine motor steps that arms can take
-    int reachX = 10;
-    int reachY = 10;
+    public int reachX = 10;
+    public int reachY = 10;
     // arm motor step size
-    int dGross = 100;
-    int dFine = 10;
+    public int dGross = 100;
+    public int dFine = 10;
 
     public SensoriMotorSystem(JSchema a) {
         this.app = a;

@@ -14,6 +14,7 @@ import processing.core.*;
 
 public class SensorInput {
     public String description;
+    public String path;
     public int id; // a unique id for this input
     public boolean priorValue;
     public boolean value;

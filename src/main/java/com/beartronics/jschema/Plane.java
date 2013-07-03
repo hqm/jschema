@@ -191,9 +191,12 @@ public class Plane implements ContactListener {
         pickedThing = thing;
     }
 
+    // Drop what the mouse is holding. But if it's a Hand, don't destroy it's mouseJoint.
     void mouseDropObject() {
         if (pickedThing != null) {
-            pickedThing.destroyMouseJoint();
+            if (! (pickedThing instanceof Hand)) {
+                pickedThing.destroyMouseJoint();
+            }
             pickedThing.setSensor(false);
             pickedThing = null;
         }

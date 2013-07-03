@@ -33,8 +33,8 @@ public class Hand extends Box {
     public float handForceX = 0;
     public float handForceY = 0;
 
-    float GROSS_DIST = 100;
-    float FINE_DIST = 10;
+    float GROSS_DIST;
+    float FINE_DIST; 
 
     // TODO we need to set up a distance joint on the hands so they can't get further than the 'reach' dist
     // from the body.
@@ -44,6 +44,9 @@ public class Hand extends Box {
     // Constructor
     Hand(Plane p, float x, float y, float w, float h, float density, int color) {
         super(p,x,y,w,h,density,color);
+        GROSS_DIST = app.sms.dGross;
+        FINE_DIST = app.sms.dFine; 
+
         setupMouseJoint();
     }
 
@@ -51,7 +54,24 @@ public class Hand extends Box {
      */
     public void setupMouseJoint() {
         Vec2 pos = box2d.getBodyPixelCoord(body);
+        float xpos = app.sms.xpos;
+        float ypos = app.sms.ypos;
+        
+        // Compute what the gross and find motor position settings have to be to set the hand
+        // at its current position
+        grossX = (pos.x - xpos) / GROSS_DIST;
+        fineX =  ((pos.x - xpos) % GROSS_DIST) / FINE_DIST;
+
+        grossY = (pos.y - ypos) / GROSS_DIST;
+        fineY =  ((pos.y - ypos) % GROSS_DIST) / FINE_DIST;
+
+        app.println("pos.x - xpos = "+(pos.x - xpos));
+        app.println("pos.y - ypos = "+(pos.y - ypos));
+        app.println(this);
         bindMouseJoint(pos.x, pos.y);
+
+        updatePosition(app.sms.xpos, app.sms.ypos);
+
     }
 
     /** Releases motor control of the hand (by destroying its mouse joint)
@@ -101,17 +121,8 @@ public class Hand extends Box {
         @param dfx fine motion delta
     */
     public void hjog(float dgx, float dfx) {
-        float reachX = app.sms.reachX;
-        float dGross = app.sms.dGross;
-        float dFine  = app.sms.dFine;
-
         grossX += dgx;
         fineX += dfx;
-        if (grossX > reachX/2)   { grossX = reachX/2; }
-        if (grossX < -reachX/2)  { grossX = -reachX/2; }
-        if (fineX > reachX/2) { fineX = reachX/2; }
-        if (fineX < -reachX/2) { fineX = -reachX/2; }
-
         updatePosition(app.sms.xpos, app.sms.ypos);
     }
 
@@ -120,18 +131,8 @@ public class Hand extends Box {
         @param dfx fine motion delta
      */
      public void vjog(float dgy, float dfy) {
-        float reachY = app.sms.reachY;
-        float dGross = app.sms.dGross;
-        float dFine  = app.sms.dFine;
-
         grossY += dgy;
         fineY += dfy;
-        if (grossY > reachY/2)   { grossY = reachY/2; }
-        if (grossY < -reachY/2)  { grossY = -reachY/2; }
-        if (fineY > reachY/2) { fineY = reachY/2; }
-        if (fineY < -reachY/2) { fineY = -reachY/2; }
-
-
         updatePosition(app.sms.xpos, app.sms.ypos);
     }
 
@@ -148,6 +149,20 @@ public class Hand extends Box {
      */
     void updatePosition(float absx, float absy) {
         float x,y;
+        float reachX = app.sms.reachX;
+        float reachY = app.sms.reachY;
+
+        // enforce limits as to how far hand can move relative to body
+        if (grossX > reachX/2)   { grossX = reachX/2; }
+        if (grossX < -reachX/2)  { grossX = -reachX/2; }
+        if (fineX > reachX/2) { fineX = reachX/2; }
+        if (fineX < -reachX/2) { fineX = -reachX/2; }
+
+        if (grossY > reachY/2)   { grossY = reachY/2; }
+        if (grossY < -reachY/2)  { grossY = -reachY/2; }
+        if (fineY > reachY/2) { fineY = reachY/2; }
+        if (fineY < -reachY/2) { fineY = -reachY/2; }
+
 
         // compute hand position from gross+fine positioning
         x = absx + grossX * GROSS_DIST + fineX * FINE_DIST;
@@ -198,7 +213,7 @@ public class Hand extends Box {
         for (Object2D obj: getWeldedObjects()) {
             grasps.append(obj.toString() +", ");
         }
-        return String.format("{HAND %d x,y=(%f, %f) w,h=(%f, %f) rot=%f density=%f color=%x, alpha=%f grasping[%s]}",index, pos.x,pos.y,w,h,a,density,color,alpha, grasps);
+        return String.format("{HAND %d x,y=(%.1f, %.1f) gx,gy=(%.1f,%.1f) fx,fy=(%.1f,%.1f)  rot=%f  grasping[%s]}",index, pos.x,pos.y,grossX,grossY,fineX,fineY, getAngle(), grasps);
     }
 
 

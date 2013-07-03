@@ -17,7 +17,8 @@ public class Stage
 {
     final Logger logger = LoggerFactory.getLogger(Stage.class);
 
-    SensoriMotorSystem sms;
+    public JSchema app;
+    public SensoriMotorSystem sms;
 
     public ArrayList<Schema> schemas = new ArrayList<Schema>();
     public ArrayList<Action> actions = new ArrayList<Action>();

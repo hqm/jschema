@@ -29,16 +29,16 @@ abstract class Object2D {
     // We need to keep track of a Body and a width and height
     public Body body;
     float density;
-    Fixture fixture;
+    public Fixture fixture;
     int color;
-    JSchema app;
-    PBox2D box2d;
-    float w,h;
-    Plane plane;
-    MouseJoint mouseJoint;
-    WeldJoint gripJoint;
-    DistanceJoint distanceJoint;
-    int index;
+    public JSchema app;
+    public PBox2D box2d;
+    public float w,h;
+    public Plane plane;
+    public MouseJoint mouseJoint;
+    public  WeldJoint gripJoint;
+    public DistanceJoint distanceJoint;
+    public int index;
     static int counter = 0;
 
     Object2D(Plane p) {
@@ -144,6 +144,9 @@ abstract class Object2D {
     // we attach the spring to an x,y location
     // and the Box object's location
     void bindMouseJoint(float x, float y) {
+        if (mouseJoint != null) {
+            destroyMouseJoint();
+        }
         // Define the joint
         MouseJointDef md = new MouseJointDef();
         // Body A is just a fake ground body for simplicity (there isn't anything at the mouse)
