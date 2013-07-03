@@ -34,7 +34,7 @@ public class SensoriMotorSystem {
     public float xpos;
     public float ypos;
     float bodyWidth = 600;
-    float bodyHeight = 600;
+    float bodyHeight = 400;
 
     // horizontal scroll speed for debugging
     float scrollspeed = 25.0f;
@@ -110,8 +110,11 @@ public class SensoriMotorSystem {
         font = app.createFont("Monospaced", 12);
         app.textFont(font);
 
-        initialBoundaries(plane1);
         initialBoundaries(plane0);
+        initialBoundaries(plane1);
+
+        makeNavigationMarkers(plane0);
+
         initialPhysobjs(plane1);
 
         // hands start out in plane1
@@ -119,8 +122,6 @@ public class SensoriMotorSystem {
         hand2 = plane1.addHand( xpos, ypos, 32, 32, 5, app.color(255,0,0));
         hand1.alpha = 255;
         hand2.alpha = 255;
-        hand1.setFixedRotation(true);
-        hand2.setFixedRotation(true);
         hand1.updatePosition(xpos,ypos);
         hand2.updatePosition(xpos,ypos);
 
@@ -156,13 +157,14 @@ public class SensoriMotorSystem {
         p.addBoundary(160, app.height-50, 10f, 100f );
         p.addBoundary(900, app.height-80, 10f, 160f );
         p.addBoundary(1200, app.height-100, 10f, 200f );
+    }
 
+    void makeNavigationMarkers(Plane p) {
         // add markers to help locate position
 
         for (int x = 200; x < WORLD_WIDTH; x+=200) {
             p.addBoundary(x, app.height-400, 20+x/100f, 20+x/50f, marker_color );
         }
-
     }
 
     void initialPhysobjs(Plane p) {
@@ -288,9 +290,8 @@ public class SensoriMotorSystem {
             if (currentPlane.pickedThing != null) {
                 Object2D obj = currentPlane.pickedThing;
                 currentPlane.mouseDropObject();
-                Object2D newObj = obj.moveToPlane(next);
-                app.println("newObj = "+newObj+" next="+next+" ... grasping on next plane");
-                next.mouseGraspObject(newObj);
+                obj.moveToPlane(next);
+                next.mouseGraspObject(obj);
             }
             currentPlane = next;
         }

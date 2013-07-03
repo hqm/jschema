@@ -66,9 +66,20 @@ abstract class Object2D {
         box2d.destroyBody(body);
     }
 
-    // Creates a new object on another plane, and returns it
-    Object2D moveToPlane(Plane newPlane) {
-        return this;
+    /** Moves this object to a different plane.
+     * The way this now works is
+     * + create a copy of our body, on the target plane.
+     * + kill the body on this plane
+     * + destroy any existing joints (? is this needed if we call killBody?)
+     * + remove us from the physobjs list of the old and add to new plane
+     * + update our plane and box2d fields
+
+     */
+    void moveToPlane(Plane newPlane) {
+        plane.removeObject(this);
+        newPlane.addObject(this);
+        destroyMouseJoint();
+        destroyWeldJoint();
     }
 
     // Forces a move to this position, may cause non-physical behavior.

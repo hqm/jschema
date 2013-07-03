@@ -46,7 +46,7 @@ public class Hand extends Box {
         super(p,x,y,w,h,density,color);
         GROSS_DIST = app.sms.dGross;
         FINE_DIST = app.sms.dFine; 
-
+        setFixedRotation(true);
         setupMouseJoint();
     }
 
@@ -102,6 +102,56 @@ public class Hand extends Box {
 
     public void ungrasp() {
         removeWeldJoints();
+    }
+
+    /*
+     * We need a routine findTransitivelyConnected(thing) which returns list of all objects
+     * transitively welded together.
+     *
+     * We then traverse that , moving the objs to other plane, making a hash table of the mapping
+     * from old to new object.
+     *
+     * Then we can iterate over old objects, find all joints, and what bodies they join to,
+     * and reconstruct the new joint on the new objects.
+     */
+    void moveConnectedGroupToPlane(Plane newPLane) {
+        /*
+          ArrayList oldObjs = transitivelyConnected ( graspedObjectList)
+        
+         HashMap(<oldObj>:<newObj>) mappings = copyToPlane(oldObjs)
+        
+         For ((old,new) in mappings) {
+            find all joints on old to old'
+            for each joint create new joint (new, new')
+
+         }
+        */
+
+    }
+
+
+    /** To move to another plane, we have to destroy the object in this plane, and
+     *  create a copy of it in the target plane.
+     * We also need to move all the objects that we are grasping to the new plane.
+     *
+     * Ideally we would reconstruct their joints as well, but that will be a future improvement.
+     *
+
+     */
+    void moveToPlane(Plane newPlane) {
+        ArrayList<Object2D> gobjs = getWeldedObjects();
+        app.println("welded objects = "+gobjs.toString()+" size="+gobjs.size());
+        super.moveToPlane(newPlane);
+        setFixedRotation(true);
+        setupMouseJoint();
+
+
+        for (Object2D obj: gobjs) {
+            app.println("moving "+obj+" to new plane "+newPlane);
+            obj.moveToPlane(newPlane);
+        }
+        // TODO grasp those objects again or they will drop when we get into the new plane
+
     }
 
     /**

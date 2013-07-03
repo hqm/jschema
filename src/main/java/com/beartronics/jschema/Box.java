@@ -79,17 +79,19 @@ public class Box extends Object2D {
     // To move to another plane, we have to destroy the object in this plane, and
     // create a copy of it in the target plane.
     // Returns the new Box that was created in the target plane.
-    Box moveToPlane(Plane newPlane) {
-        plane.removeObject(this);
+    void moveToPlane(Plane newPlane) {
+        super.moveToPlane(newPlane);
         float a = getAngle();
         Vec2 pos = box2d.getBodyPixelCoord(body);
-        // delete us from this plane box2d world
+        // delete old body from plane box2d world
+        removeAllJoints();
         killBody();
-        // create new body in target plane
-        this.plane = newPlane;
-        Box b = newPlane.addBox(pos.x, pos.y, w, h, density, color);
-        b.setAngle(a);
-        return b;
+
+        // Switch our box2d pointers to the new plane
+        plane = newPlane;
+        box2d = newPlane.box2d;
+        makeBody(box2d, pos, w, h, density);
+        setAngle(a);
     }
 
     // This function adds the rectangle to the box2d world

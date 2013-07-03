@@ -60,17 +60,20 @@ public class Ball extends Object2D {
         app.popStyle();
     }
 
-    Ball moveToPlane(Plane newPlane) {
-        plane.removeObject(this);
+    void moveToPlane(Plane newPlane) {
+        super.moveToPlane(newPlane);
         float a = getAngle();
         Vec2 pos = box2d.getBodyPixelCoord(body);
         // delete us from this plane box2d world
+        removeAllJoints();
         killBody();
         // create new body in target plane
-        this.plane = newPlane;
-        Ball b = newPlane.addBall(pos.x, pos.y, r);
-        b.setAngle(a);
-        return b;
+        // Switch our box2d pointers to the new plane
+        box2d = newPlane.box2d;
+        plane = newPlane;
+     
+        makeBody(box2d, pos.x, pos.y, r);
+        setAngle(a);
     }
 
 

@@ -40,7 +40,7 @@ public class JSchema extends PApplet {
     }
 
     public void setup() {
-        size(1200, 800);
+        size(1200, 600);
         smooth();
         background(255);
 
