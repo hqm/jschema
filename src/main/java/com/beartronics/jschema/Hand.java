@@ -149,9 +149,8 @@ public class Hand extends Box {
         for (Object2D obj: gobjs) {
             app.println("moving "+obj+" to new plane "+newPlane);
             obj.moveToPlane(newPlane);
+            weld(this,obj);
         }
-        // TODO grasp those objects again or they will drop when we get into the new plane
-
     }
 
     /**
