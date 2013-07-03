@@ -31,7 +31,7 @@ public class SensoriMotorSystem {
     int WORLD_HEIGHT = 800;
 
     // Position of body in world
-    public float xpos = 300;
+    public float xpos = 600;
     public float ypos = 300;
     float bodyWidth = 600;
     float bodyHeight = 600;
@@ -115,7 +115,8 @@ public class SensoriMotorSystem {
         hand2.alpha = 255;
         hand1.setFixedRotation(true);
         hand2.setFixedRotation(true);
-
+        hand1.updatePosition(xpos,ypos);
+        hand2.updatePosition(xpos,ypos);
 
         plane0.addBox(800, 100, 100, 100, 4, app.color(255,40,30));
         plane0.addBox(1000, 100, 50, 50, 8, app.color(87,191,22));
@@ -124,9 +125,9 @@ public class SensoriMotorSystem {
 
     }
 
-    void setTranslation(float dx, float dy) {
+    void setTranslation(float x, float y) {
         for (Plane plane: planes) {
-            plane.setTranslation(dx,dy);
+            plane.setTranslation(x,y);
         }
     }
 
@@ -190,8 +191,9 @@ public class SensoriMotorSystem {
         app.text("xpos="+xpos+ "   ypos="+ypos,20,32);
         app.text(showHandForces(),20,42);
 
-        hand1.updatePosition(xpos,ypos);
-        hand2.updatePosition(xpos,ypos);
+
+        hand1.resetNetForce();
+        hand2.resetNetForce();
 
         for (Plane plane: planes) {
             plane.draw();
@@ -246,12 +248,16 @@ public class SensoriMotorSystem {
 
     void moveBody(float dx, float dy) {
         xpos += dx;
-        xpos = (float)Math.max(0,xpos);
+        xpos = (float)Math.max(0+bodyWidth/2,xpos);
         xpos = (float)Math.min(WORLD_WIDTH-bodyWidth/2,xpos);
 
         ypos += dy;
         ypos = (float)Math.max(WORLD_HEIGHT-bodyHeight/2,ypos);
         ypos = (float)Math.min(0+bodyHeight/2,ypos);
+
+        hand1.updatePosition(xpos,ypos);
+        hand2.updatePosition(xpos,ypos);
+
     }
 
     public void keyPressed() {

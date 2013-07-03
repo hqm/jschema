@@ -34,6 +34,11 @@ public class Hand extends Box {
     public float handForceY = 0;
 
     public Vec2 netForce = new Vec2();
+
+    public void resetNetForce() {
+        netForce.x = 0;
+        netForce.y = 0;
+    }
     
     float GROSS_DIST = 100;
     float FINE_DIST = 10;
@@ -83,7 +88,7 @@ public class Hand extends Box {
     }
 
     public void ungrasp() {
-        removeWeldJoints(this);
+        removeWeldJoints();
     }
 
     /**
@@ -156,7 +161,11 @@ public class Hand extends Box {
         y = absy + grossY * GROSS_DIST + fineY * FINE_DIST;
         
         updateMouseJointPos(x,y);
-        Vec2 pos = box2d.getBodyPixelCoord(body);
+        Vec2 pos = body.getPosition();
+        // Is there a bug with apply the force here? We're applying
+        // the force at the current position of the hand, not the
+        // position it will finally be at when the mousejoint spring
+        // forces are resolved.
         body.applyLinearImpulse(new Vec2(handForceX, handForceY), pos);
     }
     
