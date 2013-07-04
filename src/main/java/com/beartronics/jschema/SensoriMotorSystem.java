@@ -407,7 +407,7 @@ public class SensoriMotorSystem {
     /** Reads primitive actions from worldstate and performs them.
      */
     public void processActions(WorldState w) {
-        app.println("SensoriMotorSystem.processActions() not yet implemented");
+        //app.println("SensoriMotorSystem.processActions() not yet implemented");
     }
 
     public int sensorID = 0;

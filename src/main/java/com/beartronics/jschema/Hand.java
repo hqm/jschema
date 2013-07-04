@@ -253,7 +253,8 @@ public class Hand extends Box {
         while (cedge != null) {
             Contact c = cedge.contact;
             Manifold m = c.getManifold();
-            Vec2 ln = m.localNormal;
+            Vec2 ln = m.localPoint;
+            //app.print(String.format(" lp(%.1f,%.1f) ", ln.x,ln.y));
             if (ln.x > 0) {
                 touching |= TOUCH_RIGHT;
             }
@@ -261,10 +262,10 @@ public class Hand extends Box {
                 touching |= TOUCH_LEFT;
             }
             if (ln.y < 0) {
-                touching |= TOUCH_TOP;
+                touching |= TOUCH_BOTTOM;
             }
             if (ln.y > 0) {
-                touching |= TOUCH_BOTTOM;
+                touching |= TOUCH_TOP;
             }
             cedge = cedge.next;
         }
@@ -303,6 +304,7 @@ public class Hand extends Box {
         app.strokeWeight(4);
         app.stroke(app.color(94,224,88));
         app.rect(0, 0, w-6, h-6);
+        app.line(0, 0, w/2, h/2);
         app.popMatrix();
         app.popStyle();
     }
