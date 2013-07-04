@@ -476,7 +476,7 @@ public class SensoriMotorSystem {
     // Vision primitives
     void gazeAt(Object2D thing) {
         Vec2 pos = thing.getPosition();
-        gazeXpos = xpos - pos.x;
+        gazeXpos = pos.x - xpos;
         gazeYpos = ypos - pos.y;
     }
 
