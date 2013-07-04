@@ -7,6 +7,7 @@ package com.beartronics.jschema;
 
 import pbox2d.*;
 import org.jbox2d.collision.shapes.*;
+import org.jbox2d.collision.*;
 import org.jbox2d.common.*;
 import org.jbox2d.dynamics.*;
 import java.util.*;
@@ -235,6 +236,41 @@ public class Hand extends Box {
         body.applyLinearImpulse(new Vec2(handForceX, handForceY), pos);
     }
     
+
+    public final static int TOUCH_LEFT   =  1;
+    public final static int TOUCH_RIGHT  =  2;
+    public final static int TOUCH_TOP    =  4;
+    public final static int TOUCH_BOTTOM =  8;
+
+    /** returns a bit vector which designates which sides feel a touch contact
+     *
+     * For now this uses absolute angle-0 coordinates. We need to rotate the normal vectors
+     * by the hand angle to get the correct sides if the hand is rotated.
+     */
+    int touchingSides() {
+        int touching = 0;
+        ContactEdge cedge = body.getContactList();
+        while (cedge != null) {
+            Contact c = cedge.contact;
+            Manifold m = c.getManifold();
+            Vec2 ln = m.localNormal;
+            if (ln.x < 0) {
+                touching |= TOUCH_RIGHT;
+            }
+            if (ln.x > 0) {
+                touching |= TOUCH_LEFT;
+            }
+            if (ln.y < 0) {
+                touching |= TOUCH_TOP;
+            }
+            if (ln.y > 0) {
+                touching |= TOUCH_BOTTOM;
+            }
+            cedge = cedge.next;
+        }
+        return touching;
+    }
+
     void setColor(int c) {
         this.color = c;
     }

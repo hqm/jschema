@@ -46,12 +46,12 @@ public class SensoriMotorSystem {
     float gazeXpos = 0;
     float gazeYpos = 0;
     
-    float headAzimuthAngle = 0;
-    float headElevationAngle =0;
+    int headAzimuthAngle = 0;
+    int headElevationAngle = 0;
 
     // angles
-    float gazeAzimuthAngle = 0;
-    float gazeElevationAngle = 0;
+    int gazeAzimuthAngle = 0;
+    int gazeElevationAngle = 0;
 
     public Hand hand1;
     public Hand hand2;
@@ -212,6 +212,8 @@ public class SensoriMotorSystem {
         // draw viewport and gaze location
         drawViewPort();
 
+        computeWorldState();
+
     }
 
     void drawViewPort() {
@@ -367,15 +369,17 @@ public class SensoriMotorSystem {
         currentPlane.mousePressed();
     }
 
-
     WorldState worldState;
 
     public WorldState getWorldState() {
         return worldState;
     }
 
+    public int sensorID = 0;
+
     /// Fills in the sensory input values
     public WorldState computeWorldState() {
+        sensorID = 0;
         computeTouchSensors();
         computeVisionSensor();
         computeAudioSensors();
@@ -391,15 +395,48 @@ public class SensoriMotorSystem {
 
     // Includes proprioceptive sensors
     void computeTouchSensors() {
-
         // update joint position sensors
+        for (int i = -5; i < 6; i++) {
+            worldState.setSensorInput("hand1.gross.x."+i, sensorID++, hand1.grossX == i);
+            worldState.setSensorInput("hand1.gross.y."+i, sensorID++, hand1.grossY == i);
+            worldState.setSensorInput("hand1.fine.x."+i,  sensorID++, hand1.fineX == i);
+            worldState.setSensorInput("hand1.fine.y."+i,  sensorID++, hand1.fineY == i);
+            worldState.setSensorInput("hand2.gross.x."+i, sensorID++, hand2.grossX == i);
+            worldState.setSensorInput("hand2.gross.y."+i, sensorID++, hand2.grossY == i);
+            worldState.setSensorInput("hand2.fine.x."+i,  sensorID++, hand2.fineX == i);
+            worldState.setSensorInput("hand2.fine.y."+i,  sensorID++, hand2.fineY == i);
+        }
+
+        // gaze angle sensor
+        for (int i = -5; i < 6; i++) {
+            worldState.setSensorInput("gaze.azimuth."+i, sensorID++, gazeAzimuthAngle == i);
+            worldState.setSensorInput("gaze.elevation."+i, sensorID++, gazeElevationAngle == i);
+        }
 
         // update joint force sensors
+        for (int i = -5; i < 6; i++) {
+            Vec2 f1 = hand1.getJointForce();
+            worldState.setSensorInput("hand1.force.x."+i, sensorID++, (i-1) < f1.x && f1.x < i);
+            worldState.setSensorInput("hand1.force.y."+i, sensorID++, (i-1) < f1.y && f1.y < i);
+            Vec2 f2 = hand2.getJointForce();
+            worldState.setSensorInput("hand2.force.x."+i, sensorID++, (i-1) < f2.x && f2.x < i);
+            worldState.setSensorInput("hand2.force.y."+i, sensorID++, (i-1) < f2.y && f2.y < i);
+        }
 
         // update gripper touch and force sensors
+        int t1 = hand1.touchingSides();
+        worldState.setSensorInput("hand1.touch.left", sensorID++, (t1 & Hand.TOUCH_LEFT) != 0);
+        worldState.setSensorInput("hand1.touch.right", sensorID++, (t1 & Hand.TOUCH_RIGHT) != 0);
+        worldState.setSensorInput("hand1.touch.top", sensorID++, (t1 & Hand.TOUCH_TOP) != 0);
+        worldState.setSensorInput("hand1.touch.bottom", sensorID++, (t1 & Hand.TOUCH_BOTTOM) != 0);
 
         
-
+        int t2 = hand2.touchingSides();
+        worldState.setSensorInput("hand1.touch.left", sensorID++, (t2 & Hand.TOUCH_LEFT) != 0);
+        worldState.setSensorInput("hand1.touch.right", sensorID++, (t2 & Hand.TOUCH_RIGHT) != 0);
+        worldState.setSensorInput("hand1.touch.top", sensorID++, (t2 & Hand.TOUCH_TOP) != 0);
+        worldState.setSensorInput("hand1.touch.bottom", sensorID++, (t2 & Hand.TOUCH_BOTTOM) != 0);
+        
     }
 
 
