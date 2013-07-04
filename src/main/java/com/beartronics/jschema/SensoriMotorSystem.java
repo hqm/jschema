@@ -256,10 +256,49 @@ public class SensoriMotorSystem {
         return planes.get(idx);
     }
 
+    final int MAX_HAND_FORCE = 100;
 
+    /** Moves the body position.
+     * checks the hand forces, and if too large, will not move the body, thus preventing
+     * moving too far from the hands
+     */
     void jogBody(float dx, float dy) {
-        xpos += dx;
-        ypos += dy;
+        Vec2 f1 = hand1.getJointForce();
+        Vec2 f2 = hand2.getJointForce();
+        if (dx < 0) {
+            if ((f1.x > -MAX_HAND_FORCE) && (f2.x > -MAX_HAND_FORCE)) {
+                xpos += dx;
+            } else {
+                app.println(String.format("HAND X FORCE h1x=%f h2x=%f TOO LARGE, CANNOT MOVE BODY dx=%f", f1.x, f2.x, dx));
+            }
+        }
+
+        if (dx > 0) {
+            app.println(String.format("** dx=%f f1.x=%f f2.x=%f", dx, f1.x, f2.x));
+            if ((f1.x < MAX_HAND_FORCE) && (f2.x < MAX_HAND_FORCE)) {
+                xpos += dx;
+            } else {
+                app.println(String.format("HAND X FORCE h1x=%f h2x=%f TOO LARGE, CANNOT MOVE BODY dx=%f", f1.x, f2.x, dx));
+            }
+        }
+
+
+        if (dy < 0) {
+            if ((f1.y > -MAX_HAND_FORCE) && (f2.y > -MAX_HAND_FORCE)) {
+                ypos += dy;
+            } else {
+                app.println(String.format("HAND Y FORCE h1y=%f h2y=%f TOO LARGE, CANNOT MOVE BODY dy=%f", f1.y, f2.y, dy));
+            }
+        }
+
+        if (dy > 0) {
+            if ((f1.y < MAX_HAND_FORCE) && (f2.y < MAX_HAND_FORCE)) {
+                ypos += dy;
+            } else {
+                app.println(String.format("HAND Y FORCE h1y=%f h2y=%f TOO LARGE, CANNOT MOVE BODY dy=%f", f1.y, f2.y, dy));
+            }
+        }
+
         moveBody(xpos, ypos);
     }
 
