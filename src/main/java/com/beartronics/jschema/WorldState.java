@@ -17,17 +17,12 @@ public class WorldState {
     int sensorID = 0;
 
     void setSensorInput(String path, int id,  boolean val) {
-        setSensorInput(path, id, val, 0);
-    }
-
-    void setSensorInput(String path, int id,  boolean val, float realVal) {
         SensorInput s = inputList.get(path);
         if (s == null) {
-            s = new SensorInput(path, id, val, realVal);
+            s = new SensorInput(path, id, val);
             inputList.put(path, s);
         } else {
             s.value = val;
-            s.realValue = realVal;
         }
     }
 

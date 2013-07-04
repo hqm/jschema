@@ -7,8 +7,6 @@ java_import "org.jbox2d.common.Vec2"
 java_import "com.beartronics.jschema.JSchema"
 $h1 = $sms.hand1
 $h2 = $sms.hand2
-$h1.hjog(-1,0)
-$h2.hjog(1,0)
 
 
 

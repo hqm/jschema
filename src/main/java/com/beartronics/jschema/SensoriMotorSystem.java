@@ -33,6 +33,7 @@ public class SensoriMotorSystem {
     // Position of body in world
     public float xpos;
     public float ypos;
+
     float bodyWidth = 600;
     float bodyHeight = 400;
 
@@ -43,8 +44,8 @@ public class SensoriMotorSystem {
     // Head and Eyes Controls
 
     // Computed from head gross and fine angles
-    float gazeXpos = 0;
-    float gazeYpos = 0;
+    public float gazeXpos = 0;
+    public float gazeYpos = 0;
     
     int headAzimuthAngle = 0;
     int headElevationAngle = 0;
@@ -86,7 +87,7 @@ public class SensoriMotorSystem {
     void setupDisplay() {
         // Initial body position
         xpos = app.width/2;
-        ypos = app.height * 0.75f;
+        ypos = app.height/2;
 
 
         // Initialize box2d physics and create the world
@@ -122,6 +123,9 @@ public class SensoriMotorSystem {
         hand2 = plane1.addHand( xpos, ypos, 32, 32, 5, app.color(255,0,0));
         hand1.alpha = 255;
         hand2.alpha = 255;
+        hand1.hjog(-1,0);
+        hand2.hjog(1,0);
+
         hand1.updatePosition(xpos,ypos);
         hand2.updatePosition(xpos,ypos);
 
@@ -184,11 +188,14 @@ public class SensoriMotorSystem {
         p.addCustomShape1(50,bottom-100,app.color(123,201,122));
     }
 
-    String showHandForces() {
-        Vec2 f1 = hand1.getJointForce();
-        Vec2 f2 = hand2.getJointForce();
-        String hforces = String.format("hand1 Fx=%.1f Fy=%.1f, hand2 Fx=%.1f, Fy=%.1f,", f1.x*100, f1.y*100, f2.x*100, f2.y*100);
-        return hforces;
+    String showHandInfo(Hand h) {
+        Vec2 f = h.getJointForce();
+        String info = String.format("grossX=%.1f,%.1f fineX=%.1f,%.1f F=(%.1f, %.1f) %s",
+                                    h.grossX, h.grossY,
+                                    h.fineX, h.fineY,
+                                    f.x*100, f.y*100,
+                                    h.touchString());
+        return info;
     }
 
 
@@ -201,7 +208,9 @@ public class SensoriMotorSystem {
         app.text("alt-click to create box, click to grasp, ctrl-click to lift, left and right arrow to rotate, shift for transparent", 20,12);
         app.text("plane="+planes.indexOf(currentPlane), 20,22);
         app.text("xpos="+xpos+ "   ypos="+ypos,20,32);
-        app.text(showHandForces(),20,42);
+        app.text("hand1 "+showHandInfo(hand1),20,42);
+        app.text("hand2 "+showHandInfo(hand2),20,52);
+        app.text("gazeX="+gazeXpos+" gazeY="+gazeYpos, 20, 62);
 
 
         for (Plane plane: planes) {
@@ -225,16 +234,30 @@ public class SensoriMotorSystem {
         float cy = ypos;
 
         app.pushMatrix();
+        app.pushStyle();
         app.translate(-xpos + app.width/2, -ypos + app.height/2);
+
+        // draw yellow circle at body (xpos,ypos)
+        app.strokeWeight(2);
+        app.stroke(255,255,204);
+        app.ellipse(0,0,10,10);
         app.strokeWeight(1);
+        // draw X at gaze position
         app.stroke(app.color(128,128,128,200));
         app.line(cx + dx - 50, cy-dy-50,
                  cx + dx + 50, cy-dy+50);
         app.line(cx + dx + 50, cy-dy-50,
                  cx + dx - 50, cy-dy+50);
         
-        app.popMatrix();
+
         // draw the max range the hands can move
+        app.noFill();
+        app.rectMode(PConstants.CENTER);
+        app.rect(app.width/2, app.height/2, reachX*50, reachY*50);
+        app.popStyle();
+        app.popMatrix();
+
+
         
 
 

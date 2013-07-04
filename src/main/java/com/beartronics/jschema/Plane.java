@@ -39,7 +39,6 @@ public class Plane implements ContactListener {
     public Plane(JSchema a, int color) {
         this.app = a;
         this.borderColor = color;
-
         System.out.println("Plane constructor this.app = "+this.app);
     }
 
@@ -64,11 +63,8 @@ public class Plane implements ContactListener {
 
     void setup() {
         box2d = app.createBox2D();
-
         box2d.createWorld();
-
         box2d.world.setContactListener(this);
-
 
         // We are setting a custom gravity
         box2d.setGravity(0, -10);

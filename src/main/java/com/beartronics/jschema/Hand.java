@@ -254,10 +254,10 @@ public class Hand extends Box {
             Contact c = cedge.contact;
             Manifold m = c.getManifold();
             Vec2 ln = m.localNormal;
-            if (ln.x < 0) {
+            if (ln.x > 0) {
                 touching |= TOUCH_RIGHT;
             }
-            if (ln.x > 0) {
+            if (ln.x < 0) {
                 touching |= TOUCH_LEFT;
             }
             if (ln.y < 0) {
@@ -269,6 +269,16 @@ public class Hand extends Box {
             cedge = cedge.next;
         }
         return touching;
+    }
+
+    String touchString() {
+        StringBuilder s = new StringBuilder();
+        int k = touchingSides();
+        if ((k & TOUCH_LEFT) > 0)   { s.append("LEFT ");   }
+        if ((k & TOUCH_RIGHT) > 0)  { s.append("RIGHT ");  }
+        if ((k & TOUCH_TOP) > 0)    { s.append("TOP ");    }
+        if ((k & TOUCH_BOTTOM) > 0) { s.append("BOTTOM "); }
+        return s.toString();
     }
 
     void setColor(int c) {

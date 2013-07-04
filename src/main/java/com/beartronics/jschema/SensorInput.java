@@ -17,26 +17,20 @@ public class SensorInput {
     public int id; // a unique id for this input
     public boolean priorValue;
     public boolean value;
-    public float realValue;
 
     SensorInput(String path, int id, boolean val) {
-        _construct(path, id, val, 0f);
+        _construct(path, id, val);
     }
 
-    SensorInput(String path, int id, boolean val, float realValue) {
-        _construct(path, id, val, realValue);
-    }
-
-    void _construct(String path, int id, boolean val, float realValue) {
+    void _construct(String path, int id, boolean val) {
         this.path = path;
         this.id = id;
         this.value = val;
         this.priorValue = val;
-        this.realValue = realValue;
     }
 
     public String toString() {
-        return String.format("<<Input %s %s [prior %s] [real %f] #%d>>", path, value, priorValue, realValue, id);
+        return String.format("<<Input %s %s [prior %s] #%d>>", path, value, priorValue, id);
     }
 
 }
