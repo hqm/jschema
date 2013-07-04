@@ -48,6 +48,14 @@ abstract class Object2D {
         this.index = Object2D.counter++;
     }
 
+    boolean isHollow() {
+        return false;
+    }
+
+    boolean isSolid() {
+        return true;
+    }
+
     // Call this after creating body
     void makeBody() {
         body.setUserData(this);

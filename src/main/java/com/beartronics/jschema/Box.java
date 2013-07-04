@@ -76,6 +76,14 @@ public class Box extends Object2D {
         app.popStyle();
     }
 
+    boolean isHollow() {
+        return alpha < 128;
+    }
+
+    boolean isSolid() {
+        return alpha >= 128;
+    }
+
     // To move to another plane, we have to destroy the object in this plane, and
     // create a copy of it in the target plane.
     // Returns the new Box that was created in the target plane.

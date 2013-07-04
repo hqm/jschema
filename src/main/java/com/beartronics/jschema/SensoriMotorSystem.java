@@ -50,10 +50,6 @@ public class SensoriMotorSystem {
     int headAzimuthAngle = 0;
     int headElevationAngle = 0;
 
-    // angles
-    int gazeAzimuthAngle = 0;
-    int gazeElevationAngle = 0;
-
     public Hand hand1;
     public Hand hand2;
 
@@ -72,6 +68,14 @@ public class SensoriMotorSystem {
     Object2D findObj(int index) {
         for (Plane plane: planes) {
             Object2D o = plane.findObj(index);
+            if (o != null) { return o; }
+        }
+        return null;
+    }
+
+    Object2D findObjAt(float x, float y) {
+        for (Plane plane: planes) {
+            Object2D o = plane.findObjAt(x, y);
             if (o != null) { return o; }
         }
         return null;
@@ -415,7 +419,65 @@ public class SensoriMotorSystem {
     void computeAudioSensors() {
     }
 
+    boolean isObjectAtGaze() {
+        Object2D obj = findObjAt(xpos+gazeXpos,ypos+gazeYpos);
+        return (obj != null);
+    }
+
+
+    boolean isSolidObjectAtGaze() {
+        Object2D obj = findObjAt(xpos+gazeXpos,ypos+gazeYpos);
+        if (obj == null) {
+            return false;
+        } else {
+            return obj.isSolid();
+        }
+    }
+
+    boolean isHollowObjectAtGaze() {
+        Object2D obj = findObjAt(xpos+gazeXpos,ypos+gazeYpos);
+        if (obj == null) {
+            return false;
+        } else {
+            return obj.isHollow();
+        }
+    }
+
+    Object2D objectAtGaze() {
+        return findObjAt(xpos+gazeXpos,ypos+gazeYpos);
+    }
+
     void computeVisionSensor() {
+        // is fovea seeing a solid object?
+        worldState.setSensorInput("vision.fovea.object", sensorID++, isObjectAtGaze());
+        worldState.setSensorInput("vision.fovea.solid_object", sensorID++, isSolidObjectAtGaze());
+        worldState.setSensorInput("vision.fovea.hollow_object", sensorID++, isHollowObjectAtGaze());
+
+        for (int x = -5; x < 6; x++) {
+            for (int y = -5; y < 6; y++) {
+                worldState.setSensorInput("vision.peripheral.obj."+x+"."+y, sensorID++, objectAtQuadrant(x,y));
+            }
+        }
+
+        // Look for closed and open boundary objects
+        //worldState.setSensorInput("vision.fovea.closed_object", sensorID++, closedObjectAt(0,0));
+        
+        //worldState.setSensorInput("vision.peripheral.obj."+x+"."+y, sensorID++, objectAtQuadrant(x,y));
+        
+
+    }
+    static final int QUADRANT_SIZE = 100;
+
+    boolean objectAtQuadrant(float qx, float qy) {
+        Object2D obj = findObjAt(xpos + qx*QUADRANT_SIZE, ypos+qy*QUADRANT_SIZE);
+        return obj != null;
+    }
+
+    // Vision primitives
+    void gazeAt(Object2D thing) {
+        Vec2 pos = thing.getPosition();
+        gazeXpos = xpos - pos.x;
+        gazeYpos = ypos - pos.y;
     }
 
     // Includes proprioceptive sensors
@@ -434,8 +496,8 @@ public class SensoriMotorSystem {
 
         // gaze angle sensor
         for (int i = -5; i < 6; i++) {
-            worldState.setSensorInput("gaze.azimuth."+i, sensorID++, gazeAzimuthAngle == i);
-            worldState.setSensorInput("gaze.elevation."+i, sensorID++, gazeElevationAngle == i);
+            worldState.setSensorInput("gaze.gross.x"+i, sensorID++, Math.round(gazeXpos/50) == i);
+            worldState.setSensorInput("gaze.gross.y"+i, sensorID++, Math.round(gazeYpos/50) == i);
         }
 
         // update joint force sensors

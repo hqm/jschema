@@ -188,7 +188,7 @@ public class Plane implements ContactListener {
     }
 
     // Drop what the mouse is holding. But if it's a Hand, don't destroy it's mouseJoint.
-    void mouseDropObject() {
+    public void mouseDropObject() {
         if (pickedThing != null) {
             if (! (pickedThing instanceof Hand)) {
                 pickedThing.destroyMouseJoint();
@@ -206,6 +206,10 @@ public class Plane implements ContactListener {
             }
         }
         return null;
+    }
+
+    public Object2D findObjAt(float x, float y) {
+        return findObjAt(physobjs, x, y);
     }
 
 
