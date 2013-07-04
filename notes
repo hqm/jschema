@@ -88,6 +88,9 @@ Vision
         
 
    motion tracking; attention focus points on fovea and broad-area peripheral vision  when motion is sensed
+     you can enable tracking as an action on the fovea; you then get the gaze moved around for you as it tracks an object
+     that is visible.
+
 
    trajectory - when motion detected, a motion vector input is stimulated
 

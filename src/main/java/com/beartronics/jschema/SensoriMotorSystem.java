@@ -225,22 +225,26 @@ public class SensoriMotorSystem {
 
     }
 
+    // screen is always drawn such that body is located at horizontal center
     void drawViewPort() {
         // draw where the gaze is centered
         float dx, dy;
         dx = gazeXpos;
         dy = gazeYpos;
-        float cx = xpos;
+        float cx = app.width/2;
         float cy = ypos;
 
         app.pushMatrix();
         app.pushStyle();
-        app.translate(-xpos + app.width/2, -ypos + app.height/2);
+        app.rectMode(PConstants.CENTER);
+
 
         // draw yellow circle at body (xpos,ypos)
-        app.strokeWeight(2);
-        app.stroke(255,255,204);
-        app.ellipse(0,0,10,10);
+        app.strokeWeight(3);
+        app.stroke(177,177,102);
+        app.noFill();
+        app.rect(cx, ypos, 40, 40);
+        app.ellipse(cx,ypos,20,20);
         app.strokeWeight(1);
         // draw X at gaze position
         app.stroke(app.color(128,128,128,200));
@@ -251,9 +255,7 @@ public class SensoriMotorSystem {
         
 
         // draw the max range the hands can move
-        app.noFill();
-        app.rectMode(PConstants.CENTER);
-        app.rect(app.width/2, app.height/2, reachX*50, reachY*50);
+        app.rect(cx, ypos, reachX*dGross, reachY*dGross);
         app.popStyle();
         app.popMatrix();
 
