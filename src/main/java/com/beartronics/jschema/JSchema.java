@@ -56,8 +56,13 @@ public class JSchema extends PApplet {
     public int clock = 0;
     public void draw() {
         try {
-            sms.draw();
             clock++;
+            sms.draw();
+
+            // The Schema engine will read the worldState from the sms, and
+            // set any motor actions it wants to
+            stage.processWorldStep(sms);
+
         } catch (Exception e) {
             e.printStackTrace();
             app.println("JSchema top-level caught exception "+e);

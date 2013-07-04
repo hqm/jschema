@@ -62,6 +62,38 @@ public class Stage
         }
     }
 
+    /**
+TODO TODO ++++++++++++++++
+     */
+    void processWorldStep(SensoriMotorSystem sms) {
+        WorldState w = sms.getWorldState();
+
+        //
+        copySMSInputToItems(w);
+
+        // run the marginal attribution step
+        runMarginalAttribution();
+
+        // decide what to do next
+        setMotorActions(w);
+        sms.processActions(w);
+    }
+
+    void runMarginalAttribution() {
+        logger.info("Stage.runMarginalAttribution not yet implemented");
+    }
+
+
+    void copySMSInputToItems(WorldState w) {
+        logger.info("Stage.copySMSInputToItems not yet implemented");
+
+    }
+
+    /** decides what to do next, sets primitive motor actions on WorldState */
+    void setMotorActions(WorldState w) {
+        logger.info("Stage.setMotorActions not yet implemented");
+    }
+
     // Make a synthetic item for a schema
     Item makeSyntheticItem(Schema s) {
         Item item = new Item(String.format(Integer.toString(nitems), nitems), nitems, 0, Item.ItemType.SYNTHETIC);

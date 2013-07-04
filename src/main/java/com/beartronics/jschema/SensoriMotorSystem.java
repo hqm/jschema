@@ -404,6 +404,12 @@ public class SensoriMotorSystem {
         return worldState;
     }
 
+    /** Reads primitive actions from worldstate and performs them.
+     */
+    public void processActions(WorldState w) {
+        app.println("SensoriMotorSystem.processActions() not yet implemented");
+    }
+
     public int sensorID = 0;
 
     /// Fills in the sensory input values
