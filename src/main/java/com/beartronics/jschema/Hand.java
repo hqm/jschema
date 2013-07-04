@@ -191,6 +191,15 @@ public class Hand extends Box {
         return getNormalForces(this);
     }
 
+    public Vec2 getJointForce() {
+        Vec2 fv = new Vec2();
+        if (mouseJoint != null) {
+            mouseJoint.getReactionForce(1.0f, fv);
+        }
+        return fv;
+    }
+
+
     /**
        Update absolute pixel coord of the 'mousejoint' which hold the hand in position.
        @param  x body xpos
