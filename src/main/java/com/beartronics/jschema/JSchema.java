@@ -23,11 +23,19 @@ import java.io.InputStream;
 import java.io.OutputStream; 
 import java.io.IOException; 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
 public class JSchema extends PApplet {
+
+    final Logger logger = LoggerFactory.getLogger(JSchema.class);
 
     public static JSchema app;
     public SensoriMotorSystem sms;
     public Stage stage;
+
+    public boolean interactive = true;
 
     public JSchema() {
         JSchema.app = this;
@@ -55,17 +63,19 @@ public class JSchema extends PApplet {
 
     public int clock = 0;
     public void draw() {
-        try {
-            clock++;
-            sms.draw();
+        if (interactive) {
+            try {
+                clock++;
+                sms.draw();
 
-            // The Schema engine will read the worldState from the sms, and
-            // set any motor actions it wants to
-            stage.processWorldStep(sms);
+                // The Schema engine will read the worldState from the sms, and
+                // set any motor actions it wants to
+                stage.processWorldStep(sms);
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            app.println("JSchema top-level caught exception "+e);
+            } catch (Exception e) {
+                e.printStackTrace();
+                logger.error("JSchema top-level caught exception "+e);
+            }
         }
     }
 

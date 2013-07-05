@@ -80,18 +80,18 @@ TODO TODO ++++++++++++++++
     }
 
     void runMarginalAttribution() {
-        logger.info("Stage.runMarginalAttribution not yet implemented");
+        logger.debug("Stage.runMarginalAttribution not yet implemented");
     }
 
 
     void copySMSInputToItems(WorldState w) {
-        logger.info("Stage.copySMSInputToItems not yet implemented");
+        logger.debug("Stage.copySMSInputToItems not yet implemented");
 
     }
 
     /** decides what to do next, sets primitive motor actions on WorldState */
     void setMotorActions(WorldState w) {
-        logger.info("Stage.setMotorActions not yet implemented");
+        logger.debug("Stage.setMotorActions not yet implemented");
     }
 
     // Make a synthetic item for a schema
