@@ -214,7 +214,11 @@ public class SensoriMotorSystem {
     void draw() {
 
         app.rectMode(PConstants.CORNER);
-        app.background(255);
+        if (planes.indexOf(currentPlane) == 0) {
+            app.background(255,225,225);
+        } else {
+            app.background(255);
+        }
         app.fill(0);
 
         app.text("alt-click to create box, click to grasp, ctrl-click to lift, left and right arrow to rotate, shift for transparent", 20,12);

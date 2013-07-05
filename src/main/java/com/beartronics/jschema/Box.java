@@ -72,7 +72,7 @@ public class Box extends Object2D {
         app.strokeWeight(2);
         app.stroke(plane.borderColor);
         app.rect(0, 0, w, h);
-        app.line(0,0,w/2,h/2);
+        app.line(0,0,0,h/2);
 
         // Draw box id number
         app.fill(0);
