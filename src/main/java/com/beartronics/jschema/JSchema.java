@@ -23,13 +23,11 @@ import java.io.InputStream;
 import java.io.OutputStream; 
 import java.io.IOException; 
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import org.apache.log4j.Logger;
 
 public class JSchema extends PApplet {
 
-    final Logger logger = LoggerFactory.getLogger(JSchema.class);
+    static Logger logger = Logger.getLogger(JSchema.class.getName());
 
     public static JSchema app;
     public SensoriMotorSystem sms;
@@ -39,6 +37,7 @@ public class JSchema extends PApplet {
 
     public JSchema() {
         JSchema.app = this;
+        logger.info("JSchema app created.");
     }
     PBox2D box2d = null;
 

@@ -4,9 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import org.apache.log4j.Logger;
 
 /**
  * The "Stage" holds the schemas and related items, and a pointer to a
@@ -15,7 +13,8 @@ import org.slf4j.LoggerFactory;
  */
 public class Stage
 {
-    final Logger logger = LoggerFactory.getLogger(Stage.class);
+    /* Get actual class name to be printed on */
+    static Logger logger = Logger.getLogger(Stage.class.getName());
 
     public JSchema app;
     public SensoriMotorSystem sms;
