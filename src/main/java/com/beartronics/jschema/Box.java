@@ -22,8 +22,8 @@ import processing.opengl.*;
 public class Box extends Object2D {
 
     // We need to keep track of a Body and a width and height
-    float w;
-    float h;
+    public float w;
+    public float h;
     float alpha = 255;
     final static int MAX_DENSITY = 10;
 
@@ -72,8 +72,12 @@ public class Box extends Object2D {
         app.strokeWeight(2);
         app.stroke(plane.borderColor);
         app.rect(0, 0, w, h);
-        app.stroke(0);
         app.line(0,0,w/2,h/2);
+
+        // Draw box id number
+        app.fill(0);
+        app.text(index, 0,0);
+
         app.popMatrix();
         app.popStyle();
     }

@@ -56,6 +56,11 @@ public class Ball extends Object2D {
         app.ellipse(0,0,r*2,r*2);
         // Let's add a line so we can see the rotation
         app.line(0,0,r,0);
+
+        // Draw id number
+        app.fill(0);
+        app.text(index, 0,0);
+
         app.popMatrix();
         app.popStyle();
     }

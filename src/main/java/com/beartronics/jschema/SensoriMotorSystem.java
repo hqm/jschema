@@ -185,6 +185,9 @@ public class SensoriMotorSystem {
         p.addBox(2000, bottom-10, 64, 64, 10);
         p.addBox(300, bottom-200, 200, 5, 6);
         p.addBox(300, bottom-200, 400, 5, 6);
+        p.addBox(280, bottom-200, 20, 10, 8);
+        p.addBox(260, bottom-200, 20, 20, 8);
+        p.addBox(240, bottom-200, 30, 20, 8);
         p.addBall(1000, bottom-100, 40);
         p.addBall(200, bottom-100, 40);
         p.addBall(250, bottom-100, 40);
@@ -193,12 +196,17 @@ public class SensoriMotorSystem {
     }
 
     String showHandInfo(Hand h) {
+        StringBuilder touchList = new StringBuilder();
+        for (Object2D obj: h.touchingObjects()) {
+            touchList.append(" "+obj.index);
+        }
+
         Vec2 f = h.getJointForce();
-        String info = String.format("grossX=%.1f,%.1f fineX=%.1f,%.1f F=(%.1f, %.1f) %s",
+        String info = String.format("grossX=%.1f,%.1f fineX=%.1f,%.1f F=(%.1f, %.1f) %s [touching %s]",
                                     h.grossX, h.grossY,
                                     h.fineX, h.fineY,
                                     f.x*100, f.y*100,
-                                    h.touchString());
+                                    h.touchString(), touchList);
         return info;
     }
 

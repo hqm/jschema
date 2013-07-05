@@ -238,8 +238,8 @@ public class Hand extends Box {
     
 
     public final static int TOUCH_LEFT   =  1;
-    public final static int TOUCH_RIGHT  =  2;
-    public final static int TOUCH_TOP    =  4;
+    public final static int TOUCH_TOP    =  2;
+    public final static int TOUCH_RIGHT  =  4;
     public final static int TOUCH_BOTTOM =  8;
 
     /** returns a bit vector which designates which sides feel a touch contact
@@ -248,28 +248,58 @@ public class Hand extends Box {
      * by the hand angle to get the correct sides if the hand is rotated.
      */
     int touchingSides() {
-        int touching = 0;
+        int sides = 0;
         ContactEdge cedge = body.getContactList();
+        StringBuilder s = null;
+        if (cedge != null) {
+            s = new StringBuilder();
+        }
         while (cedge != null) {
             Contact c = cedge.contact;
-            Manifold m = c.getManifold();
-            Vec2 ln = m.localPoint;
-            //app.print(String.format(" lp(%.1f,%.1f) ", ln.x,ln.y));
-            if (ln.x > 0) {
-                touching |= TOUCH_RIGHT;
-            }
-            if (ln.x < 0) {
-                touching |= TOUCH_LEFT;
-            }
-            if (ln.y < 0) {
-                touching |= TOUCH_BOTTOM;
-            }
-            if (ln.y > 0) {
-                touching |= TOUCH_TOP;
+            if (c.getManifold().pointCount > 0) {
+                // This is a contact from a touching object which points back to our body
+                WorldManifold wm = new WorldManifold();
+                c.getWorldManifold(wm);
+                Vec2 wpts[] = wm.points;
+                int csides = getSidesFromContactPoints(wpts);
+                sides |= csides;
             }
             cedge = cedge.next;
         }
-        return touching;
+
+        return sides;
+    }
+
+    /** Figures out which sides of the hand are being touched by objects on the Contacts list.
+     *
+     * For now just take one point and see where it is relative to hand's center point.
+     @param wpts a list of WorldManifold contact points
+     @return a SIDES bit vector
+     */
+    int getSidesFromContactPoints(Vec2 wpts[]) {
+        Vec2 bcenter = body.getPosition();
+        int sides = 0;
+
+        Vec2 p0 = wpts[0];
+        Vec2 p1 = wpts[1];
+        Vec2 delta = p0.sub(p1);
+        Vec2 d = p0.sub(bcenter);
+
+        // single point of contact?
+        if (Math.abs(d.x) > Math.abs(d.y)) {
+            if (d.x < 0) {
+                sides |= TOUCH_LEFT;
+            } else {
+                sides |= TOUCH_RIGHT;
+            }
+        } else {
+            if (d.y > 0) {
+                sides |= TOUCH_TOP;
+            } else {
+                sides |= TOUCH_BOTTOM;
+            }
+        }
+        return sides;
     }
 
     String touchString() {

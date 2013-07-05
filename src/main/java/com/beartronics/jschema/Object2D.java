@@ -68,6 +68,31 @@ abstract class Object2D {
         return inside;
     }
 
+    ArrayList<Object2D> touchingObjects() {
+        ArrayList<Object2D> t = new ArrayList<Object2D>();
+        ContactEdge cedge = body.getContactList();
+        while (cedge != null) {
+            Contact c = cedge.contact;
+            if (c.getManifold().pointCount > 0) {
+                Fixture a = c.getFixtureA();
+                Fixture b = c.getFixtureB();
+                Body ba = a.getBody();
+                Body bb = b.getBody();
+                Object objA = ba.getUserData();
+                Object objB = bb.getUserData();
+                if (objA != null && objA instanceof Object2D && objA != this) {
+                    t.add((Object2D)objA);
+                }
+                if (objB != null && objB instanceof Object2D && objB != this) {
+                    t.add((Object2D)objB);
+                }
+            }
+            cedge = cedge.next;
+        }
+        return t;
+    }
+
+
 
     // This function removes the particle from the box2d world
     void killBody() {
@@ -331,11 +356,13 @@ abstract class Object2D {
         ContactEdge cedge = body.getContactList();
         while (cedge != null) {
             Contact c = cedge.contact;
-            Object2D other = (Object2D) cedge.other.getUserData();
-            if (other != ignore && other != null) {
-                app.println("welding "+this+" to obj "+other);
-                objs.add(other);
-                weld(this, other);
+            if (c.getManifold().pointCount > 0) {
+                Object2D other = (Object2D) cedge.other.getUserData();
+                if (other != ignore && other != null) {
+                    app.println("welding "+this+" to obj "+other);
+                    objs.add(other);
+                    weld(this, other);
+                }
             }
             cedge = cedge.next;
         }
@@ -363,10 +390,12 @@ abstract class Object2D {
         while (cedge != null) {
             Contact c = cedge.contact;
             Manifold m = c.getManifold();
-            Vec2 lnormal = m.localNormal;
-            for (ManifoldPoint pt: m.points) {
-                float normalImpulse = pt.normalImpulse;
-                totalImpulse.addLocal(lnormal.mul(normalImpulse));
+            if (m.pointCount > 0) {
+                Vec2 lnormal = m.localNormal;
+                for (ManifoldPoint pt: m.points) {
+                    float normalImpulse = pt.normalImpulse;
+                    totalImpulse.addLocal(lnormal.mul(normalImpulse));
+                }
             }
             cedge = cedge.next;
         }
