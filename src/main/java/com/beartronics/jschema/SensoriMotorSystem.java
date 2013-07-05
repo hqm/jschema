@@ -515,7 +515,7 @@ public class SensoriMotorSystem {
         }
 
         // update joint force sensors
-        for (int i = -5; i < 6; i++) {
+        for (int i = -2; i < 3; i++) {
             Vec2 f1 = hand1.getJointForce();
             worldState.setSensorInput("hand1.force.x."+i, sensorID++, (i-1) < f1.x && f1.x < i);
             worldState.setSensorInput("hand1.force.y."+i, sensorID++, (i-1) < f1.y && f1.y < i);
@@ -531,12 +531,27 @@ public class SensoriMotorSystem {
         worldState.setSensorInput("hand1.touch.top", sensorID++, (t1 & Hand.TOUCH_TOP) != 0);
         worldState.setSensorInput("hand1.touch.bottom", sensorID++, (t1 & Hand.TOUCH_BOTTOM) != 0);
 
+        int h1ObjectsGrasped = hand1.getWeldedObjects().size();
+        worldState.setSensorInput("hand1.empty-grasp", sensorID++, h1ObjectsGrasped == 0);
+        worldState.setSensorInput("hand1.grasp-one", sensorID++, h1ObjectsGrasped == 1);
+        worldState.setSensorInput("hand1.grasp-two", sensorID++, h1ObjectsGrasped == 2);
+        worldState.setSensorInput("hand1.grasp-three", sensorID++, h1ObjectsGrasped == 3);
+        worldState.setSensorInput("hand1.grasp-many", sensorID++, h1ObjectsGrasped > 3);
+
         
         int t2 = hand2.touchingSides();
         worldState.setSensorInput("hand1.touch.left", sensorID++, (t2 & Hand.TOUCH_LEFT) != 0);
         worldState.setSensorInput("hand1.touch.right", sensorID++, (t2 & Hand.TOUCH_RIGHT) != 0);
         worldState.setSensorInput("hand1.touch.top", sensorID++, (t2 & Hand.TOUCH_TOP) != 0);
         worldState.setSensorInput("hand1.touch.bottom", sensorID++, (t2 & Hand.TOUCH_BOTTOM) != 0);
+
+        int h2ObjectsGrasped = hand1.getWeldedObjects().size();
+        worldState.setSensorInput("hand2.empty-grasp", sensorID++, h2ObjectsGrasped == 0);
+        worldState.setSensorInput("hand2.grasp-one", sensorID++, h2ObjectsGrasped == 1);
+        worldState.setSensorInput("hand2.grasp-two", sensorID++, h2ObjectsGrasped == 2);
+        worldState.setSensorInput("hand2.grasp-three", sensorID++, h2ObjectsGrasped == 3);
+        worldState.setSensorInput("hand2.grasp-many", sensorID++, h2ObjectsGrasped > 3);
+
         
     }
 

@@ -68,6 +68,9 @@ abstract class Object2D {
         return inside;
     }
 
+    /** 
+        @return list of objects that are touching our boundary
+    */
     ArrayList<Object2D> touchingObjects() {
         ArrayList<Object2D> t = new ArrayList<Object2D>();
         ContactEdge cedge = body.getContactList();
@@ -250,7 +253,7 @@ abstract class Object2D {
         }
     }
 
-    /** Returns list of contacting Object2Ds */
+    /** Returns list of Object2Ds which are joined via a WeldJoint */
     public ArrayList<Object2D> getWeldedObjects() {
         JointEdge jedge = body.getJointList();
         ArrayList<Joint> jlist = new ArrayList<Joint>();

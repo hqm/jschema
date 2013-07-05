@@ -118,9 +118,10 @@ class MotorAction {
 
 class WorldState {
 
-      ArrayList<SensoryInput> inputList = new ArrayList<SensoryInput>();
+    HashMap<String,SensorInput> inputList = new HashMap<String,SensorInput>();
+    
+    HashMap<String,MotorAction> outputList = new HashMap<String,MotorAction>();
 
-      ArrayList<MotorAction> outputList = new ArrayList<MotorAction>();
 
 }
 
@@ -157,49 +158,3 @@ load 'doit'
 
 
 
-
-Make the hands octagons, to get proper touch info. 
-The contacts appear anywhere along the edge, so need this
-to separate out side from top contacts.
-
-
-
-    int touchingSides() {
-        ArrayList<Object2D> t = touchingObjects();
-        int sides = 0;
-        if (t.size() > 0) {
-            for (Object2D obj: t) {
-                ContactEdge cedge = obj.body.getContactList();
-                while (cedge != null) {
-                    Contact c = cedge.contact;
-                    Fixture a = c.getFixtureA();
-                    Fixture b = c.getFixtureB();
-                    Body ba = a.getBody();
-                    Body bb = b.getBody();
-                    // This is a contact from a touching object which points back to our body
-                    if (ba == body || bb == body) {
-                        Manifold m = c.getManifold();
-                        WorldManifold wm = new WorldManifold();
-                        c.getWorldManifold(wm);
-                        Vec2 wmn = wm.normal;
-
-                        if (wmn.x < 0) {
-                            sides |= TOUCH_RIGHT;
-                        }
-                        if (wmn.x > 0) {
-                            sides |= TOUCH_LEFT;
-                        }
-                        if (wmn.y > 0) {
-                            sides |= TOUCH_BOTTOM;
-                        }
-                        if (wmn.y < 0) {
-                            sides |= TOUCH_TOP;
-                        }
-
-                    }
-                    cedge = cedge.next;
-                }
-            }
-        }
-        return sides;
-    }

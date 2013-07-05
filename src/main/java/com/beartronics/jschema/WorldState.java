@@ -16,6 +16,11 @@ public class WorldState {
 
     int sensorID = 0;
 
+
+    public WorldState() {        
+
+    }
+
     void setSensorInput(String path, int id,  boolean val) {
         SensorInput s = inputList.get(path);
         if (s == null) {
@@ -29,9 +34,6 @@ public class WorldState {
     HashMap<String,SensorInput> inputList = new HashMap<String,SensorInput>();
     
     HashMap<String,MotorAction> outputList = new HashMap<String,MotorAction>();
-
-    public WorldState() {        
-    }
 
     public String toString() {
         StringBuilder s = new StringBuilder();
