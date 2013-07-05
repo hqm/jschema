@@ -200,6 +200,13 @@ public class Hand extends Box {
         return fv;
     }
 
+    public float getJointTorque() {
+        float t = 0;
+        if (mouseJoint != null) {
+            t = mouseJoint.getReactionTorque(1.0f);
+        }
+        return t;
+    }
 
     /**
        Update absolute pixel coord of the 'mousejoint' which hold the hand in position.

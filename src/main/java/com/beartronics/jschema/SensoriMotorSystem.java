@@ -202,9 +202,10 @@ public class SensoriMotorSystem {
         }
 
         Vec2 f = h.getJointForce();
-        String info = String.format("grossX=%.1f,%.1f fineX=%.1f,%.1f F=(%.1f, %.1f) %s [touching %s]",
+        float torque = h.getJointTorque();
+        String info = String.format("grossX=%.1f,%.1f fineX=%.1f,%.1f F=(%.1f, %.1f) TRQ=%.1f %s [touching %s]",
                                     h.grossX, h.grossY,
-                                    h.fineX, h.fineY,
+                                    h.fineX, h.fineY, torque,
                                     f.x*100, f.y*100,
                                     h.touchString(), touchList);
         return info;
@@ -519,13 +520,17 @@ public class SensoriMotorSystem {
         }
 
         // update joint force sensors
+        Vec2 f1 = hand1.getJointForce();
+        float trq1 = hand1.getJointTorque();
+        Vec2 f2 = hand2.getJointForce();
+        float trq2 = hand2.getJointTorque();
         for (int i = -2; i < 3; i++) {
-            Vec2 f1 = hand1.getJointForce();
             worldState.setSensorInput("hand1.force.x."+i, sensorID++, (i-1) < f1.x && f1.x < i);
             worldState.setSensorInput("hand1.force.y."+i, sensorID++, (i-1) < f1.y && f1.y < i);
-            Vec2 f2 = hand2.getJointForce();
+            worldState.setSensorInput("hand1.torque."+i, sensorID++, (i-1) < trq1 && trq1 < i);            
             worldState.setSensorInput("hand2.force.x."+i, sensorID++, (i-1) < f2.x && f2.x < i);
             worldState.setSensorInput("hand2.force.y."+i, sensorID++, (i-1) < f2.y && f2.y < i);
+            worldState.setSensorInput("hand2.torque."+i, sensorID++, (i-1) < trq2 && trq2 < i);
         }
 
         // update gripper touch and force sensors

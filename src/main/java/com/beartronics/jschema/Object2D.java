@@ -269,12 +269,12 @@ abstract class Object2D {
                 Body bB = j.getBodyA();
                 Body b = (bA == body ? bB : bA);
                 Object2D other = (Object2D) b.getUserData();
-                app.print(String.format("getWeldedObjects bA=%s bB=%s", bA,bB));
+                //app.print(String.format("getWeldedObjects bA=%s bB=%s", bA,bB));
                 if (other != null) {
-                    app.println(String.format("... obj=%s", other));
+                    //app.println(String.format("... obj=%s", other));
                     objs.add(other);
                 } else {
-                    app.println(" ... null obj");
+                    //app.println(" ... null obj");
                 }
             }
         }
