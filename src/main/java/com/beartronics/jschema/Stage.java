@@ -1,8 +1,6 @@
 package com.beartronics.jschema;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.ArrayList;
+import java.util.*;
 
 import org.apache.log4j.Logger;
 
@@ -45,8 +43,7 @@ public class Stage
 
     void initItems() {
         for (int i = 0; i < nitems; i++) {
-            Item item = new Item(String.format(Integer.toString(i), i), i, 0, Item.ItemType.PRIMITIVE);
-            items.add(item);
+            items.add(null);
         }
     }
 
@@ -83,8 +80,22 @@ TODO TODO ++++++++++++++++
 
 
     void copySMSInputToItems(WorldState w) {
-        logger.debug("Stage.copySMSInputToItems not yet implemented");
+        for (Map.Entry<String, SensorInput> entry : w.inputList.entrySet())
+        {
+            SensorInput s = entry.getValue();
+            int index = s.id;
+            String path = s.path;
+            boolean newValue = s.value;
 
+            Item item = items.get(index);
+            if (item == null) {
+                item = new Item(String.format("#%d:%s",index,path), index, newValue, Item.ItemType.PRIMITIVE);
+                items.set(index,item);
+            } else {
+                item.prevValue = item.value;
+                item.value = newValue;
+            }
+        }
     }
 
     /** decides what to do next, sets primitive motor actions on WorldState */
@@ -94,7 +105,7 @@ TODO TODO ++++++++++++++++
 
     // Make a synthetic item for a schema
     Item makeSyntheticItem(Schema s) {
-        Item item = new Item(String.format(Integer.toString(nitems), nitems), nitems, 0, Item.ItemType.SYNTHETIC);
+        Item item = new Item(String.format(Integer.toString(nitems), nitems), nitems, false, Item.ItemType.SYNTHETIC);
         items.add(item);
         nitems++;
         return item;

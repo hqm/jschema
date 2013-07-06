@@ -6,7 +6,8 @@ import java.util.List;
 
 public class Item {
     String name;
-    float  value;
+    boolean  value;
+    boolean prevValue;
     int    id;
     ItemType type;
 
@@ -14,14 +15,14 @@ public class Item {
         PRIMITIVE, SYNTHETIC
     }
 
-    Item(String name, int index, float value, ItemType type) {
+    Item(String name, int index, boolean value, ItemType type) {
         this.name = name;
         this.id = index;
         this.value = value;
         this.type = type;
     }
 
-    Item(String name, int index, float value) {
+    Item(String name, int index, boolean value) {
         this.name = name;
         this.id = index;
         this.value = value;

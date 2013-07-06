@@ -60,6 +60,8 @@ public class SensoriMotorSystem {
     public int dGross = 100;
     public int dFine = 10;
 
+    boolean showWorldState = false;
+
     public SensoriMotorSystem(JSchema a) {
         this.app = a;
         System.out.println("SensoriMotorSystem constructor this.app = "+this.app);
@@ -248,6 +250,39 @@ public class SensoriMotorSystem {
         drawViewPort();
 
         computeWorldState();
+        if (showWorldState) {
+            displayWorldState(worldState);
+        }
+    }
+
+    void displayWorldState(WorldState w) {
+        app.pushMatrix();
+        app.pushStyle();
+        app.rectMode(PConstants.CENTER);
+        app.translate(app.width-250,20);
+
+        for (Map.Entry<String, SensorInput> entry : w.inputList.entrySet())
+        {
+            SensorInput s = entry.getValue();
+            int id = s.id;
+            boolean v = s.value;
+
+            float cx = (id % 20) * 12;
+            float cy = (id / 20) * 12;
+            // draw the max range the hands can move
+            if (v) {
+                app.fill(0);
+            } else {
+                app.fill(225);
+            }
+            app.rect(cx, cy, 10,10);
+        }
+
+        // draw the max range the hands can move
+
+        app.popStyle();
+        app.popMatrix();
+
 
     }
 
@@ -394,6 +429,9 @@ public class SensoriMotorSystem {
             }
         }
 
+        if (app.key == 'w') {
+            showWorldState = !showWorldState;
+        }
 
     }
         
@@ -530,16 +568,21 @@ public class SensoriMotorSystem {
 
         // update joint force sensors
         Vec2 f1 = hand1.getJointForce();
+        f1.mulLocal(100.0f);
         float trq1 = hand1.getJointTorque();
         Vec2 f2 = hand2.getJointForce();
+        f2.mulLocal(100.0f);
         float trq2 = hand2.getJointTorque();
-        for (int i = -2; i < 3; i++) {
-            worldState.setSensorInput("hand1.force.x."+i, sensorID++, (i-1) < f1.x && f1.x < i);
-            worldState.setSensorInput("hand1.force.y."+i, sensorID++, (i-1) < f1.y && f1.y < i);
-            worldState.setSensorInput("hand1.torque."+i, sensorID++, (i-1) < trq1 && trq1 < i);            
-            worldState.setSensorInput("hand2.force.x."+i, sensorID++, (i-1) < f2.x && f2.x < i);
-            worldState.setSensorInput("hand2.force.y."+i, sensorID++, (i-1) < f2.y && f2.y < i);
-            worldState.setSensorInput("hand2.torque."+i, sensorID++, (i-1) < trq2 && trq2 < i);
+        // forces should be normalized to range [-1.0, 1.0]
+
+        float f = -1.0f;
+        for (int i = 0; i < 8; i++, f+=0.5) {
+            worldState.setSensorInput("hand1.force.x."+i, sensorID++, f1.x < f);
+            worldState.setSensorInput("hand1.force.y."+i, sensorID++, f1.y < f);
+            worldState.setSensorInput("hand1.torque."+i, sensorID++,  trq1 < f);            
+            worldState.setSensorInput("hand2.force.x."+i, sensorID++, f2.x < f);
+            worldState.setSensorInput("hand2.force.y."+i, sensorID++, f2.y < f);
+            worldState.setSensorInput("hand2.torque."+i, sensorID++,  trq2 < f);
         }
 
         // update gripper touch and force sensors
