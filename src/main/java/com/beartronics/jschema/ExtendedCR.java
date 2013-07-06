@@ -6,15 +6,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 
 // Holds the extended context or result arrays
 public class ExtendedCR {
 
-    final Logger logger =
-        LoggerFactory.getLogger(ExtendedCR.class);
- 
+    static Logger logger = Logger.getLogger(ExtendedCR.class);
 
     TIntArrayList offToOnActionTaken = new TIntArrayList();
     TIntArrayList offToOnActionNotTaken = new TIntArrayList();

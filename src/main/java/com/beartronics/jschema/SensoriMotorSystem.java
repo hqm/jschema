@@ -201,13 +201,22 @@ public class SensoriMotorSystem {
             touchList.append(" "+obj.index);
         }
 
-        Vec2 f = h.getJointForce();
+        StringBuilder graspList = new StringBuilder();
+        for (Object2D obj: h.getWeldedObjects()) {
+            graspList.append(" "+obj.index);
+        }
+
+
+        Vec2 jf = h.getJointForce();
+
         float torque = h.getJointTorque();
-        String info = String.format("grossX=%.1f,%.1f fineX=%.1f,%.1f F=(%.1f, %.1f) TRQ=%.1f %s [touching %s]",
+
+        String info = String.format("grossX=(%.1f,%.1f) fineX=(%.1f,%.1f) FJoint=(%.1f, %.1f) TRQ=%.1f %s [touching %s] [grasp %s]",
                                     h.grossX, h.grossY,
-                                    h.fineX, h.fineY, torque,
-                                    f.x*100, f.y*100,
-                                    h.touchString(), touchList);
+                                    h.fineX, h.fineY,
+                                    jf.x*100, jf.y*100,
+                                    torque,
+                                    h.touchString(), touchList, graspList);
         return info;
     }
 

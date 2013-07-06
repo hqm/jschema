@@ -48,6 +48,23 @@ abstract class Object2D {
         this.index = Object2D.counter++;
     }
 
+    public void lock(boolean v) {
+        if (v) {
+            body.setType(BodyType.STATIC);
+        } else {
+            body.setType(BodyType.DYNAMIC);
+        }
+    }
+
+    public void lock(Body b, boolean v) {
+        if (v) {
+            b.setType(BodyType.STATIC);
+        } else {
+            b.setType(BodyType.DYNAMIC);
+        }
+    }
+
+
     boolean isHollow() {
         return false;
     }
@@ -84,10 +101,14 @@ abstract class Object2D {
                 Object objA = ba.getUserData();
                 Object objB = bb.getUserData();
                 if (objA != null && objA instanceof Object2D && objA != this) {
-                    t.add((Object2D)objA);
+                    if (!t.contains(objA)) {
+                        t.add((Object2D)objA);
+                    }
                 }
                 if (objB != null && objB instanceof Object2D && objB != this) {
-                    t.add((Object2D)objB);
+                    if (!t.contains(objB)) {
+                        t.add((Object2D)objB);
+                    }
                 }
             }
             cedge = cedge.next;
@@ -236,8 +257,9 @@ abstract class Object2D {
      * param obj2
      */
     void weld(Object2D obj1, Object2D obj2) {
+        app.println("weld "+obj1+" to "+obj2);
         WeldJointDef wd = new WeldJointDef();
-        wd.collideConnected = false;
+        //wd.collideConnected = false;
         wd.initialize(obj1.body, obj2.body, obj1.body.getWorldCenter());
         gripJoint = (WeldJoint) box2d.world.createJoint(wd);
     }
@@ -363,8 +385,10 @@ abstract class Object2D {
                 Object2D other = (Object2D) cedge.other.getUserData();
                 if (other != ignore && other != null) {
                     app.println("welding "+this+" to obj "+other);
-                    objs.add(other);
-                    weld(this, other);
+                    if (!objs.contains(other)) {
+                        objs.add(other);
+                        weld(this, other);
+                    }
                 }
             }
             cedge = cedge.next;
@@ -387,26 +411,21 @@ abstract class Object2D {
         }
     }
 
-    public Vec2 getNormalForces(Object2D thing) {
-        Vec2 totalImpulse = new Vec2(0,0);
-        ContactEdge cedge = thing.body.getContactList();
-        while (cedge != null) {
-            Contact c = cedge.contact;
-            Manifold m = c.getManifold();
-            if (m.pointCount > 0) {
-                Vec2 lnormal = m.localNormal;
-                for (ManifoldPoint pt: m.points) {
-                    float normalImpulse = pt.normalImpulse;
-                    totalImpulse.addLocal(lnormal.mul(normalImpulse));
-                }
-            }
-            cedge = cedge.next;
+    public Vec2 getJointForce() {
+        Vec2 fv = new Vec2();
+        if (mouseJoint != null) {
+            mouseJoint.getReactionForce(1.0f, fv);
         }
-        return totalImpulse;
+        return fv;
     }
 
-
-
+    public float getJointTorque() {
+        float t = 0;
+        if (mouseJoint != null) {
+            t = mouseJoint.getReactionTorque(1.0f);
+        }
+        return t;
+    }
 
 
 }

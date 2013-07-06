@@ -186,28 +186,6 @@ public class Hand extends Box {
         updatePosition(app.sms.xpos, app.sms.ypos);
     }
 
-
-    /** Sum of all forces of contacting objects  on the hand*/
-    public Vec2 getNetForce() {
-        return getNormalForces(this);
-    }
-
-    public Vec2 getJointForce() {
-        Vec2 fv = new Vec2();
-        if (mouseJoint != null) {
-            mouseJoint.getReactionForce(1.0f, fv);
-        }
-        return fv;
-    }
-
-    public float getJointTorque() {
-        float t = 0;
-        if (mouseJoint != null) {
-            t = mouseJoint.getReactionTorque(1.0f);
-        }
-        return t;
-    }
-
     /**
        Update absolute pixel coord of the 'mousejoint' which hold the hand in position.
        @param  x body xpos

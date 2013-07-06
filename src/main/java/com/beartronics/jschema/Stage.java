@@ -13,7 +13,6 @@ import org.apache.log4j.Logger;
  */
 public class Stage
 {
-    /* Get actual class name to be printed on */
     static Logger logger = Logger.getLogger(Stage.class.getName());
 
     public JSchema app;
