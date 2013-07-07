@@ -85,8 +85,8 @@ public class Plane implements ContactListener {
 
         // create visual sensor array
         float q = app.sms.QUADRANT_SIZE;
-        float offsetx = q * app.sms.NQUADRANT_X/2;
-        float offsety = q * app.sms.NQUADRANT_Y/2;
+        float offsetx = q * app.sms.NQUADRANT_X/2 + q/2;
+        float offsety = q * app.sms.NQUADRANT_Y/2 ;
 
         for (int x = 0; x < app.sms.NQUADRANT_X; x++) {
             for (int y = 0; y < app.sms.NQUADRANT_Y; y++) {

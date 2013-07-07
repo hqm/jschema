@@ -511,6 +511,37 @@ public class SensoriMotorSystem {
         }
     }
 
+    boolean isRoundObjectAtGaze() {
+        Object2D obj = findObjAt(xpos+gazeXpos,ypos+gazeYpos);
+        if (obj == null) {
+            return false;
+        } else {
+            return (obj instanceof Ball);
+        }
+    }
+
+    boolean isFlatObjectAtGaze() {
+        Object2D obj = findObjAt(xpos+gazeXpos,ypos+gazeYpos);
+        if (obj == null) {
+            return false;
+        } else {
+            return (obj instanceof Box);
+        }
+    }
+
+    /** is object at orientation angle between lower and upper?*/
+    boolean isGazeObjectAtAngle(int lower, int upper) {
+        Object2D obj = findObjAt(xpos+gazeXpos,ypos+gazeYpos);
+        if (obj == null) {
+            return false;
+        } else {
+            float angle = obj.getAngle();
+            return (lower <= angle && angle < upper);
+        }
+    }
+
+
+
     Object2D objectAtGaze() {
         return findObjAt(xpos+gazeXpos,ypos+gazeYpos);
     }
@@ -520,6 +551,13 @@ public class SensoriMotorSystem {
         worldState.setSensorInput("vision.fovea.object", sensorID++, isObjectAtGaze());
         worldState.setSensorInput("vision.fovea.solid_object", sensorID++, isSolidObjectAtGaze());
         worldState.setSensorInput("vision.fovea.hollow_object", sensorID++, isHollowObjectAtGaze());
+        worldState.setSensorInput("vision.fovea.round_object", sensorID++, isRoundObjectAtGaze());
+        worldState.setSensorInput("vision.fovea.flat_object", sensorID++, isFlatObjectAtGaze());
+
+        for (int angle = 0 ; angle < 180; angle+= 10) {
+
+            worldState.setSensorInput("vision.fovea.angle."+angle, sensorID++, isGazeObjectAtAngle(angle-10, angle));
+        }
 
         // TODO
         // We need to scan all objects in plane1, plane0
