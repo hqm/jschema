@@ -1,2 +1,3 @@
-export CLASSPATH=lib/controlP5.jar:lib/core.jar:lib/gluegen-rt.jar:lib/jbox2d_2.1.2_ds_v2.jar:lib/jogl-all.jar:lib/jruby-complete-1.7.4.jar:lib/log4j.jar:lib/pbox2d.jar:lib/slf4j-api-1.6.4.jar:lib/slf4j-log4j12-1.7.5.jar:lib/target/:lib/trove4j-3.0.3.jar:lib/typesafe-config.jar:lib
+export CLASSPATH=lib/controlP5.jar:lib/core.jar:lib/gluegen-rt.jar:lib/jbox2d_2.1.2_ds_v2.jar:lib/jogl-all.jar:lib/jruby-complete-1.7.4.jar:lib/log4j.jar:lib/pbox2d.jar:lib/slf4j-api-1.6.4.jar:lib/slf4j-log4j12-1.7.5.jar:lib/target/:lib/trove4j-3.0.3.jar:lib/typesafe-config.jar:lib:lib/simple-5.1.4.jar:target/scala-2.10/jschema_2.10-1.1.jar
+
 

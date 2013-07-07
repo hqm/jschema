@@ -25,6 +25,21 @@ import java.io.IOException;
 
 import org.apache.log4j.Logger;
 
+import org.simpleframework.http.Request;
+import org.simpleframework.http.Response;
+import org.simpleframework.http.core.Container;
+import org.simpleframework.http.core.ContainerServer;
+import org.simpleframework.transport.Server;
+import org.simpleframework.transport.connect.Connection;
+import org.simpleframework.transport.connect.SocketConnection;
+
+import java.io.PrintStream;
+import java.net.InetSocketAddress;
+import java.net.SocketAddress;
+
+
+
+
 public class JSchema extends PApplet {
 
     static Logger logger = Logger.getLogger(JSchema.class.getName());
@@ -46,6 +61,19 @@ public class JSchema extends PApplet {
         return box2d;
     }
 
+    public void startWebServer() {
+        try {
+            println("starting web server on port 8080");
+            Container container = new WebServer();
+            Server server = new ContainerServer(container);
+            Connection connection = new SocketConnection(server);
+            SocketAddress address = new InetSocketAddress(8080);
+
+            connection.connect(address);
+        } catch (Exception e) {
+            println("web server caught exception "+e);
+        }
+    }
     public void setup() {
         size(1200, 600);
         smooth();
@@ -58,6 +86,7 @@ public class JSchema extends PApplet {
         sms.setupDisplay();
         frameRate(512);
 
+        startWebServer();
     }
 
     public int clock = 0;
