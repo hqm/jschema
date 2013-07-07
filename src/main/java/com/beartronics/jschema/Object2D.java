@@ -88,8 +88,8 @@ abstract class Object2D {
     /** 
         @return list of objects that are touching our boundary
     */
-    ArrayList<Object2D> touchingObjects() {
-        ArrayList<Object2D> t = new ArrayList<Object2D>();
+    HashSet<Object2D> touchingObjects() {
+        HashSet<Object2D> t = new HashSet<Object2D>();
         ContactEdge cedge = body.getContactList();
         while (cedge != null) {
             Contact c = cedge.contact;
@@ -101,22 +101,16 @@ abstract class Object2D {
                 Object objA = ba.getUserData();
                 Object objB = bb.getUserData();
                 if (objA != null && objA instanceof Object2D && objA != this) {
-                    if (!t.contains(objA)) {
-                        t.add((Object2D)objA);
-                    }
+                    t.add((Object2D)objA);
                 }
                 if (objB != null && objB instanceof Object2D && objB != this) {
-                    if (!t.contains(objB)) {
                         t.add((Object2D)objB);
-                    }
                 }
             }
             cedge = cedge.next;
         }
         return t;
     }
-
-
 
     // This function removes the particle from the box2d world
     void killBody() {
@@ -140,8 +134,8 @@ abstract class Object2D {
     }
 
     // Forces a move to this position, may cause non-physical behavior.
-    void moveTo(float x, float y) {
-        Vec2 worldPoint = box2d.coordPixelsToWorld(x, y);
+    void moveTo(float xpos, float ypos) {
+        Vec2 worldPoint = box2d.coordPixelsToWorld(xpos, ypos);
         body.setAngularVelocity(0);
         body.setTransform(worldPoint, body.getAngle());
 
@@ -181,7 +175,6 @@ abstract class Object2D {
     }
 
     void setSensor(boolean v) {
-        app.println(this + "setSensor fixture = "+fixture+" values = "+v);
         fixture.setSensor(v);
     }
 

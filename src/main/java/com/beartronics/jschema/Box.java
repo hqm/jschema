@@ -134,9 +134,6 @@ public class Box extends Object2D {
         body = world.createBody(bd);
         fixture = body.createFixture(fd);
 
-        // Give it some initial random velocity
-        //body.setLinearVelocity(new Vec2(app.random(-5, 5), app.random(2, 5)));
-        //body.setAngularVelocity(app.random(-5, 5));
         super.makeBody();
     }
 

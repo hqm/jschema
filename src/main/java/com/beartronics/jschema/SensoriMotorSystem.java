@@ -47,9 +47,6 @@ public class SensoriMotorSystem {
     public float gazeXpos = 0;
     public float gazeYpos = 0;
     
-    int headAzimuthAngle = 0;
-    int headElevationAngle = 0;
-
     public Hand hand1;
     public Hand hand2;
 
@@ -177,6 +174,8 @@ public class SensoriMotorSystem {
         }
     }
 
+
+
     void initialPhysobjs(Plane p) {
         int bottom = app.height;
         p.addBox(500, bottom -10, 64, 64, 1);
@@ -233,7 +232,7 @@ public class SensoriMotorSystem {
         }
         app.fill(0);
 
-        app.text("alt-click to create box, click to grasp, ctrl-click to lift, left and right arrow to rotate, shift for transparent", 20,12);
+        app.text("alt-click to create box, click to grasp, ctrl-click to lift, L and R key to rotate grip, shift for transparent", 20,12);
         app.text("plane="+planes.indexOf(currentPlane), 20,22);
         app.text("xpos="+xpos+ "   ypos="+ypos,20,32);
         app.text("hand1 "+showHandInfo(hand1),20,42);
@@ -316,7 +315,7 @@ public class SensoriMotorSystem {
         
 
         // draw the max range the hands can move
-        app.rect(cx, ypos, reachX*dGross, reachY*dGross);
+        app.rect(cx, ypos, reachX*dGross + reachX*dFine, reachY*dGross+ reachY*dFine);
         app.popStyle();
         app.popMatrix();
 
@@ -398,6 +397,9 @@ public class SensoriMotorSystem {
         ypos = y;
         ypos = (float)Math.min(WORLD_HEIGHT,ypos);
         ypos = (float)Math.max(0,ypos);
+
+        plane0.updateHeadPosition(xpos,ypos);
+        plane1.updateHeadPosition(xpos,ypos);
 
         hand1.updatePosition(xpos,ypos);
         hand2.updatePosition(xpos,ypos);
@@ -519,11 +521,31 @@ public class SensoriMotorSystem {
         worldState.setSensorInput("vision.fovea.solid_object", sensorID++, isSolidObjectAtGaze());
         worldState.setSensorInput("vision.fovea.hollow_object", sensorID++, isHollowObjectAtGaze());
 
-        for (int x = -5; x < 6; x++) {
-            for (int y = -5; y < 6; y++) {
-                worldState.setSensorInput("vision.peripheral.obj."+x+"."+y, sensorID++, objectAtQuadrant(x,y));
-            }
+        // TODO
+        // We need to scan all objects in plane1, plane0
+        //  [1] compute which quadrants they cover any part of.
+        //  [2]  compute which quadrant their center of mass lies in.
+        // Also adjust these so that if an opaque box or circle in plane1 completely hides an object in plane0, don't
+        // set the visual input for the plane0 item.
+
+        /*
+          Make a 10x10 visual map array of cells.
+
+          for each physobj in plane 1 and plane 0, put it into plane0,plane1 lists of all cells it touches.
+
+          for each cell, compute which plane1 objects are visible
+          calculate for each plane0 obj if it is completely covered by plane1 opaque objects.
+
+         */
+        
+        for (int i = 0; i < plane1.visualsensors.size(); i++) {
+            VisualBox v = plane1.visualsensors.get(i);
+            int px = v.px;
+            int py = v.py;
+            worldState.setSensorInput("vision.peripheral.obj."+px+"."+py, sensorID++, v.sensed.size() > 0);
         }
+
+        
 
         // Look for closed and open boundary objects
         //worldState.setSensorInput("vision.fovea.closed_object", sensorID++, closedObjectAt(0,0));
@@ -533,6 +555,8 @@ public class SensoriMotorSystem {
 
     }
     static final int QUADRANT_SIZE = 100;
+    static final int NQUADRANT_X = 13; // 12x8 visual field
+    static final int NQUADRANT_Y = 8; // 
 
     boolean objectAtQuadrant(float qx, float qy) {
         Object2D obj = findObjAt(xpos + qx*QUADRANT_SIZE, ypos+qy*QUADRANT_SIZE);

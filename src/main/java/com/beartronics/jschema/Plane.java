@@ -50,6 +50,8 @@ public class Plane implements ContactListener {
     // A list for all of our rectangles
     public ArrayList<Object2D> physobjs;
 
+    public ArrayList<VisualBox> visualsensors;
+
     PFont font;
 
     Object2D findObj(int index) {
@@ -58,8 +60,15 @@ public class Plane implements ContactListener {
                 return obj;
             }
         }
+        for (Object2D obj: visualsensors) {
+            if (obj.index == index) {
+                return obj;
+            }
+        }
+
         return null;
     }
+
 
     void setup() {
         box2d = app.createBox2D();
@@ -72,6 +81,20 @@ public class Plane implements ContactListener {
         // Create ArrayLists  
         physobjs = new ArrayList<Object2D>();
         boundaries = new ArrayList<Boundary>();
+        visualsensors = new ArrayList<VisualBox>();
+
+        // create visual sensor array
+        float q = app.sms.QUADRANT_SIZE;
+        float offsetx = q * app.sms.NQUADRANT_X/2;
+        float offsety = q * app.sms.NQUADRANT_Y/2;
+
+        for (int x = 0; x < app.sms.NQUADRANT_X; x++) {
+            for (int y = 0; y < app.sms.NQUADRANT_Y; y++) {
+                float cx = x*q - offsetx;
+                float cy = y*q - offsety;
+                addVisualBox(x,y,cx,cy,q,q);
+            }
+        }
 
         // Make the spring (it doesn't really get initialized until the mouse is clicked)
         worldState = new WorldState();
@@ -112,6 +135,14 @@ public class Plane implements ContactListener {
     Box addBox(float x, float y,float w,float h, float density) {
         Box box = new Box(this, x,  y, w, h, density);
         physobjs.add(box);
+        return box;
+    }
+
+    VisualBox addVisualBox(int px, int py, float x, float y,float w,float h) {
+        VisualBox box = new VisualBox(this, x,  y, w-1, h-1);
+        box.px = px;
+        box.py = py;
+        visualsensors.add(box);
         return box;
     }
 
@@ -262,6 +293,13 @@ public class Plane implements ContactListener {
         box2d.step();
     }
 
+    /* move the all the cells in the visual field to current head location */
+    void updateHeadPosition(float x, float y) {
+        for (VisualBox s: visualsensors) {
+            s.updatePosition(x,y);
+        }
+    }
+
     float ROTATIONAL_IMPULSE = 100f;
     float ROTATION_INCR = 0.1f;
     int L_KEY = 76;
@@ -318,6 +356,9 @@ public class Plane implements ContactListener {
             }
         }
 
+        for (Object2D b: visualsensors) {
+            b.display();
+        }
 
         app.popStyle();
 
@@ -367,34 +408,51 @@ public class Plane implements ContactListener {
         Fixture f1 = cp.getFixtureA();
         Fixture f2 = cp.getFixtureB();
         // Get both bodies
-        Body b1 = f1.getBody();
-        Body b2 = f2.getBody();
+        if (f1.isSensor() || f2.isSensor()) {
+            Body b1 = f1.getBody();
+            Body b2 = f2.getBody();
 
-        // Get our objects that reference these bodies
-        Object2D o1 = (Object2D) b1.getUserData();
-        Object2D o2 = (Object2D) b2.getUserData();
+            // Get our objects that reference these bodies
+            Object2D o1 = (Object2D) b1.getUserData();
+            Object2D o2 = (Object2D) b2.getUserData();
 
-        //app.println("beginContact "+cp +" o1="+o1+" o2="+o2);
-
-        if (o1.getClass() == Box.class && o2.getClass() == Box.class) {
-            Box p1 = (Box) o1;
-            //            p1.setColor(app.color(0,0,255));
-            Box p2 = (Box) o2;
-            //            p2.setColor(app.color(0,0,255));
+            if (o1.getClass() == VisualBox.class) {
+                ((VisualBox) o1).addSensed(o2);
+            } else if (o2.getClass() == VisualBox.class) {
+                ((VisualBox) o2).addSensed(o1);
+            }
         }
     }
 
     // Objects stop touching each other
     public void endContact(Contact cp) {
+        // Get both fixtures
+        Fixture f1 = cp.getFixtureA();
+        Fixture f2 = cp.getFixtureB();
+        // Get both bodies
+        if (f1.isSensor() || f2.isSensor()) {
+            Body b1 = f1.getBody();
+            Body b2 = f2.getBody();
+
+            // Get our objects that reference these bodies
+            Object2D o1 = (Object2D) b1.getUserData();
+            Object2D o2 = (Object2D) b2.getUserData();
+
+            if (o1.getClass() == VisualBox.class) {
+                ((VisualBox) o1).removeSensed(o2);
+            } else if (o2.getClass() == VisualBox.class) {
+                ((VisualBox) o2).removeSensed(o1);
+            }
+        }
     }
 
 
     // Gives us a chance to find the normal forces on contacting objects
-    public void postSolve(Contact c, ContactImpulse ci) {
-
+    public void postSolve(Contact cp, ContactImpulse ci) {
     }
 
-    public void preSolve(Contact c, Manifold m) {
+    public void preSolve(Contact cp, Manifold m) {
+
     }
 
 
