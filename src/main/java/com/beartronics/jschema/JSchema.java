@@ -64,7 +64,7 @@ public class JSchema extends PApplet {
     public void startWebServer() {
         try {
             println("starting web server on port 8080");
-            Container container = new WebServer();
+            Container container = new WebServer(this);
             Server server = new ContainerServer(container);
             Connection connection = new SocketConnection(server);
             SocketAddress address = new InetSocketAddress(8080);

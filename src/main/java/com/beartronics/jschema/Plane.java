@@ -300,8 +300,8 @@ public class Plane implements ContactListener {
         }
     }
 
-    float ROTATIONAL_IMPULSE = 100f;
-    float ROTATION_INCR = 0.1f;
+    float ROTATIONAL_IMPULSE = 1000f;
+    float ROTATION_INCR = 0.5f;
     int L_KEY = 76;
     int R_KEY = 82;
     void draw() {

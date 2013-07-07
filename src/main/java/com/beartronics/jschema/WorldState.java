@@ -36,13 +36,18 @@ public class WorldState {
     HashMap<String,MotorAction> outputList = new HashMap<String,MotorAction>();
 
     public String toString() {
-        StringBuilder s = new StringBuilder();
+        StringBuilder out = new StringBuilder();
+        ArrayList<String> list = new ArrayList<String>();
         for (Map.Entry<String, SensorInput> entry : inputList.entrySet())
         {
-            s.append(entry.getKey() + "/" + entry.getValue()+"\n");
+            list.add(entry.getValue().toString());
+        }
+        Collections.sort(list);
+        for (String s: list) {
+            out.append(s+"\n");
         }
 
-        return s.toString();
+        return out.toString();
     }
 
 }

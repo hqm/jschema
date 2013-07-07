@@ -30,7 +30,7 @@ public class SensorInput {
     }
 
     public String toString() {
-        return String.format("<<Input %s %s [prior %s] #%d>>", path, value, priorValue, id);
+        return String.format("%s: %s [prior %s] #%d", path, value, priorValue, id);
     }
 
 }
