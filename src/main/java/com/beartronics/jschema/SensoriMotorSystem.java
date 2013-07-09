@@ -57,7 +57,8 @@ public class SensoriMotorSystem {
     public int dGross = 100;
     public int dFine = 10;
 
-    boolean visualMap[][] = new boolean[NQUADRANT_X][NQUADRANT_Y];
+    // Used to sense objects in the visual field
+    VisualRegion vision;
 
     boolean showWorldState = false;
 
@@ -125,6 +126,8 @@ public class SensoriMotorSystem {
             plane.setup();
         }
 
+        vision = new VisualRegion(this);
+        vision.init(NQUADRANT_X, NQUADRANT_Y, QUADRANT_SIZE);
 
         app.smooth();
 
@@ -272,21 +275,6 @@ public class SensoriMotorSystem {
     }
 
     void displayWorldState(WorldState w) {
-
-        app.pushMatrix();
-        app.pushStyle();
-        app.rectMode(PConstants.CENTER);
-        app.translate(20,20);
-        for (int x = 0; x < NQUADRANT_X; x++) {
-            for (int y = 0; y < NQUADRANT_Y; y++) {
-                boolean val = visualMap[x][y];
-                app.fill(val ? 0 : 255);
-                app.rect(x*12, y*12, 10,10);
-            }
-        }
-
-        app.popStyle();
-        app.popMatrix();
 
         app.pushMatrix();
         app.pushStyle();
@@ -630,7 +618,6 @@ public class SensoriMotorSystem {
         }
     }
 
-
     void computeVisionSensor() {
         // is fovea seeing a solid object?
         worldState.setSensorInput("vision.fovea.object", sensorID++, isObjectAtGaze());
@@ -651,33 +638,6 @@ public class SensoriMotorSystem {
             worldState.setSensorInput("vision.fovea.angle."+angle, sensorID++, isGazeObjectAtAngle(angle-10, angle));
         }
 
-        // TODO
-        // We need to scan all objects in plane1, plane0
-        //  [1] compute which quadrants they cover any part of.
-        //  [2]  compute which quadrant their center of mass lies in.
-        // Also adjust these so that if an opaque box or circle in plane1 completely hides an object in plane0, don't
-        // set the visual input for the plane0 item.
-
-        /*
-          Make a 10x10 visual map array of cells.
-
-          for each physobj in plane 1 and plane 0, put it into plane0,plane1 lists of all cells it touches.
-
-          for each cell, compute which plane1 objects are visible
-             TODO::: Need to handle containment: calculate for each plane0 obj if it is completely covered by plane1 opaque objects.
-
-         */
-        
-        // For peripheral vision, we take UNION of the two planes; you just detect an object at XY in peripheral vision.
-        // You need foveated gaze at an item to get depth perception.
-        //
-        /* compute, for each physobj in each plane, what quadrant they are in. If more than some percentage overlap,
-           set boolean to true.
-
-           We want a datastructure to hold the list of objects which overlap each quadrant. Then can compute partial or total
-           overlap from plane1 over plane0, taking into account transparency. 
-
-        */
 
 
         // Look for closed and open boundary objects

@@ -107,6 +107,16 @@ Vision
 
 
      Motor action: focus eye on object center of mass. Send hand to gaze position? 
+
+     +      Motion map: at each timestep, compute which objects are moving, light up sensors in a motion quadrant map.
+
+     +      Motion at fovea - has more directional info, velocity. 
+
+     When the head moves, mark all quadrants which have objects as in motion? Or is that something that
+     we should handle in the vision system, and factor out by the time it reaches schema mechanism? What can you
+     learn from moving head and seeing an object motion vector opposite direction? I see the value of understanding
+     its final location, i.e., it's static position visual sensor, but what value is the momentary motion illusion?
+
      
 
    trajectory - when motion detected, a motion vector input is stimulated
@@ -144,6 +154,9 @@ class WorldState {
 
 
 }
+
+
+
 
 
 
