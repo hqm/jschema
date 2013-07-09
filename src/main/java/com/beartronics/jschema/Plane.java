@@ -45,12 +45,8 @@ public class Plane implements ContactListener {
     boolean transparent = false;
     int alpha = 255;
 
-    // A list we'll use to track fixed objects
-    public ArrayList<Boundary> boundaries;
     // A list for all of our rectangles
     public ArrayList<Object2D> physobjs;
-
-    public ArrayList<VisualBox> visualsensors;
 
     PFont font;
 
@@ -60,12 +56,6 @@ public class Plane implements ContactListener {
                 return obj;
             }
         }
-        for (Object2D obj: visualsensors) {
-            if (obj.index == index) {
-                return obj;
-            }
-        }
-
         return null;
     }
 
@@ -76,25 +66,10 @@ public class Plane implements ContactListener {
         box2d.world.setContactListener(this);
 
         // We are setting a custom gravity
-        box2d.setGravity(0, -10);
+        box2d.setGravity(0, -40);
 
         // Create ArrayLists  
         physobjs = new ArrayList<Object2D>();
-        boundaries = new ArrayList<Boundary>();
-        visualsensors = new ArrayList<VisualBox>();
-
-        // create visual sensor array
-        float q = app.sms.QUADRANT_SIZE;
-        float offsetx = q * app.sms.NQUADRANT_X/2 + q/2;
-        float offsety = q * app.sms.NQUADRANT_Y/2 ;
-
-        for (int x = 0; x < app.sms.NQUADRANT_X; x++) {
-            for (int y = 0; y < app.sms.NQUADRANT_Y; y++) {
-                float cx = x*q - offsetx;
-                float cy = y*q - offsety;
-                addVisualBox(x,y,cx,cy,q,q);
-            }
-        }
 
         // Make the spring (it doesn't really get initialized until the mouse is clicked)
         worldState = new WorldState();
@@ -128,7 +103,7 @@ public class Plane implements ContactListener {
 
     Boundary addBoundary(float x, float y,float w,float h, int color) {
         Boundary b = new Boundary(this, x, y, w, h, color );
-        boundaries.add(b);
+        physobjs.add(b);
         return b;
     }
 
@@ -138,13 +113,6 @@ public class Plane implements ContactListener {
         return box;
     }
 
-    VisualBox addVisualBox(int px, int py, float x, float y,float w,float h) {
-        VisualBox box = new VisualBox(this, x,  y, w-1, h-1);
-        box.px = px;
-        box.py = py;
-        visualsensors.add(box);
-        return box;
-    }
 
     Hand addHand(float x, float y,float w,float h, float density, int color) {
         Hand hand = new Hand(this, x,  y, w, h, density, color);
@@ -244,6 +212,17 @@ public class Plane implements ContactListener {
     }
 
 
+    ArrayList<Object2D> findObjectsAt(float x, float y) {
+        ArrayList<Object2D> items = new ArrayList<Object2D>();
+        for (Object2D b: physobjs) {
+            if (b.contains(x, y)) {
+                items.add(b);
+            }
+        }
+        return items;
+    }
+
+
     void mousePressed() {
         // Add a new Particle System whenever the mouse is clicked
         //        if (app.keyCode == 'l') {
@@ -295,9 +274,6 @@ public class Plane implements ContactListener {
 
     /* move the all the cells in the visual field to current head location */
     void updateHeadPosition(float x, float y) {
-        for (VisualBox s: visualsensors) {
-            s.updatePosition(x,y);
-        }
     }
 
     float ROTATIONAL_IMPULSE = 1000f;
@@ -337,10 +313,6 @@ public class Plane implements ContactListener {
 
         box2d.step();
 
-        // Display all the boundaries
-        for (Boundary wall: boundaries) {
-            wall.display();
-        }
 
         // Display all the physobjs
         for (Object2D b: physobjs) {
@@ -354,10 +326,6 @@ public class Plane implements ContactListener {
             if (b.done()) {
                 physobjs.remove(i);
             }
-        }
-
-        for (Object2D b: visualsensors) {
-            b.display();
         }
 
         app.popStyle();

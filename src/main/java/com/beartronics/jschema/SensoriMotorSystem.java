@@ -57,7 +57,11 @@ public class SensoriMotorSystem {
     public int dGross = 100;
     public int dFine = 10;
 
+    boolean visualMap[][] = new boolean[NQUADRANT_X][NQUADRANT_Y];
+
     boolean showWorldState = false;
+
+    Object2D foveatedObject = null;
 
     public SensoriMotorSystem(JSchema a) {
         this.app = a;
@@ -71,6 +75,20 @@ public class SensoriMotorSystem {
         }
         return null;
     }
+
+    Object2D findObjAt(Vec2 pos) {
+        return findObjAt(pos.x, pos.y);
+    }
+
+    ArrayList<Object2D> findObjectsAt(Vec2 pos) {
+        ArrayList<Object2D> items = new ArrayList<Object2D>();
+        for (Plane plane: planes) {
+            ArrayList<Object2D> objs = plane.findObjectsAt(pos.x, pos.y);
+            items.addAll(objs);
+        }
+        return items;
+    }
+
 
     Object2D findObjAt(float x, float y) {
         for (Plane plane: planes) {
@@ -91,7 +109,6 @@ public class SensoriMotorSystem {
         // Initial body position
         xpos = app.width/2;
         ypos = app.height/2;
-
 
         // Initialize box2d physics and create the world
         plane0 = new Plane(app, app.color(255, 55, 55));
@@ -255,6 +272,22 @@ public class SensoriMotorSystem {
     }
 
     void displayWorldState(WorldState w) {
+
+        app.pushMatrix();
+        app.pushStyle();
+        app.rectMode(PConstants.CENTER);
+        app.translate(20,20);
+        for (int x = 0; x < NQUADRANT_X; x++) {
+            for (int y = 0; y < NQUADRANT_Y; y++) {
+                boolean val = visualMap[x][y];
+                app.fill(val ? 0 : 255);
+                app.rect(x*12, y*12, 10,10);
+            }
+        }
+
+        app.popStyle();
+        app.popMatrix();
+
         app.pushMatrix();
         app.pushStyle();
         app.rectMode(PConstants.CENTER);
@@ -268,12 +301,14 @@ public class SensoriMotorSystem {
 
             float cx = (id % 20) * 12;
             float cy = (id / 20) * 12;
+
             // draw the max range the hands can move
             if (v) {
                 app.fill(0);
             } else {
                 app.fill(225);
             }
+
             app.rect(cx, cy, 10,10);
         }
 
@@ -488,13 +523,13 @@ public class SensoriMotorSystem {
     }
 
     boolean isObjectAtGaze() {
-        Object2D obj = findObjAt(xpos+gazeXpos,ypos+gazeYpos);
+        Object2D obj = findObjAt(gazePosition());
         return (obj != null);
     }
 
 
     boolean isSolidObjectAtGaze() {
-        Object2D obj = findObjAt(xpos+gazeXpos,ypos+gazeYpos);
+        Object2D obj = findObjAt(gazePosition());
         if (obj == null) {
             return false;
         } else {
@@ -503,7 +538,7 @@ public class SensoriMotorSystem {
     }
 
     boolean isHollowObjectAtGaze() {
-        Object2D obj = findObjAt(xpos+gazeXpos,ypos+gazeYpos);
+        Object2D obj = findObjAt(gazePosition());
         if (obj == null) {
             return false;
         } else {
@@ -512,7 +547,7 @@ public class SensoriMotorSystem {
     }
 
     boolean isRoundObjectAtGaze() {
-        Object2D obj = findObjAt(xpos+gazeXpos,ypos+gazeYpos);
+        Object2D obj = findObjAt(gazePosition());
         if (obj == null) {
             return false;
         } else {
@@ -521,7 +556,7 @@ public class SensoriMotorSystem {
     }
 
     boolean isFlatObjectAtGaze() {
-        Object2D obj = findObjAt(xpos+gazeXpos,ypos+gazeYpos);
+        Object2D obj = findObjAt(gazePosition());
         if (obj == null) {
             return false;
         } else {
@@ -531,7 +566,7 @@ public class SensoriMotorSystem {
 
     /** is object at orientation angle between lower and upper?*/
     boolean isGazeObjectAtAngle(int lower, int upper) {
-        Object2D obj = findObjAt(xpos+gazeXpos,ypos+gazeYpos);
+        Object2D obj = findObjAt(gazePosition());
         if (obj == null) {
             return false;
         } else {
@@ -541,10 +576,60 @@ public class SensoriMotorSystem {
     }
 
 
-
-    Object2D objectAtGaze() {
-        return findObjAt(xpos+gazeXpos,ypos+gazeYpos);
+    boolean isRedObjectAtGaze() {
+        Object2D obj = findObjAt(gazePosition());
+        if (obj == null) {
+            return false;
+        } else {
+            float red = app.red(obj.color);
+            float green = app.green(obj.color);
+            float blue = app.blue(obj.color);
+            return (red > 200 && green < 50 && blue < 50);
+        }
     }
+    boolean isBlueObjectAtGaze() {
+        Object2D obj = findObjAt(gazePosition());
+        if (obj == null) {
+            return false;
+        } else {
+            float red = app.red(obj.color);
+            float green = app.green(obj.color);
+            float blue = app.blue(obj.color);
+            return (red < 50 && green < 50 && blue > 200);
+        }
+    }
+    boolean isGreenObjectAtGaze(){
+        Object2D obj = findObjAt(gazePosition());
+        if (obj == null) {
+            return false;
+        } else {
+            float red = app.red(obj.color);
+            float green = app.green(obj.color);
+            float blue = app.blue(obj.color);
+            return (red < 50 && green > 200 && blue < 50);
+        }
+    }
+
+    boolean isDarkObjectAtGaze() {
+        Object2D obj = findObjAt(gazePosition());
+        if (obj == null) {
+            return false;
+        } else {
+            float bright = app.brightness(obj.color);
+            return (bright > 128);
+        }
+    }
+
+    boolean isLightObjectAtGaze() {
+        Object2D obj = findObjAt(gazePosition());
+        if (obj == null) {
+            return false;
+        } else {
+            float bright = app.brightness(obj.color);
+            return (bright <= 128);
+        }
+    }
+
 
     void computeVisionSensor() {
         // is fovea seeing a solid object?
@@ -553,6 +638,13 @@ public class SensoriMotorSystem {
         worldState.setSensorInput("vision.fovea.hollow_object", sensorID++, isHollowObjectAtGaze());
         worldState.setSensorInput("vision.fovea.round_object", sensorID++, isRoundObjectAtGaze());
         worldState.setSensorInput("vision.fovea.flat_object", sensorID++, isFlatObjectAtGaze());
+
+        worldState.setSensorInput("vision.fovea.flat_object", sensorID++, isRedObjectAtGaze());
+        worldState.setSensorInput("vision.fovea.flat_object", sensorID++, isBlueObjectAtGaze());
+        worldState.setSensorInput("vision.fovea.flat_object", sensorID++, isGreenObjectAtGaze());
+
+        worldState.setSensorInput("vision.fovea.flat_object", sensorID++, isDarkObjectAtGaze());
+        worldState.setSensorInput("vision.fovea.flat_object", sensorID++, isLightObjectAtGaze());
 
         for (int angle = 0 ; angle < 180; angle+= 10) {
 
@@ -572,18 +664,21 @@ public class SensoriMotorSystem {
           for each physobj in plane 1 and plane 0, put it into plane0,plane1 lists of all cells it touches.
 
           for each cell, compute which plane1 objects are visible
-          calculate for each plane0 obj if it is completely covered by plane1 opaque objects.
+             TODO::: Need to handle containment: calculate for each plane0 obj if it is completely covered by plane1 opaque objects.
 
          */
         
-        for (int i = 0; i < plane1.visualsensors.size(); i++) {
-            VisualBox v = plane1.visualsensors.get(i);
-            int px = v.px;
-            int py = v.py;
-            worldState.setSensorInput("vision.peripheral.obj."+px+"."+py, sensorID++, v.sensed.size() > 0);
-        }
+        // For peripheral vision, we take UNION of the two planes; you just detect an object at XY in peripheral vision.
+        // You need foveated gaze at an item to get depth perception.
+        //
+        /* compute, for each physobj in each plane, what quadrant they are in. If more than some percentage overlap,
+           set boolean to true.
 
-        
+           We want a datastructure to hold the list of objects which overlap each quadrant. Then can compute partial or total
+           overlap from plane1 over plane0, taking into account transparency. 
+
+        */
+
 
         // Look for closed and open boundary objects
         //worldState.setSensorInput("vision.fovea.closed_object", sensorID++, closedObjectAt(0,0));
@@ -601,11 +696,25 @@ public class SensoriMotorSystem {
         return obj != null;
     }
 
-    // Vision primitives
+    // Vision motor primitives
     void gazeAt(Object2D thing) {
         Vec2 pos = thing.getPosition();
         gazeXpos = pos.x - xpos;
         gazeYpos = ypos - pos.y;
+    }
+
+    Vec2 gazePosition() {
+        return new Vec2(xpos+gazeXpos, ypos+gazeYpos);
+    }
+
+    Object2D objectAtGaze() {
+        return findObjAt(gazePosition());
+    }
+
+    /** Moves the gaze to center on the next item in the fovea. */
+    void gazeNext() {
+        ArrayList<Object2D> items = findObjectsAt(gazePosition());
+        
     }
 
     // Includes proprioceptive sensors

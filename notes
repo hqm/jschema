@@ -93,6 +93,9 @@ Vision
      closed area fill - is area at fovea closed? 
      are there any bits on at the fovea ; color, density, texture (image morphology bank of filters)
 
+
+     edge detection -- vertical edges, horizontal edges, diagonal edges (in 30 degree increments
+
   filter system (image morphology)
     prescale
     erode/dilate
@@ -102,6 +105,9 @@ Vision
      you can enable tracking as an action on the fovea; you then get the gaze moved around for you as it tracks an object
      that is visible.
 
+
+     Motor action: focus eye on object center of mass. Send hand to gaze position? 
+     
 
    trajectory - when motion detected, a motion vector input is stimulated
 
@@ -166,5 +172,7 @@ jirb
 
 
 
+Web API
 
+http://127.0.0.1:8080/smap
 

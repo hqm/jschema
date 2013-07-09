@@ -30,7 +30,7 @@ abstract class Object2D {
     public Body body;
     float density;
     public Fixture fixture;
-    int color;
+    public int color;
     public JSchema app;
     public PBox2D box2d;
     public float w,h;
