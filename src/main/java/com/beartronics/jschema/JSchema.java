@@ -79,6 +79,7 @@ public class JSchema extends PApplet {
 
     PFrame retinaFrame = null;
     RetinaView retinaView = null;
+    PGraphics retinaImage = null;
 
 
     public void setup() {
@@ -87,6 +88,8 @@ public class JSchema extends PApplet {
         retinaView = new RetinaView();
         retinaFrame = new PFrame(retinaView, 210, 0);
         retinaFrame.setTitle("Retina View");
+
+        retinaImage = createGraphics(1000,1000);
 
         smooth();
         background(255);
@@ -106,7 +109,8 @@ public class JSchema extends PApplet {
         if (interactive) {
             try {
                 clock++;
-                sms.draw();
+                sms.draw(retinaImage);
+                retinaView.set(0,0,retinaImage);
 
                 // The Schema engine will read the worldState from the sms, and
                 // set any motor actions it wants to

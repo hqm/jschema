@@ -43,16 +43,11 @@ public class RetinaView extends PApplet {
   
   public void setup() {
     size(1000, 1000);
-    background(0, 0, 0);
-    
-    noLoop();
-    noCursor();
+    background(255);
   }  
   
   public void draw() {
+
   }
   
-  public void mouseMoved() {
-    background(0, 255, 0);
-  }
 }

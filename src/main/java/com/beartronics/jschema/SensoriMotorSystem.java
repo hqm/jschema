@@ -249,7 +249,7 @@ public class SensoriMotorSystem {
     }
 
 
-    void draw() {
+    void draw(PGraphics pg) {
 
         app.rectMode(PConstants.CORNER);
         if (planes.indexOf(currentPlane) == 0) {
@@ -278,6 +278,17 @@ public class SensoriMotorSystem {
         if (showWorldState) {
             displayWorldState(worldState);
         }
+
+        displayRetinaView(pg);
+    }
+
+    void displayRetinaView(PGraphics pg) {
+        pg.beginDraw();
+        pg.background(255);
+        for (Plane plane: planes) {
+            plane.drawRetina(pg);
+        }
+        pg.endDraw();
     }
 
     void displayWorldState(WorldState w) {

@@ -335,6 +335,24 @@ public class Plane implements ContactListener {
 
     }
 
+    /**
+       Render the objects onto the retina canvas, centered around the current
+       gaze position.
+     */
+    void drawRetina(PGraphics pg) {
+        pg.pushMatrix();
+        pg.translate(-translateX+(pg.width/2), 0);
+        pg.pushStyle();
+
+        // Display all the physobjs
+        for (Object2D b: physobjs) {
+            b.display(pg);
+        }
+
+        pg.popStyle();
+        pg.popMatrix();
+    }
+
     WorldState worldState;
 
     public WorldState getWorldState() {
