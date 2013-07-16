@@ -30,6 +30,7 @@ public class Plane implements ContactListener {
     // A reference to our box2d world
     public PBox2D box2d;
     public JSchema app;
+    public SensoriMotorSystem sms;
 
     int borderColor = 0;
 
@@ -38,6 +39,7 @@ public class Plane implements ContactListener {
 
     public Plane(JSchema a, int color) {
         this.app = a;
+        this.sms = a.sms;
         this.borderColor = color;
         System.out.println("Plane constructor this.app = "+this.app);
     }
@@ -341,7 +343,7 @@ public class Plane implements ContactListener {
      */
     void drawRetina(PGraphics pg) {
         pg.pushMatrix();
-        pg.translate(-translateX+(pg.width/2), 0);
+        pg.translate(-translateX-sms.gazeXpos+ (pg.width/2), -translateY - sms.gazeYpos + pg.height/2);
         pg.pushStyle();
 
         // Display all the physobjs

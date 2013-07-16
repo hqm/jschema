@@ -46,6 +46,7 @@ public class SensoriMotorSystem {
     ////////////////////////////////////////////////////////////////
     // Head and Eyes Controls
 
+    // Relative offset from body xpos,ypos.
     // Computed from head gross and fine angles
     public float gazeXpos = 0;
     public float gazeYpos = 0;
@@ -578,6 +579,11 @@ public class SensoriMotorSystem {
         Vec2 pos = thing.getPosition();
         gazeXpos = pos.x - xpos;
         gazeYpos = ypos - pos.y;
+    }
+
+    void setGazePosition(float x, float y) {
+        gazeXpos = x;
+        gazeYpos = y;
     }
 
     Vec2 gazePosition() {
