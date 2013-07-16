@@ -349,10 +349,10 @@ public class SensoriMotorSystem {
         app.strokeWeight(1);
         // draw X at gaze position
         app.stroke(app.color(128,128,128,200));
-        app.line(cx + dx - 50, cy-dy-50,
-                 cx + dx + 50, cy-dy+50);
-        app.line(cx + dx + 50, cy-dy-50,
-                 cx + dx - 50, cy-dy+50);
+        app.line(cx + dx - 50, cy+dy-50,
+                 cx + dx + 50, cy+dy+50);
+        app.line(cx + dx + 50, cy+dy-50,
+                 cx + dx - 50, cy+dy+50);
         
 
         // draw the max range the hands can move
@@ -476,7 +476,18 @@ public class SensoriMotorSystem {
             showWorldState = !showWorldState;
         }
 
+        if (app.key == 'e') {
+            gazeUp(GAZE_INCR);
+        } else if (app.key == 'd') {
+            gazeDown(GAZE_INCR);
+        } else if (app.key == 's') {
+            gazeLeft(GAZE_INCR);
+        } else if (app.key == 'f') {
+            gazeRight(GAZE_INCR);
+        }
     }
+
+    
         
     public void keyReleased() {
         downKeys[app.keyCode] = 0;
@@ -566,6 +577,10 @@ public class SensoriMotorSystem {
     static final int NQUADRANT_X = 13; // 12x8 visual field
     static final int NQUADRANT_Y = 8; // 
 
+    static final int GAZE_INCR = 50;
+    static final int GAZE_MAX_XOFFSET = 550;
+    static final int GAZE_MAX_YOFFSET = 350;
+
     boolean objectAtQuadrant(float qx, float qy) {
         Object2D obj = findObjAt(xpos + qx*QUADRANT_SIZE, ypos+qy*QUADRANT_SIZE);
         return obj != null;
@@ -579,6 +594,32 @@ public class SensoriMotorSystem {
         Vec2 pos = thing.getPosition();
         gazeXpos = pos.x - xpos;
         gazeYpos = ypos - pos.y;
+    }
+
+    float limit(float val, float min, float max) {
+        if (val < min) {
+            return min;
+        } else if (val > max) {
+            return max;
+        } else {
+            return val;
+        }
+    }
+
+    void gazeLeft(int n) {
+        gazeXpos = limit(gazeXpos - n, -GAZE_MAX_XOFFSET, GAZE_MAX_XOFFSET);
+    }
+
+    void gazeRight(int n) {
+        gazeXpos = limit(gazeXpos + n, -GAZE_MAX_XOFFSET, GAZE_MAX_XOFFSET);
+    }
+
+    void gazeUp(int n) {
+        gazeYpos = limit(gazeYpos - n, -GAZE_MAX_YOFFSET, GAZE_MAX_YOFFSET);
+    }
+
+    void gazeDown(int n) {
+        gazeYpos = limit(gazeYpos + n, -GAZE_MAX_YOFFSET, GAZE_MAX_YOFFSET);
     }
 
     void setGazePosition(float x, float y) {
