@@ -26,10 +26,6 @@ public class SensoriMotorSystem {
     public Plane plane0; // back plane
     public Plane plane1; // front plane
 
-    // An image for the retina; things are rendered onto it relative
-    // to the gaze and body position.
-    PGraphics rworld;
-
     int WORLD_WIDTH = 4096;
     int WORLD_HEIGHT = 800;
 
@@ -67,9 +63,12 @@ public class SensoriMotorSystem {
     boolean showWorldState = false;
 
     Object2D foveatedObject = null;
+    // An image context to render the retina view into
+    PGraphics retina = null;
 
-    public SensoriMotorSystem(JSchema a) {
+    public SensoriMotorSystem(JSchema a, PGraphics retina) {
         this.app = a;
+        this.retina = retina;
         System.out.println("SensoriMotorSystem constructor this.app = "+this.app);
     }
 
@@ -116,8 +115,6 @@ public class SensoriMotorSystem {
         // Initial body position
         xpos = app.width/2;
         ypos = app.height/2;
-
-        rworld = app.createGraphics(RETINA_SIZE, RETINA_SIZE);
 
         // Initialize box2d physics and create the world
         plane0 = new Plane(app, app.color(255, 55, 55));
@@ -250,7 +247,7 @@ public class SensoriMotorSystem {
     }
 
 
-    void draw(PGraphics pg) {
+    void draw() {
 
         app.rectMode(PConstants.CORNER);
         if (planes.indexOf(currentPlane) == 0) {
@@ -280,16 +277,16 @@ public class SensoriMotorSystem {
             displayWorldState(worldState);
         }
 
-        displayRetinaView(pg);
+        displayRetinaView();
     }
 
-    void displayRetinaView(PGraphics pg) {
-        pg.beginDraw();
-        pg.background(255);
+    void displayRetinaView() {
+        retina.beginDraw();
+        retina.background(255);
         for (Plane plane: planes) {
-            plane.drawRetina(pg);
+            plane.drawRetina(retina);
         }
-        pg.endDraw();
+        retina.endDraw();
     }
 
     void displayWorldState(WorldState w) {

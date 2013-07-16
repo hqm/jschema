@@ -94,7 +94,7 @@ public class JSchema extends PApplet {
         smooth();
         background(255);
 
-        sms = new SensoriMotorSystem(this);
+        sms = new SensoriMotorSystem(this, retinaImage);
         stage = new Stage(sms);
         stage.initWorld(1000, 1000);
 
@@ -109,7 +109,9 @@ public class JSchema extends PApplet {
         if (interactive) {
             try {
                 clock++;
-                sms.draw(retinaImage);
+                // The SensoriMotorSystem will draw a global view for debugging, and also will render an image from
+                // the head viewpoint into the retinaImage view.
+                sms.draw();
                 retinaView.set(0,0,retinaImage);
 
                 // The Schema engine will read the worldState from the sms, and
