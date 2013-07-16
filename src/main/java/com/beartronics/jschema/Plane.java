@@ -316,7 +316,7 @@ public class Plane implements ContactListener {
 
         // Display all the physobjs
         for (Object2D b: physobjs) {
-            b.display();
+            b.display(app.g);
         }
 
         // Physobjs that leave the screen, we delete them

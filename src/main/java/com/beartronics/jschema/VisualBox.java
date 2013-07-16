@@ -57,19 +57,20 @@ public class VisualBox extends Object2D {
     }
     
     // Drawing the box
-    void display() {
+    @Override
+    void display(PGraphics pg) {
         Vec2 pos = box2d.getBodyPixelCoord(body);
-        app.pushStyle();
-        app.rectMode(PConstants.CENTER);
-        app.pushMatrix();
-        app.translate(pos.x, pos.y);
-        //app.noFill();
-        app.fill(127,127,127,10);
-        app.strokeWeight(1);
-        app.stroke(0,0,0,10);
-        app.rect(0, 0, w, h);
-        app.popMatrix();
-        app.popStyle();
+        pg.pushStyle();
+        pg.rectMode(PConstants.CENTER);
+        pg.pushMatrix();
+        pg.translate(pos.x, pos.y);
+        //pg.noFill();
+        pg.fill(127,127,127,10);
+        pg.strokeWeight(1);
+        pg.stroke(0,0,0,10);
+        pg.rect(0, 0, w, h);
+        pg.popMatrix();
+        pg.popStyle();
     }
 
     // This function adds the rectangle to the box2d world

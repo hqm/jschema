@@ -2,6 +2,8 @@ package com.beartronics.jschema;
 
 import processing.core.PApplet;
 
+import com.shigeodayo.pframe.*;
+
 import controlP5.*;
 import pbox2d.*;
 import org.jbox2d.collision.shapes.*;
@@ -74,8 +76,18 @@ public class JSchema extends PApplet {
             println("web server caught exception "+e);
         }
     }
+
+    PFrame retinaFrame = null;
+    RetinaView retinaView = null;
+
+
     public void setup() {
         size(1200, 600);
+
+        retinaView = new RetinaView();
+        retinaFrame = new PFrame(retinaView, 210, 0);
+        retinaFrame.setTitle("Retina View");
+
         smooth();
         background(255);
 
@@ -84,7 +96,7 @@ public class JSchema extends PApplet {
         stage.initWorld(1000, 1000);
 
         sms.setupDisplay();
-        frameRate(512);
+        frameRate(1024);
 
         startWebServer();
     }

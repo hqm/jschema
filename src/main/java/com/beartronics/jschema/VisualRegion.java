@@ -15,7 +15,9 @@ public class VisualRegion {
     JSchema app;
     SensoriMotorSystem sms;
     VisualCell cells[][];
+    /** Number of cells in x and y dimension */
     int nx, ny;
+    /** cell size in pixels */
     int cellsize;
         
     VisualRegion(SensoriMotorSystem sms) {
@@ -65,6 +67,23 @@ public class VisualRegion {
         app.popStyle();
         app.popMatrix();
 
+    }
+
+
+    /**
+       returns true if more than N pixels are 'on' in this quadrant
+     */
+    static final int SMALL_OBJECT_PIXEL_COUNT_THRESHOLD = 10;
+    static final int MEDIUM_OBJECT_PIXEL_COUNT_THRESHOLD = 100;
+    static final int LARGE_OBJECT_PIXEL_COUNT_THRESHOLD = 5000;
+
+    boolean peripheralObjectAtQuadrant(int qx, int qy) {
+        for (int x = qx; x < qx + sms.QUADRANT_SIZE; x++) {
+            for (int y = qy; y < qy + sms.QUADRANT_SIZE; y++) {
+
+            }
+        }
+        return false;
     }
 
 
@@ -186,7 +205,9 @@ class VisualCell {
     ArrayList<Object2D> items;
     int cx, cy;
     int size;
-
+    boolean small_obj;
+    boolean medium_obj;
+    boolean large_obj;
 
     VisualCell(VisualRegion vr, int cx, int cy, int size) {
         this.vr = vr;

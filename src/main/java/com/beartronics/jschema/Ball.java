@@ -41,28 +41,28 @@ public class Ball extends Object2D {
 
 
     // 
-    void display() {
+    void display(PGraphics pg) {
         // We look at each body and get its screen position
         Vec2 pos = box2d.getBodyPixelCoord(body);
         // Get its angle of rotation
         float a = body.getAngle();
-        app.pushStyle();
-        app.pushMatrix();
-        app.translate(pos.x,pos.y);
-        app.rotate(-a);
-        app.fill(127, plane.alpha);
-        app.stroke(plane.borderColor);
-        app.strokeWeight(2);
-        app.ellipse(0,0,r*2,r*2);
+        pg.pushStyle();
+        pg.pushMatrix();
+        pg.translate(pos.x,pos.y);
+        pg.rotate(-a);
+        pg.fill(127, plane.alpha);
+        pg.stroke(plane.borderColor);
+        pg.strokeWeight(2);
+        pg.ellipse(0,0,r*2,r*2);
         // Let's add a line so we can see the rotation
-        app.line(0,0,r,0);
+        pg.line(0,0,r,0);
 
         // Draw id number
-        app.fill(0);
-        app.text(index, 0,0);
+        pg.fill(0);
+        pg.text(index, 0,0);
 
-        app.popMatrix();
-        app.popStyle();
+        pg.popMatrix();
+        pg.popStyle();
     }
 
     void moveToPlane(Plane newPlane) {

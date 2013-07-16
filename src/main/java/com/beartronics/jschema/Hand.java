@@ -302,26 +302,26 @@ public class Hand extends Box {
     }
 
     // Drawing the box
-    void display() {
-        super.display();
+    void display(PGraphics pg) {
+        super.display(pg);
         // We look at each body and get its screen position
         Vec2 pos = box2d.getBodyPixelCoord(body);
         // Get its angle of rotation
         float a = body.getAngle();
 
         // Draw an interior border
-        app.pushStyle();
-        app.rectMode(PConstants.CENTER);
-        app.pushMatrix();
-        app.translate(pos.x, pos.y);
-        app.rotate(-a);
-        app.fill(app.red(color), app.green(color), app.blue(color), (float)(plane.alpha/255.0) * alpha);
-        app.strokeWeight(4);
-        app.stroke(app.color(94,224,88));
-        app.rect(0, 0, w-6, h-6);
-        app.line(0, 0, 0, h/2);
-        app.popMatrix();
-        app.popStyle();
+        pg.pushStyle();
+        pg.rectMode(PConstants.CENTER);
+        pg.pushMatrix();
+        pg.translate(pos.x, pos.y);
+        pg.rotate(-a);
+        pg.fill(pg.red(color), pg.green(color), pg.blue(color), (float)(plane.alpha/255.0) * alpha);
+        pg.strokeWeight(4);
+        pg.stroke(pg.color(94,224,88));
+        pg.rect(0, 0, w-6, h-6);
+        pg.line(0, 0, 0, h/2);
+        pg.popMatrix();
+        pg.popStyle();
     }
 
     public String toString() {

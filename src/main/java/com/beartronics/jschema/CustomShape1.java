@@ -45,7 +45,7 @@ class CustomShape1 extends Object2D {
     }
 
     // Drawing the box
-    void display() {
+    void display(PGraphics pg) {
         // We look at each body and get its screen position
         Vec2 pos = box2d.getBodyPixelCoord(body);
         // Get its angle of rotation
@@ -55,21 +55,21 @@ class CustomShape1 extends Object2D {
         PolygonShape ps = (PolygonShape) f.getShape();
 
 
-        app.rectMode(PConstants.CENTER);
-        app.pushMatrix();
-        app.translate(pos.x, pos.y);
-        app.rotate(-a);
-        app.fill(color);
-        app.stroke(0);
-        app.beginShape();
+        pg.rectMode(PConstants.CENTER);
+        pg.pushMatrix();
+        pg.translate(pos.x, pos.y);
+        pg.rotate(-a);
+        pg.fill(color);
+        pg.stroke(0);
+        pg.beginShape();
         //println(vertices.length);
         // For every vertex, convert to pixel vector
         for (int i = 0; i < ps.getVertexCount(); i++) {
             Vec2 v = box2d.vectorWorldToPixels(ps.getVertex(i));
-            app.vertex(v.x, v.y);
+            pg.vertex(v.x, v.y);
         }
-        app.endShape(PConstants.CLOSE);
-        app.popMatrix();
+        pg.endShape(PConstants.CLOSE);
+        pg.popMatrix();
     }
 
     // This function adds the rectangle to the box2d world

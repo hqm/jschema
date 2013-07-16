@@ -195,7 +195,7 @@ abstract class Object2D {
     }
 
     // Drawing the box
-    abstract void display();
+    abstract void display(PGraphics pg);
 
 
     ////////////////////////////////////////////////////////////////

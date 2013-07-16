@@ -20,12 +20,15 @@ import processing.core.*;
 
 public class SensoriMotorSystem {
 
-
     public JSchema app;
 
     // Object planes
     public Plane plane0; // back plane
     public Plane plane1; // front plane
+
+    // An image for the retina; things are rendered onto it relative
+    // to the gaze and body position.
+    PGraphics rworld;
 
     int WORLD_WIDTH = 4096;
     int WORLD_HEIGHT = 800;
@@ -106,10 +109,14 @@ public class SensoriMotorSystem {
 
     int marker_color;
 
+    static final int RETINA_SIZE = 1000;
+
     void setupDisplay() {
         // Initial body position
         xpos = app.width/2;
         ypos = app.height/2;
+
+        rworld = app.createGraphics(RETINA_SIZE, RETINA_SIZE);
 
         // Initialize box2d physics and create the world
         plane0 = new Plane(app, app.color(255, 55, 55));
@@ -263,10 +270,6 @@ public class SensoriMotorSystem {
         for (Plane plane: planes) {
             plane.draw();
         }
-
-        // get image
-        app.loadPixels();
-
 
         // draw viewport and gaze location
         drawViewPort();
@@ -539,7 +542,11 @@ public class SensoriMotorSystem {
         // Look for closed and open boundary objects
         //worldState.setSensorInput("vision.fovea.closed_object", sensorID++, closedObjectAt(0,0));
         
-        //worldState.setSensorInput("vision.peripheral.obj."+x+"."+y, sensorID++, objectAtQuadrant(x,y));
+        for (int x = 0; x < NQUADRANT_X; x++) {
+            for (int y = 0; y < NQUADRANT_Y; y++) {
+                worldState.setSensorInput("vision.peripheral.obj."+x+"."+y, sensorID++, vision.peripheralObjectAtQuadrant(x,y));
+            }
+        }
         
 
     }
@@ -553,6 +560,9 @@ public class SensoriMotorSystem {
     }
 
     // Vision motor primitives
+    /**
+       send the gaze to center on this object
+     */
     void gazeAt(Object2D thing) {
         Vec2 pos = thing.getPosition();
         gazeXpos = pos.x - xpos;

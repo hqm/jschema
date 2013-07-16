@@ -57,29 +57,30 @@ public class Box extends Object2D {
     }
 
     // Drawing the box
-    void display() {
-        // We look at each body and get its screen position
+    @Override
+   void display(PGraphics pg) {
+         // We look at each body and get its screen position
         Vec2 pos = box2d.getBodyPixelCoord(body);
         // Get its angle of rotation
         float a = body.getAngle();
 
-        app.pushStyle();
-        app.rectMode(PConstants.CENTER);
-        app.pushMatrix();
-        app.translate(pos.x, pos.y);
-        app.rotate(-a);
-        app.fill(app.red(color), app.green(color), app.blue(color), (float)(plane.alpha/255.0) * alpha);
-        app.strokeWeight(2);
-        app.stroke(plane.borderColor);
-        app.rect(0, 0, w, h);
-        app.line(0,0,0,h/2);
+        pg.pushStyle();
+        pg.rectMode(PConstants.CENTER);
+        pg.pushMatrix();
+        pg.translate(pos.x, pos.y);
+        pg.rotate(-a);
+        pg.fill(pg.red(color), pg.green(color), pg.blue(color), (float)(plane.alpha/255.0) * alpha);
+        pg.strokeWeight(2);
+        pg.stroke(plane.borderColor);
+        pg.rect(0, 0, w, h);
+        pg.line(0,0,0,h/2);
 
         // Draw box id number
-        app.fill(0);
-        app.text(index, 0,0);
+        pg.fill(0);
+        pg.text(index, 0,0);
 
-        app.popMatrix();
-        app.popStyle();
+        pg.popMatrix();
+        pg.popStyle();
     }
 
     boolean isHollow() {
