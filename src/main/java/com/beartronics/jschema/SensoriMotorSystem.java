@@ -264,6 +264,9 @@ public class SensoriMotorSystem {
             plane.draw();
         }
 
+        // get image
+        app.loadPixels();
+
 
         // draw viewport and gaze location
         drawViewPort();
@@ -510,134 +513,27 @@ public class SensoriMotorSystem {
     void computeAudioSensors() {
     }
 
-    boolean isObjectAtGaze() {
-        Object2D obj = findObjAt(gazePosition());
-        return (obj != null);
-    }
-
-
-    boolean isSolidObjectAtGaze() {
-        Object2D obj = findObjAt(gazePosition());
-        if (obj == null) {
-            return false;
-        } else {
-            return obj.isSolid();
-        }
-    }
-
-    boolean isHollowObjectAtGaze() {
-        Object2D obj = findObjAt(gazePosition());
-        if (obj == null) {
-            return false;
-        } else {
-            return obj.isHollow();
-        }
-    }
-
-    boolean isRoundObjectAtGaze() {
-        Object2D obj = findObjAt(gazePosition());
-        if (obj == null) {
-            return false;
-        } else {
-            return (obj instanceof Ball);
-        }
-    }
-
-    boolean isFlatObjectAtGaze() {
-        Object2D obj = findObjAt(gazePosition());
-        if (obj == null) {
-            return false;
-        } else {
-            return (obj instanceof Box);
-        }
-    }
-
-    /** is object at orientation angle between lower and upper?*/
-    boolean isGazeObjectAtAngle(int lower, int upper) {
-        Object2D obj = findObjAt(gazePosition());
-        if (obj == null) {
-            return false;
-        } else {
-            float angle = obj.getAngle();
-            return (lower <= angle && angle < upper);
-        }
-    }
-
-
-    boolean isRedObjectAtGaze() {
-        Object2D obj = findObjAt(gazePosition());
-        if (obj == null) {
-            return false;
-        } else {
-            float red = app.red(obj.color);
-            float green = app.green(obj.color);
-            float blue = app.blue(obj.color);
-            return (red > 200 && green < 50 && blue < 50);
-        }
-    }
-    boolean isBlueObjectAtGaze() {
-        Object2D obj = findObjAt(gazePosition());
-        if (obj == null) {
-            return false;
-        } else {
-            float red = app.red(obj.color);
-            float green = app.green(obj.color);
-            float blue = app.blue(obj.color);
-            return (red < 50 && green < 50 && blue > 200);
-        }
-    }
-    boolean isGreenObjectAtGaze(){
-        Object2D obj = findObjAt(gazePosition());
-        if (obj == null) {
-            return false;
-        } else {
-            float red = app.red(obj.color);
-            float green = app.green(obj.color);
-            float blue = app.blue(obj.color);
-            return (red < 50 && green > 200 && blue < 50);
-        }
-    }
-
-    boolean isDarkObjectAtGaze() {
-        Object2D obj = findObjAt(gazePosition());
-        if (obj == null) {
-            return false;
-        } else {
-            float bright = app.brightness(obj.color);
-            return (bright > 128);
-        }
-    }
-
-    boolean isLightObjectAtGaze() {
-        Object2D obj = findObjAt(gazePosition());
-        if (obj == null) {
-            return false;
-        } else {
-            float bright = app.brightness(obj.color);
-            return (bright <= 128);
-        }
-    }
 
     void computeVisionSensor() {
         // is fovea seeing a solid object?
-        worldState.setSensorInput("vision.fovea.object", sensorID++, isObjectAtGaze());
-        worldState.setSensorInput("vision.fovea.solid_object", sensorID++, isSolidObjectAtGaze());
-        worldState.setSensorInput("vision.fovea.hollow_object", sensorID++, isHollowObjectAtGaze());
-        worldState.setSensorInput("vision.fovea.round_object", sensorID++, isRoundObjectAtGaze());
-        worldState.setSensorInput("vision.fovea.flat_object", sensorID++, isFlatObjectAtGaze());
+        worldState.setSensorInput("vision.fovea.object", sensorID++, vision.isObjectAtGaze(gazePosition()));
+        worldState.setSensorInput("vision.fovea.solid_object", sensorID++, vision.isSolidObjectAtGaze(gazePosition()));
+        worldState.setSensorInput("vision.fovea.hollow_object", sensorID++, vision.isHollowObjectAtGaze(gazePosition()));
+        worldState.setSensorInput("vision.fovea.round_object", sensorID++, vision.isRoundObjectAtGaze(gazePosition()));
+        worldState.setSensorInput("vision.fovea.flat_object", sensorID++, vision.isFlatObjectAtGaze(gazePosition()));
 
-        worldState.setSensorInput("vision.fovea.flat_object", sensorID++, isRedObjectAtGaze());
-        worldState.setSensorInput("vision.fovea.flat_object", sensorID++, isBlueObjectAtGaze());
-        worldState.setSensorInput("vision.fovea.flat_object", sensorID++, isGreenObjectAtGaze());
+        worldState.setSensorInput("vision.fovea.flat_object", sensorID++, vision.isRedObjectAtGaze(gazePosition()));
+        worldState.setSensorInput("vision.fovea.flat_object", sensorID++, vision.isBlueObjectAtGaze(gazePosition()));
+        worldState.setSensorInput("vision.fovea.flat_object", sensorID++, vision.isGreenObjectAtGaze(gazePosition()));
 
-        worldState.setSensorInput("vision.fovea.flat_object", sensorID++, isDarkObjectAtGaze());
-        worldState.setSensorInput("vision.fovea.flat_object", sensorID++, isLightObjectAtGaze());
+        worldState.setSensorInput("vision.fovea.flat_object", sensorID++, vision.isDarkObjectAtGaze(gazePosition()));
+        worldState.setSensorInput("vision.fovea.flat_object", sensorID++, vision.isLightObjectAtGaze(gazePosition()));
 
         for (int angle = 0 ; angle < 180; angle+= 10) {
 
-            worldState.setSensorInput("vision.fovea.angle."+angle, sensorID++, isGazeObjectAtAngle(angle-10, angle));
+            worldState.setSensorInput("vision.fovea.angle."+angle, sensorID++,
+                                      vision.isGazeObjectAtAngle(gazePosition(), angle-10, angle));
         }
-
 
 
         // Look for closed and open boundary objects

@@ -25,12 +25,13 @@ public class VisualRegion {
 
 
     void init(int nx, int ny, int cellsize) {
+        cells = new VisualCell[nx][ny];
         this.nx = nx;
         this.ny = ny;
         this.cellsize = cellsize;
         for (int x = 0; x < nx; x++) {
             for (int y = 0; y < ny; y++) {
-                cells[x][y] = new VisualCell(x,y,cellsize);
+                cells[x][y] = new VisualCell(this, x,y,cellsize);
             }
         }
     }
@@ -67,16 +68,128 @@ public class VisualRegion {
     }
 
 
+
+    boolean isObjectAtGaze(Vec2 pos) {
+        Object2D obj = sms.findObjAt(pos);
+        return (obj != null);
+    }
+
+
+    boolean isSolidObjectAtGaze(Vec2 pos) {
+        Object2D obj = sms.findObjAt(pos);
+        if (obj == null) {
+            return false;
+        } else {
+            return obj.isSolid();
+        }
+    }
+
+    boolean isHollowObjectAtGaze(Vec2 pos) {
+        Object2D obj = sms.findObjAt(pos);
+        if (obj == null) {
+            return false;
+        } else {
+            return obj.isHollow();
+        }
+    }
+
+    boolean isRoundObjectAtGaze(Vec2 pos) {
+        Object2D obj = sms.findObjAt(pos);
+        if (obj == null) {
+            return false;
+        } else {
+            return (obj instanceof Ball);
+        }
+    }
+
+    boolean isFlatObjectAtGaze(Vec2 pos) {
+        Object2D obj = sms.findObjAt(pos);
+        if (obj == null) {
+            return false;
+        } else {
+            return (obj instanceof Box);
+        }
+    }
+
+    /** is object at orientation angle between lower and upper?*/
+    boolean isGazeObjectAtAngle(Vec2 pos, int lower, int upper) {
+        Object2D obj = sms.findObjAt(pos);
+        if (obj == null) {
+            return false;
+        } else {
+            float angle = obj.getAngle();
+            return (lower <= angle && angle < upper);
+        }
+    }
+
+
+    boolean isRedObjectAtGaze(Vec2 pos) {
+        Object2D obj = sms.findObjAt(pos);
+        if (obj == null) {
+            return false;
+        } else {
+            float red = app.red(obj.color);
+            float green = app.green(obj.color);
+            float blue = app.blue(obj.color);
+            return (red > 200 && green < 50 && blue < 50);
+        }
+    }
+    boolean isBlueObjectAtGaze(Vec2 pos) {
+        Object2D obj = sms.findObjAt(pos);
+        if (obj == null) {
+            return false;
+        } else {
+            float red = app.red(obj.color);
+            float green = app.green(obj.color);
+            float blue = app.blue(obj.color);
+            return (red < 50 && green < 50 && blue > 200);
+        }
+    }
+    boolean isGreenObjectAtGaze(Vec2 pos){
+        Object2D obj = sms.findObjAt(pos);
+        if (obj == null) {
+            return false;
+        } else {
+            float red = app.red(obj.color);
+            float green = app.green(obj.color);
+            float blue = app.blue(obj.color);
+            return (red < 50 && green > 200 && blue < 50);
+        }
+    }
+
+    boolean isDarkObjectAtGaze(Vec2 pos) {
+        Object2D obj = sms.findObjAt(pos);
+        if (obj == null) {
+            return false;
+        } else {
+            float bright = app.brightness(obj.color);
+            return (bright > 128);
+        }
+    }
+
+    boolean isLightObjectAtGaze(Vec2 pos) {
+        Object2D obj = sms.findObjAt(pos);
+        if (obj == null) {
+            return false;
+        } else {
+            float bright = app.brightness(obj.color);
+            return (bright <= 128);
+        }
+    }
+
+
 }
 
 class VisualCell {
 
+    VisualRegion vr;
     ArrayList<Object2D> items;
     int cx, cy;
     int size;
 
 
-    VisualCell(int cx, int cy, int size) {
+    VisualCell(VisualRegion vr, int cx, int cy, int size) {
+        this.vr = vr;
         this.cx = cx;
         this.cy = cy;
         this.size = size;
@@ -113,6 +226,8 @@ class VisualCell {
 
      */
  
+
+
 
 
 }
