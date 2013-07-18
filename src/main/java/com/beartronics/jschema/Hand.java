@@ -324,6 +324,16 @@ public class Hand extends Box {
         pg.popStyle();
     }
 
+    public String toShortString() {
+        // We look at each body and get its screen position
+        Vec2 pos = box2d.getBodyPixelCoord(body);
+        // Get its angle of rotation
+        float a = body.getAngle();
+        float alpha = app.map(density, 0, MAX_DENSITY, 0, 255);
+        return String.format("{HAND %d x,y=(%.1f, %.1f) gx,gy=(%.1f,%.1f) fx,fy=(%.1f,%.1f)  rot=%f}",index, pos.x,pos.y,grossX,grossY,fineX,fineY, getAngle());
+    }
+
+
     public String toString() {
         // We look at each body and get its screen position
         Vec2 pos = box2d.getBodyPixelCoord(body);
@@ -332,7 +342,7 @@ public class Hand extends Box {
         float alpha = app.map(density, 0, MAX_DENSITY, 0, 255);
         StringBuilder grasps = new StringBuilder();
         for (Object2D obj: getWeldedObjects()) {
-            grasps.append(obj.toString() +", ");
+            grasps.append(obj.toShortString() +", ");
         }
         return String.format("{HAND %d x,y=(%.1f, %.1f) gx,gy=(%.1f,%.1f) fx,fy=(%.1f,%.1f)  rot=%f  grasping[%s]}",index, pos.x,pos.y,grossX,grossY,fineX,fineY, getAngle(), grasps);
     }

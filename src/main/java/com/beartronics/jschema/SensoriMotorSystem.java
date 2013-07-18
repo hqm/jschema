@@ -538,6 +538,7 @@ public class SensoriMotorSystem {
 
 
     void computeVisionSensor() {
+        retina.loadPixels();
         // is fovea seeing a solid object?
         worldState.setSensorInput("vision.fovea.object", sensorID++, vision.isObjectAtGaze(gazePosition()));
         worldState.setSensorInput("vision.fovea.solid_object", sensorID++, vision.isSolidObjectAtGaze(gazePosition()));
@@ -575,7 +576,7 @@ public class SensoriMotorSystem {
     static final int NQUADRANT_Y = 8; // 
 
     static final int GAZE_INCR = 50;
-    static final int GAZE_MAX_XOFFSET = 550;
+    static final int GAZE_MAX_XOFFSET = 650;
     static final int GAZE_MAX_YOFFSET = 350;
 
     boolean objectAtQuadrant(float qx, float qy) {

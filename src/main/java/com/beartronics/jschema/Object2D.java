@@ -421,6 +421,15 @@ abstract class Object2D {
     }
 
 
+    public String toShortString() {
+        // We look at each body and get its screen position
+        Vec2 pos = box2d.getBodyPixelCoord(body);
+        // Get its angle of rotation
+        float a = body.getAngle();
+        return String.format("{Object2D %d x,y=(%2f, %2f) w,h=(%2f, %2f) rot=%2f density=%2f color=%x}",index, pos.x,pos.y,w,h,a,density,color);
+    }
+
+
 }
 
 

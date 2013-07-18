@@ -14,6 +14,7 @@ import processing.core.*;
 public class VisualRegion {
     JSchema app;
     SensoriMotorSystem sms;
+    PGraphics retina;
     VisualCell cells[][];
     /** Number of cells in x and y dimension */
     int nx, ny;
@@ -23,6 +24,7 @@ public class VisualRegion {
     VisualRegion(SensoriMotorSystem sms) {
         this.sms = sms;
         this.app = sms.app;
+        this.retina = sms.retina;
     }
 
 
@@ -51,6 +53,7 @@ public class VisualRegion {
 
     }
 
+    // Debugging view; draws small map of visual field
     void display() {
         app.pushMatrix();
         app.pushStyle();
@@ -78,9 +81,11 @@ public class VisualRegion {
     static final int LARGE_OBJECT_PIXEL_COUNT_THRESHOLD = 5000;
 
     boolean peripheralObjectAtQuadrant(int qx, int qy) {
+        int width = retina.width;
         for (int x = qx; x < qx + sms.QUADRANT_SIZE; x++) {
             for (int y = qy; y < qy + sms.QUADRANT_SIZE; y++) {
-
+                int pixel = retina.pixels[y * width + x];
+                
             }
         }
         return false;
@@ -205,6 +210,9 @@ class VisualCell {
     ArrayList<Object2D> items;
     int cx, cy;
     int size;
+
+    
+    // flags to say whether these features were detected in this cell
     boolean small_obj;
     boolean medium_obj;
     boolean large_obj;
