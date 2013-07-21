@@ -41,13 +41,22 @@ public class VisualRegion {
     }
 
     // The visual gaze is centered at xpos, ypos in absolute pixel coordinates
+
+
+    // Included here is a cheesy motion sensor system. Instead of trying to
+    // compute motion fields from two successive bitmap images, we're
+    // going to loop over all physobs, and take their velocity vector,
+    // and set the vertical and horizontal motion sensor on each
+    // visual cell for which the bounding box overlaps.
+
     void updateCells(ArrayList<Object2D> objs, int gazex, int gazey) {
         // offset of left top of visual field from center
         int xoff = gazex - ((nx/2) * cellsize);
         int yoff = gazey - ((ny/2) * cellsize);
 
+        // Find motion vectors, compute x-y offset, update motion sensor in corresponding cells
         for (Object2D obj: objs) {
-
+            
 
         }
 
@@ -61,7 +70,7 @@ public class VisualRegion {
         app.translate(20,20);
         for (int x = 0; x < nx; x++) {
             for (int y = 0; y < ny; y++) {
-                boolean val = ((cells[x][y]).items.size() > 0);
+                boolean val = cells[x][y].peripheralObjectSensed;
                 app.fill(val ? 0 : 255);
                 app.rect(x*12, y*12, 10,10);
             }
@@ -79,19 +88,27 @@ public class VisualRegion {
     static final int SMALL_OBJECT_PIXEL_COUNT_THRESHOLD = 10;
     static final int MEDIUM_OBJECT_PIXEL_COUNT_THRESHOLD = 100;
     static final int LARGE_OBJECT_PIXEL_COUNT_THRESHOLD = 5000;
-
+    static final int ON_BRIGHTNESS_THRESHOLD = 10;
     boolean peripheralObjectAtQuadrant(int qx, int qy) {
         int width = retina.width;
-        for (int x = qx; x < qx + sms.QUADRANT_SIZE; x++) {
-            for (int y = qy; y < qy + sms.QUADRANT_SIZE; y++) {
-                int pixel = retina.pixels[y * width + x];
-                
+        int onpixels = 0;
+        for (int x = 0; x < cellsize; x++) {
+            for (int y = 0; y < cellsize; y++) {
+                //int pixel = retina.pixels[y * width + x];
+                int pixel = retina.get((qx * cellsize) + x, (qy * cellsize) + y);
+                if (app.brightness(pixel) < (255 - ON_BRIGHTNESS_THRESHOLD)) {
+                    onpixels ++;
+                    if (onpixels > MEDIUM_OBJECT_PIXEL_COUNT_THRESHOLD) {
+                        (cells[qx][qy]).peripheralObjectSensed = true;
+                        return true;
+                    }
+                }
             }
         }
+            //return onpixels > MEDIUM_OBJECT_PIXEL_COUNT_THRESHOLD;
+        (cells[qx][qy]).peripheralObjectSensed = false;
         return false;
     }
-
-
 
     boolean isObjectAtGaze(Vec2 pos) {
         Object2D obj = sms.findObjAt(pos);
@@ -210,6 +227,7 @@ class VisualCell {
     ArrayList<Object2D> items;
     int cx, cy;
     int size;
+    boolean peripheralObjectSensed = false;
 
     
     // flags to say whether these features were detected in this cell

@@ -272,12 +272,13 @@ public class SensoriMotorSystem {
         // draw viewport and gaze location
         drawViewPort();
 
+        displayRetinaView();
+
         computeWorldState();
         if (showWorldState) {
             displayWorldState(worldState);
         }
 
-        displayRetinaView();
     }
 
     void displayRetinaView() {
@@ -319,7 +320,7 @@ public class SensoriMotorSystem {
 
         app.popStyle();
         app.popMatrix();
-
+        vision.display();
 
     }
 
@@ -538,6 +539,7 @@ public class SensoriMotorSystem {
 
 
     void computeVisionSensor() {
+        // copies the bitmap into the pixels[] array for retina
         retina.loadPixels();
         // is fovea seeing a solid object?
         worldState.setSensorInput("vision.fovea.object", sensorID++, vision.isObjectAtGaze(gazePosition()));
@@ -572,8 +574,8 @@ public class SensoriMotorSystem {
 
     }
     static final int QUADRANT_SIZE = 100;
-    static final int NQUADRANT_X = 13; // 12x8 visual field
-    static final int NQUADRANT_Y = 8; // 
+    static final int NQUADRANT_X = 10; // 10x10 field
+    static final int NQUADRANT_Y = 10; // 
 
     static final int GAZE_INCR = 50;
     static final int GAZE_MAX_XOFFSET = 650;
