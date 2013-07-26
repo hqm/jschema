@@ -68,7 +68,7 @@ public class Plane implements ContactListener {
         box2d.world.setContactListener(this);
 
         // We are setting a custom gravity
-        box2d.setGravity(0, -40);
+        box2d.setGravity(0, -100);
 
         // Create ArrayLists  
         physobjs = new ArrayList<Object2D>();
@@ -314,7 +314,6 @@ public class Plane implements ContactListener {
         }
 
         box2d.step();
-
 
         // Display all the physobjs
         for (Object2D b: physobjs) {

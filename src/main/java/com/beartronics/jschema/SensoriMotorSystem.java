@@ -205,6 +205,7 @@ public class SensoriMotorSystem {
     void initialPhysobjs(Plane p) {
         int bottom = app.height;
         p.addBox(500, bottom -10, 64, 64, 1);
+
         p.addBox(500, bottom-10, 64, 64, 2);
         p.addBox(800, bottom-10, 32, 32, 2);
         p.addBox(1200, bottom-10, 64, 64, 2);
@@ -220,6 +221,7 @@ public class SensoriMotorSystem {
         p.addBall(250, bottom-100, 40);
         p.addBall(500, bottom-100, 30);
         p.addCustomShape1(50,bottom-100,app.color(123,201,122));
+
     }
 
     String showHandInfo(Hand h) {
@@ -249,37 +251,39 @@ public class SensoriMotorSystem {
 
 
     void draw() {
+        if (run || singleStep) {
+            singleStep = false;
 
-        app.rectMode(PConstants.CORNER);
-        if (planes.indexOf(currentPlane) == 0) {
-            app.background(255,225,225);
-        } else {
-            app.background(255);
+            app.rectMode(PConstants.CORNER);
+            if (planes.indexOf(currentPlane) == 0) {
+                app.background(255,225,225);
+            } else {
+                app.background(255);
+            }
+            app.fill(0);
+
+            app.text("alt-click to create box, click to grasp, ctrl-click to lift, L and R key to rotate grip, shift for transparent, space/enter toggle single-step", 20,12);
+            app.text("plane="+planes.indexOf(currentPlane), 20,22);
+            app.text("xpos="+xpos+ "   ypos="+ypos,20,32);
+            app.text("hand1 "+showHandInfo(hand1),20,42);
+            app.text("hand2 "+showHandInfo(hand2),20,52);
+            app.text("gazeX="+gazeXpos+" gazeY="+gazeYpos, 20, 62);
+
+            for (Plane plane: planes) {
+                plane.draw();
+            }
+
+            // draw viewport and gaze location
+            drawViewPort();
+
+            displayRetinaView();
+
+            computeWorldState();
+            if (showWorldState) {
+                displayWorldState(worldState);
+            }
+
         }
-        app.fill(0);
-
-        app.text("alt-click to create box, click to grasp, ctrl-click to lift, L and R key to rotate grip, shift for transparent", 20,12);
-        app.text("plane="+planes.indexOf(currentPlane), 20,22);
-        app.text("xpos="+xpos+ "   ypos="+ypos,20,32);
-        app.text("hand1 "+showHandInfo(hand1),20,42);
-        app.text("hand2 "+showHandInfo(hand2),20,52);
-        app.text("gazeX="+gazeXpos+" gazeY="+gazeYpos, 20, 62);
-
-
-        for (Plane plane: planes) {
-            plane.draw();
-        }
-
-        // draw viewport and gaze location
-        drawViewPort();
-
-        displayRetinaView();
-
-        computeWorldState();
-        if (showWorldState) {
-            displayWorldState(worldState);
-        }
-
     }
 
     void displayRetinaView() {
@@ -448,6 +452,9 @@ public class SensoriMotorSystem {
         setTranslations(xpos,ypos);
     }
 
+    boolean run = true;
+    boolean singleStep = false;
+
     public void keyPressed() {
         downKeys[app.keyCode] = 1;
         if (app.keyCode == PConstants.LEFT) {
@@ -484,6 +491,12 @@ public class SensoriMotorSystem {
             gazeLeft(GAZE_INCR);
         } else if (app.key == 'f') {
             gazeRight(GAZE_INCR);
+        } else if (app.key == ' ') {
+            run = false;
+            singleStep = true;
+        } else if (app.keyCode == PConstants.ENTER) {
+            run = true;
+            singleStep = false;
         }
     }
 
@@ -580,7 +593,7 @@ public class SensoriMotorSystem {
         }
     }
 
-    static final double MOTION_THRESHOLD = 0.1;
+    static final double MOTION_THRESHOLD = 1;
     void computeMotionSensors() {
         vision.clearMotionSensors();
         for (Plane plane: planes) {
@@ -599,11 +612,16 @@ public class SensoriMotorSystem {
                 lb.subLocal(offset);
                 ub.subLocal(offset);
                 
-                int xmin = (int) Math.floor(lb.x / QUADRANT_SIZE);
-                int xmax = (int) Math.floor(ub.x / QUADRANT_SIZE);
+                int x1 = (int) Math.floor(lb.x / QUADRANT_SIZE);
+                int x2 = (int) Math.floor(ub.x / QUADRANT_SIZE);
 
-                int ymin = (int) Math.floor(lb.y / QUADRANT_SIZE);
-                int ymax = (int) Math.floor(ub.y / QUADRANT_SIZE);
+                int y1 = (int) Math.floor(lb.y / QUADRANT_SIZE);
+                int y2 = (int) Math.floor(ub.y / QUADRANT_SIZE);
+
+                int xmin = Math.min(x1, x2);
+                int xmax = Math.max(x1, x2);
+                int ymin = Math.min(y1, y2);
+                int ymax = Math.max(y1, y2);
 
                 if (vmotion.lengthSquared() > MOTION_THRESHOLD) {
                     for (int x = xmin; x <= xmax; x++) {

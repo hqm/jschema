@@ -159,7 +159,7 @@ public class VisualRegion {
         if ((qx < 0) || (qy < 0) || (qx >= nx) || (qy >= ny)) { return null; }
         VisualCell cell = (cells[qx][qy]);
         cell.motion = v;
-        cell.motionSensed = (v.lengthSquared() > 0);
+        cell.motionSensed = true;
         return cell;
     }
 
