@@ -14,6 +14,7 @@ import java.util.*;
 
 import org.jbox2d.dynamics.joints.*;
 import org.jbox2d.collision.shapes.Shape;
+import org.jbox2d.collision.AABB;
 
 import processing.core.*;
 
@@ -285,6 +286,7 @@ public class SensoriMotorSystem {
         retina.beginDraw();
         retina.background(255);
         for (Plane plane: planes) {
+            
             plane.drawRetina(retina);
         }
         retina.endDraw();
@@ -556,23 +558,67 @@ public class SensoriMotorSystem {
         worldState.setSensorInput("vision.fovea.flat_object", sensorID++, vision.isLightObjectAtGaze(gazePosition()));
 
         for (int angle = 0 ; angle < 180; angle+= 10) {
-
             worldState.setSensorInput("vision.fovea.angle."+angle, sensorID++,
                                       vision.isGazeObjectAtAngle(gazePosition(), angle-10, angle));
         }
 
-
         // Look for closed and open boundary objects
         //worldState.setSensorInput("vision.fovea.closed_object", sensorID++, closedObjectAt(0,0));
         
+        computeMotionSensors();
         for (int x = 0; x < NQUADRANT_X; x++) {
             for (int y = 0; y < NQUADRANT_Y; y++) {
                 worldState.setSensorInput("vision.peripheral.obj."+x+"."+y, sensorID++, vision.peripheralObjectAtQuadrant(x,y));
+
+                VisualCell cell = vision.getCell(x,y);
+                worldState.setSensorInput("vision.peripheral.motion."+x+"."+y, sensorID++, cell.motionSensed);
+                worldState.setSensorInput("vision.peripheral.pos_x_motion."+x+"."+y, sensorID++, cell.motion.x > 0);
+                worldState.setSensorInput("vision.peripheral.neg_x_motion."+x+"."+y, sensorID++, cell.motion.x < 0);
+                worldState.setSensorInput("vision.peripheral.pos_y_motion."+x+"."+y, sensorID++, cell.motion.y > 0);
+                worldState.setSensorInput("vision.peripheral.neg_y_motion."+x+"."+y, sensorID++, cell.motion.y < 0);
             }
         }
-        
-
     }
+
+    static final double MOTION_THRESHOLD = 0.1;
+    void computeMotionSensors() {
+        vision.clearMotionSensors();
+        for (Plane plane: planes) {
+            for (Object2D obj: plane.physobjs) {
+                Fixture f = obj.body.getFixtureList();
+                AABB bbox = f.getAABB(0);
+                Vec2 lb = plane0.box2d.coordWorldToPixels(bbox.lowerBound);
+                Vec2 ub = plane0.box2d.coordWorldToPixels(bbox.upperBound);
+
+                Vec2 vmotion = obj.body.getLinearVelocity();
+
+                // translate these coordinates to retina frame of reference
+                Vec2 offset = new Vec2(xpos-app.width/2, ypos-app.width/2);
+                offset.x -= gazeXpos;
+                offset.y -= gazeYpos;
+                lb.subLocal(offset);
+                ub.subLocal(offset);
+                
+                int xmin = (int) Math.floor(lb.x / QUADRANT_SIZE);
+                int xmax = (int) Math.floor(ub.x / QUADRANT_SIZE);
+
+                int ymin = (int) Math.floor(lb.y / QUADRANT_SIZE);
+                int ymax = (int) Math.floor(ub.y / QUADRANT_SIZE);
+
+                if (vmotion.lengthSquared() > MOTION_THRESHOLD) {
+                    for (int x = xmin; x <= xmax; x++) {
+                        for (int y = ymin; y <= ymax; y++) {
+                            vision.setMotionAtQuadrant(x, y, vmotion);
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+
+
+
     static final int QUADRANT_SIZE = 100;
     static final int NQUADRANT_X = 10; // 10x10 field
     static final int NQUADRANT_Y = 10; // 

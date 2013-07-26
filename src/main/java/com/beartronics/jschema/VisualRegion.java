@@ -43,12 +43,6 @@ public class VisualRegion {
     // The visual gaze is centered at xpos, ypos in absolute pixel coordinates
 
 
-    // Included here is a cheesy motion sensor system. Instead of trying to
-    // compute motion fields from two successive bitmap images, we're
-    // going to loop over all physobs, and take their velocity vector,
-    // and set the vertical and horizontal motion sensor on each
-    // visual cell for which the bounding box overlaps.
-
     void updateCells(ArrayList<Object2D> objs, int gazex, int gazey) {
         // offset of left top of visual field from center
         int xoff = gazex - ((nx/2) * cellsize);
@@ -62,6 +56,17 @@ public class VisualRegion {
 
     }
 
+    void clearMotionSensors() {
+        for (int x = 0; x < nx; x++) {
+            for (int y = 0; y < ny; y++) {
+                VisualCell cell = cells[x][y];
+                cell.motion = new Vec2(0,0);
+                cell.motionSensed = false;
+            }
+        }
+    }
+
+
     // Debugging view; draws small map of visual field
     void display() {
         app.pushMatrix();
@@ -70,9 +75,21 @@ public class VisualRegion {
         app.translate(20,20);
         for (int x = 0; x < nx; x++) {
             for (int y = 0; y < ny; y++) {
-                boolean val = cells[x][y].peripheralObjectSensed;
-                app.fill(val ? 0 : 255);
+                VisualCell cell = cells[x][y];
+                boolean val = cell.peripheralObjectSensed;
+                int bg = val ? 0 : 255;
+                app.fill(bg);
                 app.rect(x*12, y*12, 10,10);
+
+                boolean mval = cell.motionSensed;
+                app.noStroke();
+                if (mval) {
+                    app.fill(255,0,0);
+                } else {
+                    app.fill(bg);
+                }
+                app.rect(x*12, y*12, 5,5);
+                app.stroke(0);
             }
         }
 
@@ -108,6 +125,46 @@ public class VisualRegion {
             //return onpixels > MEDIUM_OBJECT_PIXEL_COUNT_THRESHOLD;
         (cells[qx][qy]).peripheralObjectSensed = false;
         return false;
+    }
+
+
+    /** converts retina x,y coordinate to global pixel coordinates
+
+        computes body offset (sms.xpos) + gaze offset
+     */
+    Vec2 toGlobalPixelPos(float x, float y) {
+        float gazedx = sms.gazeXpos;
+        float bodydx = sms.xpos - (app.width /2);
+        float xpos = x + bodydx;
+
+        float gazedy = sms.gazeYpos;
+        float bodydy = sms.ypos - (app.height /2);
+        float ypos = y + bodydy;
+
+        return new Vec2(xpos, ypos); 
+    }
+
+    /**
+     * returns a vector of x,y motion
+
+     This is a cheesy motion sensor system. Instead of trying to
+     compute motion fields from two successive bitmap images, we're
+     going to loop over all physobs, and take their velocity vector,
+     and set the vertical and horizontal motion sensor on each visual
+     cell for which the bounding box overlaps.
+
+
+     */
+    VisualCell setMotionAtQuadrant(int qx, int qy, Vec2 v) {
+        if ((qx < 0) || (qy < 0) || (qx >= nx) || (qy >= ny)) { return null; }
+        VisualCell cell = (cells[qx][qy]);
+        cell.motion = v;
+        cell.motionSensed = (v.lengthSquared() > 0);
+        return cell;
+    }
+
+    VisualCell getCell(int x, int y) {
+        return cells[x][y];
     }
 
     boolean isObjectAtGaze(Vec2 pos) {
@@ -228,7 +285,9 @@ class VisualCell {
     int cx, cy;
     int size;
     boolean peripheralObjectSensed = false;
-
+    boolean motionSensed = false;
+    // The linear sum of all motion vectors of objects that lie in this cell
+    Vec2 motion = new Vec2();
     
     // flags to say whether these features were detected in this cell
     boolean small_obj;
