@@ -608,7 +608,7 @@ public class SensoriMotorSystem {
                 // translate these coordinates to retina frame of reference
                 Vec2 offset = new Vec2(xpos-app.width/2, ypos-app.width/2);
                 offset.x -= gazeXpos;
-                offset.y -= gazeYpos;
+                offset.y += gazeYpos;
                 lb.subLocal(offset);
                 ub.subLocal(offset);
                 
@@ -637,9 +637,9 @@ public class SensoriMotorSystem {
 
 
 
-    static final int QUADRANT_SIZE = 100;
-    static final int NQUADRANT_X = 10; // 10x10 field
-    static final int NQUADRANT_Y = 10; // 
+    static final int QUADRANT_SIZE = 200;
+    static final int NQUADRANT_X = 5; // 10x10 field
+    static final int NQUADRANT_Y = 5; // 
 
     static final int GAZE_INCR = 50;
     static final int GAZE_MAX_XOFFSET = 650;
