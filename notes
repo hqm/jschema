@@ -122,6 +122,12 @@ Vision
    trajectory - when motion detected, a motion vector input is stimulated
 
 
+   Foveation: vision system will pull focus of attention to nearest object, and give a proprioceptive
+   sensation of moving the gaze by dx,dy.  Vision hardware can be asked to cycle to nearest objects, in one
+   of four directions; left,right,top,bottom. You get sensation of how far the gaze moved to get to next object.
+   That way you can trace out the location of several nearby objects, and get a sensation of how they are 
+   relatively positioned.
+
 
 
 Audio

@@ -163,6 +163,7 @@ public class VisualRegion {
         return cell;
     }
 
+
     VisualCell getCell(int x, int y) {
         return cells[x][y];
     }
