@@ -9,35 +9,35 @@ import java.util.ArrayList;
 
 public class Schema {
     // Numerical id of this schema
-    int id = 0;
+    public int id = 0;
     
     // The items in this schema's context list
-    ArrayList<Item> posContext = new ArrayList<Item>();
-    ArrayList<Item> negContext = new ArrayList<Item>();
+    public ArrayList<Item> posContext = new ArrayList<Item>();
+    public ArrayList<Item> negContext = new ArrayList<Item>();
     // The items in this schema's result list
-    ArrayList<Item> posResult  = new ArrayList<Item>();
-    ArrayList<Item> negResult  = new ArrayList<Item>();
+    public ArrayList<Item> posResult  = new ArrayList<Item>();
+    public ArrayList<Item> negResult  = new ArrayList<Item>();
 
     // The synthetic item which is controlled by this schema's successful activation.
     // Also known as the 'reifier' item
-    Item syntheticItem = null;
+    public Item syntheticItem = null;
 
     // reliability statistics
-    float succeededWithActivation   = 0;
-    float succededWithoutActivation = 0;
-    float failedWithActivation      = 0; // number of times activation failed
+    public float succeededWithActivation   = 0;
+    public float succededWithoutActivation = 0;
+    public float failedWithActivation      = 0; // number of times activation failed
 
     // Parent schema from which we were spun off
-    Schema parent = null;
+    public Schema parent = null;
     // List of child schemas which we have spun off
-    ArrayList<Schema> children = new ArrayList<Schema>();
+    public ArrayList<Schema> children = new ArrayList<Schema>();
 
-    boolean applicable = false;
-    float value = 0;
+    public boolean applicable = false;
+    public float value = 0;
     // See pp. 55
     // correlation, reliability, duration, cost
-    float duration = Float.POSITIVE_INFINITY;
-    float cost = 0;
+    public float duration = Float.POSITIVE_INFINITY;
+    public float cost = 0;
 
     float correlation() {
         /* ratio of the probability that a transition to the result state happens
@@ -57,7 +57,7 @@ public class Schema {
     // defer to these more specific schemas when they are also applicable
     TIntArrayList XOverride = new TIntArrayList();
 
-    Action action = null;
+    public Action action = null;
     Stage stage = null;
 
     public Schema(Stage stage, int index, Action action) {
@@ -78,7 +78,7 @@ public class Schema {
     }
 
     public String toString() {
-        return "[Schema %s::%~s/ action %s/ %s::~%s]".format(posContext.toString(), negContext.toString(), action, posResult.toString(), negResult.toString());
+        return String.format("[Schema %s::~%s/ action %s/ %s::~%s]",posContext, negContext, action, posResult, negResult);
     }
 
 

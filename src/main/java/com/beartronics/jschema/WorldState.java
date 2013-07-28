@@ -22,23 +22,23 @@ public class WorldState {
     }
 
     void setSensorInput(String path, int id,  boolean val) {
-        SensorInput s = inputList.get(path);
+        SensorInput s = inputs.get(path);
         if (s == null) {
             s = new SensorInput(path, id, val);
-            inputList.put(path, s);
+            inputs.put(path, s);
         } else {
             s.value = val;
         }
     }
 
-    HashMap<String,SensorInput> inputList = new HashMap<String,SensorInput>();
+    public HashMap<String,SensorInput> inputs = new HashMap<String,SensorInput>();
     
-    HashMap<String,MotorAction> outputList = new HashMap<String,MotorAction>();
+    public HashMap<String,MotorAction> outputs = new HashMap<String,MotorAction>();
 
     public String toString() {
         StringBuilder out = new StringBuilder();
         ArrayList<String> list = new ArrayList<String>();
-        for (Map.Entry<String, SensorInput> entry : inputList.entrySet())
+        for (Map.Entry<String, SensorInput> entry : inputs.entrySet())
         {
             list.add(entry.getValue().toString());
         }

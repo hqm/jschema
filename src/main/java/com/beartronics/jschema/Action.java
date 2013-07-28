@@ -37,6 +37,17 @@ public class Action {
         this.controller = new ActionController(this);
     }
 
+    public String toHTML() {
+        StringBuilder s = new StringBuilder();
+        s.append("<h1>Action "+index+": "+name+ " "+type+"</h1>");
+        s.append("value: "+value);
+        return s.toString();
+    }
+
+    public String makeLink() {
+        return "<a href=\"/items/action?id="+index+"\">Action "+index+"</a>";
+    }
+
     public String toString() {
         return "[Action"+index+" "+name+"]";
     }

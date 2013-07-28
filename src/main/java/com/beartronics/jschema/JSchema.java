@@ -96,7 +96,7 @@ public class JSchema extends PApplet {
 
         sms = new SensoriMotorSystem(this, retinaImage);
         stage = new Stage(sms);
-        stage.initWorld(1000, 1000);
+        stage.initWorld(1000, 100);
 
         sms.setupDisplay();
         frameRate(1024);

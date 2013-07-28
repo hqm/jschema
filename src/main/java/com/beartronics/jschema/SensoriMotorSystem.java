@@ -209,18 +209,22 @@ public class SensoriMotorSystem {
         p.addBox(500, bottom-10, 64, 64, 2);
         p.addBox(800, bottom-10, 32, 32, 2);
         p.addBox(1200, bottom-10, 64, 64, 2);
-        p.addBox(1500, bottom-10, 64, 64, 1);
+        /*
+          p.addBox(1500, bottom-10, 64, 64, 1);
         p.addBox(2000, bottom-10, 64, 64, 10);
         p.addBox(300, bottom-200, 200, 5, 6);
         p.addBox(300, bottom-200, 400, 5, 6);
         p.addBox(280, bottom-200, 20, 10, 8);
         p.addBox(260, bottom-200, 20, 20, 8);
         p.addBox(240, bottom-200, 30, 20, 8);
+        */
         p.addBall(1000, bottom-100, 40);
         p.addBall(200, bottom-100, 40);
-        p.addBall(250, bottom-100, 40);
+        /*
+          p.addBall(250, bottom-100, 40);
         p.addBall(500, bottom-100, 30);
         p.addCustomShape1(50,bottom-100,app.color(123,201,122));
+        */
 
     }
 
@@ -303,7 +307,7 @@ public class SensoriMotorSystem {
         app.rectMode(PConstants.CENTER);
         app.translate(app.width-250,20);
 
-        for (Map.Entry<String, SensorInput> entry : w.inputList.entrySet())
+        for (Map.Entry<String, SensorInput> entry : w.inputs.entrySet())
         {
             SensorInput s = entry.getValue();
             int id = s.id;
@@ -534,7 +538,12 @@ public class SensoriMotorSystem {
     /** Reads primitive actions from worldstate and performs them.
      */
     public void processActions(WorldState w) {
-        //app.println("SensoriMotorSystem.processActions() not yet implemented");
+        //HashMap<String,MotorAction> outputList
+        for (Map.Entry<String, MotorAction> entry : w.outputs.entrySet()) {
+            String key = entry.getKey();
+            MotorAction action = entry.getValue();
+            // CODE HERE To execute actions
+        }
     }
 
     public int sensorID = 0;
@@ -557,22 +566,22 @@ public class SensoriMotorSystem {
         // copies the bitmap into the pixels[] array for retina
         retina.loadPixels();
         // is fovea seeing a solid object?
-        worldState.setSensorInput("vision.fovea.object", sensorID++, vision.isObjectAtGaze(gazePosition()));
-        worldState.setSensorInput("vision.fovea.solid_object", sensorID++, vision.isSolidObjectAtGaze(gazePosition()));
-        worldState.setSensorInput("vision.fovea.hollow_object", sensorID++, vision.isHollowObjectAtGaze(gazePosition()));
-        worldState.setSensorInput("vision.fovea.round_object", sensorID++, vision.isRoundObjectAtGaze(gazePosition()));
-        worldState.setSensorInput("vision.fovea.flat_object", sensorID++, vision.isFlatObjectAtGaze(gazePosition()));
+        worldState.setSensorInput("vision.fovea.object", sensorID++, vision.isObjectAtGaze(gazeAbsPosition()));
+        worldState.setSensorInput("vision.fovea.solid_object", sensorID++, vision.isSolidObjectAtGaze(gazeAbsPosition()));
+        worldState.setSensorInput("vision.fovea.hollow_object", sensorID++, vision.isHollowObjectAtGaze(gazeAbsPosition()));
+        worldState.setSensorInput("vision.fovea.round_object", sensorID++, vision.isRoundObjectAtGaze(gazeAbsPosition()));
+        worldState.setSensorInput("vision.fovea.flat_object", sensorID++, vision.isFlatObjectAtGaze(gazeAbsPosition()));
 
-        worldState.setSensorInput("vision.fovea.flat_object", sensorID++, vision.isRedObjectAtGaze(gazePosition()));
-        worldState.setSensorInput("vision.fovea.flat_object", sensorID++, vision.isBlueObjectAtGaze(gazePosition()));
-        worldState.setSensorInput("vision.fovea.flat_object", sensorID++, vision.isGreenObjectAtGaze(gazePosition()));
+        worldState.setSensorInput("vision.fovea.flat_object", sensorID++, vision.isRedObjectAtGaze(gazeAbsPosition()));
+        worldState.setSensorInput("vision.fovea.flat_object", sensorID++, vision.isBlueObjectAtGaze(gazeAbsPosition()));
+        worldState.setSensorInput("vision.fovea.flat_object", sensorID++, vision.isGreenObjectAtGaze(gazeAbsPosition()));
 
-        worldState.setSensorInput("vision.fovea.flat_object", sensorID++, vision.isDarkObjectAtGaze(gazePosition()));
-        worldState.setSensorInput("vision.fovea.flat_object", sensorID++, vision.isLightObjectAtGaze(gazePosition()));
+        worldState.setSensorInput("vision.fovea.flat_object", sensorID++, vision.isDarkObjectAtGaze(gazeAbsPosition()));
+        worldState.setSensorInput("vision.fovea.flat_object", sensorID++, vision.isLightObjectAtGaze(gazeAbsPosition()));
 
         for (int angle = 0 ; angle < 180; angle+= 10) {
             worldState.setSensorInput("vision.fovea.angle."+angle, sensorID++,
-                                      vision.isGazeObjectAtAngle(gazePosition(), angle-10, angle));
+                                      vision.isGazeObjectAtAngle(gazeAbsPosition(), angle-10, angle));
         }
 
         // Look for closed and open boundary objects
@@ -653,12 +662,20 @@ public class SensoriMotorSystem {
     // Vision motor primitives
     /**
        send the gaze to center on this object
+       @return dx,dy of gaze motion
      */
-    void gazeAt(Object2D thing) {
+    Vec2 gazeAt(Object2D thing) {
+        float oldgx = gazeXpos;
+        float oldgy = gazeYpos;
         Vec2 pos = thing.getPosition();
         gazeXpos = pos.x - xpos;
         gazeYpos = ypos - pos.y;
+        gazeMotion = new Vec2(gazeXpos - oldgx, gazeYpos-oldgy);
+        return gazeMotion;
     }
+
+    // tracks how far the gaze moved
+    Vec2 gazeMotion = new Vec2();
 
     float limit(float val, float min, float max) {
         if (val < min) {
@@ -671,19 +688,23 @@ public class SensoriMotorSystem {
     }
 
     void gazeLeft(int n) {
+        float oldgx = gazeXpos;
         gazeXpos = limit(gazeXpos - n, -GAZE_MAX_XOFFSET, GAZE_MAX_XOFFSET);
+        gazeMotion =  new Vec2(gazeXpos - oldgx, 0);
     }
 
     void gazeRight(int n) {
-        gazeXpos = limit(gazeXpos + n, -GAZE_MAX_XOFFSET, GAZE_MAX_XOFFSET);
+        gazeLeft(-n);
     }
 
     void gazeUp(int n) {
+        float oldgy = gazeYpos;
         gazeYpos = limit(gazeYpos - n, -GAZE_MAX_YOFFSET, GAZE_MAX_YOFFSET);
+        gazeMotion =  new Vec2(0, gazeYpos - oldgy);        
     }
 
     void gazeDown(int n) {
-        gazeYpos = limit(gazeYpos + n, -GAZE_MAX_YOFFSET, GAZE_MAX_YOFFSET);
+        gazeUp(-n);
     }
 
     void setGazePosition(float x, float y) {
@@ -691,17 +712,17 @@ public class SensoriMotorSystem {
         gazeYpos = y;
     }
 
-    Vec2 gazePosition() {
+    Vec2 gazeAbsPosition() {
         return new Vec2(xpos+gazeXpos, ypos+gazeYpos);
     }
 
     Object2D objectAtGaze() {
-        return findObjAt(gazePosition());
+        return findObjAt(gazeAbsPosition());
     }
 
     /** Moves the gaze to center on the next item in the fovea. */
     void gazeNext() {
-        ArrayList<Object2D> items = findObjectsAt(gazePosition());
+        ArrayList<Object2D> items = findObjectsAt(gazeAbsPosition());
         
     }
 

@@ -24,6 +24,38 @@ public class Stage
     int nschemas;
     int nactions;
 
+    /**
+     * print an HTML table of state of items,schemas,actions
+     */
+    public String htmlPrintState() {
+        StringBuilder s = new StringBuilder();
+        s.append("<html><body>");
+        s.append(String.format("%d items, %d schemas, %d actions\n", items.size(), schemas.size(), actions.size()));
+        s.append("<table border=1>");
+        s.append("<tr><th>Items</th><th>Schemas</th><th>Actions</th></tr>");
+        for (int i = 0; i < items.size(); i++) {
+            s.append("<tr>");
+            s.append("<td>");
+            Item item = items.get(i);
+            s.append(item);
+            s.append("<td>");
+            if (i < schemas.size()) {
+                Schema schema = schemas.get(i);
+                s.append(schema);
+            }
+            s.append("<td>");
+            if (i < actions.size()) {
+                Action action = actions.get(i);
+                s.append(action.makeLink());
+            }
+            s.append("</tr>");
+        }
+        s.append("</table>");
+        s.append("</body></html>");
+        return s.toString();
+
+    }
+
     public Stage(SensoriMotorSystem s) {
         this.sms = s;
     }
@@ -63,7 +95,7 @@ TODO TODO ++++++++++++++++
     void processWorldStep(SensoriMotorSystem sms) {
         WorldState w = sms.getWorldState();
 
-        //
+        // copies the sensori-motor input values from the world into the corresponding Schema items
         copySMSInputToItems(w);
 
         // run the marginal attribution step
@@ -71,6 +103,8 @@ TODO TODO ++++++++++++++++
 
         // decide what to do next
         setMotorActions(w);
+
+        // 
         sms.processActions(w);
     }
 
@@ -80,7 +114,7 @@ TODO TODO ++++++++++++++++
 
 
     void copySMSInputToItems(WorldState w) {
-        for (Map.Entry<String, SensorInput> entry : w.inputList.entrySet())
+        for (Map.Entry<String, SensorInput> entry : w.inputs.entrySet())
         {
             SensorInput s = entry.getValue();
             int index = s.id;
