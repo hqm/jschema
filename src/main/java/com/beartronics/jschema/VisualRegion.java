@@ -103,8 +103,8 @@ public class VisualRegion {
        returns true if more than N pixels are 'on' in this quadrant
      */
     static final int SMALL_OBJECT_PIXEL_COUNT_THRESHOLD = 10;
-    static final int MEDIUM_OBJECT_PIXEL_COUNT_THRESHOLD = 100;
-    static final int LARGE_OBJECT_PIXEL_COUNT_THRESHOLD = 5000;
+    static final int MEDIUM_OBJECT_PIXEL_COUNT_THRESHOLD = 1000;
+    static final int LARGE_OBJECT_PIXEL_COUNT_THRESHOLD = 2400;
     static final int ON_BRIGHTNESS_THRESHOLD = 10;
     boolean peripheralObjectAtQuadrant(int qx, int qy) {
         int width = retina.width;

@@ -489,7 +489,7 @@ public class SensoriMotorSystem {
 
         if (app.key == 'e') {
             gazeUp(GAZE_INCR);
-        } else if (app.key == 'd') {
+        } else if (app.key == 'c') {
             gazeDown(GAZE_INCR);
         } else if (app.key == 's') {
             gazeLeft(GAZE_INCR);
@@ -503,8 +503,6 @@ public class SensoriMotorSystem {
             singleStep = false;
         }
     }
-
-    
         
     public void keyReleased() {
         downKeys[app.keyCode] = 0;
@@ -669,7 +667,7 @@ public class SensoriMotorSystem {
         float oldgy = gazeYpos;
         Vec2 pos = thing.getPosition();
         gazeXpos = pos.x - xpos;
-        gazeYpos = ypos - pos.y;
+        gazeYpos = pos.y - ypos;
         gazeMotion = new Vec2(gazeXpos - oldgx, gazeYpos-oldgy);
         return gazeMotion;
     }
@@ -720,10 +718,172 @@ public class SensoriMotorSystem {
         return findObjAt(gazeAbsPosition());
     }
 
+
     /** Moves the gaze to center on the next item in the fovea. */
     void gazeNext() {
         ArrayList<Object2D> items = findObjectsAt(gazeAbsPosition());
+        // NYI
+    }
+
+    /*
+      FOVEATE_NEXT_OBJECT_LEFT,
+      FOVEATE_NEXT_OBJECT_RIGHT,
+      FOVEATE_NEXT_OBJECT_UP,
+      FOVEATE_NEXT_OBJECT_DOWN
+    */
+    /**
+       Move gaze to center of nearest object whose center of mass is to the left.
+     */
+    public ArrayList<Object2D> sortedItems = null;
+
+    ArrayList<Object2D> sortPhysobjsHorizontal() {
+        ArrayList<Object2D> items = new ArrayList<Object2D>(plane0.physobjs);
+        items.addAll(plane1.physobjs);
+
+        // sort items by horizontal (x) position
+        Collections.sort(items, new Comparator<Object2D>() {
+                public int compare(Object2D o1, Object2D o2) {
+                    Vec2 a = o1.getPosition();
+                    Vec2 b = o2.getPosition();
+                    return Integer.signum(Math.round(a.x - b.x));
+                }
+            });
+
+        sortedItems = items;
+        return items;
+    }
+
+        ArrayList<Object2D> sortPhysobjsVertical() {
+        ArrayList<Object2D> items = new ArrayList<Object2D>(plane0.physobjs);
+        items.addAll(plane1.physobjs);
+
+        // sort items by horizontal (x) position
+        Collections.sort(items, new Comparator<Object2D>() {
+                public int compare(Object2D o1, Object2D o2) {
+                    Vec2 a = o1.getPosition();
+                    Vec2 b = o2.getPosition();
+                    return Integer.signum(Math.round(a.y - b.y));
+                }
+            });
+
+        sortedItems = items;
+        return items;
+    }
+
+    public Object2D foveateNextObjectLeft() {
+        ArrayList<Object2D> items = sortPhysobjsHorizontal();
         
+        Vec2 gaze = gazeAbsPosition();
+        app.println("gazeAbsPosition = "+gaze);
+
+        int idx = -1;
+
+        // find the index of the closest object to the left of the gaze position
+
+        for (int i = items.size()-1; i >= 0; i--) {
+            Object2D obj = items.get(i);
+            if (obj.getPosition().x < gaze.x) {
+                idx = i;
+                break;
+            }
+        }
+        app.println("...idx = "+idx);
+
+        if (idx == -1) {
+            app.println("Error in foveateNextObjectLeft, could not find any object!");
+            return null;
+        } else {
+            foveatedObject = items.get(idx);
+            gazeAt(foveatedObject);
+            return foveatedObject;
+        }
+    }
+
+    public Object2D foveateNextObjectRight() {
+        ArrayList<Object2D> items = sortPhysobjsHorizontal();
+        Vec2 gaze = gazeAbsPosition();
+        app.println("gazeAbsPosition = "+gaze);
+
+        int idx = -1;
+
+        // find the index of the closest object to the left of the gaze position
+
+        for (int i = 0; i < items.size(); i++) {
+            Object2D obj = items.get(i);
+            if (obj.getPosition().x > gaze.x) {
+                idx = i;
+                break;
+            }
+        }
+        app.println("...idx = "+idx);
+
+        if (idx == -1) {
+            app.println("Error in foveateNextObjectRight, could not find any object!");
+            return null;
+        } else {
+            foveatedObject = items.get(idx);
+            gazeAt(foveatedObject);
+            return foveatedObject;
+        }
+    }
+
+
+    public Object2D foveateNextObjectUp() {
+        ArrayList<Object2D> items = sortPhysobjsHorizontal();
+        
+        Vec2 gaze = gazeAbsPosition();
+        app.println("gazeAbsPosition = "+gaze);
+
+        int idx = -1;
+
+        // find the index of the closest object to the left of the gaze position
+
+        for (int i = items.size()-1; i >= 0; i--) {
+            Object2D obj = items.get(i);
+            if (obj.getPosition().y < gaze.y) {
+                idx = i;
+                break;
+            }
+        }
+        app.println("...idx = "+idx);
+
+        if (idx == -1) {
+            app.println("Error in foveateNextObjectLeft, could not find any object!");
+            return null;
+        } else {
+            foveatedObject = items.get(idx);
+            gazeAt(foveatedObject);
+            return foveatedObject;
+        }
+    }
+
+
+    public Object2D foveateNextObjectDown() {
+        ArrayList<Object2D> items = sortPhysobjsHorizontal();
+        Vec2 gaze = gazeAbsPosition();
+        app.println("gazeAbsPosition = "+gaze);
+
+        int idx = -1;
+
+        // find the index of the closest object to the left of the gaze position
+
+        for (int i = 0; i < items.size(); i++) {
+            Object2D obj = items.get(i);
+            if (obj.getPosition().y > gaze.y) {
+                idx = i;
+                break;
+            }
+        }
+        app.println("...idx = "+idx);
+
+        if (idx == -1) {
+            app.println("Error in foveateNextObjectRight, could not find any object!");
+            return null;
+        } else {
+            foveatedObject = items.get(idx);
+            gazeAt(foveatedObject);
+            return foveatedObject;
+        }
     }
 
     // Includes proprioceptive sensors
