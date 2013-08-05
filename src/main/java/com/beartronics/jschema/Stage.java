@@ -20,10 +20,6 @@ public class Stage
     public ArrayList<Action> actions = new ArrayList<Action>();
     public ArrayList<Item> items     = new ArrayList<Item>();
 
-    int nitems;    
-    int nschemas;
-    int nactions;
-
     // Actions that we decide to take in a given time step
     public ArrayList<Action> voluntaryActions = new ArrayList<Action>();
 
@@ -67,19 +63,16 @@ public class Stage
         System.err.println("stage.run not yet implemented");
     }
 
-    public void initWorld(int nitems, int nactions) {
-        this.nitems = nitems;
-        this.nactions = nactions;
-        logger.info("Initializing world "+ this + ", nitems = "+nitems + ", nactions = "+nactions);
-        nschemas = nactions;
-        initItems();
-        initSchemas();
-    }
-
-    void initItems() {
-        for (int i = 0; i < nitems; i++) {
+    public void initWorld() {
+        logger.info("Stage initializing world "+ this);
+        WorldState w = sms.getWorldState();
+        int ninputs = w.inputs.size();
+        logger.info("initWorld adding "+ninputs +"inputs slots");
+        for (int i = 0; i < ninputs; i++) {
             items.add(null);
         }
+
+        initSchemas();
     }
 
     Action hand1grasp = null;
@@ -107,7 +100,7 @@ public class Stage
             if (atype == Action.Type.HAND1_GRASP) {
                 hand1grasp = action;
             }
-            System.out.println("action = "+action);
+            logger.info("action = "+action);
             Schema schema = new Schema(this, i, action);
             schema.initialize();
             actions.add(action);
@@ -147,10 +140,17 @@ TODO TODO ++++++++++++++++
             int index = s.id;
             String path = s.path;
             boolean newValue = s.value;
+            // ensure that we have enough slots in the items list
+            if (index > items.size()-1) {
+                for (int i = 0; i < (index - items.size()) + 1; i++) {
+                    items.add(null);
+                }
+            }
 
             Item item = items.get(index);
             if (item == null) {
                 item = new Item(String.format("#%d:%s",index,path), index, newValue, Item.ItemType.PRIMITIVE);
+                logger.debug("created new item "+item);
                 items.set(index,item);
             } else {
                 item.prevValue = item.value;
@@ -172,6 +172,7 @@ TODO TODO ++++++++++++++++
 
     // Make a synthetic item for a schema
     Item makeSyntheticItem(Schema s) {
+        int nitems = items.size();
         Item item = new Item(String.format(Integer.toString(nitems), nitems), nitems, false, Item.ItemType.SYNTHETIC);
         items.add(item);
         nitems++;
@@ -179,7 +180,8 @@ TODO TODO ++++++++++++++++
     }
 
     public String toString() {
-        return String.format("{{ stage %s: nitems=%d nactions=%d schemas=%d }}", this.hashCode(), nitems, nactions, nschemas);
+        int nitems = items.size();
+        return String.format("{{ stage %s: nitems=%d nactions=%d schemas=%d }}", this.hashCode(), nitems, actions.size(), schemas.size());
     }
 }
 

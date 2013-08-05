@@ -22,9 +22,12 @@ import processing.data.*;
 import processing.event.*; 
 import processing.opengl.*; 
 
+import org.apache.log4j.Logger;
 
 // A displayable 2D object
 abstract class Object2D {
+
+    static Logger logger = Logger.getLogger(Object2D.class.getName());
 
     // We need to keep track of a Body and a width and height
     public Body body;
@@ -370,14 +373,14 @@ abstract class Object2D {
      */
     ArrayList<Object2D> weldContacts(Object2D ignore) {
         ArrayList<Object2D> objs = new ArrayList<Object2D>();
-        app.println("********\nGrasp Contacts for "+this);
+        logger.debug("********\nGrasp Contacts for "+this);
         ContactEdge cedge = body.getContactList();
         while (cedge != null) {
             Contact c = cedge.contact;
             if (c.getManifold().pointCount > 0) {
                 Object2D other = (Object2D) cedge.other.getUserData();
                 if (other != ignore && other != null) {
-                    app.println("welding "+this+" to obj "+other);
+                    logger.info("welding "+this+" to obj "+other);
                     if (!objs.contains(other)) {
                         objs.add(other);
                         weld(this, other);
