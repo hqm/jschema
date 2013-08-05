@@ -5,15 +5,29 @@ import java.util.List;
 
 public class Action {
 
-    public static enum ActionType {
-        PRIMITIVE,
-        COMPOUND
+    public enum Type {
+        // a synthetic action
+        COMPOUND, 
+            // list of possible primitive actions
+        MOVE_LEFT, MOVE_RIGHT, MOVE_UP, MOVE_DOWN,
+        GAZE_LEFT, GAZE_RIGHT, GAZE_UP, GAZE_DOWN,
+            FOVEATE_NEXT_OBJECT_LEFT,
+            FOVEATE_NEXT_OBJECT_RIGHT,
+            FOVEATE_NEXT_OBJECT_UP,
+            FOVEATE_NEXT_OBJECT_DOWN, 
+            HAND1_LEFT, HAND1_RIGHT, HAND1_UP, HAND1_DOWN,
+            HAND2_LEFT, HAND2_RIGHT, HAND2_UP, HAND2_DOWN,
+            HAND1_GRASP, HAND1_UNGRASP,
+            HAND2_GRASP, HAND2_UNGRASP,
+            HAND1_WELD, HAND2_WELD,
+            HAND1_UNWELD, HAND2_UNWELD
     }
+
 
     String      name;
     int         index;
     float       value;
-    ActionType  type;
+    Type  type;
 
     ActionController controller;
     Stage stage;
@@ -24,11 +38,11 @@ public class Action {
         this.name = name;
         this.index = index;
         this.value = value;
-        this.type = ActionType.PRIMITIVE;
+        this.type = Type.HAND1_GRASP;
         this.controller = new ActionController(this);
     }
 
-    public Action(String name, int index, Float value, ActionType type) {
+    public Action(String name, int index, Float value, Type type) {
         this.stage = stage;
         this.name = name;
         this.index = index;
@@ -49,7 +63,7 @@ public class Action {
     }
 
     public String toString() {
-        return "[Action"+index+" "+name+"]";
+        return String.format("[Action %d %s %s %f]",index, name, type, value);
     }
 
 }

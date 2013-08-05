@@ -536,11 +536,73 @@ public class SensoriMotorSystem {
     /** Reads primitive actions from worldstate and performs them.
      */
     public void processActions(WorldState w) {
-        //HashMap<String,MotorAction> outputList
-        for (Map.Entry<String, MotorAction> entry : w.outputs.entrySet()) {
-            String key = entry.getKey();
-            MotorAction action = entry.getValue();
+        //HashMap<String,Action> outputList
+        for (Action action : w.actions) {
             // CODE HERE To execute actions
+            switch (action.type) {
+              case MOVE_LEFT:
+                break;
+              case MOVE_RIGHT:
+                break;
+              case MOVE_UP:
+                break;
+              case MOVE_DOWN:
+                break;
+              case GAZE_LEFT:
+                  break;
+              case GAZE_RIGHT:
+                break;
+              case GAZE_UP:
+                break;
+              case GAZE_DOWN:
+                break;
+              case FOVEATE_NEXT_OBJECT_LEFT:
+                foveateNextObjectLeft();
+                break;
+              case FOVEATE_NEXT_OBJECT_RIGHT:
+                foveateNextObjectRight();
+                break;
+              case FOVEATE_NEXT_OBJECT_UP:
+                foveateNextObjectUp();
+                break;
+              case FOVEATE_NEXT_OBJECT_DOWN:
+                foveateNextObjectDown();
+                break;
+              case HAND1_LEFT:
+                break;
+              case HAND1_RIGHT:
+                break;
+              case HAND1_UP:
+                break;
+              case HAND1_DOWN:
+                break;
+              case HAND2_LEFT:
+                  break;
+              case HAND2_RIGHT:
+                break;
+              case HAND2_UP:
+                break;
+              case HAND2_DOWN:
+                break;
+              case HAND1_GRASP:
+                break;
+              case HAND1_UNGRASP:
+                break;
+              case HAND2_GRASP:
+                break;
+              case HAND2_UNGRASP:
+                break;
+              case HAND1_WELD:
+                break;
+              case HAND2_WELD:
+                break;
+              case HAND1_UNWELD:
+                break;
+              case HAND2_UNWELD:
+                break;
+              default:
+                app.println("unknown Action type "+action.type);
+            }
         }
     }
 

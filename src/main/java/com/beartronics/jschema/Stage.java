@@ -24,6 +24,9 @@ public class Stage
     int nschemas;
     int nactions;
 
+    // Actions that we decide to take in a given time step
+    public ArrayList<Action> voluntaryActions = new ArrayList<Action>();
+
     /**
      * print an HTML table of state of items,schemas,actions
      */
@@ -82,6 +85,7 @@ public class Stage
     void initSchemas() {
         for (int i = 0; i < nschemas; i++) {
             Action action = new Action(this, String.format(Integer.toString(i), i), i);
+            System.out.println("action = "+action);
             Schema schema = new Schema(this, i, action);
             schema.initialize();
             actions.add(action);
@@ -135,6 +139,7 @@ TODO TODO ++++++++++++++++
     /** decides what to do next, sets primitive motor actions on WorldState */
     void setMotorActions(WorldState w) {
         logger.debug("Stage.setMotorActions not yet implemented");
+        w.actions = voluntaryActions;
     }
 
     // Make a synthetic item for a schema

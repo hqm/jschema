@@ -78,7 +78,7 @@ public class Schema {
     }
 
     public String toString() {
-        return String.format("[Schema %s::~%s/ action %s/ %s::~%s]",posContext, negContext, action, posResult, negResult);
+        return String.format("[Schema %d %s::~%s/ action %s/ %s::~%s]",id, posContext, negContext, action, posResult, negResult);
     }
 
 

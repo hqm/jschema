@@ -33,7 +33,7 @@ public class WorldState {
 
     public HashMap<String,SensorInput> inputs = new HashMap<String,SensorInput>();
     
-    public HashMap<String,MotorAction> outputs = new HashMap<String,MotorAction>();
+    public ArrayList<Action> actions = new ArrayList<Action>();
 
     public String toString() {
         StringBuilder out = new StringBuilder();
