@@ -585,20 +585,28 @@ public class SensoriMotorSystem {
               case HAND2_DOWN:
                 break;
               case HAND1_GRASP:
+                hand1.weldContacts();
                 break;
               case HAND1_UNGRASP:
+                hand1.removeWeldJoints();
                 break;
               case HAND2_GRASP:
+                hand2.weldContacts();
                 break;
               case HAND2_UNGRASP:
+                hand2.removeWeldJoints();
                 break;
               case HAND1_WELD:
+                hand1.weldGraspedObjects();
                 break;
               case HAND2_WELD:
+                hand2.weldGraspedObjects();
                 break;
               case HAND1_UNWELD:
+                hand1.unWeldGraspedObjects();
                 break;
               case HAND2_UNWELD:
+                hand2.unWeldGraspedObjects();
                 break;
               default:
                 app.println("unknown Action type "+action.type);

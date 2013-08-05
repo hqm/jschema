@@ -26,7 +26,7 @@ public class Action {
 
     String      name;
     int         index;
-    float       value;
+    boolean     activated;
     Type  type;
 
     ActionController controller;
@@ -37,16 +37,15 @@ public class Action {
         this.stage = stage;
         this.name = name;
         this.index = index;
-        this.value = value;
         this.type = Type.HAND1_GRASP;
         this.controller = new ActionController(this);
     }
 
-    public Action(String name, int index, Float value, Type type) {
+    public Action(Stage stage, String name, Type type, int index, boolean active) {
         this.stage = stage;
         this.name = name;
         this.index = index;
-        this.value = value;
+        this.activated = active;
         this.type = type;
         this.controller = new ActionController(this);
     }
@@ -54,16 +53,16 @@ public class Action {
     public String toHTML() {
         StringBuilder s = new StringBuilder();
         s.append("<h1>Action "+index+": "+name+ " "+type+"</h1>");
-        s.append("value: "+value);
+        s.append("activated: "+activated);
         return s.toString();
     }
 
     public String makeLink() {
-        return "<a href=\"/items/action?id="+index+"\">Action "+index+"</a>";
+        return "<a href=\"/items/action?id="+index+"\">Action "+index+ " " +type + "</a>";
     }
 
     public String toString() {
-        return String.format("[Action %d %s %s %f]",index, name, type, value);
+        return String.format("[Action %d %s %s %s]",index, name, type, activated);
     }
 
 }

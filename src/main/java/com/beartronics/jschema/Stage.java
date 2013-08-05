@@ -82,14 +82,37 @@ public class Stage
         }
     }
 
+    Action hand1grasp = null;
+
     void initSchemas() {
-        for (int i = 0; i < nschemas; i++) {
-            Action action = new Action(this, String.format(Integer.toString(i), i), i);
+        // Create schemas for the primitive actions
+        Action.Type types[] = {
+            Action.Type.MOVE_LEFT, Action.Type.MOVE_RIGHT, Action.Type.MOVE_UP, Action.Type.MOVE_DOWN,
+            Action.Type.GAZE_LEFT, Action.Type.GAZE_RIGHT, Action.Type.GAZE_UP, Action.Type.GAZE_DOWN,
+            Action.Type.FOVEATE_NEXT_OBJECT_LEFT,
+            Action.Type.FOVEATE_NEXT_OBJECT_RIGHT,
+            Action.Type.FOVEATE_NEXT_OBJECT_UP,
+            Action.Type.FOVEATE_NEXT_OBJECT_DOWN, 
+            Action.Type.HAND1_LEFT, Action.Type.HAND1_RIGHT, Action.Type.HAND1_UP, Action.Type.HAND1_DOWN,
+            Action.Type.HAND2_LEFT, Action.Type.HAND2_RIGHT, Action.Type.HAND2_UP, Action.Type.HAND2_DOWN,
+            Action.Type.HAND1_GRASP, Action.Type.HAND1_UNGRASP,
+            Action.Type.HAND2_GRASP, Action.Type.HAND2_UNGRASP,
+            Action.Type.HAND1_WELD, Action.Type.HAND2_WELD,
+            Action.Type.HAND1_UNWELD, Action.Type.HAND2_UNWELD
+        };
+        
+        int i = 0;
+        for (Action.Type atype: types) {
+            Action action = new Action(this, atype.toString(), atype, i, false);
+            if (atype == Action.Type.HAND1_GRASP) {
+                hand1grasp = action;
+            }
             System.out.println("action = "+action);
             Schema schema = new Schema(this, i, action);
             schema.initialize();
             actions.add(action);
             schemas.add(schema);
+            i++;
         }
     }
 
@@ -139,6 +162,11 @@ TODO TODO ++++++++++++++++
     /** decides what to do next, sets primitive motor actions on WorldState */
     void setMotorActions(WorldState w) {
         logger.debug("Stage.setMotorActions not yet implemented");
+        w.actions.clear();
+        // hardcode this for debugging for now
+        w.actions.add(hand1grasp);
+        hand1grasp.activated = true;
+
         w.actions = voluntaryActions;
     }
 
