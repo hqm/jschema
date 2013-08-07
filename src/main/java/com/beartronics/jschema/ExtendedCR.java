@@ -25,7 +25,17 @@ public class ExtendedCR {
     TIntArrayList remainedOffActionTaken = new TIntArrayList();
     TIntArrayList remainedOffActionNotTaken = new TIntArrayList();
 
-    void ensureCapacity(int n) {
+    /**
+       Makes sure array a can be indexed up to n-1
+     */
+    void growArray(TIntArrayList a, int n) {
+        int delta = n - a.size();
+        for (int i = 0; i < delta; i++) {
+            a.add(0);
+        }
+    }
+
+    void growArrays(int n) {
         offToOnActionTaken.ensureCapacity(n);
         offToOnActionNotTaken.ensureCapacity(n);
         onToOffActionTaken.ensureCapacity(n);

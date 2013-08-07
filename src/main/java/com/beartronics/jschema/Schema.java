@@ -24,7 +24,7 @@ public class Schema {
 
     // reliability statistics
     public float succeededWithActivation   = 0;
-    public float succededWithoutActivation = 0;
+    public float succeededWithoutActivation = 0;
     public float failedWithActivation      = 0; // number of times activation failed
 
     // Parent schema from which we were spun off
@@ -44,7 +44,7 @@ public class Schema {
            when our action is taken, to the probability that the result state happens
            when our context is satisfied but the action is not taken (i.e., we are applicable but not activated)
         */
-        return (succeededWithActivation / succededWithoutActivation);
+        return (succeededWithActivation / succeededWithoutActivation);
     }
 
     // Extended Context counters
@@ -67,9 +67,57 @@ public class Schema {
         syntheticItem = stage.makeSyntheticItem(this);
     }
 
-    public void ensureCapacity(int n) {
-        xcontext.ensureCapacity(n);
-        xresult.ensureCapacity(n);
+    /**
+       Update all our statistics
+     */
+    public void runMarginalAttribution(Stage s) {
+        boolean activated = action.activated;
+        boolean succeeded = true;
+        boolean applicable = true;
+        // schemas succeeded if context was satisfied, action taken, and results obtained
+
+        for (Item item: posContext) {
+            applicable &= item.value;
+        }
+        for (Item item: negContext) {
+            applicable &= !item.value;
+        }
+
+        if (applicable) {
+
+            for (Item item: posResult) {
+                succeeded &= item.value;
+            }
+            for (Item item: negResult) {
+                succeeded &= !item.value;
+            }
+
+            if (activated && succeeded) {
+            // TODO [hqm 2013-07] Need to bias this statistic towards more recent activations
+                succeededWithActivation++;
+                syntheticItem.setValue(true);
+            }
+
+            if (activated && !succeeded) {
+                // TODO [hqm 2013-07] Need to bias this statistic towards more recent activations
+                failedWithActivation++;
+                syntheticItem.setValue(false);
+            }
+
+            if (!activated && succeeded ) {
+                succeededWithoutActivation++;
+                syntheticItem.setValue(false);
+            }
+
+        }
+
+        // Now the heavy lifting; update the extended context and result
+
+    }
+
+    public void growArrays(int n) {
+        xcontext.growArrays(n);
+        xresult.growArrays(n);
     }
 
     // Initialize this schema, for this stage

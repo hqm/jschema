@@ -129,7 +129,9 @@ TODO TODO ++++++++++++++++
     }
 
     void runMarginalAttribution() {
-        logger.debug("Stage.runMarginalAttribution not yet implemented");
+        for (Schema s: schemas) {
+            s.runMarginalAttribution(this);
+        }
     }
 
 
