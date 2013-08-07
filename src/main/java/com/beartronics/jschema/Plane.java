@@ -130,6 +130,7 @@ public class Plane implements ContactListener {
     Box addBox(float x, float y,float w,float h, float density) {
         int color = sms.getNextObjectColor();
         Box box = new Box(this, x, y, w, h, density, color);
+        app.logger.info("adding box color "+color +" " +box);
         addPhysobj(box, color);
         return box;
     }
