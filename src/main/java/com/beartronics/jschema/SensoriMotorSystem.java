@@ -40,6 +40,26 @@ public class SensoriMotorSystem {
     // horizontal scroll speed for debugging
     float scrollspeed = 25.0f;
 
+
+    // Map from color to object. Each physobj has a unique color, to
+    // give some assistance to the visual system in tagging objects for
+    // gaze control.
+    public HashMap<Integer,Object2D> objColorMap = new HashMap<Integer,Object2D>();
+    public int objCounter = 0;
+
+    void addObjectColorMapping(Object2D obj, int color) {
+        objColorMap.put(color, obj);
+    }
+
+    public int getNextObjectColor() {
+        if (objCounter > 255) {
+            throw new RuntimeException("cannot have more than 255 objects");
+        } else {
+            int c = ObjectColors.objcolors[objCounter++];
+            return c;
+        }
+    }
+
     ////////////////////////////////////////////////////////////////
     // Head and Eyes Controls
 

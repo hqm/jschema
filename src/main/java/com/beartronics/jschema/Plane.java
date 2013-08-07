@@ -99,45 +99,46 @@ public class Plane implements ContactListener {
 
 
     Boundary addBoundary(float x, float y,float w,float h) {
-        return addBoundary(x, y, w, h, 0 );
+        return addBoundary(x, y, w, h, sms.getNextObjectColor() );
+    }
+
+    private void addPhysobj(Object2D obj, int color) {
+        physobjs.add(obj);
+        sms.addObjectColorMapping(obj,color);
     }
 
 
     Boundary addBoundary(float x, float y,float w,float h, int color) {
         Boundary b = new Boundary(this, x, y, w, h, color );
-        physobjs.add(b);
+        addPhysobj(b, color);
         return b;
-    }
-
-    Box addBox(float x, float y,float w,float h, float density) {
-        Box box = new Box(this, x,  y, w, h, density);
-        physobjs.add(box);
-        return box;
     }
 
 
     Hand addHand(float x, float y,float w,float h, float density, int color) {
         Hand hand = new Hand(this, x,  y, w, h, density, color);
-        physobjs.add(hand);
+        addPhysobj(hand, color);
         return hand;
     }
 
-    CustomShape1 addCustomShape1(float x, float y, int color) {
-        CustomShape1 c = new CustomShape1(this, x,  y, color);
-        physobjs.add(c);
-        return c;
-    }
-
-
     Box addBox(float x, float y,float w,float h, float density, int color) {
         Box box = new Box(this, x, y, w, h, density, color);
-        physobjs.add(box);
+        addPhysobj(box, color);
         return box;
     }
+
+    Box addBox(float x, float y,float w,float h, float density) {
+        int color = sms.getNextObjectColor();
+        Box box = new Box(this, x, y, w, h, density, color);
+        addPhysobj(box, color);
+        return box;
+    }
+
     
     Ball addBall(float x, float y,float r) {
-        Ball b = new Ball(this, x, y, r);
-        physobjs.add(b);
+        int color = sms.getNextObjectColor();
+        Ball b = new Ball(this, x, y, r, color);
+        addPhysobj(b, color);
         return b;
     }
 

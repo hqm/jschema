@@ -75,7 +75,9 @@ public class Stage
         initSchemas();
     }
 
+    // name some well known actions for debugging
     Action hand1grasp = null;
+    Action hand1ungrasp = null;
 
     void initSchemas() {
         // Create schemas for the primitive actions
@@ -97,9 +99,14 @@ public class Stage
         int i = 0;
         for (Action.Type atype: types) {
             Action action = new Action(this, atype.toString(), atype, i, false);
+            // for debugging 
             if (atype == Action.Type.HAND1_GRASP) {
                 hand1grasp = action;
+            } else if (atype == Action.Type.HAND1_UNGRASP) {
+                hand1ungrasp = action;
             }
+
+
             logger.info("action = "+action);
             Schema schema = new Schema(this, i, action);
             schema.initialize();
@@ -168,8 +175,6 @@ TODO TODO ++++++++++++++++
         // hardcode this for debugging for now
         w.actions.add(hand1grasp);
         hand1grasp.activated = true;
-
-        w.actions = voluntaryActions;
     }
 
     // Make a synthetic item for a schema

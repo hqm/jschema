@@ -31,9 +31,11 @@ public class Ball extends Object2D {
     // We need to keep track of a Body and a radius
     float r;
     final static int MAX_DENSITY = 10;
+    int color;
 
-    Ball(Plane plane, float x, float y, float r_) {
+    Ball(Plane plane, float x, float y, float r_, int color) {
         super(plane);
+        this.color = color;
         r = r_;
         // This function puts the particle in the Box2d world
         makeBody(box2d, x,y,r);
@@ -50,7 +52,7 @@ public class Ball extends Object2D {
         pg.pushMatrix();
         pg.translate(pos.x,pos.y);
         pg.rotate(-a);
-        pg.fill(127, plane.alpha);
+        pg.fill(color, plane.alpha);
         pg.stroke(plane.borderColor);
         pg.strokeWeight(2);
         pg.ellipse(0,0,r*2,r*2);
