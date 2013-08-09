@@ -46,6 +46,8 @@ public class WebServer implements Container {
              printItems(body);
          } else if (path.matches("/items/action")) {
              showAction(body, request);
+         } else if (path.matches("/items/schema")) {
+             showSchema(body, request);
          }
 
 
@@ -64,6 +66,17 @@ public class WebServer implements Container {
         body.println(action.toHTML());
         footer(body);
     }
+
+    void showSchema(PrintStream body, Request request) {
+        Query query = request.getQuery();
+        String value = query.get("id");
+        int id = Integer.parseInt(value);
+        Schema schema = app.stage.schemas.get(id);
+        header(body);
+        body.println(schema.toHTML());
+        footer(body);
+    }
+
 
         
     void header(PrintStream body) {

@@ -40,7 +40,7 @@ public class Stage
             s.append("<td>");
             if (i < schemas.size()) {
                 Schema schema = schemas.get(i);
-                s.append(schema);
+                s.append(schema.makeLink());
             }
             s.append("<td>");
             if (i < actions.size()) {
@@ -185,6 +185,12 @@ TODO TODO ++++++++++++++++
         nitems++;
         return item;
     }
+
+    public int nitems() {
+        return items.size();
+    }
+
+    public static int INITIAL_ITEMS = 1000;
 
     public String toString() {
         int nitems = items.size();

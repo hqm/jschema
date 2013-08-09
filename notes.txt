@@ -11,3 +11,5 @@ mvn test
 
 
 java -classpath ${JCP} com.beartronics.jschema.JSchema
+
+perl -MList::Util -e 'print List::Util::shuffle <>'

@@ -19,11 +19,55 @@ public class ExtendedCR {
     TIntArrayList onToOffActionTaken = new TIntArrayList();
     TIntArrayList onToOffActionNotTaken = new TIntArrayList();
 
+    /* need to figure out if these are important
     TIntArrayList remainedOnActionTaken = new TIntArrayList();
     TIntArrayList remainedOnActionNotTaken = new TIntArrayList();
 
     TIntArrayList remainedOffActionTaken = new TIntArrayList();
     TIntArrayList remainedOffActionNotTaken = new TIntArrayList();
+    */
+
+    // Loop over all items in system, update the marginal attribution values
+    void updateItems(Stage stage, Schema schema, boolean actionTaken) {
+        ArrayList<Item> items = stage.items;
+        //growArrays(stage.nitems);
+        for (int n = 0; n < items.size(); n++) {
+            Item item = items.get(n);
+            if (item != null) {
+                boolean val = item.value;
+                boolean prevValue = item.prevValue;
+
+                if (val && !prevValue) {
+                    if (actionTaken) {
+                        offToOnActionTaken.set(n, offToOnActionTaken.get(n) + 1);
+                    } else {
+                        offToOnActionNotTaken.set(n, offToOnActionNotTaken.get(n) + 1);
+                    }
+                } else if (!val && prevValue) {
+                    if (actionTaken) {
+                        onToOffActionTaken.set(n, onToOffActionTaken.get(n) + 1);
+                    } else {
+                        onToOffActionNotTaken.set(n, onToOffActionNotTaken.get(n) + 1);
+                    }
+                }
+
+                /*            } else if (val && prevValue) {
+                              if (actionTaken) {
+                              remainedOnActionTaken.set(n, remainedOnActionTaken.get(n) + 1);
+                              } else {
+                              remainedOnActionNotTaken.set(n, remainedOnActionNotTaken.get(n) + 1);
+                              }
+                              } else if (val && prevValue) {
+                              if (actionTaken) {
+                              remainedOnActionTaken.set(n, remainedOnActionTaken.get(n) + 1);
+                              } else {
+                              remainedOnActionNotTaken.set(n, remainedOnActionNotTaken.get(n) + 1);
+                              }
+                              }
+                */
+            }
+        }
+    }
 
     /**
        Makes sure array a can be indexed up to n-1
@@ -36,14 +80,16 @@ public class ExtendedCR {
     }
 
     void growArrays(int n) {
-        offToOnActionTaken.ensureCapacity(n);
-        offToOnActionNotTaken.ensureCapacity(n);
-        onToOffActionTaken.ensureCapacity(n);
-        onToOffActionNotTaken.ensureCapacity(n);
-        remainedOnActionTaken.ensureCapacity(n);
-        remainedOnActionNotTaken.ensureCapacity(n);
-        remainedOffActionTaken.ensureCapacity(n);
-        remainedOffActionNotTaken.ensureCapacity(n);
+        growArray(offToOnActionTaken,n);
+        growArray(offToOnActionNotTaken,n);
+        growArray(onToOffActionTaken,n);
+        growArray(onToOffActionNotTaken,n);
+        /*
+          growArray(remainedOnActionTaken,n);
+          growArray(remainedOnActionNotTaken,n);
+          growArray(remainedOffActionTaken,n);
+          growArray(remainedOffActionNotTaken,n);
+        */
     }
 
 }

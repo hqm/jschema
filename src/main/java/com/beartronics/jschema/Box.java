@@ -46,7 +46,8 @@ public class Box extends Object2D {
         this.w = w;
         this.h = h;
 
-        this.alpha = app.map(density, 0, MAX_DENSITY, 0, 255);
+        //this.alpha = app.map(density, 0, MAX_DENSITY, 0, 255);
+        this.alpha = 255;
 
         // Add the box to the box2d world
         makeBody(box2d, new Vec2(x, y), w, h, density);

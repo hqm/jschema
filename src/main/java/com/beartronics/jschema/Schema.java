@@ -3,6 +3,7 @@ package com.beartronics.jschema;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
 
+import java.io.*;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
@@ -65,6 +66,7 @@ public class Schema {
         this.id = index;
         this.action = action;
         syntheticItem = stage.makeSyntheticItem(this);
+        growArrays(stage.INITIAL_ITEMS);
     }
 
     /**
@@ -112,9 +114,11 @@ public class Schema {
         }
 
         // Now the heavy lifting; update the extended context and result
+        xresult.updateItems(stage, this, activated);
 
     }
 
+    // Call this when we add a new synthetic item, to grow everyone's extended context and result lists
     public void growArrays(int n) {
         xcontext.growArrays(n);
         xresult.growArrays(n);
@@ -127,6 +131,36 @@ public class Schema {
 
     public String toString() {
         return String.format("[Schema %d %s::~%s/ action %s/ %s::~%s]",id, posContext, negContext, action, posResult, negResult);
+    }
+
+    public String toHTML() {
+        StringWriter s = new StringWriter();
+        PrintWriter p = new PrintWriter(s);
+        p.println("<h1>Schema "+id+"</h1>");
+        p.println("Action: "+action.makeLink());
+        p.println("<pre>");
+        p.println("posContext: "+posContext);
+        p.println("negContext: "+negContext);
+        p.println("posResult: "+posResult);
+        p.println("negResult: "+negResult);
+        p.println("Synthetic Item: "+syntheticItem);
+        p.println("succeededWithActivation = "+succeededWithActivation);
+        p.println("succeededWithoutActivation = "+succeededWithoutActivation);
+        p.println("failedWithActivation = "+failedWithActivation);
+        p.println("parent: "+parent);
+        p.println("applicable: "+applicable);
+        p.println("value: " +value);
+        p.println("duration: " +duration);
+        p.println("cost: " +cost);
+        p.println("correlation(): " +correlation());
+        //p.println("xcontext: " +xcontext);
+        //p.println("xresult: " +xresult);
+        return s.toString();
+    }
+
+    public String makeLink() {
+        return String.format("<a href=\"/items/schema?id=%d\">Schema %d %s :: ~ %s / %s / %s ::~ %s</a>",
+                             id, id, posContext, negContext, action, posResult, negResult);
     }
 
 
