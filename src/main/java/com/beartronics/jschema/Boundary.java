@@ -66,7 +66,7 @@ class Boundary extends Object2D {
         body = box2d.createBody(bd);
     
         // Attached the shape to the body using a Fixture
-        body.createFixture(sd,1);
+        fixture = body.createFixture(sd,1);
         super.makeBody();
     }
 
