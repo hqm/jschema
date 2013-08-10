@@ -100,9 +100,9 @@ public class Ball extends Object2D {
         FixtureDef fd = new FixtureDef();
         fd.shape = cs;
         // Parameters that affect physics
-        fd.density = 1f;
-        fd.friction = 0.01f;
-        fd.restitution = 0.3f;
+        fd.density = 2f;
+        fd.friction = 0.02f;
+        fd.restitution = 0.1f;
     
         // Attach fixture to body
         fixture = body.createFixture(fd);

@@ -124,9 +124,9 @@ public class Box extends Object2D {
         fd.shape = sd;
         // Parameters that affect physics
         //fd.density = density;
-        fd.density = 1;
-        fd.friction = 0.6f;
-        fd.restitution = 0.3f;
+        fd.density = 2;
+        fd.friction = 0.8f;
+        fd.restitution = 0.02f;
 
         // Define the body and make it from the shape
         BodyDef bd = new BodyDef();
