@@ -143,7 +143,7 @@ public class Schema {
         p.println("negContext: "+negContext);
         p.println("posResult: "+posResult);
         p.println("negResult: "+negResult);
-        p.println("Synthetic Item: "+syntheticItem);
+        p.println("Synthetic Item: "+syntheticItem.makeLink());
         p.println("succeededWithActivation = "+succeededWithActivation);
         p.println("succeededWithoutActivation = "+succeededWithoutActivation);
         p.println("failedWithActivation = "+failedWithActivation);

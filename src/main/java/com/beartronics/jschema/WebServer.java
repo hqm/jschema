@@ -46,6 +46,8 @@ public class WebServer implements Container {
              printItems(body);
          } else if (path.matches("/items/action")) {
              showAction(body, request);
+         } else if (path.matches("/items/item")) {
+             showItem(body, request);
          } else if (path.matches("/items/schema")) {
              showSchema(body, request);
          }
@@ -64,6 +66,7 @@ public class WebServer implements Container {
         Action action = app.stage.actions.get(id);
         header(body);
         body.println(action.toHTML());
+        body.println(linkToMainPage());
         footer(body);
     }
 
@@ -74,11 +77,25 @@ public class WebServer implements Container {
         Schema schema = app.stage.schemas.get(id);
         header(body);
         body.println(schema.toHTML());
+        body.println(linkToMainPage());
         footer(body);
     }
 
+    void showItem(PrintStream body, Request request) {
+        Query query = request.getQuery();
+        String value = query.get("id");
+        int id = Integer.parseInt(value);
+        Item item = app.stage.items.get(id);
+        header(body);
+        body.println(item.toHTML());
+        body.println(linkToMainPage());
+        footer(body);
+    }
 
-        
+    String linkToMainPage() {
+        return "<a href=\"/items/map\">Main Map</a>";
+    }
+
     void header(PrintStream body) {
         body.println("<html>");
         body.println("<style>\n"+stylesheet+"\n</style>");

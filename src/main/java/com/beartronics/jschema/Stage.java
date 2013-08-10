@@ -36,7 +36,9 @@ public class Stage
             s.append("<tr>");
             s.append("<td>");
             Item item = items.get(i);
-            s.append(item);
+            if (item != null) {
+                s.append(item.makeLink());
+            }
             s.append("<td>");
             if (i < schemas.size()) {
                 Schema schema = schemas.get(i);
@@ -158,7 +160,7 @@ TODO TODO ++++++++++++++++
 
             Item item = items.get(index);
             if (item == null) {
-                item = new Item(String.format("#%d:%s",index,path), index, newValue, Item.ItemType.PRIMITIVE);
+                item = new Item(this, String.format("#%d:%s",index,path), index, newValue, Item.ItemType.PRIMITIVE);
                 logger.debug("created new item "+item);
                 items.set(index,item);
             } else {
@@ -180,7 +182,7 @@ TODO TODO ++++++++++++++++
     // Make a synthetic item for a schema
     Item makeSyntheticItem(Schema s) {
         int nitems = items.size();
-        Item item = new Item(String.format(Integer.toString(nitems), nitems), nitems, false, Item.ItemType.SYNTHETIC);
+        Item item = new Item(this, String.format(Integer.toString(nitems), nitems), nitems, false, Item.ItemType.SYNTHETIC);
         items.add(item);
         nitems++;
         return item;

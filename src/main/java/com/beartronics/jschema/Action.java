@@ -2,6 +2,7 @@ package com.beartronics.jschema;
 
 import java.util.Iterator;
 import java.util.List;
+import java.io.*;
 
 public class Action {
 
@@ -51,9 +52,18 @@ public class Action {
     }
 
     public String toHTML() {
-        StringBuilder s = new StringBuilder();
-        s.append("<h1>Action "+index+": "+name+ " "+type+"</h1>");
-        s.append("activated: "+activated);
+        StringWriter s = new StringWriter();
+        PrintWriter p = new PrintWriter(s);
+        p.println("<h1>Action "+index+": "+name+ " "+type+"</h1>");
+        p.println("<pre>");
+        p.println("activated: "+activated);
+        p.println("Schemas containing this action:");
+        for (Schema schema: stage.schemas) {
+            if (schema.action == this) {
+                p.println(schema.makeLink());
+            }
+        }
+
         return s.toString();
     }
 
