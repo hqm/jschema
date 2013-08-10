@@ -80,11 +80,11 @@ public class SensoriMotorSystem {
     public Hand hand2;
 
     // max number of gross and fine motor steps that arms can take
-    public int reachX = 10;
-    public int reachY = 10;
+    public int reachX = 5;
+    public int reachY = 5;
     // arm motor step size
     public int dGross = 100;
-    public int dFine = 10;
+    public int dFine = 20;
 
     // Used to sense objects in the visual field
     VisualRegion vision;
