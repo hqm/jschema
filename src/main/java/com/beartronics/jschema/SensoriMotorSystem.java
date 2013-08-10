@@ -579,6 +579,10 @@ public class SensoriMotorSystem {
         for (Action action : w.actions) {
             // CODE HERE To execute actions
             switch (action.type) {
+              case CENTER_GAZE:
+                // Set the gaze to the body/head center position
+                gazeAt(new Vec2(xpos,ypos));
+                break;
               case MOVE_LEFT:
                 break;
               case MOVE_RIGHT:
@@ -588,12 +592,19 @@ public class SensoriMotorSystem {
               case MOVE_DOWN:
                 break;
               case GAZE_LEFT:
-                  break;
+                gazeLeft(GAZE_INCR);
+                break;
               case GAZE_RIGHT:
+                gazeRight(GAZE_INCR);
                 break;
               case GAZE_UP:
+                gazeUp(GAZE_INCR);
                 break;
               case GAZE_DOWN:
+                gazeDown(GAZE_INCR);
+                break;
+              case FOVEATE_NEXT_MOTION:
+                foveateNextMovingObject(gazeAbsPosition());
                 break;
               case FOVEATE_NEXT_OBJECT_LEFT:
                 foveateNextObjectLeft();
@@ -809,9 +820,16 @@ public class SensoriMotorSystem {
        @return dx,dy of gaze motion
      */
     Vec2 gazeAt(Object2D thing) {
+        return gazeAt(thing.getPosition());
+    }
+
+/**
+   This moves the gaze to abs position pos, and has side effect of
+   setting the proprioceptive sense gazeMotion to tell how far the gaze moved.
+ */
+    Vec2 gazeAt(Vec2 pos) {
         float oldgx = gazeXpos;
         float oldgy = gazeYpos;
-        Vec2 pos = thing.getPosition();
         gazeXpos = pos.x - xpos;
         gazeYpos = pos.y - ypos;
         gazeMotion = new Vec2(gazeXpos - oldgx, gazeYpos-oldgy);
@@ -871,6 +889,60 @@ public class SensoriMotorSystem {
         // NYI
     }
 
+
+    /**
+       sorts objects list by proximity to position
+     */
+    public ArrayList<Object2D> sortPhysobjsByDistance(final Vec2 position) {
+        ArrayList<Object2D> items = new ArrayList<Object2D>(plane0.physobjs);
+        items.addAll(plane1.physobjs);
+
+        // sort items by horizontal (x) position
+        Collections.sort(items, new Comparator<Object2D>() {
+                public int compare(Object2D o1, Object2D o2) {
+                    float a = o1.getPosition().sub(position).length();
+                    float b = o2.getPosition().sub(position).length();
+                    return Integer.signum(Math.round(a - b));
+                }
+            });
+
+        sortedItems = items;
+        return items;
+    }
+    /**
+       Foveate on the closest moving object to the current gaze
+     */
+    public Object2D foveateNextMovingObject(Vec2 position) {
+        ArrayList<Object2D> items = sortPhysobjsByDistance(position);
+        //app.println("sorted by dist from "+position+" items = "+items.toString());
+        //app.println("foveateNextMovingObject foveatedObject = "+foveatedObject);
+        int idx = -1;
+        // find the index of the closest moving object to the 
+
+        for (int i = 0; i < items.size(); i++) {
+            Object2D obj = items.get(i);
+            //app.println(i + " checking object "+obj +" isMoving "+obj.isMoving());
+            // if we're already looking at this obj, go to the next one
+            if (obj == foveatedObject) continue;
+
+            if (obj.isMoving()) {
+                idx = i;
+                break;
+            }
+        }
+
+        if (idx == -1) {
+            app.println("Error in foveateNextMovingObject, could not find any object!");
+            return null;
+        } else {
+            foveatedObject = items.get(idx);
+            gazeAt(foveatedObject);
+            return foveatedObject;
+        }
+
+    }
+
+
     /*
       FOVEATE_NEXT_OBJECT_LEFT,
       FOVEATE_NEXT_OBJECT_RIGHT,
@@ -899,7 +971,7 @@ public class SensoriMotorSystem {
         return items;
     }
 
-        ArrayList<Object2D> sortPhysobjsVertical() {
+    ArrayList<Object2D> sortPhysobjsVertical() {
         ArrayList<Object2D> items = new ArrayList<Object2D>(plane0.physobjs);
         items.addAll(plane1.physobjs);
 

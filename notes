@@ -206,3 +206,8 @@ attribute effects to it.
 
 Need to remember last action activated, but only activate it once.
 
++ Need to bias the gaze to stay centered where the head is.
+
++ add grasp reflex: = when hand touched, grasp it
+ -- preinitialize schema for this ?
+

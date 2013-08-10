@@ -43,6 +43,15 @@ abstract class Object2D {
     public DistanceJoint distanceJoint;
     public int index;
     static int counter = 0;
+    public Vec2 motionVector = new Vec2();
+
+    public Vec2 getMotion() {
+        return body.getLinearVelocity();
+    }
+    public boolean isMoving() {
+        Vec2 vmotion = body.getLinearVelocity();
+        return (vmotion.lengthSquared() > app.sms.MOTION_THRESHOLD);
+    }
 
     Object2D(Plane p) {
         this.plane = p;

@@ -12,10 +12,12 @@ public class Action {
             // list of possible primitive actions
         MOVE_LEFT, MOVE_RIGHT, MOVE_UP, MOVE_DOWN,
         GAZE_LEFT, GAZE_RIGHT, GAZE_UP, GAZE_DOWN,
+            CENTER_GAZE,
             FOVEATE_NEXT_OBJECT_LEFT,
             FOVEATE_NEXT_OBJECT_RIGHT,
             FOVEATE_NEXT_OBJECT_UP,
             FOVEATE_NEXT_OBJECT_DOWN, 
+            FOVEATE_NEXT_MOTION,
             HAND1_LEFT, HAND1_RIGHT, HAND1_UP, HAND1_DOWN,
             HAND2_LEFT, HAND2_RIGHT, HAND2_UP, HAND2_DOWN,
             HAND1_FINE_LEFT, HAND1_FINE_RIGHT, HAND1_FINE_UP, HAND1_FINE_DOWN,

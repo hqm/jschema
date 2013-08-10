@@ -89,6 +89,8 @@ public class Stage
     void initSchemas() {
         // Create schemas for the primitive actions
         Action.Type types[] = {
+            Action.Type.CENTER_GAZE,
+            Action.Type.FOVEATE_NEXT_MOTION,
             Action.Type.MOVE_LEFT, Action.Type.MOVE_RIGHT, Action.Type.MOVE_UP, Action.Type.MOVE_DOWN,
             Action.Type.GAZE_LEFT, Action.Type.GAZE_RIGHT, Action.Type.GAZE_UP, Action.Type.GAZE_DOWN,
             Action.Type.FOVEATE_NEXT_OBJECT_LEFT,
@@ -97,6 +99,8 @@ public class Stage
             Action.Type.FOVEATE_NEXT_OBJECT_DOWN, 
             Action.Type.HAND1_LEFT, Action.Type.HAND1_RIGHT, Action.Type.HAND1_UP, Action.Type.HAND1_DOWN,
             Action.Type.HAND2_LEFT, Action.Type.HAND2_RIGHT, Action.Type.HAND2_UP, Action.Type.HAND2_DOWN,
+            Action.Type.HAND1_FINE_LEFT, Action.Type.HAND1_FINE_RIGHT, Action.Type.HAND1_FINE_UP, Action.Type.HAND1_FINE_DOWN,
+            Action.Type.HAND2_FINE_LEFT, Action.Type.HAND2_FINE_RIGHT, Action.Type.HAND2_FINE_UP, Action.Type.HAND2_FINE_DOWN,
             Action.Type.HAND1_GRASP, Action.Type.HAND1_UNGRASP,
             Action.Type.HAND2_GRASP, Action.Type.HAND2_UNGRASP,
             Action.Type.HAND1_WELD, Action.Type.HAND2_WELD,

@@ -126,6 +126,7 @@ public class Schema {
         }
 
         // Now the heavy lifting; update the extended context and result
+        xcontext.updateItems(stage, this, activated);
         xresult.updateItems(stage, this, activated);
 
     }
