@@ -211,6 +211,11 @@ public class Hand extends Box {
         // compute hand position from gross+fine positioning
         x = absx + grossX * GROSS_DIST + fineX * FINE_DIST;
         y = absy + grossY * GROSS_DIST + fineY * FINE_DIST;
+
+        if (y < 0) { y = 0; }
+        if (y > app.sms.WORLD_HEIGHT-10) { y = app.sms.WORLD_HEIGHT-10; }
+        if (x < 10) { x = 10; }
+        if (x > app.sms.WORLD_WIDTH-10) { x = app.sms.WORLD_WIDTH-10; }
         
         updateMouseJointPos(x,y);
         Vec2 pos = body.getPosition();

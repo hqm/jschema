@@ -83,7 +83,7 @@ public class JSchema extends PApplet {
 
 
     public void setup() {
-        size(1200, 600);
+        size(1200, 800);
 
         retinaView = new RetinaView();
         retinaFrame = new PFrame(retinaView, 210, 0);

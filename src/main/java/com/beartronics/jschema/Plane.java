@@ -238,7 +238,7 @@ public class Plane implements ContactListener {
             float h = app.random(16, 64);
             float density = app.random(1, 10);
             app.println("new box "+ mouseX() + ", "+ mouseY() +", "+ w +"," + h +" density="+density);
-            Box p = new Box(this, mouseX(),mouseY(), w, h, density);
+            Box p = addBox( mouseX(),mouseY(), w, h, density);
             physobjs.add(p);
         }
 

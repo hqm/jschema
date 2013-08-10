@@ -143,7 +143,7 @@ public class SensoriMotorSystem {
     void setupDisplay() {
         // Initial body position
         xpos = app.width/2;
-        ypos = app.height/2;
+        ypos = app.height/2+100;
 
         // Initialize box2d physics and create the world
         plane0 = new Plane(app, app.color(255, 55, 55));
@@ -207,11 +207,11 @@ public class SensoriMotorSystem {
     void initialBoundaries(Plane p) {
         // Add a bunch of fixed boundaries
         // floor
-        p.addBoundary(WORLD_WIDTH/2, app.height-5, WORLD_WIDTH, 10f );
+        p.addBoundary(WORLD_WIDTH/2, app.height+30, WORLD_WIDTH, 100f );
         // left wall
-        p.addBoundary(5,           app.height-200, 10f, 1200f );
+        p.addBoundary(-40,           app.height-200, 50f, 2000f );
         // right wall
-        p.addBoundary(WORLD_WIDTH-5, app.height-200, 10f, 1200f );
+        p.addBoundary(WORLD_WIDTH+40, app.height-200, 50f, 2000f );
 
 
         p.addBoundary(100, app.height-50, 10f, 100f );
@@ -830,8 +830,8 @@ public class SensoriMotorSystem {
     Vec2 gazeAt(Vec2 pos) {
         float oldgx = gazeXpos;
         float oldgy = gazeYpos;
-        gazeXpos = pos.x - xpos;
-        gazeYpos = pos.y - ypos;
+        gazeXpos = limit(pos.x - xpos, -GAZE_MAX_XOFFSET, GAZE_MAX_XOFFSET);
+        gazeYpos = limit(pos.y - ypos, -GAZE_MAX_YOFFSET, GAZE_MAX_YOFFSET);
         gazeMotion = new Vec2(gazeXpos - oldgx, gazeYpos-oldgy);
         return gazeMotion;
     }
