@@ -66,7 +66,6 @@ public class WebServer implements Container {
         Action action = app.stage.actions.get(id);
         header(body);
         body.println(action.toHTML());
-        body.println(linkToMainPage());
         footer(body);
     }
 
@@ -77,7 +76,6 @@ public class WebServer implements Container {
         Schema schema = app.stage.schemas.get(id);
         header(body);
         body.println(schema.toHTML());
-        body.println(linkToMainPage());
         footer(body);
     }
 
@@ -88,7 +86,6 @@ public class WebServer implements Container {
         Item item = app.stage.items.get(id);
         header(body);
         body.println(item.toHTML());
-        body.println(linkToMainPage());
         footer(body);
     }
 
@@ -100,9 +97,12 @@ public class WebServer implements Container {
         body.println("<html>");
         body.println("<style>\n"+stylesheet+"\n</style>");
         body.println("<body>");
+        body.println(linkToMainPage());
+
     }
 
     void footer(PrintStream body) {
+        body.println(linkToMainPage());
         body.println("</body>");
         body.println("</html>");
     }
