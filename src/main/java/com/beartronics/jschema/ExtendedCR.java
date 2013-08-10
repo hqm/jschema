@@ -5,6 +5,7 @@ import gnu.trove.list.array.TIntArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
+import java.io.*;
 
 import org.apache.log4j.Logger;
 
@@ -68,6 +69,25 @@ public class ExtendedCR {
             }
         }
     }
+
+    public String toHTML(Stage stage, Schema schema) {
+        StringWriter s = new StringWriter();
+        PrintWriter p = new PrintWriter(s);
+        
+        ArrayList<Item> items = stage.items;
+        //growArrays(stage.nitems);
+        for (int n = 0; n < items.size(); n++) {
+            Item item = items.get(n);
+            if (item != null) {
+                p.println(String.format("%d %s off->on(A): %s, off->on(!A): %s, on->off(A): %s, on->off(!A): %s",
+                                        n, item.makeLink(), offToOnActionTaken.get(n), offToOnActionNotTaken.get(n),
+                                        onToOffActionTaken.get(n), onToOffActionNotTaken.get(n)));
+            }
+        }
+
+        return s.toString();
+    }
+
 
     /**
        Makes sure array a can be indexed up to n-1

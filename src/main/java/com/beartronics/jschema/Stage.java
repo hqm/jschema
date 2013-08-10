@@ -23,6 +23,11 @@ public class Stage
     // Actions that we decide to take in a given time step
     public ArrayList<Action> voluntaryActions = new ArrayList<Action>();
 
+    public long clock = 0;
+    public long clockStep() {
+        return clock++;
+    }
+
     /**
      * print an HTML table of state of items,schemas,actions
      */
@@ -170,19 +175,27 @@ TODO TODO ++++++++++++++++
         }
     }
 
+    Random rand = new Random();
+
     /** decides what to do next, sets primitive motor actions on WorldState */
     void setMotorActions(WorldState w) {
-        logger.debug("Stage.setMotorActions not yet implemented");
+        // deactivate any prior actions
+        for (Action a: w.actions) {
+            a.activated = false;
+        }
         w.actions.clear();
         // hardcode this for debugging for now
-        w.actions.add(hand1grasp);
-        hand1grasp.activated = true;
+        Action action = actions.get(rand.nextInt(actions.size()));
+        action.activated = true;
+        app.println("select action "+action);
+        w.actions.add(action);
     }
 
     // Make a synthetic item for a schema
     Item makeSyntheticItem(Schema s) {
         int nitems = items.size();
         Item item = new Item(this, String.format(Integer.toString(nitems), nitems), nitems, false, Item.ItemType.SYNTHETIC);
+        item.hostSchema = s;
         items.add(item);
         nitems++;
         return item;

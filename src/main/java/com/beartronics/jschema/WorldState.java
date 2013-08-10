@@ -33,6 +33,7 @@ public class WorldState {
 
     public HashMap<String,SensorInput> inputs = new HashMap<String,SensorInput>();
     
+    // Actions which are to be performed on this clock step
     public ArrayList<Action> actions = new ArrayList<Action>();
 
     public String toString() {

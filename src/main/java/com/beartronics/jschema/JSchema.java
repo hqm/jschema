@@ -106,20 +106,22 @@ public class JSchema extends PApplet {
         startWebServer();
     }
 
-    public int clock = 0;
     public void draw() {
         if (interactive) {
             try {
-                clock++;
                 // The SensoriMotorSystem will draw a global view for debugging, and also will render an image from
                 // the head viewpoint into the retinaImage view.
-                sms.draw();
-                retinaView.set(0,0,retinaImage);
+                if (sms.run || sms.singleStep) {
 
-                // The Schema engine will read the worldState from the sms, and
-                // set any motor actions it wants to
-                stage.processWorldStep(sms);
+                    sms.draw();
+                    retinaView.set(0,0,retinaImage);
 
+                    // The Schema engine will read the worldState from the sms, and
+                    // set any motor actions it wants to
+                    stage.processWorldStep(sms);
+                    stage.clockStep();
+
+                }
             } catch (Exception e) {
                 e.printStackTrace();
                 logger.error("JSchema top-level caught exception "+e);

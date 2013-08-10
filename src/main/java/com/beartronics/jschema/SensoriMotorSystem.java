@@ -306,7 +306,7 @@ public class SensoriMotorSystem {
             app.fill(0);
 
             app.text("alt-click to create box, click to grasp, ctrl-click to lift, L and R key to rotate grip, shift for transparent, space/enter toggle single-step", 20,12);
-            app.text("plane="+planes.indexOf(currentPlane), 20,22);
+            app.text("clock = "+app.stage.clock + " plane="+planes.indexOf(currentPlane), 20,22);
             app.text("xpos="+xpos+ "   ypos="+ypos,20,32);
             app.text("hand1 "+showHandInfo(hand1),20,42);
             app.text("hand2 "+showHandInfo(hand2),20,52);
@@ -607,22 +607,59 @@ public class SensoriMotorSystem {
               case FOVEATE_NEXT_OBJECT_DOWN:
                 foveateNextObjectDown();
                 break;
-              case HAND1_LEFT:
+              case HAND2_LEFT:  // move right hand, gross motor
+                hand2.hjog(-1,0);
                 break;
-              case HAND1_RIGHT:
-                break;
-              case HAND1_UP:
-                break;
-              case HAND1_DOWN:
-                break;
-              case HAND2_LEFT:
-                  break;
               case HAND2_RIGHT:
+                hand2.hjog(1,0);
                 break;
               case HAND2_UP:
+                hand2.vjog(-1, 0);
                 break;
               case HAND2_DOWN:
+                hand2.vjog(1,0);
                 break;
+              case HAND2_FINE_LEFT: // move right hand, fine motor
+                hand2.hjog(0,-1);
+                break;
+              case HAND2_FINE_RIGHT:
+                hand2.hjog(0,1);
+                break;
+              case HAND2_FINE_UP:
+                hand2.vjog(0,-1);
+                break;
+              case HAND2_FINE_DOWN:
+                hand2.vjog(0,1);
+                break;
+
+              case HAND1_LEFT:  // move left hand, gross motor
+                hand1.hjog(-1,0);
+                break;
+              case HAND1_RIGHT:
+                hand1.hjog(1,0);
+                break;
+              case HAND1_UP:
+                hand1.vjog(-1, 0);
+                break;
+              case HAND1_DOWN:
+                hand1.vjog(1,0);
+                break;
+              case HAND1_FINE_LEFT: // move left hand, fine motor
+                hand1.hjog(0,-1);
+                break;
+              case HAND1_FINE_RIGHT:
+                hand1.hjog(0,1);
+                break;
+              case HAND1_FINE_UP:
+                hand1.vjog(0,-1);
+                break;
+              case HAND1_FINE_DOWN:
+                hand1.vjog(0,1);
+                break;
+
+
+
+
               case HAND1_GRASP:
                 hand1.weldContacts();
                 break;
@@ -883,7 +920,7 @@ public class SensoriMotorSystem {
         ArrayList<Object2D> items = sortPhysobjsHorizontal();
         
         Vec2 gaze = gazeAbsPosition();
-        app.println("gazeAbsPosition = "+gaze);
+        //app.println("gazeAbsPosition = "+gaze);
 
         int idx = -1;
 
@@ -896,7 +933,7 @@ public class SensoriMotorSystem {
                 break;
             }
         }
-        app.println("...idx = "+idx);
+        //app.println("...idx = "+idx);
 
         if (idx == -1) {
             app.println("Error in foveateNextObjectLeft, could not find any object!");

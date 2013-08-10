@@ -198,3 +198,11 @@ http://127.0.0.1:8080/items/map
 http://127.0.0.1:8080/raw/map
 
 
+
+
+================================================================
+Main loop - select an action, perform it once, wait n cycles to
+attribute effects to it.
+
+Need to remember last action activated, but only activate it once.
+

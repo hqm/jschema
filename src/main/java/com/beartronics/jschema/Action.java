@@ -18,6 +18,8 @@ public class Action {
             FOVEATE_NEXT_OBJECT_DOWN, 
             HAND1_LEFT, HAND1_RIGHT, HAND1_UP, HAND1_DOWN,
             HAND2_LEFT, HAND2_RIGHT, HAND2_UP, HAND2_DOWN,
+            HAND1_FINE_LEFT, HAND1_FINE_RIGHT, HAND1_FINE_UP, HAND1_FINE_DOWN,
+            HAND2_FINE_LEFT, HAND2_FINE_RIGHT, HAND2_FINE_UP, HAND2_FINE_DOWN,
             HAND1_GRASP, HAND1_UNGRASP,
             HAND2_GRASP, HAND2_UNGRASP,
             HAND1_WELD, HAND2_WELD,
@@ -33,6 +35,9 @@ public class Action {
     ActionController controller;
     Stage stage;
 
+    public void activate(boolean val) {
+        this.activated = val;
+    }
 
     public Action(Stage stage, String name, int index) {
         this.stage = stage;

@@ -37,8 +37,9 @@ public class Schema {
     public float value = 0;
     // See pp. 55
     // correlation, reliability, duration, cost
-    public float duration = Float.POSITIVE_INFINITY;
+    public float duration = 3600;
     public float cost = 0;
+    long timeActivated = 0;
 
     float correlation() {
         /* ratio of the probability that a transition to the result state happens
@@ -69,10 +70,21 @@ public class Schema {
         growArrays(stage.INITIAL_ITEMS);
     }
 
+    // Perform designated action
+    // turn on our synthetic item, and start the clock so we can turn it off after our duration time
+    public void activate() {
+        syntheticItem.setValue(true);
+        this.action.activate(true);
+        timeActivated = stage.clock;
+    }
+
     /**
        Update all our statistics
      */
     public void runMarginalAttribution(Stage s) {
+        if (stage.clock > timeActivated + duration) {
+            syntheticItem.setValue(false);
+        }
         boolean activated = action.activated;
         boolean succeeded = true;
         boolean applicable = true;
@@ -153,8 +165,10 @@ public class Schema {
         p.println("duration: " +duration);
         p.println("cost: " +cost);
         p.println("correlation(): " +correlation());
-        //p.println("xcontext: " +xcontext);
-        //p.println("xresult: " +xresult);
+        p.println("<b>xcontext</b>");
+        p.println(xcontext.toHTML(stage, this));
+        p.println("<b>xresult</b>");
+        p.println(xresult.toHTML(stage, this));
         return s.toString();
     }
 

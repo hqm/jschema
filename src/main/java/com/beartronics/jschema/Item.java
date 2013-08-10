@@ -18,7 +18,9 @@ public class Item {
     float primitiveValue;
     float delegatedValue;
     Stage stage;
-    
+
+    // If non-null, we are the synthetic item for this host schema
+    Schema hostSchema;
 
     int    id;
     ItemType type;
@@ -68,6 +70,9 @@ public class Item {
         PrintWriter p = new PrintWriter(s);
         p.println("<h1>Item #"+id+" "+name+" "+type+"</h1>");
         p.println("<pre>");
+        if (hostSchema != null) {
+            p.println("Host Schema: "+hostSchema.makeLink());
+        }
         p.println("value: "+value);
         p.println("previous value: "+prevValue);
 
