@@ -127,11 +127,29 @@ public class Stage
         }
     }
 
+    Schema spinoffNewSchema(Schema parent) {
+        Schema schema = new Schema(this, schemas.size(), parent.action);
+        schema.parent = parent;
+        schemas.add(schema);
+        return schema;
+    }
+
+
+    void clearPredictedTransitions() {
+        for (int i = 0; i < items.size(); i++) {
+            Item item = items.get(i);
+            item.clearPredictedTransitions();
+        }
+    }
+
     /**
-TODO TODO ++++++++++++++++
+       
      */
     void processWorldStep(SensoriMotorSystem sms) {
         WorldState w = sms.getWorldState();
+
+        // See sec 4.1.2 pp 73
+        clearPredictedTransitions();
 
         // copies the sensori-motor input values from the world into the corresponding Schema items
         copySMSInputToItems(w);

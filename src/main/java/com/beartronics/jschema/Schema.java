@@ -67,7 +67,7 @@ public class Schema {
         this.id = index;
         this.action = action;
         syntheticItem = stage.makeSyntheticItem(this);
-        growArrays(stage.INITIAL_ITEMS);
+        growArrays(stage.items.size());
     }
 
     // Perform designated action
@@ -76,19 +76,42 @@ public class Schema {
         syntheticItem.setValue(true);
         this.action.activate(true);
         timeActivated = stage.clock;
+        /* Section 4.1.2 pp 73
+           We need to 'publish' our 'prediction' of items that we assert will transition
+           due to our activation.
+
+           This is so that the marginal attribution algorithm can
+           allow idle schemas to not have to tally up "explained" transitions in their
+           extended results "action not taken" counters. The schema need only bring about the
+           result item transition more often than the results other "unexplained" occurences.
+
+         */
+        for (Item item: posResult) {
+            item.predictedPositiveTransition = true;
+        }
+        for (Item item: negResult) {
+            item.predicteNegativeTransition = true;
+        }
     }
 
     /**
-       Update all our statistics
+     * Update all our statistics
+     *
+     * 
      */
     public void runMarginalAttribution(Stage s) {
         if (stage.clock > timeActivated + duration) {
             syntheticItem.setValue(false);
         }
-        boolean activated = action.activated;
+        boolean actionTaken = action.activated;
         boolean succeeded = true;
         boolean applicable = true;
+
+
         // schemas succeeded if context was satisfied, action taken, and results obtained
+
+        // If we have empty results list, then we only update results stats, and look for
+        // potential spinoff condition (prob. that some item transitions more with action than without)
 
         for (Item item: posContext) {
             applicable &= item.value;
@@ -106,29 +129,45 @@ public class Schema {
                 succeeded &= !item.value;
             }
 
-            if (activated && succeeded) {
+            if (actionTaken && succeeded) {
             // TODO [hqm 2013-07] Need to bias this statistic towards more recent activations
                 succeededWithActivation++;
                 syntheticItem.setValue(true);
             }
 
-            if (activated && !succeeded) {
+            if (actionTaken && !succeeded) {
                 // TODO [hqm 2013-07] Need to bias this statistic towards more recent activations
                 failedWithActivation++;
                 syntheticItem.setValue(false);
             }
 
-            if (!activated && succeeded ) {
+            if (!actionTaken && succeeded ) {
                 succeededWithoutActivation++;
                 syntheticItem.setValue(false);
             }
 
         }
 
-        // Now the heavy lifting; update the extended context and result
-        xcontext.updateItems(stage, this, activated);
-        xresult.updateItems(stage, this, activated);
+        // Run the marginal attribution heuristics to decide whether to spin off
+        // a new schema
+        xresult.updateResultItems(stage, this, actionTaken);
+        
 
+
+        // Now the heavy lifting; update the extended context and result
+        //        xcontext.updateItems(stage, this, activated);
+
+    }
+
+    
+    //  Create a new spinoff schema, adding this item to the positive (or negative) result set
+    void spinoffWithNewResultItem(Item item, boolean positive) {
+        Schema schema = stage.spinoffNewSchema(this);
+        if (positive) {
+            schema.posResult.add(item);
+        } else {
+            schema.negResult.add(item);
+        }
     }
 
     // Call this when we add a new synthetic item, to grow everyone's extended context and result lists
@@ -152,6 +191,7 @@ public class Schema {
         p.println("<h1>Schema "+id+"</h1>");
         p.println("Action: "+action.makeLink());
         p.println("<pre>");
+        p.println("parent: "+parent);
         p.println("posContext: "+posContext);
         p.println("negContext: "+negContext);
         p.println("posResult: "+posResult);
@@ -160,7 +200,6 @@ public class Schema {
         p.println("succeededWithActivation = "+succeededWithActivation);
         p.println("succeededWithoutActivation = "+succeededWithoutActivation);
         p.println("failedWithActivation = "+failedWithActivation);
-        p.println("parent: "+parent);
         p.println("applicable: "+applicable);
         p.println("value: " +value);
         p.println("duration: " +duration);

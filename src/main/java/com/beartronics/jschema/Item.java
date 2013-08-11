@@ -10,8 +10,19 @@ public class Item {
     boolean  value;
     boolean prevValue;
 
+    /** Section 4.1.2 pp 73. We need to indicate if these value transitions were 'explained'
+     * by a schema which was just activated and predicted they would occur.
+     */
+    boolean predictedPositiveTransition = false;
+    boolean predicteNegativeTransition = false;
+
+    void clearPredictedTransitions() {
+     predictedPositiveTransition = false;
+     predicteNegativeTransition = false;
+    }
+
     /** Synthetic items may be in an unknown state */
-    boolean knownState;
+    boolean knownState = true;
 
     float generality;
     float accessibility;
@@ -26,7 +37,7 @@ public class Item {
     ItemType type;
 
     public static enum ItemType {
-        PRIMITIVE, SYNTHETIC
+        PRIMITIVE, SYNTHETIC, CONTEXT_CONJUNCTION
     }
 
     Item(Stage stage, String name, int index, boolean value, ItemType type) {
