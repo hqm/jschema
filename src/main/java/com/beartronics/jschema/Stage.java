@@ -130,12 +130,20 @@ public class Stage
         }
     }
 
+    /**
+       copies the context, action, and result lists
+     */
     Schema spinoffNewSchema(Schema parent) {
-        Schema schema = new Schema(this, schemas.size(), parent.action);
-        schema.parent = parent;
-        schemas.add(schema);
+        Schema child = new Schema(this, schemas.size(), parent.action);
+        child.parent = parent;
+        child.posContext = (HashSet) parent.posContext.clone();
+        child.negContext = (HashSet) parent.negContext.clone();
+        child.posResult = (HashSet) parent.posResult.clone();
+        child.negResult = (HashSet) parent.negResult.clone();
+        schemas.add(child);
         ensureXCRcapacities();
-        return schema;
+        
+        return child;
     }
 
 
