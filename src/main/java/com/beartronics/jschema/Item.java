@@ -72,7 +72,7 @@ public class Item {
         } else {
             val += value;
         }
-        return "[Item"+id+" "+type+" "+name+": "+ val+"]";
+        return "Item"+id+" "+type+" "+name+": "+ val;
 
     }
 

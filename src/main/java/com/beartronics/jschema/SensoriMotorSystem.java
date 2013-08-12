@@ -311,6 +311,11 @@ public class SensoriMotorSystem {
             app.text("hand1 "+showHandInfo(hand1),20,42);
             app.text("hand2 "+showHandInfo(hand2),20,52);
             app.text("gazeX="+gazeXpos+" gazeY="+gazeYpos, 20, 62);
+            app.text( String.format("%d schemas, %d items, %d actions", 
+                                    app.stage.schemas.size(),
+                                    app.stage.items.size(),
+                                    app.stage.actions.size()),
+                      20, 72);
 
             for (Plane plane: planes) {
                 plane.draw();

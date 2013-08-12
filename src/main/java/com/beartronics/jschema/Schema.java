@@ -7,17 +7,19 @@ import java.io.*;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class Schema {
     // Numerical id of this schema
     public int id = 0;
     
+
     // The items in this schema's context list
-    public ArrayList<Item> posContext = new ArrayList<Item>();
-    public ArrayList<Item> negContext = new ArrayList<Item>();
+    public HashSet<Item> posContext = new HashSet<Item>();
+    public HashSet<Item> negContext = new HashSet<Item>();
     // The items in this schema's result list
-    public ArrayList<Item> posResult  = new ArrayList<Item>();
-    public ArrayList<Item> negResult  = new ArrayList<Item>();
+    public HashSet<Item> posResult  = new HashSet<Item>();
+    public HashSet<Item> negResult  = new HashSet<Item>();
 
     // The synthetic item which is controlled by this schema's successful activation.
     // Also known as the 'reifier' item
@@ -40,6 +42,7 @@ public class Schema {
     public float duration = 3600;
     public float cost = 0;
     long timeActivated = 0;
+    long creationTime = 0;
 
     float correlation() {
         /* ratio of the probability that a transition to the result state happens
@@ -68,7 +71,9 @@ public class Schema {
         this.action = action;
         syntheticItem = stage.makeSyntheticItem(this);
         growArrays(stage.items.size());
+        creationTime = stage.clock;
     }
+
 
     // Perform designated action
     // turn on our synthetic item, and start the clock so we can turn it off after our duration time
@@ -159,14 +164,38 @@ public class Schema {
 
     }
 
-    
-    //  Create a new spinoff schema, adding this item to the positive (or negative) result set
-    void spinoffWithNewResultItem(Item item, boolean positive) {
-        Schema schema = stage.spinoffNewSchema(this);
-        if (positive) {
-            schema.posResult.add(item);
-        } else {
-            schema.negResult.add(item);
+    /** does a child exist with this item in its result set
+     */
+    public boolean childWithResultExists(Item item, boolean positive) {
+        for (Schema c: children) {
+            if (positive) {
+                if (c.posResult.contains(item)) {
+                    return true;
+                }
+            } else {
+                if (c.negResult.contains(item)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /*  Create a new spinoff schema, adding this item to the positive (or negative) result set
+
+        We want to be careful not to spin off a result item that is our own synthetic item.
+     */
+    public void spinoffWithNewResultItem(Item item, boolean positive) {
+        if (item == syntheticItem) return;
+        // Check children to see if schema with this result already exists
+        if (! childWithResultExists(item, positive)) {
+            Schema schema = stage.spinoffNewSchema(this);
+            children.add(schema);
+            if (positive) {
+                schema.posResult.add(item);
+            } else {
+                schema.negResult.add(item);
+            }
         }
     }
 
@@ -191,7 +220,12 @@ public class Schema {
         p.println("<h1>Schema "+id+"</h1>");
         p.println("Action: "+action.makeLink());
         p.println("<pre>");
-        p.println("parent: "+parent);
+        p.println("parent: "+(parent != null ? parent.makeLink() : null));
+        p.print("children: ");
+        for (Schema c: children) {
+            p.print(c.makeLink()+ ",");
+        }
+
         p.println("posContext: "+posContext);
         p.println("negContext: "+negContext);
         p.println("posResult: "+posResult);
@@ -218,4 +252,5 @@ public class Schema {
     }
 
 
+    
 }

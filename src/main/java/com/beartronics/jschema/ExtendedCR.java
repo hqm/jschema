@@ -32,6 +32,9 @@ public class ExtendedCR {
     static final float POSITIVE_TRANSITION_CORRELATION_SPINOFF_THRESHOLD = 2.0f;
     static final float NEGATIVE_TRANSITION_CORRELATION_SPINOFF_THRESHOLD = 2.0f;
 
+    static final int MIN_TRIALS = 5;
+
+
     /**
      * Made Up Minds Section 4.1.2  pp. 73
      * Loop over all items in system, viewing them as results items.
@@ -97,11 +100,16 @@ public class ExtendedCR {
                 float positiveTransitionCorrelation = (float) positiveTransitionsA / (float) positiveTransitionsNA;
                 float negativeTransitionCorrelation = (float) negativeTransitionsA / (float) negativeTransitionsNA;
 
-                if (positiveTransitionCorrelation > POSITIVE_TRANSITION_CORRELATION_SPINOFF_THRESHOLD) {
+                if (positiveTransitionsNA > MIN_TRIALS &&
+                    positiveTransitionsA > MIN_TRIALS &&
+                    positiveTransitionCorrelation > POSITIVE_TRANSITION_CORRELATION_SPINOFF_THRESHOLD) {
+                    // How do we tell if we've already spun off a schema for this?
                     schema.spinoffWithNewResultItem(item, true);
                 }
 
-                if (negativeTransitionCorrelation > NEGATIVE_TRANSITION_CORRELATION_SPINOFF_THRESHOLD) {
+                if ( negativeTransitionsNA > MIN_TRIALS &&
+                     negativeTransitionsA > MIN_TRIALS &&
+                     negativeTransitionCorrelation > NEGATIVE_TRANSITION_CORRELATION_SPINOFF_THRESHOLD) {
                     schema.spinoffWithNewResultItem(item, false);
                 }
 

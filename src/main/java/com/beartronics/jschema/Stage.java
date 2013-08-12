@@ -70,16 +70,19 @@ public class Stage
         System.err.println("stage.run not yet implemented");
     }
 
+    /**  Ensure that the extended contexts have slots for all items */
+    public void ensureXCRcapacities() {
+        for (Schema s: schemas) {
+            s.growArrays(items.size());
+        }
+    }
+
     public void initWorld() {
         logger.info("Stage initializing world "+ this);
         WorldState w = sms.getWorldState();
-        int ninputs = w.inputs.size();
-        logger.info("initWorld adding "+ninputs +"inputs slots");
-        for (int i = 0; i < ninputs; i++) {
-            items.add(null);
-        }
-
         initSchemas();
+        copySMSInputToItems(w);
+        ensureXCRcapacities();
     }
 
     // name some well known actions for debugging
@@ -131,6 +134,7 @@ public class Stage
         Schema schema = new Schema(this, schemas.size(), parent.action);
         schema.parent = parent;
         schemas.add(schema);
+        ensureXCRcapacities();
         return schema;
     }
 
@@ -138,7 +142,11 @@ public class Stage
     void clearPredictedTransitions() {
         for (int i = 0; i < items.size(); i++) {
             Item item = items.get(i);
-            item.clearPredictedTransitions();
+            if (item != null) {
+                item.clearPredictedTransitions();
+            } else {
+                app.println("should not occur: null item at "+i);
+            }
         }
     }
 
@@ -165,35 +173,36 @@ public class Stage
     }
 
     void runMarginalAttribution() {
-        for (Schema s: schemas) {
+        for (int i = 0 ; i < schemas.size(); i++) {
+            Schema s = schemas.get(i);
             s.runMarginalAttribution(this);
         }
     }
 
+    // Map from input path name string to object
+    public HashMap<String,Item> itemPathnameToObject = new HashMap<String,Item>();
 
     void copySMSInputToItems(WorldState w) {
         for (Map.Entry<String, SensorInput> entry : w.inputs.entrySet())
         {
             SensorInput s = entry.getValue();
-            int index = s.id;
             String path = s.path;
             boolean newValue = s.value;
-            // ensure that we have enough slots in the items list
-            if (index > items.size()-1) {
-                for (int i = 0; i < (index - items.size()) + 1; i++) {
-                    items.add(null);
-                }
-            }
 
-            Item item = items.get(index);
+            // USE HASHMAP
+            // ensure that we have enough slots in the items list
+            Item item = itemPathnameToObject.get(path);
             if (item == null) {
-                item = new Item(this, String.format("#%d:%s",index,path), index, newValue, Item.ItemType.PRIMITIVE);
-                logger.debug("created new item "+item);
-                items.set(index,item);
-            } else {
-                item.prevValue = item.value;
-                item.value = newValue;
+                item = new Item(this, null, -1, newValue, Item.ItemType.PRIMITIVE);
+                itemPathnameToObject.put(path, item);
+                items.add(item);
+                int index = items.size()-1;
+                item.id = index;
+                item.name = String.format("#%d:%s",index,path);
             }
+            
+            item.prevValue = item.value;
+            item.value = newValue;
         }
     }
 
