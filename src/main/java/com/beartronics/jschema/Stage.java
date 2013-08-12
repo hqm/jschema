@@ -136,10 +136,10 @@ public class Stage
     Schema spinoffNewSchema(Schema parent) {
         Schema child = new Schema(this, schemas.size(), parent.action);
         child.parent = parent;
-        child.posContext = (HashSet) parent.posContext.clone();
-        child.negContext = (HashSet) parent.negContext.clone();
-        child.posResult = (HashSet) parent.posResult.clone();
-        child.negResult = (HashSet) parent.negResult.clone();
+        child.posContext.addAll(parent.posContext);
+        child.negContext.addAll(parent.negContext);
+        child.posResult.addAll(parent.posResult);
+        child.negResult.addAll(parent.negResult);
         schemas.add(child);
         ensureXCRcapacities();
         

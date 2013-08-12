@@ -100,6 +100,12 @@ public class ExtendedCR {
                 float positiveTransitionCorrelation = (float) positiveTransitionsA / (float) positiveTransitionsNA;
                 float negativeTransitionCorrelation = (float) negativeTransitionsA / (float) negativeTransitionsNA;
 
+                /** per GLD: "My implementation used an ad hoc method that was tied to its
+                    space-limited statistics collection method. But the real way to do it
+                    is to use a threshold of statistical significance. So just pre-compute
+                    a lookup table that says what the minimum correlation is that can be
+                    supported by a given sample size."
+                */
                 if (positiveTransitionsNA > MIN_TRIALS &&
                     positiveTransitionsA > MIN_TRIALS &&
                     positiveTransitionCorrelation > POSITIVE_TRANSITION_CORRELATION_SPINOFF_THRESHOLD) {

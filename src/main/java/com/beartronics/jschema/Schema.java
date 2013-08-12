@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.BitSet;
 
 public class Schema {
     // Numerical id of this schema
@@ -20,6 +21,10 @@ public class Schema {
     // The items in this schema's result list
     public HashSet<Item> posResult  = new HashSet<Item>();
     public HashSet<Item> negResult  = new HashSet<Item>();
+
+    /** Keeps  track of which items we have spun off schemas for with that item in their result */
+    public BitSet resultSpinOffsPositive = new BitSet();
+    public BitSet resultSpinOffsNegative = new BitSet();
 
     // The synthetic item which is controlled by this schema's successful activation.
     // Also known as the 'reifier' item
@@ -164,21 +169,14 @@ public class Schema {
 
     }
 
-    /** does a child exist with this item in its result set
+    /** Has a child schema already been spun off with item N in its result set?
      */
     public boolean childWithResultExists(Item item, boolean positive) {
-        for (Schema c: children) {
-            if (positive) {
-                if (c.posResult.contains(item)) {
-                    return true;
-                }
-            } else {
-                if (c.negResult.contains(item)) {
-                    return true;
-                }
-            }
+        if (positive) {
+            return resultSpinOffsPositive.get(item.id);
+        } else {
+            return resultSpinOffsNegative.get(item.id);
         }
-        return false;
     }
 
     /*  Create a new spinoff schema, adding this item to the positive (or negative) result set
@@ -193,8 +191,10 @@ public class Schema {
             children.add(schema);
             if (positive) {
                 schema.posResult.add(item);
+                resultSpinOffsPositive.set(item.id);
             } else {
                 schema.negResult.add(item);
+                resultSpinOffsNegative.set(item.id);
             }
         }
     }
