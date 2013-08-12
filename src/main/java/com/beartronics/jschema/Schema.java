@@ -220,10 +220,11 @@ public class Schema {
         p.println("<h1>Schema "+id+"</h1>");
         p.println("Action: "+action.makeLink());
         p.println("<pre>");
+        p.println("creationTime: "+creationTime);
         p.println("parent: "+(parent != null ? parent.makeLink() : null));
         p.print("children: ");
         for (Schema c: children) {
-            p.print(c.makeLink()+ ",");
+            p.println(c.makeLink());
         }
 
         p.println("posContext: "+posContext);
