@@ -211,3 +211,12 @@ Need to remember last action activated, but only activate it once.
 + add grasp reflex: = when hand touched, grasp it
  -- preinitialize schema for this ?
 
++ Do some whole areas of the brain go idle when doing learning, so you might be biased towards just learning
+associations between motion and touch, or touch and vision? So that not too many are active at once
+to swamp the learning mechanism? 
+
++ Embellishment - when spinning off new (result) schema B from parent A, add B's synthetic item to the item ignore list
+of A. Because any child schema's synthetic item will always be correlated to parent activation.
+
+>>>>Check if Drescher already covered this case with suppress/override heuristic ...
+

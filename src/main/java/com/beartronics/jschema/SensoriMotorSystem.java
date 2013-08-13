@@ -303,19 +303,6 @@ public class SensoriMotorSystem {
             } else {
                 app.background(255);
             }
-            app.fill(0);
-
-            app.text("alt-click to create box, click to grasp, ctrl-click to lift, L and R key to rotate grip, shift for transparent, space/enter toggle single-step", 20,12);
-            app.text("clock = "+app.stage.clock + " plane="+planes.indexOf(currentPlane), 20,22);
-            app.text("xpos="+xpos+ "   ypos="+ypos,20,32);
-            app.text("hand1 "+showHandInfo(hand1),20,42);
-            app.text("hand2 "+showHandInfo(hand2),20,52);
-            app.text("gazeX="+gazeXpos+" gazeY="+gazeYpos, 20, 62);
-            app.text( String.format("%d schemas, %d items, %d actions", 
-                                    app.stage.schemas.size(),
-                                    app.stage.items.size(),
-                                    app.stage.actions.size()),
-                      20, 72);
 
             for (Plane plane: planes) {
                 plane.draw();
@@ -327,11 +314,32 @@ public class SensoriMotorSystem {
             displayRetinaView();
 
             computeWorldState();
+
+            // Display info text 
+            displayInfoText();
+
             if (showWorldState) {
                 displayWorldState(worldState);
             }
 
+
+
         }
+    }
+
+    void displayInfoText() {
+        app.fill(0);
+        app.text("alt-click to create box, click to grasp, ctrl-click to lift, L and R key to rotate grip, shift for transparent, space/enter toggle single-step", 20,12);
+        app.text("clock = "+app.stage.clock + " plane="+planes.indexOf(currentPlane), 20,22);
+        app.text("xpos="+xpos+ "   ypos="+ypos,20,32);
+        app.text("hand1 "+showHandInfo(hand1),20,42);
+        app.text("hand2 "+showHandInfo(hand2),20,52);
+        app.text("gazeX="+gazeXpos+" gazeY="+gazeYpos, 20, 62);
+        app.text( String.format("%d schemas, %d items, %d actions", 
+                                app.stage.schemas.size(),
+                                app.stage.items.size(),
+                                app.stage.actions.size()), 20, 72);
+        app.text(String.format("last actions: %s", worldState.actions), 20, 82);
     }
 
     void displayRetinaView() {

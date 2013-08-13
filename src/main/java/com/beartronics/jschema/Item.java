@@ -61,21 +61,6 @@ public class Item {
         this.value = v;
     }
 
-    public String toString() {
-        String val = "";
-        if (type == ItemType.SYNTHETIC) {
-            if (knownState) {
-                val += value;
-            } else {
-                val += "unknown";
-            }
-        } else {
-            val += value;
-        }
-        return "Item"+id+" "+type+" "+name+": "+ val;
-
-    }
-
     public String toHTML() {
         StringWriter s = new StringWriter();
         PrintWriter p = new PrintWriter(s);
@@ -118,9 +103,33 @@ public class Item {
         return s.toString();
     }
 
+
+    public String toString() {
+        String val = "";
+        String lname = name;
+        if (type == ItemType.SYNTHETIC) {
+            if (hostSchema != null) {
+                lname = "S-" + hostSchema.id + "_" + hostSchema.action.type.toString();
+            }
+            if (knownState) {
+                val += value;
+            } else {
+                val += "unknown";
+            }
+        } else {
+            val += value;
+        }
+        return "Item-"+id+" "+type+" "+lname;
+
+    }
     public String makeLink() {
-        return String.format("<a href=\"/items/item?id=%d\">Item %d %s %s %s %s </a>",
-                             id, id, name, type, value, prevValue);
+        String lname = name;
+        if (hostSchema != null) {
+            lname = "S-" + hostSchema.id + "_" + hostSchema.action.type.toString();
+        }
+
+        return String.format("<a href=\"/items/item?id=%d\">Item-%d %s %s</a>",
+                             id, id, lname, type);
     }
 
 

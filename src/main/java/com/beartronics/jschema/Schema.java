@@ -10,10 +10,14 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.BitSet;
 
+import org.apache.log4j.Logger;
+
+
 public class Schema {
+    static Logger logger = Logger.getLogger(Schema.class);
+
     // Numerical id of this schema
     public int id = 0;
-    
 
     // The items in this schema's context list
     public HashSet<Item> posContext = new HashSet<Item>();
@@ -23,8 +27,8 @@ public class Schema {
     public HashSet<Item> negResult  = new HashSet<Item>();
 
     /** Keeps  track of which items we have spun off schemas for with that item in their result */
-    public BitSet resultSpinOffsPositive = new BitSet();
-    public BitSet resultSpinOffsNegative = new BitSet();
+    public BitSet ignoreItemsForResultSpinoff_p = new BitSet();
+    public BitSet ignoreItemsForResultSpinoff_n = new BitSet();
 
     // The synthetic item which is controlled by this schema's successful activation.
     // Also known as the 'reifier' item
@@ -44,7 +48,7 @@ public class Schema {
     public float value = 0;
     // See pp. 55
     // correlation, reliability, duration, cost
-    public float duration = 3600;
+    public float duration = 300;
     public float cost = 0;
     long timeActivated = 0;
     long creationTime = 0;
@@ -75,6 +79,10 @@ public class Schema {
         this.id = index;
         this.action = action;
         syntheticItem = stage.makeSyntheticItem(this);
+
+        // This is necessary in order to prevent us from correlating with our own synthetic item
+        ignoreItemsForResultSpinoff_p.set(syntheticItem.id);
+        ignoreItemsForResultSpinoff_n.set(syntheticItem.id);
         growArrays(stage.items.size());
         creationTime = stage.clock;
     }
@@ -173,31 +181,58 @@ public class Schema {
      */
     public boolean childWithResultExists(Item item, boolean positive) {
         if (positive) {
-            return resultSpinOffsPositive.get(item.id);
+            return ignoreItemsForResultSpinoff_p.get(item.id);
         } else {
-            return resultSpinOffsNegative.get(item.id);
+            return ignoreItemsForResultSpinoff_n.get(item.id);
         }
     }
+
+    static final boolean POSITIVE = true;
+    static final boolean NEGATIVE = true;
 
     /*  Create a new spinoff schema, adding this item to the positive (or negative) result set
 
         We want to be careful not to spin off a result item that is our own synthetic item.
      */
-    public void spinoffWithNewResultItem(Item item, boolean positive) {
+    public void spinoffWithNewResultItem(Item item, boolean sense) {
         if (item == syntheticItem) return;
-        // Check children to see if schema with this result already exists
-        if (! childWithResultExists(item, positive)) {
-            Schema schema = stage.spinoffNewSchema(this);
-            children.add(schema);
-            if (positive) {
-                schema.posResult.add(item);
-                resultSpinOffsPositive.set(item.id);
-            } else {
-                schema.negResult.add(item);
-                resultSpinOffsNegative.set(item.id);
-            }
+        Schema schema = spinoffNewSchema();
+        children.add(schema);
+        if (sense == POSITIVE) {
+            schema.posResult.add(item);
+            ignoreItemsForResultSpinoff_p.set(item.id);
+            // We need to ignore any correlations from the synthetic item of this spinoff, because they
+            // will always be correlated to this schema's own action
+            ignoreItemsForResultSpinoff_p.set(schema.syntheticItem.id);
+        } else {
+            schema.negResult.add(item);
+            ignoreItemsForResultSpinoff_n.set(item.id);
+            // We need to ignore any correlations from the synthetic item of this spinoff, because they
+            // will always be correlated to this schemas' own action
+            ignoreItemsForResultSpinoff_n.set(schema.syntheticItem.id);
         }
     }
+
+    /**
+       copies the context, action, and result lists
+     */
+    Schema spinoffNewSchema() {
+        Schema child = new Schema(stage, stage.schemas.size(), action);
+        child.parent = this;
+        child.posContext.addAll(posContext);
+        child.negContext.addAll(negContext);
+        child.posResult.addAll(posResult);
+        child.negResult.addAll(negResult);
+
+        child.ignoreItemsForResultSpinoff_n.or(ignoreItemsForResultSpinoff_n);
+        child.ignoreItemsForResultSpinoff_p.or(ignoreItemsForResultSpinoff_p);
+
+        stage.schemas.add(child);
+        stage.ensureXCRcapacities();
+        
+        return child;
+    }
+
 
     // Call this when we add a new synthetic item, to grow everyone's extended context and result lists
     public void growArrays(int n) {
@@ -211,27 +246,40 @@ public class Schema {
     }
 
     public String toString() {
-        return String.format("[Schema %d %s::~%s/ action %s/ %s::~%s]",id, posContext, negContext, action, posResult, negResult);
+        return String.format("[Schema %d %s:~%s/%s/%s:~%s]",id, posContext, negContext, action, posResult, negResult);
     }
+
+    String itemLinks(HashSet<Item> l) {
+        StringBuilder b = new StringBuilder();
+        boolean prev = false;
+        b.append("[");
+        for (Item i: l) {
+            b.append((prev ? "," : "") + i.makeLink());
+            prev = true;
+        }
+        b.append("]");
+        return b.toString();
+    }
+
 
     public String toHTML() {
         StringWriter s = new StringWriter();
         PrintWriter p = new PrintWriter(s);
         p.println("<h1>Schema "+id+"</h1>");
-        p.println("Action: "+action.makeLink());
         p.println("<pre>");
+        p.println(this.toString());
+        p.println("Action: "+action.makeLink());
         p.println("creationTime: "+creationTime);
         p.println("parent: "+(parent != null ? parent.makeLink() : null));
+        p.println("posContext: " + itemLinks(posContext));
+        p.println("negContext: "+ itemLinks(negContext));
+        p.println("posResult: "+ itemLinks(posResult));
+        p.println("negResult: "+ itemLinks(negResult));
+        p.println("Synthetic Item: "+syntheticItem.makeLink());
         p.print("children: ");
         for (Schema c: children) {
             p.println(c.makeLink());
         }
-
-        p.println("posContext: "+posContext);
-        p.println("negContext: "+negContext);
-        p.println("posResult: "+posResult);
-        p.println("negResult: "+negResult);
-        p.println("Synthetic Item: "+syntheticItem.makeLink());
         p.println("succeededWithActivation = "+succeededWithActivation);
         p.println("succeededWithoutActivation = "+succeededWithoutActivation);
         p.println("failedWithActivation = "+failedWithActivation);
@@ -240,15 +288,16 @@ public class Schema {
         p.println("duration: " +duration);
         p.println("cost: " +cost);
         p.println("correlation(): " +correlation());
-        p.println("<b>xcontext</b>");
+        /*        p.println("<b>xcontext</b>");
         p.println(xcontext.toHTML(stage, this));
+        */
         p.println("<b>xresult</b>");
         p.println(xresult.toHTML(stage, this));
         return s.toString();
     }
 
     public String makeLink() {
-        return String.format("<a href=\"/items/schema?id=%d\">Schema %d %s :: ~ %s / %s / %s ::~ %s</a>",
+        return String.format("<a href=\"/items/schema?id=%d\">Schema %d %s ~%s /%s/%s ~%s</a>",
                              id, id, posContext, negContext, action, posResult, negResult);
     }
 

@@ -112,15 +112,12 @@ public class JSchema extends PApplet {
                 // The SensoriMotorSystem will draw a global view for debugging, and also will render an image from
                 // the head viewpoint into the retinaImage view.
                 if (sms.run || sms.singleStep) {
-
-                    sms.draw();
-                    retinaView.set(0,0,retinaImage);
-
                     // The Schema engine will read the worldState from the sms, and
                     // set any motor actions it wants to
                     stage.processWorldStep(sms);
                     stage.clockStep();
-
+                    sms.draw();
+                    retinaView.set(0,0,retinaImage);
                 }
             } catch (Exception e) {
                 e.printStackTrace();

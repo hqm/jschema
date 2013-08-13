@@ -3,7 +3,7 @@ html {
 	padding: 0;
 	}
 body { 
-	font: 75% georgia, sans-serif;
+	font: 75% verdana, sans-serif;
 	line-height: 1.88889;
 	color: #555753; 
 	background: #fff url(blossoms.jpg) no-repeat bottom right; 
@@ -15,7 +15,7 @@ p {
 	text-align: justify;
 	}
 h3 { 
-	font: italic normal 1.4em georgia, sans-serif;
+	font: italic normal 1.4em verdana, sans-serif;
 	letter-spacing: 1px; 
 	margin-bottom: 0; 
 	color: #7D775C;
@@ -83,7 +83,7 @@ header {
 	float: left;
 	}
 .summary p {
-	font: italic 1.1em/2.2 georgia; 
+	font: italic 1.1em/2.2 verdana; 
 	text-align: center;
 	}
 

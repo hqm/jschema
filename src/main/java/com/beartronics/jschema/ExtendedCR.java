@@ -46,7 +46,8 @@ public class ExtendedCR {
         //growArrays(stage.nitems);
         for (int n = 0; n < items.size(); n++) {
             Item item = items.get(n);
-            if (item != null) {
+            if (item != null && !(schema.ignoreItemsForResultSpinoff_p.get(item.id) ||
+                                  schema.ignoreItemsForResultSpinoff_n.get(item.id))) {
                 boolean val = item.value;
                 boolean prevValue = item.prevValue;
                 boolean knownState = item.knownState;
@@ -106,15 +107,14 @@ public class ExtendedCR {
                     a lookup table that says what the minimum correlation is that can be
                     supported by a given sample size."
                 */
-                if (positiveTransitionsNA > MIN_TRIALS &&
-                    positiveTransitionsA > MIN_TRIALS &&
+
+                if (positiveTransitionsA > MIN_TRIALS &&
                     positiveTransitionCorrelation > POSITIVE_TRANSITION_CORRELATION_SPINOFF_THRESHOLD) {
-                    // How do we tell if we've already spun off a schema for this?
+                    //logger.info("attempt spin off "+schema + " with result item "+item);
                     schema.spinoffWithNewResultItem(item, true);
                 }
 
-                if ( negativeTransitionsNA > MIN_TRIALS &&
-                     negativeTransitionsA > MIN_TRIALS &&
+                if (negativeTransitionsA > MIN_TRIALS &&
                      negativeTransitionCorrelation > NEGATIVE_TRANSITION_CORRELATION_SPINOFF_THRESHOLD) {
                     schema.spinoffWithNewResultItem(item, false);
                 }

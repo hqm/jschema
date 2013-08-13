@@ -75,11 +75,11 @@ public class Action {
     }
 
     public String makeLink() {
-        return "<a href=\"/items/action?id="+index+"\">Action "+index+ " " +type + "</a>";
+        return "<a href=\"/items/action?id="+index+"\">Action-"+index+ " " +name + "</a>";
     }
 
     public String toString() {
-        return String.format("[Action %d %s %s %s]",index, name, type, activated);
+        return String.format("[Action-%d %s]",index, name);
     }
 
 }
