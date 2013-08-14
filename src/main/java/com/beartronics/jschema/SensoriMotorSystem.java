@@ -18,8 +18,9 @@ import org.jbox2d.collision.AABB;
 
 import processing.core.*;
 
-
+import org.apache.log4j.Logger;
 public class SensoriMotorSystem {
+    static Logger logger = Logger.getLogger(SensoriMotorSystem.class.getName());
 
     public JSchema app;
 
@@ -945,7 +946,7 @@ public class SensoriMotorSystem {
         }
 
         if (idx == -1) {
-            app.println("Error in foveateNextMovingObject, could not find any object!");
+            logger.debug("Error in foveateNextMovingObject, could not find any object!");
             return null;
         } else {
             foveatedObject = items.get(idx);

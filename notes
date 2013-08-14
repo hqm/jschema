@@ -245,3 +245,19 @@ is biased towards moving hand up.
 
 + How does a touch-grasp  reflex work? Is there a schema for it? it operates outside of schema mechanism,
 as an instructor? 
+
++ How do I implement this (4.1.2) "These statistics are tabulated over
+a number of trials in which the action is tak- en, and a number of
+trials in which it is not; the more trials there have been, and the
+more discrepancy there is between the two probabilities, the sooner
+the machinery will detect the difference (see section 5.2.2). The
+sampling is weighted toward the most recent trials."
+
+
+
+sudo apt-get install xvfb
+Xvfb :2 -screen 0 1024x768x24 &
+export DISPLAY=localhost:2.0
+java -jar jschema-assembly-1.1.jar
+
+

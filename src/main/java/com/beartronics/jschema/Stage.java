@@ -1,6 +1,7 @@
 package com.beartronics.jschema;
 
 import java.util.*;
+import java.io.*;
 
 import org.apache.log4j.Logger;
 
@@ -28,36 +29,52 @@ public class Stage
         return clock++;
     }
 
+    public int countSyntheticItems() {
+        int n = 0;
+        for (Item item: items) {
+            if (item.type == Item.ItemType.SYNTHETIC) {
+                n++;
+            }
+        }
+        return n;
+    }
+
     /**
      * print an HTML table of state of items,schemas,actions
      */
     public String htmlPrintState() {
-        StringBuilder s = new StringBuilder();
-        s.append("<html><body>");
-        s.append(String.format("%d items, %d schemas, %d actions\n", items.size(), schemas.size(), actions.size()));
-        s.append("<table border=1>");
-        s.append("<tr><th>Items</th><th>Schemas</th><th>Actions</th></tr>");
+        StringWriter s = new StringWriter();
+        PrintWriter p = new PrintWriter(s);
+        p.println("<html><body>");
+        p.println(String.format("clock: %d, items: %d (%d syn), schemas: %d, actions: %d\n",
+                                clock,
+                                items.size(),
+                                countSyntheticItems(),
+                                schemas.size(),
+                                actions.size()));
+        p.println("<table border=1>");
+        p.println("<tr><th>Items</th><th>Schemas</th><th>Actions</th></tr>");
         for (int i = 0; i < items.size(); i++) {
-            s.append("<tr>");
-            s.append("<td>");
+            p.println("<tr>");
+            p.println("<td>");
             Item item = items.get(i);
             if (item != null) {
-                s.append(item.makeLink());
+                p.println(item.makeLink());
             }
-            s.append("<td>");
+            p.println("<td>");
             if (i < schemas.size()) {
                 Schema schema = schemas.get(i);
-                s.append(schema.makeLink());
+                p.println(schema.makeLink());
             }
-            s.append("<td>");
+            p.println("<td>");
             if (i < actions.size()) {
                 Action action = actions.get(i);
-                s.append(action.makeLink());
+                p.println(action.makeLink());
             }
-            s.append("</tr>");
+            p.println("</tr>");
         }
-        s.append("</table>");
-        s.append("</body></html>");
+        p.println("</table>");
+        p.println("</body></html>");
         return s.toString();
 
     }
@@ -94,9 +111,10 @@ public class Stage
         Action.Type types[] = {
             Action.Type.HAND1_UP, Action.Type.HAND1_DOWN,
             Action.Type.HAND1_GRASP, Action.Type.HAND1_UNGRASP,
-            /*
             Action.Type.CENTER_GAZE,
             Action.Type.FOVEATE_NEXT_MOTION,
+            /*
+
             Action.Type.MOVE_LEFT, Action.Type.MOVE_RIGHT, Action.Type.MOVE_UP, Action.Type.MOVE_DOWN,
             Action.Type.GAZE_LEFT, Action.Type.GAZE_RIGHT, Action.Type.GAZE_UP, Action.Type.GAZE_DOWN,
             Action.Type.FOVEATE_NEXT_OBJECT_LEFT,
@@ -231,7 +249,7 @@ public class Stage
             throw new RuntimeException("setMotorActions: we do not support the mapping from compound actions to primitive actions yet");
         }
         schema.activate();
-        app.println("select schema "+schema);
+        logger.debug("select schema "+schema);
         w.actions.add(action);
     }
 

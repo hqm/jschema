@@ -1,6 +1,9 @@
 package com.beartronics.jschema;
+
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
+import gnu.trove.list.TFloatList;
+import gnu.trove.list.array.TFloatArrayList;
 
 import java.util.Iterator;
 import java.util.List;
@@ -18,18 +21,18 @@ public class ExtendedCR {
     /* Ignore these items when doing marginal attribution */
     public BitSet ignoreItems = new BitSet();
 
-    TIntArrayList offToOnActionTaken = new TIntArrayList();
-    TIntArrayList offToOnActionNotTaken = new TIntArrayList();
+    TFloatArrayList offToOnActionTaken = new TFloatArrayList();
+    TFloatArrayList offToOnActionNotTaken = new TFloatArrayList();
 
-    TIntArrayList onToOffActionTaken = new TIntArrayList();
-    TIntArrayList onToOffActionNotTaken = new TIntArrayList();
+    TFloatArrayList onToOffActionTaken = new TFloatArrayList();
+    TFloatArrayList onToOffActionNotTaken = new TFloatArrayList();
 
     /* need to figure out if these are important
-    TIntArrayList remainedOnActionTaken = new TIntArrayList();
-    TIntArrayList remainedOnActionNotTaken = new TIntArrayList();
+    TFloatArrayList remainedOnActionTaken = new TFloatArrayList();
+    TFloatArrayList remainedOnActionNotTaken = new TFloatArrayList();
 
-    TIntArrayList remainedOffActionTaken = new TIntArrayList();
-    TIntArrayList remainedOffActionNotTaken = new TIntArrayList();
+    TFloatArrayList remainedOffActionTaken = new TFloatArrayList();
+    TFloatArrayList remainedOffActionNotTaken = new TFloatArrayList();
     */
 
     
@@ -61,11 +64,11 @@ public class ExtendedCR {
 
                     // read out the existing statistics on the probablity of result transition with/without the action
 
-                    int positiveTransitionsA = offToOnActionTaken.get(n);
-                    int positiveTransitionsNA = offToOnActionNotTaken.get(n);
+                    float positiveTransitionsA = offToOnActionTaken.get(n);
+                    float positiveTransitionsNA = offToOnActionNotTaken.get(n);
 
-                    int negativeTransitionsA = onToOffActionTaken.get(n);
-                    int negativeTransitionsNA = onToOffActionNotTaken.get(n);
+                    float negativeTransitionsA = onToOffActionTaken.get(n);
+                    float negativeTransitionsNA = onToOffActionNotTaken.get(n);
 
                     // Update the item state transition counters 
 
@@ -168,7 +171,7 @@ public class ExtendedCR {
     /**
        Makes sure array a can be indexed up to n-1
      */
-    void growArray(TIntArrayList a, int n) {
+    void growArray(TFloatArrayList a, int n) {
         int delta = n - a.size();
         for (int i = 0; i < delta; i++) {
             a.add(0);
