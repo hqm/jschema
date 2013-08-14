@@ -21,12 +21,12 @@ interact with the system for debugging and experiments.
 
 + Building
 
-I use 'sbt' (the scala build tool) to compile. The build.sbt file specifies the main entry point class. 
+I use `sbt` (the scala build tool) to compile. The build.sbt file specifies the main entry point class. 
 
 the `package-bin` task produces a jar file
 
 the `assembly` task produces a monlithic jar file with all dependencies, which can be executed
-via `jjava -jar target/scala-2.10/jschema-assembly-1.1.jar`
+via `java -jar target/scala-2.10/jschema-assembly-1.1.jar`
 
 + Running
 
