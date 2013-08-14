@@ -1177,7 +1177,7 @@ public class SensoriMotorSystem {
         worldState.setSensorInput("hand1.touch.top", sensorID++, (t2 & Hand.TOUCH_TOP) != 0);
         worldState.setSensorInput("hand1.touch.bottom", sensorID++, (t2 & Hand.TOUCH_BOTTOM) != 0);
 
-        int h2ObjectsGrasped = hand1.getWeldedObjects().size();
+        int h2ObjectsGrasped = hand2.getWeldedObjects().size();
         worldState.setSensorInput("hand2.empty-grasp", sensorID++, h2ObjectsGrasped == 0);
         worldState.setSensorInput("hand2.grasp-one", sensorID++, h2ObjectsGrasped == 1);
         worldState.setSensorInput("hand2.grasp-two", sensorID++, h2ObjectsGrasped == 2);
