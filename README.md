@@ -23,10 +23,10 @@ interact with the system for debugging and experiments.
 
 I use 'sbt' (the scala build tool) to compile. The build.sbt file specifies the main entry point class. 
 
-the 'package-bin' task produces a jar file
+the `package-bin` task produces a jar file
 
-the 'assembly' task produces a monlithic jar file with all dependencies, which can be executed
-via "java -jar"
+the `assembly` task produces a monlithic jar file with all dependencies, which can be executed
+via `jjava -jar target/scala-2.10/jschema-assembly-1.1.jar`
 
 + Running
 
@@ -35,9 +35,10 @@ The jar file can be run from sbt or using java from the command line with 'java 
 For more interactive control, I launch the app from inside a JRuby jirb shell. 
 
 directions:
- . setup-env
- jirb 
- > load '.irbrc' (if it doesn't load by itself automatically)
+
+    . setup-env
+    jirb 
+    > load '.irbrc' (if it doesn't load by itself automatically)
 
 the .irbrc file contains some commands to poke the app into launching, and inspect it
 
