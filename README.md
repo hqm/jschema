@@ -19,4 +19,27 @@ The data can be inspected in-core using an HTTP connection to port 8080.
 The JRuby interpreter is linked in, so that a top level jruby interactive shell can be used to
 interact with the system for debugging and experiments. 
 
++ Building
+
+I use 'sbt' (the scala build tool) to compile. The build.sbt file specifies the main entry point class. 
+
+the 'package-bin' task produces a jar file
+
+the 'assembly' task produces a monlithic jar file with all dependencies, which can be executed
+via "java -jar"
+
++ Running
+
+The jar file can be run from sbt or using java from the command line with 'java -jar'
+
+For more interactive control, I launch the app from inside a JRuby jirb shell. 
+
+directions:
+. setup-env
+jirb 
+load '.irbrc' (if it doesn't load by itself automatically)
+
+the .irbrc file contains some commands to poke the app into launching, and inspect it
+
+
 
