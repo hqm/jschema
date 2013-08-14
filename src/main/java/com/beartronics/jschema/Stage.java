@@ -231,7 +231,7 @@ public class Stage
             throw new RuntimeException("setMotorActions: we do not support the mapping from compound actions to primitive actions yet");
         }
         schema.activate();
-        app.println("select action "+action);
+        app.println("select schema "+schema);
         w.actions.add(action);
     }
 
