@@ -14,6 +14,8 @@ simulate phsyical objects. A visual system is built using a number of shortcuts 
 provide higher level visual routines and processed input at the level of features
 and simple motion detection.
 
+![alt text](screenshot_80.png "Screenshot")
+
 The data can be inspected in-core using an HTTP connection to port 8080. 
 
 The JRuby interpreter is linked in, so that a top level jruby interactive shell can be used to
