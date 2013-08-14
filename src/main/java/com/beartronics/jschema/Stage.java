@@ -26,6 +26,9 @@ public class Stage
 
     public long clock = 0;
     public long clockStep() {
+        if (clock % 100 == 0) {
+            logger.info(String.format("clock = %d", clock));
+        }
         return clock++;
     }
 
