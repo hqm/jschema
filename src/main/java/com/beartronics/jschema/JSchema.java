@@ -45,6 +45,7 @@ import java.net.SocketAddress;
 public class JSchema extends PApplet {
 
     static Logger logger = Logger.getLogger(JSchema.class.getName());
+    static final String VERSION = "0.1";
 
     public static JSchema app;
     public SensoriMotorSystem sms;

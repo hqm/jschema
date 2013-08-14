@@ -158,7 +158,7 @@ public class Stage
         copySMSInputToItems(w);
 
         // run the marginal attribution step
-        runMarginalAttribution();
+        update();
 
         // decide what to do next
         setMotorActions(w);
@@ -167,11 +167,17 @@ public class Stage
         sms.processActions(w);
     }
 
-    void runMarginalAttribution() {
+    void update() {
         for (int i = 0 ; i < schemas.size(); i++) {
             Schema s = schemas.get(i);
-            s.runMarginalAttribution(this);
+            s.updateSyntheticItems();
         }
+        for (int i = 0 ; i < schemas.size(); i++) {
+            Schema s = schemas.get(i);
+            s.runMarginalAttribution();
+        }
+
+
     }
 
     // Map from input path name string to object
@@ -203,16 +209,28 @@ public class Stage
 
     Random rand = new Random();
 
-    /** decides what to do next, sets primitive motor actions on WorldState */
+
+    /** decides what to do next, sets the appropriate motor actions primitives for WorldState.
+        This is a placeholder method for a real action-selection mechanism. It also eventually needs
+        to be able to chain together schema action sequences for compound actions.
+    */
     void setMotorActions(WorldState w) {
         // deactivate any prior actions
         for (Action a: w.actions) {
             a.activated = false;
         }
         w.actions.clear();
-        // hardcode this for debugging for now
+
+        // TODO [hqm 2013-08] This will of course need to be elaborated when we have compound actions implemented.
+        // For now each schema is mapped one-to-one to a primitive action.
+        // We pick a primitive action at random, then execute a schema that uses it at random.
         Action action = actions.get(rand.nextInt(actions.size()));
-        action.activated = true;
+        Schema schema = action.schemas.get(rand.nextInt(action.schemas.size()));
+
+        if (action.type == Action.Type.COMPOUND) {
+            throw new RuntimeException("setMotorActions: we do not support the mapping from compound actions to primitive actions yet");
+        }
+        schema.activate();
         app.println("select action "+action);
         w.actions.add(action);
     }

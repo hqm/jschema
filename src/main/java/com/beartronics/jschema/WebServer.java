@@ -97,6 +97,7 @@ public class WebServer implements Container {
         body.println("<html>");
         body.println("<style>\n"+stylesheet+"\n</style>");
         body.println("<body>");
+        body.println("<b><tt>JSchema v "+JSchema.VERSION+" </tt></b>");
         body.println(linkToMainPage());
 
     }

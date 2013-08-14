@@ -2,6 +2,7 @@ package com.beartronics.jschema;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.ArrayList;
 import java.io.*;
 
 public class Action {
@@ -36,6 +37,8 @@ public class Action {
 
     ActionController controller;
     Stage stage;
+
+    public ArrayList<Schema> schemas = new ArrayList<Schema>();
 
     public void activate(boolean val) {
         this.activated = val;

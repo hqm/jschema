@@ -8,7 +8,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.BitSet;
 
 import org.apache.log4j.Logger;
 
@@ -25,10 +24,6 @@ public class Schema {
     // The items in this schema's result list
     public HashSet<Item> posResult  = new HashSet<Item>();
     public HashSet<Item> negResult  = new HashSet<Item>();
-
-    /** Keeps  track of which items we have spun off schemas for with that item in their result */
-    public BitSet ignoreItemsForResultSpinoff_p = new BitSet();
-    public BitSet ignoreItemsForResultSpinoff_n = new BitSet();
 
     // The synthetic item which is controlled by this schema's successful activation.
     // Also known as the 'reifier' item
@@ -48,7 +43,7 @@ public class Schema {
     public float value = 0;
     // See pp. 55
     // correlation, reliability, duration, cost
-    public float duration = 300;
+    public float duration = 120;
     public float cost = 0;
     long timeActivated = 0;
     long creationTime = 0;
@@ -78,21 +73,30 @@ public class Schema {
         this.stage = stage;
         this.id = index;
         this.action = action;
-        syntheticItem = stage.makeSyntheticItem(this);
+        action.schemas.add(this);
 
-        // This is necessary in order to prevent us from correlating with our own synthetic item
-        ignoreItemsForResultSpinoff_p.set(syntheticItem.id);
-        ignoreItemsForResultSpinoff_n.set(syntheticItem.id);
         growArrays(stage.items.size());
         creationTime = stage.clock;
     }
 
+    public void makeSyntheticItem() {
+        this.syntheticItem = stage.makeSyntheticItem(this);
+    }
+
 
     // Perform designated action
-    // turn on our synthetic item, and start the clock so we can turn it off after our duration time
     public void activate() {
-        syntheticItem.setValue(true);
         this.action.activate(true);
+    }
+
+    public void handleSuccessfulActivation() {
+        if (posResult.size() == 0 && negResult.size() == 0) {
+            // bare schema makes no predictions, has no synthetic item to maintain
+            return;
+        }
+        if (syntheticItem != null) {
+            syntheticItem.setValue(true);
+        }
         timeActivated = stage.clock;
         /* Section 4.1.2 pp 73
            We need to 'publish' our 'prediction' of items that we assert will transition
@@ -105,10 +109,10 @@ public class Schema {
 
          */
         for (Item item: posResult) {
-            item.predictedPositiveTransition = true;
+            item.predictedPositiveTransition = this;
         }
         for (Item item: negResult) {
-            item.predicteNegativeTransition = true;
+            item.predicteNegativeTransition = this;
         }
     }
 
@@ -117,74 +121,72 @@ public class Schema {
      *
      * 
      */
-    public void runMarginalAttribution(Stage s) {
-        if (stage.clock > timeActivated + duration) {
-            syntheticItem.setValue(false);
-        }
-        boolean actionTaken = action.activated;
-        boolean succeeded = true;
-        boolean applicable = true;
+    public void updateSyntheticItems() {
+        if (syntheticItem != null) {
 
-
-        // schemas succeeded if context was satisfied, action taken, and results obtained
-
-        // If we have empty results list, then we only update results stats, and look for
-        // potential spinoff condition (prob. that some item transitions more with action than without)
-
-        for (Item item: posContext) {
-            applicable &= item.value;
-        }
-        for (Item item: negContext) {
-            applicable &= !item.value;
-        }
-
-        if (applicable) {
-
-            for (Item item: posResult) {
-                succeeded &= item.value;
-            }
-            for (Item item: negResult) {
-                succeeded &= !item.value;
-            }
-
-            if (actionTaken && succeeded) {
-            // TODO [hqm 2013-07] Need to bias this statistic towards more recent activations
-                succeededWithActivation++;
-                syntheticItem.setValue(true);
-            }
-
-            if (actionTaken && !succeeded) {
-                // TODO [hqm 2013-07] Need to bias this statistic towards more recent activations
-                failedWithActivation++;
+            if (stage.clock > timeActivated + duration) {
                 syntheticItem.setValue(false);
+                syntheticItem.knownState = false;
             }
 
-            if (!actionTaken && succeeded ) {
-                succeededWithoutActivation++;
-                syntheticItem.setValue(false);
+            boolean succeeded = true;
+            boolean applicable = true;
+
+            // schemas succeeded if context was satisfied, action taken, and results obtained
+
+            // If we have empty results list, then we only update results stats, and look for
+            // potential spinoff condition (prob. that some item transitions more with action than without)
+
+            for (Item item: posContext) {
+                applicable &= item.value;
+            }
+            for (Item item: negContext) {
+                applicable &= !item.value;
             }
 
+            if (applicable) {
+
+                for (Item item: posResult) {
+                    succeeded &= item.value;
+                }
+                for (Item item: negResult) {
+                    succeeded &= !item.value;
+                }
+
+                // Did we just perform our specified action?
+                boolean actionTaken = action.activated;
+
+                if (actionTaken && succeeded) {
+                    // TODO [hqm 2013-07] Need to bias this statistic towards more recent activations
+                    succeededWithActivation++;
+                    //syntheticItem.setValue(true);
+                }
+
+                if (actionTaken && !succeeded) {
+                    // TODO [hqm 2013-07] Need to bias this statistic towards more recent activations
+                    failedWithActivation++;
+                    //                    syntheticItem.setValue(false);
+                }
+
+                if (!actionTaken && succeeded ) {
+                    succeededWithoutActivation++;
+                    //syntheticItem.setValue(false);
+                }
+
+            }
         }
-
-        // Run the marginal attribution heuristics to decide whether to spin off
-        // a new schema
-        xresult.updateResultItems(stage, this, actionTaken);
-        
-
-
-        // Now the heavy lifting; update the extended context and result
-        //        xcontext.updateItems(stage, this, activated);
-
     }
 
-    /** Has a child schema already been spun off with item N in its result set?
-     */
-    public boolean childWithResultExists(Item item, boolean positive) {
-        if (positive) {
-            return ignoreItemsForResultSpinoff_p.get(item.id);
-        } else {
-            return ignoreItemsForResultSpinoff_n.get(item.id);
-        }
+    public void runMarginalAttribution() {
+        // Did we just perform our specified action?
+        boolean actionTaken = action.activated;
+
+        // Run the marginal attribution heuristics to decide whether to spin off
+        // a new schema, with addtional item in the result set
+        xresult.updateResultItems(stage, this, actionTaken);
+        
+        // run marginal attribution on extended context, looking for new context spinoffs
+        //        xcontext.updateItems(stage, this, activated);
     }
 
     static final boolean POSITIVE = true;
@@ -196,22 +198,37 @@ public class Schema {
      */
     public void spinoffWithNewResultItem(Item item, boolean sense) {
         if (item == syntheticItem) return;
+        xresult.ignoreItems.set(item.id);
         Schema schema = spinoffNewSchema();
         children.add(schema);
         if (sense == POSITIVE) {
             schema.posResult.add(item);
-            ignoreItemsForResultSpinoff_p.set(item.id);
-            // We need to ignore any correlations from the synthetic item of this spinoff, because they
-            // will always be correlated to this schema's own action
-            ignoreItemsForResultSpinoff_p.set(schema.syntheticItem.id);
+            xresult.clearPositiveItems(item.id);
         } else {
             schema.negResult.add(item);
-            ignoreItemsForResultSpinoff_n.set(item.id);
-            // We need to ignore any correlations from the synthetic item of this spinoff, because they
-            // will always be correlated to this schemas' own action
-            ignoreItemsForResultSpinoff_n.set(schema.syntheticItem.id);
+            xresult.clearNegativeItems(item.id);
         }
+
     }
+
+    // Search all children to find one which has this item in its result
+    public Schema findSchemaWithResult(Item item, boolean positive) {
+        for (Schema child: children) {
+            if (positive && child.posResult.contains(item)) {
+                    return child;
+            }
+            if (!positive && child.negResult.contains(item)) {
+                    return child;
+            }
+
+            Schema found = child.findSchemaWithResult(item, positive);
+            if (found != null) {
+                return found;
+            }
+        }
+        return null;
+    }
+
 
     /**
        copies the context, action, and result lists
@@ -224,8 +241,13 @@ public class Schema {
         child.posResult.addAll(posResult);
         child.negResult.addAll(negResult);
 
-        child.ignoreItemsForResultSpinoff_n.or(ignoreItemsForResultSpinoff_n);
-        child.ignoreItemsForResultSpinoff_p.or(ignoreItemsForResultSpinoff_p);
+
+        // TODO verify if we need to do this or something like it
+        //child.xcontext.ignoreItems.or(xcontext.ignoreItems);
+
+        child.makeSyntheticItem();
+        xresult.ignoreItems.set(child.syntheticItem.id);
+        child.xresult.ignoreItems.or(xresult.ignoreItems);
 
         stage.schemas.add(child);
         stage.ensureXCRcapacities();
@@ -271,15 +293,19 @@ public class Schema {
         p.println("Action: "+action.makeLink());
         p.println("creationTime: "+creationTime);
         p.println("parent: "+(parent != null ? parent.makeLink() : null));
+        p.print("children: ");
+        if (children.size() > 0) {
+            for (Schema c: children) {
+                p.println(c.makeLink());
+            }
+        } else {
+            p.println("none");
+        }
         p.println("posContext: " + itemLinks(posContext));
         p.println("negContext: "+ itemLinks(negContext));
         p.println("posResult: "+ itemLinks(posResult));
         p.println("negResult: "+ itemLinks(negResult));
-        p.println("Synthetic Item: "+syntheticItem.makeLink());
-        p.print("children: ");
-        for (Schema c: children) {
-            p.println(c.makeLink());
-        }
+        p.println("Synthetic Item: "+ (syntheticItem == null ? "null" : syntheticItem.makeLink()));
         p.println("succeededWithActivation = "+succeededWithActivation);
         p.println("succeededWithoutActivation = "+succeededWithoutActivation);
         p.println("failedWithActivation = "+failedWithActivation);

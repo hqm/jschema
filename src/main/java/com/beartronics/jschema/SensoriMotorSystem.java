@@ -1147,7 +1147,7 @@ public class SensoriMotorSystem {
         // forces should be normalized to range [-1.0, 1.0]
 
         float f = -1.0f;
-        for (int i = 0; i < 8; i++, f+=0.5) {
+        for (int i = 0; i < 2; i++, f+=2.0) {
             worldState.setSensorInput("hand1.force.x."+i, sensorID++, f1.x < f);
             worldState.setSensorInput("hand1.force.y."+i, sensorID++, f1.y < f);
             worldState.setSensorInput("hand1.torque."+i, sensorID++,  trq1 < f);            

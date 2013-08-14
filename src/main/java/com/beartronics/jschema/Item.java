@@ -13,12 +13,12 @@ public class Item {
     /** Section 4.1.2 pp 73. We need to indicate if these value transitions were 'explained'
      * by a schema which was just activated and predicted they would occur.
      */
-    boolean predictedPositiveTransition = false;
-    boolean predicteNegativeTransition = false;
+    Schema predictedPositiveTransition = null;
+    Schema predicteNegativeTransition = null;
 
     void clearPredictedTransitions() {
-     predictedPositiveTransition = false;
-     predicteNegativeTransition = false;
+     predictedPositiveTransition = null;
+     predicteNegativeTransition = null;
     }
 
     /** Synthetic items may be in an unknown state */
@@ -71,6 +71,7 @@ public class Item {
         }
         p.println("value: "+value);
         p.println("previous value: "+prevValue);
+        p.println("knownState: "+knownState);
 
         p.println("in posContext of schemas:");
         // find all schemas which include us in their context

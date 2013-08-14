@@ -220,3 +220,25 @@ of A. Because any child schema's synthetic item will always be correlated to par
 
 >>>>Check if Drescher already covered this case with suppress/override heuristic ...
 
+    Hi Henry. Yes, I think that should be suppressed. Also, no synthetic
+    item should be defined for a schema with an empty result (a synthetic
+    item reifies the validity conditions of a schema, and a schema with an
+    empty result has no validity conditions).
+
+    For a schema with a nonempty result, it shouldn't be possible that the
+    schema's own synthetic item is discovered to be a result of that
+    schema's activation. At most, that schema's activation should
+    transition the schema's synthetic item from Unknown to On, not from
+    Off to On; and the former transition does not count for the
+    extended-result correlation statistics. (If activating a schema were
+    to turn its own synthetic item On--which is to say, if activating the
+    schema were to achieve the schema's validity conditions--then the
+    schema would always be valid, in which case its own synthetic item
+    should always be On, rather than being designated as a result of the
+    schema.)
+
++ Check what are the exact conditions under which a schema's synthetic item goes to what state? 
+
++ I'm getting positive feedback in selection/creation; I pick a schema at random to execute,
+but if they are based on HAND_UP, then they spin off some HAND_UP schemas, so the random selection
+is biased towards moving hand up.
