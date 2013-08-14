@@ -35,9 +35,9 @@ The jar file can be run from sbt or using java from the command line with 'java 
 For more interactive control, I launch the app from inside a JRuby jirb shell. 
 
 directions:
-. setup-env
-jirb 
-load '.irbrc' (if it doesn't load by itself automatically)
+ . setup-env
+ jirb 
+ > load '.irbrc' (if it doesn't load by itself automatically)
 
 the .irbrc file contains some commands to poke the app into launching, and inspect it
 
