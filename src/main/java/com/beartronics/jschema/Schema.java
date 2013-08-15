@@ -236,16 +236,17 @@ public class Schema {
     Schema spinoffNewSchema() {
         Schema child = new Schema(stage, stage.schemas.size(), action);
         child.parent = this;
+        // Copy the context and result into the new child schema
         child.posContext.addAll(posContext);
         child.negContext.addAll(negContext);
         child.posResult.addAll(posResult);
         child.negResult.addAll(negResult);
 
-
         // TODO verify if we need to do this or something like it
         //child.xcontext.ignoreItems.or(xcontext.ignoreItems);
 
         child.makeSyntheticItem();
+        // ignore child's synthetic item
         xresult.ignoreItems.set(child.syntheticItem.id);
         child.xresult.ignoreItems.or(xresult.ignoreItems);
 

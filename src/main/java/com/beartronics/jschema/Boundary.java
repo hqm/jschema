@@ -71,7 +71,7 @@ class Boundary extends Object2D {
     }
 
     // Draw the boundary, if it were at an angle we'd have to do something fancier
-    void display(PGraphics pg) {
+    public void display(PGraphics pg) {
         pg.fill(color);
         pg.stroke(0);
         pg.rectMode(PConstants.CENTER);

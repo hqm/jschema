@@ -58,7 +58,7 @@ public class VisualBox extends Object2D {
     
     // Drawing the box
     @Override
-    void display(PGraphics pg) {
+    public void display(PGraphics pg) {
         Vec2 pos = box2d.getBodyPixelCoord(body);
         pg.pushStyle();
         pg.rectMode(PConstants.CENTER);

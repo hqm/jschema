@@ -139,7 +139,7 @@ public class Hand extends Box {
      *
 
      */
-    void moveToPlane(Plane newPlane) {
+    public void moveToPlane(Plane newPlane) {
         ArrayList<Object2D> gobjs = getWeldedObjects();
         app.println("welded objects = "+gobjs.toString()+" size="+gobjs.size());
         super.moveToPlane(newPlane);
@@ -307,7 +307,7 @@ public class Hand extends Box {
     }
 
     // Drawing the box
-    void display(PGraphics pg) {
+    public void display(PGraphics pg) {
         super.display(pg);
         // We look at each body and get its screen position
         Vec2 pos = box2d.getBodyPixelCoord(body);

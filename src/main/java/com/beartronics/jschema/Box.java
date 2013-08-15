@@ -59,7 +59,7 @@ public class Box extends Object2D {
 
     // Drawing the box
     @Override
-   void display(PGraphics pg) {
+        public void display(PGraphics pg) {
          // We look at each body and get its screen position
         Vec2 pos = box2d.getBodyPixelCoord(body);
         // Get its angle of rotation
@@ -95,7 +95,7 @@ public class Box extends Object2D {
     // To move to another plane, we have to destroy the object in this plane, and
     // create a copy of it in the target plane.
     // Returns the new Box that was created in the target plane.
-    void moveToPlane(Plane newPlane) {
+    public void moveToPlane(Plane newPlane) {
         super.moveToPlane(newPlane);
         float a = getAngle();
         Vec2 pos = box2d.getBodyPixelCoord(body);

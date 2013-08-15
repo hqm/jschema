@@ -239,6 +239,13 @@ of A. Because any child schema's synthetic item will always be correlated to par
 
 + Check what are the exact conditions under which a schema's synthetic item goes to what state? 
 
++ "My implementation used an ad hoc method that was tied to its
+space-limited statistics collection method. But the real way to do it
+is to use a threshold of statistical significance. So just pre-compute
+a lookup table that says what the minimum correlation is that can be
+supported by a given sample size.
+"
+
 + I'm getting positive feedback in selection/creation; I pick a schema at random to execute,
 but if they are based on HAND_UP, then they spin off some HAND_UP schemas, so the random selection
 is biased towards moving hand up.
@@ -254,6 +261,8 @@ the machinery will detect the difference (see section 5.2.2). The
 sampling is weighted toward the most recent trials."
 
 
++ When a parent spins off a child result schema for an item, do you reset that item's counters to zero in the parent schema 
+extended result? 
 
 sudo apt-get install xvfb
 Xvfb :2 -screen 0 1024x768x24 &

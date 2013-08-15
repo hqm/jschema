@@ -25,7 +25,7 @@ import processing.opengl.*;
 import org.apache.log4j.Logger;
 
 // A displayable 2D object
-abstract class Object2D {
+public abstract class Object2D {
 
     static Logger logger = Logger.getLogger(Object2D.class.getName());
 
@@ -100,7 +100,7 @@ abstract class Object2D {
     /** 
         @return list of objects that are touching our boundary
     */
-    HashSet<Object2D> touchingObjects() {
+    public HashSet<Object2D> touchingObjects() {
         HashSet<Object2D> t = new HashSet<Object2D>();
         ContactEdge cedge = body.getContactList();
         while (cedge != null) {
@@ -124,8 +124,8 @@ abstract class Object2D {
         return t;
     }
 
-    // This function removes the particle from the box2d world
-    void killBody() {
+    /**  This function removes the particle from the box2d world */
+    public void killBody() {
         box2d.destroyBody(body);
     }
 
@@ -138,7 +138,7 @@ abstract class Object2D {
      * + update our plane and box2d fields
 
      */
-    void moveToPlane(Plane newPlane) {
+    public void moveToPlane(Plane newPlane) {
         plane.removeObject(this);
         newPlane.addObject(this);
         destroyMouseJoint();
@@ -146,29 +146,29 @@ abstract class Object2D {
     }
 
     // Forces a move to this position, may cause non-physical behavior.
-    void moveTo(float xpos, float ypos) {
+    public void moveTo(float xpos, float ypos) {
         Vec2 worldPoint = box2d.coordPixelsToWorld(xpos, ypos);
         body.setAngularVelocity(0);
         body.setTransform(worldPoint, body.getAngle());
 
     }
 
-    void applyTorque(float t) {
+    public void applyTorque(float t) {
         body.applyTorque(t);
     }
-    void applyAngularImpulse(float t) {
+    public void applyAngularImpulse(float t) {
         body.applyAngularImpulse(t);
     }
 
-    void setFixedRotation(boolean v) {
+    public void setFixedRotation(boolean v) {
         body.setFixedRotation(v);
     }
 
-    Vec2 getPosition() {
+    public Vec2 getPosition() {
         return box2d.getBodyPixelCoord(body);
     }
 
-    void rotate(float a) {
+    public void rotate(float a) {
         float r = body.getAngle();
         r += Math.toRadians(a);
         Vec2 pos = body.getPosition();
@@ -176,26 +176,26 @@ abstract class Object2D {
     }
 
 
-    float getAngle() {
+    public float getAngle() {
         return (float)Math.toDegrees(body.getAngle());
     }
 
-    void setAngle(float a) {
+    public void setAngle(float a) {
         double r = Math.toRadians(a);
         Vec2 pos = body.getPosition();
         body.setTransform(pos, (float)r);
     }
 
-    void setSensor(boolean v) {
+    public void setSensor(boolean v) {
         fixture.setSensor(v);
     }
 
-    void setActive(boolean a) {
+    public void setActive(boolean a) {
         body.setActive(a);
     }
 
     // Is the particle ready for deletion?
-    boolean done() {
+    public boolean done() {
         // Let's find the screen position of the particle
         Vec2 pos = box2d.getBodyPixelCoord(body);
         // Is it off the bottom of the screen?
@@ -207,16 +207,16 @@ abstract class Object2D {
     }
 
     // Drawing the box
-    abstract void display(PGraphics pg);
+    public abstract void display(PGraphics pg);
 
 
     ////////////////////////////////////////////////////////////////
-    // MouseJoint methods, for interactively attaching mouse to an object
+    /** MouseJoint methods, for interactively attaching mouse to an object
 
-    // This is the key function where
-    // we attach the spring to an x,y location
-    // and the Box object's location
-    void bindMouseJoint(float x, float y) {
+     This is the key function where we attach the spring to an x,y
+     location and the Box object's location
+    */
+    public void bindMouseJoint(float x, float y) {
         if (mouseJoint != null) {
             destroyMouseJoint();
         }
@@ -239,7 +239,7 @@ abstract class Object2D {
         mouseJoint = (MouseJoint) box2d.world.createJoint(md);
     }
 
-    void updateMouseJointPos(float x, float y) {
+    public void updateMouseJointPos(float x, float y) {
         if (mouseJoint != null) {
             // Always convert to world coordinates!
             Vec2 mouseWorld = box2d.coordPixelsToWorld(x,y);
@@ -247,7 +247,7 @@ abstract class Object2D {
         }
     }
 
-    void destroyMouseJoint() {
+    public void destroyMouseJoint() {
         if (mouseJoint != null) {
             box2d.world.destroyJoint(mouseJoint);
             mouseJoint = null;
@@ -261,7 +261,7 @@ abstract class Object2D {
      * param obj1
      * param obj2
      */
-    void weld(Object2D obj1, Object2D obj2) {
+    public void weld(Object2D obj1, Object2D obj2) {
         app.println("weld "+obj1+" to "+obj2);
         WeldJointDef wd = new WeldJointDef();
         //wd.collideConnected = false;
@@ -272,7 +272,7 @@ abstract class Object2D {
 
     /** Remove the WeldJoint we use for gripping. Used primarily by the Hand class.
      */
-    void destroyWeldJoint() {
+    public void destroyWeldJoint() {
         if (gripJoint != null) {
 
             box2d.world.destroyJoint(gripJoint);
@@ -281,7 +281,7 @@ abstract class Object2D {
     }
 
     /** Returns list of Object2Ds which are joined via a WeldJoint */
-    public ArrayList<Object2D> getWeldedObjects() {
+    public  ArrayList<Object2D> getWeldedObjects() {
         JointEdge jedge = body.getJointList();
         ArrayList<Joint> jlist = new ArrayList<Joint>();
         while (jedge != null) {
@@ -351,8 +351,9 @@ abstract class Object2D {
 
 
     ////////////////////////////////////////////////////////////////
-    // 
-    void bind(Object2D objA, Object2D objB, float len) {
+    /** Connect two objects with a distancejoint
+     */
+    public void bind(Object2D objA, Object2D objB, float len) {
         Vec2 p1, p2, d;
         // Define the joint
         DistanceJointDef djd = new DistanceJointDef();
@@ -371,7 +372,7 @@ abstract class Object2D {
     /** Adds WeldJoint between thing and any bodies it is contacting
      * @return list of objects it welded to
      */
-    ArrayList<Object2D> weldContacts() {
+    public ArrayList<Object2D> weldContacts() {
         return weldContacts(null);
     }
 
@@ -380,7 +381,7 @@ abstract class Object2D {
      * @param ignore do not weld to this object, if supplied
      * @return list of objects it welded to
      */
-    ArrayList<Object2D> weldContacts(Object2D ignore) {
+    public ArrayList<Object2D> weldContacts(Object2D ignore) {
         ArrayList<Object2D> objs = new ArrayList<Object2D>();
         logger.debug("********\nGrasp Contacts for "+this);
         ContactEdge cedge = body.getContactList();
@@ -404,7 +405,7 @@ abstract class Object2D {
     /**
      * Destroys every joint in the body's contact list.
      */
-    void removeAllJoints() {
+    public void removeAllJoints() {
         JointEdge jedge = body.getJointList();
         ArrayList<Joint> jlist = new ArrayList<Joint>();
         while (jedge != null) {

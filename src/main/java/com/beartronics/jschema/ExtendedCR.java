@@ -36,11 +36,10 @@ public class ExtendedCR {
     */
 
     
-    static final float POSITIVE_TRANSITION_CORRELATION_SPINOFF_THRESHOLD = 4.0f;
-    static final float NEGATIVE_TRANSITION_CORRELATION_SPINOFF_THRESHOLD = 4.0f;
+    static final int MIN_TRIALS = 25;
 
-    static final int MIN_TRIALS = 10;
-
+    /** table of correlation threshold needed to spin off a schema, vs log of number of trials */
+    double spinoff_correlation_threshold[] = {10.0, 6.0, 4.0, 3.0, 2.5, 2.0, 1.5};
 
     /**
      * Made Up Minds Section 4.1.2  pp. 73
@@ -110,6 +109,8 @@ public class ExtendedCR {
 
                     float positiveTransitionCorrelation = (float) positiveTransitionsA / (float) positiveTransitionsNA;
                     float negativeTransitionCorrelation = (float) negativeTransitionsA / (float) negativeTransitionsNA;
+                    int totalPositiveTrials = (int) (positiveTransitionsA + positiveTransitionsNA);
+                    int totalNegativeTrials = (int) (negativeTransitionsA + negativeTransitionsNA);
 
                     /** per GLD: "My implementation used an ad hoc method that was tied to its
                         space-limited statistics collection method. But the real way to do it
@@ -118,18 +119,23 @@ public class ExtendedCR {
                         supported by a given sample size."
                     */
 
-                    if (positiveTransitionsA > MIN_TRIALS &&
-                        positiveTransitionCorrelation > POSITIVE_TRANSITION_CORRELATION_SPINOFF_THRESHOLD) {
-                        //if (item.id == 129) {
-                        //logger.info("attempt spin off "+schema + " with result item "+item+" pos_child-with-result-exists="+
-                        //schema.childWithResultExists(item, true));
-                        //}
-                        schema.spinoffWithNewResultItem(item, true);
+                    if (totalPositiveTrials > MIN_TRIALS) {
+                        double threshold = spinoff_correlation_threshold[(int) Math.floor(Math.log(totalPositiveTrials))];
+                        if (positiveTransitionCorrelation > threshold) {
+                            logger.info("attempt spinoff "+schema+" item "+item+" pos correlation="+positiveTransitionCorrelation+" threshold="+threshold+" totaltrials="+totalPositiveTrials+" p(A)/p(NA)"+positiveTransitionsA+" / "+positiveTransitionsNA);
+                            //if (item.id == 129) {
+                            //logger.info("attempt spin off "+schema + " with result item "+item+" pos_child-with-result-exists="+
+                            //schema.childWithResultExists(item, true));
+                            //}
+                            schema.spinoffWithNewResultItem(item, true);
+                        }
                     }
                 
-                    if (negativeTransitionsA > MIN_TRIALS &&
-                        negativeTransitionCorrelation > NEGATIVE_TRANSITION_CORRELATION_SPINOFF_THRESHOLD) {
-                        schema.spinoffWithNewResultItem(item, false);
+                    if (totalNegativeTrials > MIN_TRIALS) {
+                        double threshold = spinoff_correlation_threshold[(int)Math.floor(Math.log(totalNegativeTrials))];
+                        if (negativeTransitionCorrelation > threshold) {
+                            schema.spinoffWithNewResultItem(item, false);
+                        }
                     }
                 }
             }

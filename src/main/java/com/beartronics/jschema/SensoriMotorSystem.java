@@ -430,13 +430,13 @@ public class SensoriMotorSystem {
 
     int downKeys[] = new int[1024];
 
-    Plane nextPlane() {
+    public Plane nextPlane() {
         int idx = planes.indexOf(currentPlane);
         idx = (idx+1) % planes.size();
         return planes.get(idx);
     }
 
-    Plane prevPlane() {
+    public Plane prevPlane() {
         int idx = planes.indexOf(currentPlane);
         idx = (idx-1);
         if (idx < 0) {
@@ -451,7 +451,7 @@ public class SensoriMotorSystem {
      * checks the hand forces, and if too large, will not move the body, thus preventing
      * moving too far from the hands
      */
-    void jogBody(float dx, float dy) {
+    public void jogBody(float dx, float dy) {
         Vec2 f1 = hand1.getJointForce();
         Vec2 f2 = hand2.getJointForce();
         if (dx < 0) {
@@ -727,11 +727,11 @@ public class SensoriMotorSystem {
         return worldState;
     }
 
-    void computeAudioSensors() {
+    public void computeAudioSensors() {
     }
 
-
-    void computeVisionSensor() {
+    
+    public void computeVisionSensor() {
         // copies the bitmap into the pixels[] array for retina
         retina.loadPixels();
         // is fovea seeing a solid object?
@@ -772,7 +772,7 @@ public class SensoriMotorSystem {
     }
 
     static final double MOTION_THRESHOLD = 1;
-    void computeMotionSensors() {
+    public void computeMotionSensors() {
         vision.clearMotionSensors();
         for (Plane plane: planes) {
             for (Object2D obj: plane.physobjs) {
@@ -823,7 +823,7 @@ public class SensoriMotorSystem {
     static final int GAZE_MAX_XOFFSET = 650;
     static final int GAZE_MAX_YOFFSET = 350;
 
-    boolean objectAtQuadrant(float qx, float qy) {
+    public boolean objectAtQuadrant(float qx, float qy) {
         Object2D obj = findObjAt(xpos + qx*QUADRANT_SIZE, ypos+qy*QUADRANT_SIZE);
         return obj != null;
     }
@@ -833,15 +833,15 @@ public class SensoriMotorSystem {
        send the gaze to center on this object
        @return dx,dy of gaze motion
      */
-    Vec2 gazeAt(Object2D thing) {
+    public Vec2 gazeAt(Object2D thing) {
         return gazeAt(thing.getPosition());
     }
 
-/**
-   This moves the gaze to abs position pos, and has side effect of
-   setting the proprioceptive sense gazeMotion to tell how far the gaze moved.
- */
-    Vec2 gazeAt(Vec2 pos) {
+    /**
+       This moves the gaze to abs position pos, and has side effect of
+       setting the proprioceptive sense gazeMotion to tell how far the gaze moved.
+    */
+    public Vec2 gazeAt(Vec2 pos) {
         float oldgx = gazeXpos;
         float oldgy = gazeYpos;
         gazeXpos = limit(pos.x - xpos, -GAZE_MAX_XOFFSET, GAZE_MAX_XOFFSET);
@@ -853,7 +853,7 @@ public class SensoriMotorSystem {
     // tracks how far the gaze moved
     Vec2 gazeMotion = new Vec2();
 
-    float limit(float val, float min, float max) {
+    public float limit(float val, float min, float max) {
         if (val < min) {
             return min;
         } else if (val > max) {
@@ -863,42 +863,42 @@ public class SensoriMotorSystem {
         }
     }
 
-    void gazeLeft(int n) {
+    public void gazeLeft(int n) {
         float oldgx = gazeXpos;
         gazeXpos = limit(gazeXpos - n, -GAZE_MAX_XOFFSET, GAZE_MAX_XOFFSET);
         gazeMotion =  new Vec2(gazeXpos - oldgx, 0);
     }
 
-    void gazeRight(int n) {
+    public void gazeRight(int n) {
         gazeLeft(-n);
     }
 
-    void gazeUp(int n) {
+    public void gazeUp(int n) {
         float oldgy = gazeYpos;
         gazeYpos = limit(gazeYpos - n, -GAZE_MAX_YOFFSET, GAZE_MAX_YOFFSET);
         gazeMotion =  new Vec2(0, gazeYpos - oldgy);        
     }
 
-    void gazeDown(int n) {
+    public void gazeDown(int n) {
         gazeUp(-n);
     }
 
-    void setGazePosition(float x, float y) {
+    public void setGazePosition(float x, float y) {
         gazeXpos = x;
         gazeYpos = y;
     }
 
-    Vec2 gazeAbsPosition() {
+    public Vec2 gazeAbsPosition() {
         return new Vec2(xpos+gazeXpos, ypos+gazeYpos);
     }
 
-    Object2D objectAtGaze() {
+    public Object2D objectAtGaze() {
         return findObjAt(gazeAbsPosition());
     }
 
 
     /** Moves the gaze to center on the next item in the fovea. */
-    void gazeNext() {
+    public void gazeNext() {
         ArrayList<Object2D> items = findObjectsAt(gazeAbsPosition());
         // NYI
     }
@@ -928,14 +928,14 @@ public class SensoriMotorSystem {
      */
     public Object2D foveateNextMovingObject(Vec2 position) {
         ArrayList<Object2D> items = sortPhysobjsByDistance(position);
-        //app.println("sorted by dist from "+position+" items = "+items.toString());
-        //app.println("foveateNextMovingObject foveatedObject = "+foveatedObject);
+        logger.debug("sorted by dist from "+position+" items = "+items.toString());
+        logger.debug("foveateNextMovingObject foveatedObject = "+foveatedObject);
         int idx = -1;
         // find the index of the closest moving object to the 
 
         for (int i = 0; i < items.size(); i++) {
             Object2D obj = items.get(i);
-            //app.println(i + " checking object "+obj +" isMoving "+obj.isMoving());
+            logger.debug(i + " checking object "+obj +" isMoving "+obj.isMoving());
             // if we're already looking at this obj, go to the next one
             if (obj == foveatedObject) continue;
 
@@ -946,11 +946,12 @@ public class SensoriMotorSystem {
         }
 
         if (idx == -1) {
-            logger.debug("Error in foveateNextMovingObject, could not find any object!");
+            logger.info("foveateNextMovingObject, could not find any moving object!");
             return null;
         } else {
             foveatedObject = items.get(idx);
             gazeAt(foveatedObject);
+            logger.info("foveateNextMovingObject foveatedObject => "+foveatedObject);
             return foveatedObject;
         }
 
@@ -968,7 +969,7 @@ public class SensoriMotorSystem {
      */
     public ArrayList<Object2D> sortedItems = null;
 
-    ArrayList<Object2D> sortPhysobjsHorizontal() {
+    public ArrayList<Object2D> sortPhysobjsHorizontal() {
         ArrayList<Object2D> items = new ArrayList<Object2D>(plane0.physobjs);
         items.addAll(plane1.physobjs);
 
@@ -985,7 +986,7 @@ public class SensoriMotorSystem {
         return items;
     }
 
-    ArrayList<Object2D> sortPhysobjsVertical() {
+    public ArrayList<Object2D> sortPhysobjsVertical() {
         ArrayList<Object2D> items = new ArrayList<Object2D>(plane0.physobjs);
         items.addAll(plane1.physobjs);
 
@@ -1119,7 +1120,7 @@ public class SensoriMotorSystem {
     }
 
     // Includes proprioceptive sensors
-    void computeTouchSensors() {
+    public void computeTouchSensors() {
         // update joint position sensors
         for (int i = -5; i < 6; i++) {
             worldState.setSensorInput("hand1.gross.x."+i, sensorID++, hand1.grossX == i);

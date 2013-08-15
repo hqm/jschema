@@ -17,10 +17,10 @@ import processing.data.*;
 import processing.event.*; 
 import processing.opengl.*; 
 
-class CustomShape1 extends Object2D {
+public class CustomShape1 extends Object2D {
 
     // Constructor
-    CustomShape1(Plane p, float x, float y, int color) {
+    public CustomShape1(Plane p, float x, float y, int color) {
         super(p);
         // Add the box to the box2d world
         makeBody(box2d, new Vec2(x, y));
@@ -28,12 +28,12 @@ class CustomShape1 extends Object2D {
     }
 
     // This function removes the particle from the box2d world
-    void killBody() {
+    public void killBody() {
         box2d.destroyBody(body);
     }
 
     // Is the particle ready for deletion?
-    boolean done() {
+    public boolean done() {
         // Let's find the screen position of the particle
         Vec2 pos = box2d.getBodyPixelCoord(body);
         // Is it off the bottom of the screen?
@@ -45,7 +45,7 @@ class CustomShape1 extends Object2D {
     }
 
     // Drawing the box
-    void display(PGraphics pg) {
+    public void display(PGraphics pg) {
         // We look at each body and get its screen position
         Vec2 pos = box2d.getBodyPixelCoord(body);
         // Get its angle of rotation
