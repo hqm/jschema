@@ -20,8 +20,9 @@ and simple motion detection.
 
 The data can be inspected in-core using an HTTP connection to port 8080. 
 
-The JRuby interpreter is linked in, so that a top level jruby interactive shell can be used to
-interact with the system for debugging and experiments. 
+I have been calling the main entry point from a JRuby interpreter, so I can use the jirb shell to
+interact with the system for debugging and experiments. It's funny how far backward we've gone since the Lisp machines of 
+30 years ago, in terms of interactive development environments with incremental in-core recompilation.
 
 + Building
 
