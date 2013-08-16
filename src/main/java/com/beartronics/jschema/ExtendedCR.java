@@ -36,7 +36,11 @@ public class ExtendedCR {
     */
 
     
-    static final int MIN_TRIALS = 25;
+    static final int MIN_TRIALS = 20;
+    static final float recencyBias = 0.999f;
+
+    // event transitions can be seen up to 1 second in the past
+    static final int eventTransitionMaxInterval = 60; 
 
     /** table of correlation threshold needed to spin off a schema, vs log of number of trials */
     double spinoff_correlation_threshold[] = {10.0, 6.0, 4.0, 3.0, 2.5, 2.0, 1.5};
@@ -48,17 +52,20 @@ public class ExtendedCR {
      * Update transition statistics with respect to whether the our schema's action was taken or not.
      */
     void updateResultItems(Stage stage, Schema schema, boolean actionTaken) {
+        long clock = stage.clock;
         ArrayList<Item> items = stage.items;
         //growArrays(stage.nitems);
         for (int n = 0; n < items.size(); n++) {
             if (!ignoreItems.get(n)) {
                 Item item = items.get(n);
                 if (item != null
+                    // TODO [are these filters needed?? redundant with ignoreItems?]
                     && !schema.posResult.contains(item)  // dont evalute items already in our pos result set
                     && !schema.negResult.contains(item)) {// dont evaluate items already in our neg result set
-                
-                    boolean val = item.value;
-                    boolean prevValue = item.prevValue;
+
+                    boolean posTransition = (clock - item.lastPosTransition) < eventTransitionMaxInterval;
+                    boolean negTransition = (clock - item.lastNegTransition) < eventTransitionMaxInterval;
+
                     boolean knownState = item.knownState;
 
                     // read out the existing statistics on the probablity of result transition with/without the action
@@ -74,17 +81,19 @@ public class ExtendedCR {
                     // A synthetic item may be in an unknown state, in which case we do not want
                     // to update stats on it. 
                     if (knownState) {
-                        if ( !prevValue && val) { // off to on transition
+                        if (posTransition) { // off to on transition
 
                             if (actionTaken) {
-                                offToOnActionTaken.set(n,  positiveTransitionsA + 1);
+                                offToOnActionTaken.set(n,  positiveTransitionsA*recencyBias + 1);
+                                offToOnActionNotTaken.set(n,  positiveTransitionsNA*recencyBias);
                             } else {
                                 offToOnActionNotTaken.set(n, positiveTransitionsNA + 1);
                             }
-                        } else if (prevValue && !val ) { // on to off transition
+                        } else if (negTransition ) { // on to off transition
                         
                             if (actionTaken) {
-                                onToOffActionTaken.set(n, negativeTransitionsA + 1);
+                                onToOffActionTaken.set(n, negativeTransitionsA*recencyBias + 1);
+                                onToOffActionNotTaken.set(n, negativeTransitionsNA*recencyBias);
                             } else {
                                 onToOffActionNotTaken.set(n, negativeTransitionsNA + 1);
                             }

@@ -43,6 +43,7 @@ public class Schema {
     public float value = 0;
     // See pp. 55
     // correlation, reliability, duration, cost
+    /** How long this schema typically remains applicable. Used to maintain the default on time of the synthetic item. */
     public float duration = 120;
     public float cost = 0;
     long timeActivated = 0;
@@ -179,7 +180,7 @@ public class Schema {
 
     public void runMarginalAttribution() {
         // Did we just perform our specified action?
-        boolean actionTaken = action.activated;
+        boolean actionTaken = (stage.clock - action.activatedAt) < action.duration;
 
         // Run the marginal attribution heuristics to decide whether to spin off
         // a new schema, with addtional item in the result set

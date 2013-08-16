@@ -30,9 +30,14 @@ public class Action {
     }
 
 
-    String      name;
-    int         index;
-    boolean     activated;
+    String    name;
+    int       index;
+    boolean   activated;
+    long      activatedAt = Integer.MIN_VALUE;
+
+    /** How long this action typically takes to have an effect */
+    long      duration = 60;  
+
     Type  type;
 
     ActionController controller;
@@ -41,6 +46,9 @@ public class Action {
     public ArrayList<Schema> schemas = new ArrayList<Schema>();
 
     public void activate(boolean val) {
+        if (val) {
+            this.activatedAt = stage.clock;
+        }
         this.activated = val;
     }
 

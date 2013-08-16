@@ -7,7 +7,7 @@ import java.io.*;
 
 public class Item {
     String name;
-    boolean  value;
+    boolean value;
     boolean prevValue;
 
     /** Section 4.1.2 pp 73. We need to indicate if these value transitions were 'explained'
@@ -15,6 +15,9 @@ public class Item {
      */
     Schema predictedPositiveTransition = null;
     Schema predicteNegativeTransition = null;
+
+    long lastPosTransition =  Integer.MIN_VALUE;
+    long lastNegTransition =  Integer.MIN_VALUE;
 
     void clearPredictedTransitions() {
      predictedPositiveTransition = null;
@@ -69,6 +72,14 @@ public class Item {
         if (hostSchema != null) {
             p.println("Host Schema: "+hostSchema.makeLink());
         }
+
+        p.println("predictedPositiveTransition: "+predictedPositiveTransition);
+        p.println("predicteNegativeTransition: "+predicteNegativeTransition);
+
+        p.println("&Delta; lastPosTransition: "+ (stage.clock - lastPosTransition));
+        p.println("&Delta; lastNegTransition: "+ (stage.clock - lastNegTransition));
+
+
         p.println("value: "+value);
         p.println("previous value: "+prevValue);
         p.println("knownState: "+knownState);

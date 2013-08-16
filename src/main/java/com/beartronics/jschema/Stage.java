@@ -112,7 +112,7 @@ public class Stage
     void initSchemas() {
         // Create schemas for the primitive actions
         Action.Type types[] = {
-            Action.Type.HAND1_LEFT, Action.Type.HAND1_RIGHT, 
+            //Action.Type.HAND1_LEFT, Action.Type.HAND1_RIGHT, 
             Action.Type.HAND1_UP, Action.Type.HAND1_DOWN,
             Action.Type.HAND1_GRASP, Action.Type.HAND1_UNGRASP,
             Action.Type.CENTER_GAZE,
@@ -226,6 +226,14 @@ public class Stage
             
             item.prevValue = item.value;
             item.value = newValue;
+            if (item.prevValue && !newValue) {
+                item.lastNegTransition = clock;
+            } else if (!item.prevValue && newValue ) {
+                item.lastPosTransition = clock;
+            }
+
+
+
         }
     }
 
@@ -243,18 +251,21 @@ public class Stage
         }
         w.actions.clear();
 
-        // TODO [hqm 2013-08] This will of course need to be elaborated when we have compound actions implemented.
-        // For now each schema is mapped one-to-one to a primitive action.
-        // We pick a primitive action at random, then execute a schema that uses it at random.
-        Action action = actions.get(rand.nextInt(actions.size()));
-        Schema schema = action.schemas.get(rand.nextInt(action.schemas.size()));
+        if ((clock % 5) == 0) {
 
-        if (action.type == Action.Type.COMPOUND) {
-            throw new RuntimeException("setMotorActions: we do not support the mapping from compound actions to primitive actions yet");
+            // TODO [hqm 2013-08] This will of course need to be elaborated when we have compound actions implemented.
+            // For now each schema is mapped one-to-one to a primitive action.
+            // We pick a primitive action at random, then execute a schema that uses it at random.
+            Action action = actions.get(rand.nextInt(actions.size()));
+            Schema schema = action.schemas.get(rand.nextInt(action.schemas.size()));
+
+            if (action.type == Action.Type.COMPOUND) {
+                throw new RuntimeException("setMotorActions: we do not support the mapping from compound actions to primitive actions yet");
+            }
+            schema.activate();
+            logger.debug("select schema "+schema);
+            w.actions.add(action);
         }
-        schema.activate();
-        logger.debug("select schema "+schema);
-        w.actions.add(action);
     }
 
     // Make a synthetic item for a schema

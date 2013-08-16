@@ -270,3 +270,16 @@ export DISPLAY=localhost:2.0
 java -jar jschema-assembly-1.1.jar
 
 
+
++ make items record timestamp of last transitions. in realtime world we need this to span intervals of time
+in the simulation. 
+
++ motor actions - should be "turn on" "turn off" so you can "sweep arm right" which will continue until
+you "stop arm. 
+
+How should these be represented/implemented? Do we have unit motion "move left one" as an atomic action, 
+or do we have "start moving left" and "stop moving" ? 
+If you have 'start moving' and 'stop moving', how do you learn to move small unit amounts? 
+
+
+
