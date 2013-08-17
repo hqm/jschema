@@ -15,10 +15,14 @@ import processing.core.*;
 public class WorldState {
 
     int sensorID = 0;
-
+    long clock = 0;
 
     public WorldState() {        
 
+    }
+
+    public void setClock(long c) {
+        clock = c;
     }
 
     void setSensorInput(String path, int id,  boolean val) {
@@ -26,8 +30,14 @@ public class WorldState {
         if (s == null) {
             s = new SensorInput(path, id, val);
             inputs.put(path, s);
-        } else {
-            s.value = val;
+        }
+
+        s.prevValue = s.value;
+        s.value = val;
+        if (!s.prevValue && val) {
+            s.lastPosTransition = clock;
+        } else if (s.prevValue && !val) {
+            s.lastNegTransition = clock;
         }
     }
 

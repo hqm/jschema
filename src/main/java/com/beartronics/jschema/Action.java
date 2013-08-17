@@ -33,10 +33,10 @@ public class Action {
     String    name;
     int       index;
     boolean   activated;
-    long      activatedAt = Integer.MIN_VALUE;
+    long      lastActivatedAt = Integer.MIN_VALUE;
 
     /** How long this action typically takes to have an effect */
-    long      duration = 60;  
+    long duration = Stage.ACTION_DURATION;  
 
     Type  type;
 
@@ -47,7 +47,7 @@ public class Action {
 
     public void activate(boolean val) {
         if (val) {
-            this.activatedAt = stage.clock;
+            this.lastActivatedAt = stage.clock;
         }
         this.activated = val;
     }

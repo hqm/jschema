@@ -15,8 +15,11 @@ import processing.core.*;
 public class SensorInput {
     public String path;
     public int id; // a unique id for this input
-    public boolean priorValue;
+
+    long lastPosTransition =  Integer.MIN_VALUE;
+    long lastNegTransition =  Integer.MIN_VALUE;
     public boolean value;
+    public boolean prevValue;
 
     SensorInput(String path, int id, boolean val) {
         _construct(path, id, val);
@@ -26,11 +29,10 @@ public class SensorInput {
         this.path = path;
         this.id = id;
         this.value = val;
-        this.priorValue = val;
     }
 
     public String toString() {
-        return String.format("%s: %s [prior %s] #%d", path, value, priorValue, id);
+        return String.format("%s: %s #%d", path, value, id);
     }
 
 }

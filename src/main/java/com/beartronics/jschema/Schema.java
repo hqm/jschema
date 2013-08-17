@@ -31,8 +31,10 @@ public class Schema {
 
     // reliability statistics
     public float succeededWithActivation   = 0;
+    // succeeds without explicit activation (e.g., its action was initiated by another schema)
     public float succeededWithoutActivation = 0;
     public float failedWithActivation      = 0; // number of times activation failed
+    public int activations = 0;
 
     // Parent schema from which we were spun off
     public Schema parent = null;
@@ -87,6 +89,7 @@ public class Schema {
 
     // Perform designated action
     public void activate() {
+        this.activations += 1;
         this.action.activate(true);
     }
 
@@ -154,8 +157,8 @@ public class Schema {
                     succeeded &= !item.value;
                 }
 
-                // Did we just perform our specified action?
-                boolean actionTaken = action.activated;
+                // Did we just perform our specified action, within the valid time window?
+                boolean actionTaken = (stage.clock - action.lastActivatedAt) < action.duration;
 
                 if (actionTaken && succeeded) {
                     // TODO [hqm 2013-07] Need to bias this statistic towards more recent activations
@@ -179,8 +182,8 @@ public class Schema {
     }
 
     public void runMarginalAttribution() {
-        // Did we just perform our specified action?
-        boolean actionTaken = (stage.clock - action.activatedAt) < action.duration;
+        // Did we recently perform our specified action?
+        boolean actionTaken = (stage.clock - action.lastActivatedAt) < action.duration;
 
         // Run the marginal attribution heuristics to decide whether to spin off
         // a new schema, with addtional item in the result set
@@ -308,6 +311,7 @@ public class Schema {
         p.println("posResult: "+ itemLinks(posResult));
         p.println("negResult: "+ itemLinks(negResult));
         p.println("Synthetic Item: "+ (syntheticItem == null ? "null" : syntheticItem.makeLink()));
+        p.println("activations = "+activations);
         p.println("succeededWithActivation = "+succeededWithActivation);
         p.println("succeededWithoutActivation = "+succeededWithoutActivation);
         p.println("failedWithActivation = "+failedWithActivation);

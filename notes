@@ -282,4 +282,7 @@ or do we have "start moving left" and "stop moving" ?
 If you have 'start moving' and 'stop moving', how do you learn to move small unit amounts? 
 
 
+++ When gaze moves, need to damp out visual deltas (item transitions) for a frame?
+Which items need to damp if any?
+
 

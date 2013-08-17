@@ -509,8 +509,8 @@ public class SensoriMotorSystem {
         setTranslations(xpos,ypos);
     }
 
-    boolean run = true;
-    boolean singleStep = false;
+    boolean run = false;
+    boolean singleStep = true;
 
     public void keyPressed() {
         downKeys[app.keyCode] = 1;
@@ -720,10 +720,10 @@ public class SensoriMotorSystem {
     /// Fills in the sensory input values
     public WorldState computeWorldState() {
         sensorID = 0;
+        worldState.setClock(app.stage.clock);
         computeTouchSensors();
-        computeVisionSensor();
+        //computeVisionSensor();
         computeAudioSensors();
-        
         return worldState;
     }
 

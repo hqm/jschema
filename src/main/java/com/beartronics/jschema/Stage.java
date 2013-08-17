@@ -115,8 +115,8 @@ public class Stage
             //Action.Type.HAND1_LEFT, Action.Type.HAND1_RIGHT, 
             Action.Type.HAND1_UP, Action.Type.HAND1_DOWN,
             Action.Type.HAND1_GRASP, Action.Type.HAND1_UNGRASP,
-            Action.Type.CENTER_GAZE,
-            Action.Type.FOVEATE_NEXT_MOTION,
+            //            Action.Type.CENTER_GAZE,
+            //            Action.Type.FOVEATE_NEXT_MOTION,
             /*
 
             Action.Type.MOVE_LEFT, Action.Type.MOVE_RIGHT, Action.Type.MOVE_UP, Action.Type.MOVE_DOWN,
@@ -174,22 +174,13 @@ public class Stage
         WorldState w = sms.getWorldState();
 
         // See sec 4.1.2 pp 73
-        clearPredictedTransitions();
-
-        // copies the sensori-motor input values from the world into the corresponding Schema items
-        copySMSInputToItems(w);
-
-        // run the marginal attribution step
-        update();
+        //        clearPredictedTransitions();
 
         // decide what to do next
-        setMotorActions(w);
-
-        // 
-        sms.processActions(w);
+        chooseNextActions(w);
     }
 
-    void update() {
+    void updateMarginalAttribution() {
         for (int i = 0 ; i < schemas.size(); i++) {
             Schema s = schemas.get(i);
             s.updateSyntheticItems();
@@ -205,7 +196,12 @@ public class Stage
     // Map from input path name string to object
     public HashMap<String,Item> itemPathnameToObject = new HashMap<String,Item>();
 
+    // for debugging 
+    HashSet<Item> changedItems = new HashSet<Item>();
+
     void copySMSInputToItems(WorldState w) {
+        changedItems.clear();
+
         for (Map.Entry<String, SensorInput> entry : w.inputs.entrySet())
         {
             SensorInput s = entry.getValue();
@@ -224,34 +220,43 @@ public class Stage
                 item.name = String.format("#%d:%s",index,path);
             }
             
-            item.prevValue = item.value;
             item.value = newValue;
-            if (item.prevValue && !newValue) {
-                item.lastNegTransition = clock;
-            } else if (!item.prevValue && newValue ) {
-                item.lastPosTransition = clock;
+            item.lastNegTransition = s.lastNegTransition;
+            item.lastPosTransition = s.lastPosTransition;
+            if ((clock - s.lastNegTransition) < ExtendedCR.eventTransitionMaxInterval
+                || (clock - s.lastPosTransition) < ExtendedCR.eventTransitionMaxInterval) {
+                changedItems.add(item);
             }
+        }
 
-
-
+        if (changedItems.size() > 0) {
+            logger.info("changed items = "+changedItems);
         }
     }
 
     Random rand = new Random();
 
+    /* */
+    static final int ACTION_DURATION = 15;
 
     /** decides what to do next, sets the appropriate motor actions primitives for WorldState.
         This is a placeholder method for a real action-selection mechanism. It also eventually needs
         to be able to chain together schema action sequences for compound actions.
     */
-    void setMotorActions(WorldState w) {
-        // deactivate any prior actions
+    void chooseNextActions(WorldState w) {
+        // deactivate any prior actions from last time step
         for (Action a: w.actions) {
             a.activated = false;
         }
         w.actions.clear();
 
-        if ((clock % 5) == 0) {
+        // Clock speed is 60Hz
+        if ((clock % ACTION_DURATION) == 0) { // perform an action, and do learning, every nth clock cycle
+
+            // copies the sensori-motor input values from the world into the corresponding Schema items
+            copySMSInputToItems(w);
+
+            updateMarginalAttribution(); // update statistics, from results of last action taken
 
             // TODO [hqm 2013-08] This will of course need to be elaborated when we have compound actions implemented.
             // For now each schema is mapped one-to-one to a primitive action.
@@ -265,6 +270,9 @@ public class Stage
             schema.activate();
             logger.debug("select schema "+schema);
             w.actions.add(action);
+
+            // 
+            sms.processActions(w);
         }
     }
 

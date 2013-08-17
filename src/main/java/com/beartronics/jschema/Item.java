@@ -8,7 +8,6 @@ import java.io.*;
 public class Item {
     String name;
     boolean value;
-    boolean prevValue;
 
     /** Section 4.1.2 pp 73. We need to indicate if these value transitions were 'explained'
      * by a schema which was just activated and predicted they would occur.
@@ -60,7 +59,6 @@ public class Item {
     }
 
     public void setValue(boolean v) {
-        this.prevValue = this.value;
         this.value = v;
     }
 
@@ -81,7 +79,6 @@ public class Item {
 
 
         p.println("value: "+value);
-        p.println("previous value: "+prevValue);
         p.println("knownState: "+knownState);
 
         p.println("in posContext of schemas:");
@@ -131,7 +128,7 @@ public class Item {
         } else {
             val += value;
         }
-        return "Item-"+id+" "+type+" "+lname;
+        return "Item-"+id+" "+type+" "+lname+" := "+val;
 
     }
     public String makeLink() {

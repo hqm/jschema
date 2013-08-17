@@ -36,14 +36,14 @@ public class ExtendedCR {
     */
 
     
-    static final int MIN_TRIALS = 20;
+    static final int MIN_TRIALS = 5;
     static final float recencyBias = 0.999f;
 
     // event transitions can be seen up to 1 second in the past
     static final int eventTransitionMaxInterval = 60; 
 
     /** table of correlation threshold needed to spin off a schema, vs log of number of trials */
-    double spinoff_correlation_threshold[] = {10.0, 6.0, 4.0, 3.0, 2.5, 2.0, 1.5};
+    double spinoff_correlation_threshold[] = {10.0, 6.0, 4.0, 3.0, 2.5, 2.0, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5 };
 
     /**
      * Made Up Minds Section 4.1.2  pp. 73
@@ -63,6 +63,7 @@ public class ExtendedCR {
                     && !schema.posResult.contains(item)  // dont evalute items already in our pos result set
                     && !schema.negResult.contains(item)) {// dont evaluate items already in our neg result set
 
+                    // Was there a transition within the last time interval?
                     boolean posTransition = (clock - item.lastPosTransition) < eventTransitionMaxInterval;
                     boolean negTransition = (clock - item.lastNegTransition) < eventTransitionMaxInterval;
 
@@ -81,16 +82,14 @@ public class ExtendedCR {
                     // A synthetic item may be in an unknown state, in which case we do not want
                     // to update stats on it. 
                     if (knownState) {
-                        if (posTransition) { // off to on transition
-
+                        if (posTransition) { // 0->1 transition
                             if (actionTaken) {
                                 offToOnActionTaken.set(n,  positiveTransitionsA*recencyBias + 1);
                                 offToOnActionNotTaken.set(n,  positiveTransitionsNA*recencyBias);
                             } else {
                                 offToOnActionNotTaken.set(n, positiveTransitionsNA + 1);
                             }
-                        } else if (negTransition ) { // on to off transition
-                        
+                        } else if (negTransition ) { // 1->0 transition
                             if (actionTaken) {
                                 onToOffActionTaken.set(n, negativeTransitionsA*recencyBias + 1);
                                 onToOffActionNotTaken.set(n, negativeTransitionsNA*recencyBias);
@@ -128,7 +127,7 @@ public class ExtendedCR {
                         supported by a given sample size."
                     */
 
-                    if (totalPositiveTrials > MIN_TRIALS) {
+                    if (positiveTransitionsA > MIN_TRIALS) {
                         double threshold = spinoff_correlation_threshold[(int) Math.floor(Math.log(totalPositiveTrials))];
                         if (positiveTransitionCorrelation > threshold) {
                             logger.info("attempt spinoff "+schema+" item "+item+" pos correlation="+positiveTransitionCorrelation+" threshold="+threshold+" totaltrials="+totalPositiveTrials+" p(A)/p(NA)"+positiveTransitionsA+" / "+positiveTransitionsNA);
@@ -140,7 +139,7 @@ public class ExtendedCR {
                         }
                     }
                 
-                    if (totalNegativeTrials > MIN_TRIALS) {
+                    if (negativeTransitionsA > MIN_TRIALS) {
                         double threshold = spinoff_correlation_threshold[(int)Math.floor(Math.log(totalNegativeTrials))];
                         if (negativeTransitionCorrelation > threshold) {
                             schema.spinoffWithNewResultItem(item, false);
@@ -170,7 +169,7 @@ public class ExtendedCR {
         for (int n = 0; n < items.size(); n++) {
             Item item = items.get(n);
             if (item != null) {
-                p.println(String.format("%d %s OFF->ON %f [A: %s, !A: %s],  ON->OFF  %f [A: %s, !A: %s]",
+                p.println(String.format("%d %s &uarr; %f [A: %s, !A: %s],  &darr; %f [A: %s, !A: %s]",
                                         n, item.makeLink(),
                                         (float) offToOnActionTaken.get(n) /  (float) offToOnActionNotTaken.get(n),
                                         offToOnActionTaken.get(n), offToOnActionNotTaken.get(n),
