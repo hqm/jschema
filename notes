@@ -286,3 +286,14 @@ If you have 'start moving' and 'stop moving', how do you learn to move small uni
 Which items need to damp if any?
 
 
++ Q: When a schema predicts a result item, is it predicting that the item will be on (or off) or
+is it predicting that the item will transition from off->on? 
+Is there a different kind of schema for predicting a transition vs. predicting what the final state of the
+item is? 
+A: A schema which says  ~LIGHT-ON/ FLIP_SWITCH/LIGHT-ON predicts a transition of the value
+
++ refactor marginal attribution to loop over all items in outer loop, 
+and only update on changing items.
+
+
+

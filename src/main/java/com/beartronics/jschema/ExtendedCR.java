@@ -82,14 +82,14 @@ public class ExtendedCR {
                     // A synthetic item may be in an unknown state, in which case we do not want
                     // to update stats on it. 
                     if (knownState) {
-                        if (posTransition) { // 0->1 transition
+                        if (posTransition && item.predictedPositiveTransition == null) { // 0->1 transition
                             if (actionTaken) {
                                 offToOnActionTaken.set(n,  positiveTransitionsA*recencyBias + 1);
                                 offToOnActionNotTaken.set(n,  positiveTransitionsNA*recencyBias);
                             } else {
                                 offToOnActionNotTaken.set(n, positiveTransitionsNA + 1);
                             }
-                        } else if (negTransition ) { // 1->0 transition
+                        } else if (negTransition && item.predictedNegativeTransition) { // 1->0 transition
                             if (actionTaken) {
                                 onToOffActionTaken.set(n, negativeTransitionsA*recencyBias + 1);
                                 onToOffActionNotTaken.set(n, negativeTransitionsNA*recencyBias);

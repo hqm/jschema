@@ -29,11 +29,23 @@ public class Schema {
     // Also known as the 'reifier' item
     public Item syntheticItem = null;
 
+    // Was this action taken recently (within the last time window)
+    boolean actionTaken;
+
+    boolean succeeded = false;
+    boolean applicable = false;
+
     // reliability statistics
+    /** How many times did this schema achieve it's predicted result when activated? */
     public float succeededWithActivation   = 0;
-    // succeeds without explicit activation (e.g., its action was initiated by another schema)
+
+    /** How many times did this schema achieve it's predicted result when not activated? */
     public float succeededWithoutActivation = 0;
+
+    /** How many times did this schema fail to achieve it's predicted results when activated? */
     public float failedWithActivation      = 0; // number of times activation failed
+
+    /** How many times was this schema activated? */
     public int activations = 0;
 
     // Parent schema from which we were spun off
@@ -41,7 +53,6 @@ public class Schema {
     // List of child schemas which we have spun off
     public ArrayList<Schema> children = new ArrayList<Schema>();
 
-    public boolean applicable = false;
     public float value = 0;
     // See pp. 55
     // correlation, reliability, duration, cost
@@ -119,27 +130,42 @@ public class Schema {
             item.predicteNegativeTransition = this;
         }
     }
+    public void runMarginalAttribution() {
+        // Did we recently perform our specified action?
+        actionTaken = (stage.clock - action.lastActivatedAt) < ExtendedCR.eventTransitionMaxInterval;
+
+        updateSyntheticItems();
+
+        // Run the marginal attribution heuristics to decide whether to spin off
+        // a new schema, with addtional item in the result set
+        xresult.updateResultItems(stage, this, actionTaken);
+        
+        // run marginal attribution on extended context, looking for new context spinoffs
+        //        xcontext.updateItems(stage, this, activated);
+    }
+
 
     /**
-     * Update all our statistics
+     * Update our statistics on success and failure
      *
      * 
      */
     public void updateSyntheticItems() {
         if (syntheticItem != null) {
 
+            // Absent evidence to the contrary, we deactivate this schema after it's duration has expired
             if (stage.clock > timeActivated + duration) {
                 syntheticItem.setValue(false);
                 syntheticItem.knownState = false;
             }
 
-            boolean succeeded = true;
-            boolean applicable = true;
-
             // schemas succeeded if context was satisfied, action taken, and results obtained
 
             // If we have empty results list, then we only update results stats, and look for
             // potential spinoff condition (prob. that some item transitions more with action than without)
+
+            applicable = true;
+            succeeded = true;
 
             for (Item item: posContext) {
                 applicable &= item.value;
@@ -158,11 +184,10 @@ public class Schema {
                 }
 
                 // Did we just perform our specified action, within the valid time window?
-                boolean actionTaken = (stage.clock - action.lastActivatedAt) < action.duration;
-
                 if (actionTaken && succeeded) {
                     // TODO [hqm 2013-07] Need to bias this statistic towards more recent activations
                     succeededWithActivation++;
+                    handleSuccessfulActivation();
                     //syntheticItem.setValue(true);
                 }
 
@@ -179,18 +204,6 @@ public class Schema {
 
             }
         }
-    }
-
-    public void runMarginalAttribution() {
-        // Did we recently perform our specified action?
-        boolean actionTaken = (stage.clock - action.lastActivatedAt) < action.duration;
-
-        // Run the marginal attribution heuristics to decide whether to spin off
-        // a new schema, with addtional item in the result set
-        xresult.updateResultItems(stage, this, actionTaken);
-        
-        // run marginal attribution on extended context, looking for new context spinoffs
-        //        xcontext.updateItems(stage, this, activated);
     }
 
     static final boolean POSITIVE = true;

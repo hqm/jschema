@@ -42,6 +42,13 @@ public class Stage
         return n;
     }
 
+    public void clearPredictedItemTransitions() {
+        for (Item item: items) {
+            item.predictedPositiveTransition = null;
+            item.predicteNegativeTransition = null;
+        }
+    }
+
     /**
      * print an HTML table of state of items,schemas,actions
      */
@@ -199,7 +206,7 @@ public class Stage
     // for debugging 
     HashSet<Item> changedItems = new HashSet<Item>();
 
-    void copySMSInputToItems(WorldState w) {
+    HashSet<Item> copySMSInputToItems(WorldState w) {
         changedItems.clear();
 
         for (Map.Entry<String, SensorInput> entry : w.inputs.entrySet())
@@ -232,6 +239,8 @@ public class Stage
         if (changedItems.size() > 0) {
             logger.info("changed items = "+changedItems);
         }
+
+        return changedItems;
     }
 
     Random rand = new Random();
@@ -254,7 +263,10 @@ public class Stage
         if ((clock % ACTION_DURATION) == 0) { // perform an action, and do learning, every nth clock cycle
 
             // copies the sensori-motor input values from the world into the corresponding Schema items
+
             copySMSInputToItems(w);
+
+            clearPredictedItemTransitions(); // Sec. 4.1.2 pp. 73
 
             updateMarginalAttribution(); // update statistics, from results of last action taken
 

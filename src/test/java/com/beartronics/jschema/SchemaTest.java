@@ -2,6 +2,7 @@ package com.beartronics.jschema;
 
 import java.io.InputStream;
 import junit.framework.TestCase;
+import java.util.*;
 
 public class SchemaTest extends TestCase {
 
@@ -55,6 +56,26 @@ public class SchemaTest extends TestCase {
         assertEquals(s.lastPosTransition, 5);
         assertEquals(s.lastNegTransition, 8);        
 
+        clock = 12;
+        HashSet<Item> changed = stage.copySMSInputToItems(worldState);
+        Item item = stage.items.get(0);
+        assertEquals(item.value, false);
+        assertEquals(item.lastNegTransition, s.lastNegTransition);
+        assertEquals(item.lastPosTransition, s.lastPosTransition);
+        assertEquals(changed.size(), 1);
+        assertEquals(changed.contains(item), true);
+
+        clock = 14;
+        Action grasp = new Action(stage, "testaction", Action.Type.HAND1_GRASP, 0, false);
+        Schema schema = new Schema(stage, 0, grasp);
+        assertEquals(schema.actionTaken, false);
+        assertEquals(schema.syntheticItem, null);
+        schema.activate();
+
+        clock = 20;
+        changed = stage.copySMSInputToItems(worldState);
+        schema.runMarginalAttribution();
+        assertEquals(schema.actionTaken, true);
         
     }
 
