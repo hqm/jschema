@@ -33,10 +33,7 @@ public class Action {
     String    name;
     int       index;
     boolean   activated;
-    long      lastActivatedAt = Integer.MIN_VALUE;
-
-    /** How long this action typically takes to have an effect */
-    long duration = Stage.ACTION_DURATION;  
+    long      lastActivatedAt = Long.MIN_VALUE;
 
     Type  type;
 
@@ -46,10 +43,9 @@ public class Action {
     public ArrayList<Schema> schemas = new ArrayList<Schema>();
 
     public void activate(boolean val) {
-        if (val) {
+        if (val == true) {
             this.lastActivatedAt = stage.clock;
         }
-        this.activated = val;
     }
 
     public Action(Stage stage, String name, int index) {
@@ -60,11 +56,10 @@ public class Action {
         this.controller = new ActionController(this);
     }
 
-    public Action(Stage stage, String name, Type type, int index, boolean active) {
+    public Action(Stage stage, String name, Type type, int index) {
         this.stage = stage;
         this.name = name;
         this.index = index;
-        this.activated = active;
         this.type = type;
         this.controller = new ActionController(this);
     }

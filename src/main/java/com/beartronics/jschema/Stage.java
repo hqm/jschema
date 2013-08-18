@@ -21,8 +21,12 @@ public class Stage
     public ArrayList<Action> actions = new ArrayList<Action>();
     public ArrayList<Item> items     = new ArrayList<Item>();
 
-    // Actions that we decide to take in a given time step
+    /** Actions that we decide to take in a given time step */
     public ArrayList<Action> voluntaryActions = new ArrayList<Action>();
+    
+    /** The time at which the most recent action was initiated */
+    public long lastActionTime = Long.MIN_VALUE;
+    public WorldState worldState;
 
     public long clock = 0;
     public long clockStep() {
@@ -42,14 +46,7 @@ public class Stage
         return n;
     }
 
-    public void clearPredictedItemTransitions() {
-        for (Item item: items) {
-            item.predictedPositiveTransition = null;
-            item.predictedNegativeTransition = null;
-        }
-    }
-
-    /**
+   /**
      * print an HTML table of state of items,schemas,actions
      */
     public String htmlPrintState() {
@@ -106,9 +103,9 @@ public class Stage
 
     public void initWorld() {
         logger.info("Stage initializing world "+ this);
-        WorldState w = sms.getWorldState();
+        worldState = sms.getWorldState();
         initSchemas();
-        copySMSInputToItems(w);
+        copySMSInputToItems(worldState);
         ensureXCRcapacities();
     }
 
@@ -144,7 +141,7 @@ public class Stage
         
         int i = 0;
         for (Action.Type atype: types) {
-            Action action = new Action(this, atype.toString(), atype, i, false);
+            Action action = new Action(this, atype.toString(), atype, i);
             // for debugging 
             if (atype == Action.Type.HAND1_GRASP) {
                 hand1grasp = action;
@@ -162,61 +159,48 @@ public class Stage
         }
     }
 
-
-    void clearPredictedTransitions() {
-        for (int i = 0; i < items.size(); i++) {
-            Item item = items.get(i);
-            if (item != null) {
-                item.clearPredictedTransitions();
-            } else {
-                app.println("should not occur: null item at "+i);
-            }
-        }
-    }
-
     /**
        
      */
-    void processWorldStep(SensoriMotorSystem sms) {
-        WorldState w = sms.getWorldState();
-
-        // See sec 4.1.2 pp 73
-        //        clearPredictedTransitions();
-
-        // decide what to do next
-        chooseNextActions(w);
-    }
-
     void updateMarginalAttribution() {
         int nschemas = schemas.size();
         for (int i = 0 ; i < nschemas; i++) {
-            Schema s = schemas.get(i);
-            s.updateSyntheticItems();
+            Schema schema = schemas.get(i);
+            // Did we recently perform our specified action?
+            schema.actionTaken = ((clock - schema.lastTimeActivated) <= ACTION_STEP_TIME);
+            schema.updateCounters();
         }
 
-        int nitems = items.size();
-        for (int i = 0; i < nitems; i++) {
-            Item item = items.get(i);
-            if (item != null &&
-                (clock - item.lastNegTransition < ExtendedCR.eventTransitionMaxInterval) || 
-                (clock - item.lastPosTransition <  ExtendedCR.eventTransitionMaxInterval)) {
-                for (int j = 0; j < nschemas; j++) {
-                    Schema schema = schemas.get(j);
-                    schema.runMarginalAttribution(item);
+        // Optimization here; we only look at items which have changed since the last action was taken.
+        // We use the time-sorted list of SensorInput from WorldState, which map 1:1 with Items
+        while (true) {
+            SensorInput si = worldState.inputsByTransitionTime.pollLast();
+            if (si == null) {
+                break;
+            } else {
+                long mostRecentTransitionTime = Math.max(si.lastPosTransition, si.lastNegTransition);
+                if (mostRecentTransitionTime <= lastActionTime) {
+                    break;
+                }
+                Item item = items.get(si.id);
+                if (item == null) {
+                    logger.error(String.format("updateMarginalAttribution: error no Item %d found for %s", si.id, si));
+                } else {
+                    item.lastNegTransition = si.lastNegTransition;
+                    item.lastPosTransition = si.lastPosTransition;
+                    for (int j = 0; j < nschemas; j++) {
+                        Schema schema = schemas.get(j);
+                        schema.runMarginalAttribution(item, ACTION_STEP_TIME);
+                    }
                 }
             }
         }
     }
 
-    // Map from input path name string to object
-    public HashMap<String,Item> itemPathnameToObject = new HashMap<String,Item>();
-
-    // for debugging 
-    HashSet<Item> changedItems = new HashSet<Item>();
-
-    HashSet<Item> copySMSInputToItems(WorldState w) {
-        changedItems.clear();
-
+    /** This is called once during init to create corresponding Items for the primitive SensorInputs
+        in the SensoriMotorSystem
+     */
+    void copySMSInputToItems(WorldState w) {
         for (Map.Entry<String, SensorInput> entry : w.inputs.entrySet())
         {
             SensorInput s = entry.getValue();
@@ -225,74 +209,72 @@ public class Stage
 
             // USE HASHMAP
             // ensure that we have enough slots in the items list
-            Item item = itemPathnameToObject.get(path);
-            if (item == null) {
-                item = new Item(this, null, -1, newValue, Item.ItemType.PRIMITIVE);
-                itemPathnameToObject.put(path, item);
+            while(items.size() < s.id+1) {
+                Item item = new Item(this, null, -1, newValue, Item.ItemType.PRIMITIVE);
                 items.add(item);
                 int index = items.size()-1;
                 item.id = index;
                 item.name = String.format("#%d:%s",index,path);
             }
             
+            Item item = items.get(s.id);
             item.value = newValue;
             item.lastNegTransition = s.lastNegTransition;
             item.lastPosTransition = s.lastPosTransition;
-            if ((clock - s.lastNegTransition) < ExtendedCR.eventTransitionMaxInterval
-                || (clock - s.lastPosTransition) < ExtendedCR.eventTransitionMaxInterval) {
-                changedItems.add(item);
-            }
         }
-
-        if (changedItems.size() > 0) {
-            logger.info("changed items = "+changedItems);
-        }
-
-        return changedItems;
     }
 
     Random rand = new Random();
 
-    /* */
-    static final int ACTION_DURATION = 15;
+    /** How long to wait between actions */
+    public int ACTION_STEP_TIME = 15;
+
+    /** The current schema we are executing */
+    public Schema currentSchema = null;
+    public Action currentAction = null;
 
     /** decides what to do next, sets the appropriate motor actions primitives for WorldState.
         This is a placeholder method for a real action-selection mechanism. It also eventually needs
         to be able to chain together schema action sequences for compound actions.
     */
-    void chooseNextActions(WorldState w) {
+    void processWorldStep(SensoriMotorSystem sms) {
         // deactivate any prior actions from last time step
-        for (Action a: w.actions) {
+        for (Action a: worldState.actions) {
             a.activated = false;
         }
-        w.actions.clear();
+        worldState.actions.clear();
 
         // Clock speed is 60Hz
-        if ((clock % ACTION_DURATION) == 0) { // perform an action, and do learning, every nth clock cycle
-
-            // copies the sensori-motor input values from the world into the corresponding Schema items
-
-            copySMSInputToItems(w);
-
-            clearPredictedItemTransitions(); // Sec. 4.1.2 pp. 73
+        if ((clock % ACTION_STEP_TIME) == 0) { // perform an action, and do learning, every nth clock cycle
 
             updateMarginalAttribution(); // update statistics, from results of last action taken
+
+            if (currentSchema != null) {
+                // Sec. 4.1.2 pp. 73
+                currentSchema.clearPredictedTransitions();
+            }
 
             // TODO [hqm 2013-08] This will of course need to be elaborated when we have compound actions implemented.
             // For now each schema is mapped one-to-one to a primitive action.
             // We pick a primitive action at random, then execute a schema that uses it at random.
-            Action action = actions.get(rand.nextInt(actions.size()));
-            Schema schema = action.schemas.get(rand.nextInt(action.schemas.size()));
+            currentAction = actions.get(rand.nextInt(actions.size()));
+            currentSchema = currentAction.schemas.get(rand.nextInt(currentAction.schemas.size()));
 
-            if (action.type == Action.Type.COMPOUND) {
+            if (currentAction.type == Action.Type.COMPOUND) {
                 throw new RuntimeException("setMotorActions: we do not support the mapping from compound actions to primitive actions yet");
             }
-            schema.activate();
-            logger.debug("select schema "+schema);
-            w.actions.add(action);
+
+            // Need to implicitly activate any schemas who share this action
+            for (Schema schema: currentAction.schemas) {
+                schema.activate();
+            }
+            lastActionTime = clock;
+
+            logger.debug("select action "+currentAction);
+            worldState.actions.add(currentAction);
 
             // 
-            sms.processActions(w);
+            sms.processActions(worldState);
         }
     }
 

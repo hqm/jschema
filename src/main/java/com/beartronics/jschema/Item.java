@@ -15,13 +15,9 @@ public class Item {
     Schema predictedPositiveTransition = null;
     Schema predictedNegativeTransition = null;
 
-    long lastPosTransition =  Integer.MIN_VALUE;
-    long lastNegTransition =  Integer.MIN_VALUE;
+    long lastPosTransition =  Long.MIN_VALUE;
+    long lastNegTransition =  Long.MIN_VALUE;
 
-    void clearPredictedTransitions() {
-     predictedPositiveTransition = null;
-     predictedNegativeTransition = null;
-    }
 
     /** Synthetic items may be in an unknown state */
     boolean knownState = true;

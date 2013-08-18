@@ -49,19 +49,19 @@ public class ExtendedCR {
      * Made Up Minds Section 4.1.2  pp. 73
      * Loop over all items in system, viewing them as results items.
      *
+     * @param actionTime the most recent time the action was taken
      * Update transition statistics with respect to whether the our schema's action was taken or not.
      */
-    void updateResultItems(Stage stage, Schema schema, boolean actionTaken, Item item) {
-        long clock = stage.clock;
+    void updateResultItem(Stage stage, Schema schema, Item item, boolean actionTaken, long actionTime) {
         int id = item.id;
         if (!ignoreItems.get(id) 
             // TODO [are these filters needed?? redundant with ignoreItems?]
             && !schema.posResult.contains(item)  // dont evalute items already in our pos result set
             && !schema.negResult.contains(item)) {// dont evaluate items already in our neg result set
 
-            // Was there a transition within the last time interval?
-            boolean posTransition = (clock - item.lastPosTransition) < eventTransitionMaxInterval;
-            boolean negTransition = (clock - item.lastNegTransition) < eventTransitionMaxInterval;
+            // Was there a transition since the action was taken?
+            boolean posTransition = item.lastPosTransition > actionTime;
+            boolean negTransition = item.lastNegTransition > actionTime;
 
             boolean knownState = item.knownState;
 

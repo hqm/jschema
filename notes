@@ -295,5 +295,26 @@ A: A schema which says  ~LIGHT-ON/ FLIP_SWITCH/LIGHT-ON predicts a transition of
 + refactor marginal attribution to loop over all items in outer loop, 
 and only update on changing items.
 
++ sort SensorItems by transition time, then the copysms loop only has to look back as far as the last action time.
+Use TreeSet
+
+java_import "com.beartronics.jschema.WorldState"
+w = WorldState.new
+i = w.inputsByTransitionTime
+
+w.setClock(20)
+s1 = w.setSensorInput("foo", 0, false)
+w.setSensorInput("foo", 0, true)
+w.setClock(30)
+s2 = w.setSensorInput("bar", 1, false)
+w.setSensorInput("bar", 1, true)
+w.setClock(40)
+s3 = w.setSensorInput("baz", 2, false)
+w.setSensorInput("baz", 2, true)
+w.setClock(50)
+w.setSensorInput("foo", 0, false)
+
+
+
 
 

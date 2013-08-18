@@ -30,10 +30,10 @@ public class Schema {
     public Item syntheticItem = null;
 
     // Was this action taken recently (within the last time window)
-    boolean actionTaken;
+    public boolean actionTaken;
 
-    boolean succeeded = false;
-    boolean applicable = false;
+    public boolean succeeded = false;
+    public boolean applicable = false;
 
     // reliability statistics
     /** How many times did this schema achieve it's predicted result when activated? */
@@ -59,7 +59,8 @@ public class Schema {
     /** How long this schema typically remains applicable. Used to maintain the default on time of the synthetic item. */
     public float duration = 120;
     public float cost = 0;
-    long timeActivated = 0;
+    public long lastTimeActivated = Long.MIN_VALUE;
+    public long lastTimeSucceeded = Long.MIN_VALUE;
     long creationTime = 0;
 
     float correlation() {
@@ -97,11 +98,20 @@ public class Schema {
         this.syntheticItem = stage.makeSyntheticItem(this);
     }
 
+    void clearPredictedTransitions() {
+        for (Item item: posResult) {
+            item.predictedPositiveTransition = null;
+        }
+        for (Item item: negResult) {
+            item.predictedNegativeTransition = null;
+        }
+    }
 
     // Perform designated action
     public void activate() {
-        this.activations += 1;
-        this.action.activate(true);
+        activations += 1;
+        action.activate(true);
+        lastTimeActivated = stage.clock;
     }
 
     public void handleSuccessfulActivation() {
@@ -112,7 +122,7 @@ public class Schema {
         if (syntheticItem != null) {
             syntheticItem.setValue(true);
         }
-        timeActivated = stage.clock;
+        lastTimeSucceeded = stage.clock;
         /* Section 4.1.2 pp 73
            We need to 'publish' our 'prediction' of items that we assert will transition
            due to our activation.
@@ -131,12 +141,10 @@ public class Schema {
         }
     }
 
-    public void runMarginalAttribution(Item item) {
-        // Did we recently perform our specified action?
-        actionTaken = (stage.clock - action.lastActivatedAt) < ExtendedCR.eventTransitionMaxInterval;
+    public void runMarginalAttribution(Item item, long stepTime) {
         // Run the marginal attribution heuristics to decide whether to spin off
         // a new schema, with addtional item in the result set
-        xresult.updateResultItems(stage, this, actionTaken, item);
+        xresult.updateResultItem(stage, this, item, actionTaken, stepTime);
     }
 
     /**
@@ -144,11 +152,11 @@ public class Schema {
      *
      * 
      */
-    public void updateSyntheticItems() {
+    public void updateCounters() {
         if (syntheticItem != null) {
 
             // Absent evidence to the contrary, we deactivate this schema after it's duration has expired
-            if (stage.clock > timeActivated + duration) {
+            if (stage.clock > (lastTimeActivated + duration)) {
                 syntheticItem.setValue(false);
                 syntheticItem.knownState = false;
             }
@@ -188,7 +196,7 @@ public class Schema {
                 if (actionTaken && !succeeded) {
                     // TODO [hqm 2013-07] Need to bias this statistic towards more recent activations
                     failedWithActivation++;
-                    //                    syntheticItem.setValue(false);
+                    //syntheticItem.setValue(false);
                 }
 
                 if (!actionTaken && succeeded ) {

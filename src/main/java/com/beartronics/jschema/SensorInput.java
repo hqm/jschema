@@ -16,8 +16,8 @@ public class SensorInput {
     public String path;
     public int id; // a unique id for this input
 
-    long lastPosTransition =  Integer.MIN_VALUE;
-    long lastNegTransition =  Integer.MIN_VALUE;
+    public long lastPosTransition =  Long.MIN_VALUE;
+    public long lastNegTransition =  Long.MIN_VALUE;
     public boolean value;
     public boolean prevValue;
 
