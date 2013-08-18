@@ -127,23 +127,17 @@ public class Schema {
             item.predictedPositiveTransition = this;
         }
         for (Item item: negResult) {
-            item.predicteNegativeTransition = this;
+            item.predictedNegativeTransition = this;
         }
     }
-    public void runMarginalAttribution() {
+
+    public void runMarginalAttribution(Item item) {
         // Did we recently perform our specified action?
         actionTaken = (stage.clock - action.lastActivatedAt) < ExtendedCR.eventTransitionMaxInterval;
-
-        updateSyntheticItems();
-
         // Run the marginal attribution heuristics to decide whether to spin off
         // a new schema, with addtional item in the result set
-        xresult.updateResultItems(stage, this, actionTaken);
-        
-        // run marginal attribution on extended context, looking for new context spinoffs
-        //        xcontext.updateItems(stage, this, activated);
+        xresult.updateResultItems(stage, this, actionTaken, item);
     }
-
 
     /**
      * Update our statistics on success and failure

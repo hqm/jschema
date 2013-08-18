@@ -21,11 +21,11 @@ public class ExtendedCR {
     /* Ignore these items when doing marginal attribution */
     public BitSet ignoreItems = new BitSet();
 
-    TFloatArrayList offToOnActionTaken = new TFloatArrayList();
-    TFloatArrayList offToOnActionNotTaken = new TFloatArrayList();
+    TFloatArrayList posTransitionActionTaken = new TFloatArrayList();
+    TFloatArrayList posTransitionActionNotTaken = new TFloatArrayList();
 
-    TFloatArrayList onToOffActionTaken = new TFloatArrayList();
-    TFloatArrayList onToOffActionNotTaken = new TFloatArrayList();
+    TFloatArrayList negTransitionActionTaken = new TFloatArrayList();
+    TFloatArrayList negTransitionActionNotTaken = new TFloatArrayList();
 
     /* need to figure out if these are important
     TFloatArrayList remainedOnActionTaken = new TFloatArrayList();
@@ -51,113 +51,107 @@ public class ExtendedCR {
      *
      * Update transition statistics with respect to whether the our schema's action was taken or not.
      */
-    void updateResultItems(Stage stage, Schema schema, boolean actionTaken) {
+    void updateResultItems(Stage stage, Schema schema, boolean actionTaken, Item item) {
         long clock = stage.clock;
-        ArrayList<Item> items = stage.items;
-        //growArrays(stage.nitems);
-        for (int n = 0; n < items.size(); n++) {
-            if (!ignoreItems.get(n)) {
-                Item item = items.get(n);
-                if (item != null
-                    // TODO [are these filters needed?? redundant with ignoreItems?]
-                    && !schema.posResult.contains(item)  // dont evalute items already in our pos result set
-                    && !schema.negResult.contains(item)) {// dont evaluate items already in our neg result set
+        int id = item.id;
+        if (!ignoreItems.get(id) 
+            // TODO [are these filters needed?? redundant with ignoreItems?]
+            && !schema.posResult.contains(item)  // dont evalute items already in our pos result set
+            && !schema.negResult.contains(item)) {// dont evaluate items already in our neg result set
 
-                    // Was there a transition within the last time interval?
-                    boolean posTransition = (clock - item.lastPosTransition) < eventTransitionMaxInterval;
-                    boolean negTransition = (clock - item.lastNegTransition) < eventTransitionMaxInterval;
+            // Was there a transition within the last time interval?
+            boolean posTransition = (clock - item.lastPosTransition) < eventTransitionMaxInterval;
+            boolean negTransition = (clock - item.lastNegTransition) < eventTransitionMaxInterval;
 
-                    boolean knownState = item.knownState;
+            boolean knownState = item.knownState;
 
-                    // read out the existing statistics on the probablity of result transition with/without the action
+            // read out the existing statistics on the probablity of result transition with/without the action
 
-                    float positiveTransitionsA = offToOnActionTaken.get(n);
-                    float positiveTransitionsNA = offToOnActionNotTaken.get(n);
+            float positiveTransitionsA = posTransitionActionTaken.get(id);
+            float positiveTransitionsNA = posTransitionActionNotTaken.get(id);
 
-                    float negativeTransitionsA = onToOffActionTaken.get(n);
-                    float negativeTransitionsNA = onToOffActionNotTaken.get(n);
+            float negativeTransitionsA = negTransitionActionTaken.get(id);
+            float negativeTransitionsNA = negTransitionActionNotTaken.get(id);
 
-                    // Update the item state transition counters 
+            // Update the item state transition counters 
 
-                    // A synthetic item may be in an unknown state, in which case we do not want
-                    // to update stats on it. 
-                    if (knownState) {
-                        if (posTransition && item.predictedPositiveTransition == null) { // 0->1 transition
-                            if (actionTaken) {
-                                offToOnActionTaken.set(n,  positiveTransitionsA*recencyBias + 1);
-                                offToOnActionNotTaken.set(n,  positiveTransitionsNA*recencyBias);
-                            } else {
-                                offToOnActionNotTaken.set(n, positiveTransitionsNA + 1);
-                            }
-                        } else if (negTransition && item.predictedNegativeTransition) { // 1->0 transition
-                            if (actionTaken) {
-                                onToOffActionTaken.set(n, negativeTransitionsA*recencyBias + 1);
-                                onToOffActionNotTaken.set(n, negativeTransitionsNA*recencyBias);
-                            } else {
-                                onToOffActionNotTaken.set(n, negativeTransitionsNA + 1);
-                            }
-                        }
-                        /* code for taking stats on items which remain in their state, with no transition
-
-                           } else if (val && prevValue) {
-                           if (actionTaken) {
-                           remainedOnActionTaken.set(n, remainedOnActionTaken.get(n) + 1);
-                           } else {
-                           remainedOnActionNotTaken.set(n, remainedOnActionNotTaken.get(n) + 1);
-                           }
-                           } else if (val && prevValue) {
-                           if (actionTaken) {
-                           remainedOnActionTaken.set(n, remainedOnActionTaken.get(n) + 1);
-                           } else {
-                           remainedOnActionNotTaken.set(n, remainedOnActionNotTaken.get(n) + 1);
-                           }
-                           }
-                        */
+            // A synthetic item may be in an unknown state, in which case we do not want
+            // to update stats on it. 
+            if (knownState) {
+                if (posTransition && item.predictedPositiveTransition == null) { // 0->1 transition
+                    if (actionTaken) {
+                        posTransitionActionTaken.set(id,  positiveTransitionsA*recencyBias + 1);
+                        posTransitionActionNotTaken.set(id,  positiveTransitionsNA*recencyBias);
+                    } else {
+                        posTransitionActionNotTaken.set(id, positiveTransitionsNA + 1);
                     }
-
-                    float positiveTransitionCorrelation = (float) positiveTransitionsA / (float) positiveTransitionsNA;
-                    float negativeTransitionCorrelation = (float) negativeTransitionsA / (float) negativeTransitionsNA;
-                    int totalPositiveTrials = (int) (positiveTransitionsA + positiveTransitionsNA);
-                    int totalNegativeTrials = (int) (negativeTransitionsA + negativeTransitionsNA);
-
-                    /** per GLD: "My implementation used an ad hoc method that was tied to its
-                        space-limited statistics collection method. But the real way to do it
-                        is to use a threshold of statistical significance. So just pre-compute
-                        a lookup table that says what the minimum correlation is that can be
-                        supported by a given sample size."
-                    */
-
-                    if (positiveTransitionsA > MIN_TRIALS) {
-                        double threshold = spinoff_correlation_threshold[(int) Math.floor(Math.log(totalPositiveTrials))];
-                        if (positiveTransitionCorrelation > threshold) {
-                            logger.info("attempt spinoff "+schema+" item "+item+" pos correlation="+positiveTransitionCorrelation+" threshold="+threshold+" totaltrials="+totalPositiveTrials+" p(A)/p(NA)"+positiveTransitionsA+" / "+positiveTransitionsNA);
-                            //if (item.id == 129) {
-                            //logger.info("attempt spin off "+schema + " with result item "+item+" pos_child-with-result-exists="+
-                            //schema.childWithResultExists(item, true));
-                            //}
-                            schema.spinoffWithNewResultItem(item, true);
-                        }
+                } else if (negTransition && item.predictedNegativeTransition == null) { // 1->0 transition
+                    if (actionTaken) {
+                        negTransitionActionTaken.set(id, negativeTransitionsA*recencyBias + 1);
+                        negTransitionActionNotTaken.set(id, negativeTransitionsNA*recencyBias);
+                    } else {
+                        negTransitionActionNotTaken.set(id, negativeTransitionsNA + 1);
                     }
+                }
+                /* code for taking stats on items which remain in their state, with no transition
+
+                   } else if (val && prevValue) {
+                   if (actionTaken) {
+                   remainedOnActionTaken.set(n, remainedOnActionTaken.get(n) + 1);
+                   } else {
+                   remainedOnActionNotTaken.set(n, remainedOnActionNotTaken.get(n) + 1);
+                   }
+                   } else if (val && prevValue) {
+                   if (actionTaken) {
+                   remainedOnActionTaken.set(n, remainedOnActionTaken.get(n) + 1);
+                   } else {
+                   remainedOnActionNotTaken.set(n, remainedOnActionNotTaken.get(n) + 1);
+                   }
+                   }
+                */
+            }
+
+            float positiveTransitionCorrelation = (float) positiveTransitionsA / (float) positiveTransitionsNA;
+            float negativeTransitionCorrelation = (float) negativeTransitionsA / (float) negativeTransitionsNA;
+            int totalPositiveTrials = (int) (positiveTransitionsA + positiveTransitionsNA);
+            int totalNegativeTrials = (int) (negativeTransitionsA + negativeTransitionsNA);
+
+            /** per GLD: "My implementation used an ad hoc method that was tied to its
+                space-limited statistics collection method. But the real way to do it
+                is to use a threshold of statistical significance. So just pre-compute
+                a lookup table that says what the minimum correlation is that can be
+                supported by a given sample size."
+            */
+
+            if (positiveTransitionsA > MIN_TRIALS) {
+                double threshold = spinoff_correlation_threshold[(int) Math.floor(Math.log(totalPositiveTrials))];
+                if (positiveTransitionCorrelation > threshold) {
+                    logger.info("attempt spinoff "+schema+" item "+item+" pos correlation="+positiveTransitionCorrelation+" threshold="+threshold+" totaltrials="+totalPositiveTrials+" p(A)/p(NA)"+positiveTransitionsA+" / "+positiveTransitionsNA);
+                    //if (item.id == 129) {
+                    //logger.info("attempt spin off "+schema + " with result item "+item+" pos_child-with-result-exists="+
+                    //schema.childWithResultExists(item, true));
+                    //}
+                    schema.spinoffWithNewResultItem(item, true);
+                }
+            }
                 
-                    if (negativeTransitionsA > MIN_TRIALS) {
-                        double threshold = spinoff_correlation_threshold[(int)Math.floor(Math.log(totalNegativeTrials))];
-                        if (negativeTransitionCorrelation > threshold) {
-                            schema.spinoffWithNewResultItem(item, false);
-                        }
-                    }
+            if (negativeTransitionsA > MIN_TRIALS) {
+                double threshold = spinoff_correlation_threshold[(int)Math.floor(Math.log(totalNegativeTrials))];
+                if (negativeTransitionCorrelation > threshold) {
+                    schema.spinoffWithNewResultItem(item, false);
                 }
             }
         }
     }
 
     public void clearNegativeItems(int itemId) {
-        onToOffActionNotTaken.set(itemId, 0);
-        onToOffActionTaken.set(itemId, 0);
+        negTransitionActionNotTaken.set(itemId, 0);
+        negTransitionActionTaken.set(itemId, 0);
     }
 
     public void clearPositiveItems(int itemId) {
-        offToOnActionNotTaken.set(itemId, 0);
-        offToOnActionTaken.set(itemId, 0);
+        posTransitionActionNotTaken.set(itemId, 0);
+        posTransitionActionTaken.set(itemId, 0);
     }
 
     public String toHTML(Stage stage, Schema schema) {
@@ -171,10 +165,10 @@ public class ExtendedCR {
             if (item != null) {
                 p.println(String.format("%d %s &uarr; %f [A: %s, !A: %s],  &darr; %f [A: %s, !A: %s]",
                                         n, item.makeLink(),
-                                        (float) offToOnActionTaken.get(n) /  (float) offToOnActionNotTaken.get(n),
-                                        offToOnActionTaken.get(n), offToOnActionNotTaken.get(n),
-                                        (float) onToOffActionTaken.get(n) / (float) onToOffActionNotTaken.get(n),
-                                        onToOffActionTaken.get(n), onToOffActionNotTaken.get(n)));
+                                        (float) posTransitionActionTaken.get(n) /  (float) posTransitionActionNotTaken.get(n),
+                                        posTransitionActionTaken.get(n), posTransitionActionNotTaken.get(n),
+                                        (float) negTransitionActionTaken.get(n) / (float) negTransitionActionNotTaken.get(n),
+                                        negTransitionActionTaken.get(n), negTransitionActionNotTaken.get(n)));
             }
         }
 
@@ -193,10 +187,10 @@ public class ExtendedCR {
     }
 
     void growArrays(int n) {
-        growArray(offToOnActionTaken,n);
-        growArray(offToOnActionNotTaken,n);
-        growArray(onToOffActionTaken,n);
-        growArray(onToOffActionNotTaken,n);
+        growArray(posTransitionActionTaken,n);
+        growArray(posTransitionActionNotTaken,n);
+        growArray(negTransitionActionTaken,n);
+        growArray(negTransitionActionNotTaken,n);
         /*
           growArray(remainedOnActionTaken,n);
           growArray(remainedOnActionNotTaken,n);

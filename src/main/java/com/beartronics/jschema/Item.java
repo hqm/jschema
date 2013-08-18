@@ -13,14 +13,14 @@ public class Item {
      * by a schema which was just activated and predicted they would occur.
      */
     Schema predictedPositiveTransition = null;
-    Schema predicteNegativeTransition = null;
+    Schema predictedNegativeTransition = null;
 
     long lastPosTransition =  Integer.MIN_VALUE;
     long lastNegTransition =  Integer.MIN_VALUE;
 
     void clearPredictedTransitions() {
      predictedPositiveTransition = null;
-     predicteNegativeTransition = null;
+     predictedNegativeTransition = null;
     }
 
     /** Synthetic items may be in an unknown state */
@@ -72,7 +72,7 @@ public class Item {
         }
 
         p.println("predictedPositiveTransition: "+predictedPositiveTransition);
-        p.println("predicteNegativeTransition: "+predicteNegativeTransition);
+        p.println("predictedNegativeTransition: "+predictedNegativeTransition);
 
         p.println("&Delta; lastPosTransition: "+ (stage.clock - lastPosTransition));
         p.println("&Delta; lastNegTransition: "+ (stage.clock - lastNegTransition));

@@ -45,7 +45,7 @@ public class Stage
     public void clearPredictedItemTransitions() {
         for (Item item: items) {
             item.predictedPositiveTransition = null;
-            item.predicteNegativeTransition = null;
+            item.predictedNegativeTransition = null;
         }
     }
 
@@ -188,16 +188,24 @@ public class Stage
     }
 
     void updateMarginalAttribution() {
-        for (int i = 0 ; i < schemas.size(); i++) {
+        int nschemas = schemas.size();
+        for (int i = 0 ; i < nschemas; i++) {
             Schema s = schemas.get(i);
             s.updateSyntheticItems();
         }
-        for (int i = 0 ; i < schemas.size(); i++) {
-            Schema s = schemas.get(i);
-            s.runMarginalAttribution();
+
+        int nitems = items.size();
+        for (int i = 0; i < nitems; i++) {
+            Item item = items.get(i);
+            if (item != null &&
+                (clock - item.lastNegTransition < ExtendedCR.eventTransitionMaxInterval) || 
+                (clock - item.lastPosTransition <  ExtendedCR.eventTransitionMaxInterval)) {
+                for (int j = 0; j < nschemas; j++) {
+                    Schema schema = schemas.get(j);
+                    schema.runMarginalAttribution(item);
+                }
+            }
         }
-
-
     }
 
     // Map from input path name string to object
