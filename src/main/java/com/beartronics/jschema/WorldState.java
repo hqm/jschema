@@ -10,15 +10,18 @@ import org.jbox2d.dynamics.joints.*;
 import org.jbox2d.collision.shapes.Shape;
 
 import processing.core.*;
-
+import org.apache.log4j.Logger;
 
 public class WorldState {
+    static Logger logger = Logger.getLogger(WorldState.class);
 
-    int sensorID = 0;
     public long clock = 0;
+    public HashMap<String,SensorInput> inputs = new HashMap<String,SensorInput>();
+    
+    // Actions which are to be performed on this clock step
+    public ArrayList<Action> actions = new ArrayList<Action>();
 
     public WorldState() {        
-
     }
 
     public void setClock(long c) {
@@ -31,7 +34,6 @@ public class WorldState {
             s = new SensorInput(path, id, val);
             inputs.put(path, s);
         }
-        inputsByTransitionTime.remove(s);
 
         s.prevValue = s.value;
         s.value = val;
@@ -41,22 +43,11 @@ public class WorldState {
             s.lastNegTransition = clock;
         }
 
-        inputsByTransitionTime.add(s);
+        if (s.id == 127 || s.id==126) {
+            logger.info("setSensorInput "+clock+" "+s+" lastPos="+s.lastPosTransition+" lastNeg="+s.lastNegTransition);
+        }
         return s;
     }
-
-    public HashMap<String,SensorInput> inputs = new HashMap<String,SensorInput>();
-    public TreeSet<SensorInput> inputsByTransitionTime =
-        new TreeSet<SensorInput>(new Comparator<SensorInput>(){
-                public int compare(SensorInput a, SensorInput b){
-                    long recentA = Math.max(a.lastPosTransition, a.lastNegTransition);
-                    long recentB = Math.max(b.lastPosTransition, b.lastNegTransition);
-                    return (int) (recentA - recentB);
-                }
-            });
-    
-    // Actions which are to be performed on this clock step
-    public ArrayList<Action> actions = new ArrayList<Action>();
 
     public String toString() {
         StringBuilder out = new StringBuilder();

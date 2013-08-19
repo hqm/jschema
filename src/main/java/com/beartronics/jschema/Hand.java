@@ -237,7 +237,7 @@ public class Hand extends Box {
      * For now this uses absolute angle-0 coordinates. We need to rotate the normal vectors
      * by the hand angle to get the correct sides if the hand is rotated.
      */
-    int touchingSides() {
+    public int touchingSides() {
         int sides = 0;
         ContactEdge cedge = body.getContactList();
         StringBuilder s = null;
@@ -266,7 +266,7 @@ public class Hand extends Box {
      @param wpts a list of WorldManifold contact points
      @return a SIDES bit vector
      */
-    int getSidesFromContactPoints(Vec2 wpts[]) {
+    public int getSidesFromContactPoints(Vec2 wpts[]) {
         Vec2 bcenter = body.getPosition();
         int sides = 0;
 

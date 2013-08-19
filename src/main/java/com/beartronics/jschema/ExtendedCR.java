@@ -47,13 +47,16 @@ public class ExtendedCR {
 
     /**
      * Made Up Minds Section 4.1.2  pp. 73
-     * Loop over all items in system, viewing them as results items.
      *
      * @param actionTime the most recent time the action was taken
      * Update transition statistics with respect to whether the our schema's action was taken or not.
      */
     void updateResultItem(Stage stage, Schema schema, Item item, boolean actionTaken, long actionTime) {
         int id = item.id;
+
+        //boolean debug = (id == 127 || id == 126) && (schema.action.type == Action.Type.HAND1_GRASP);
+        boolean debug=false;
+
         if (!ignoreItems.get(id) 
             // TODO [are these filters needed?? redundant with ignoreItems?]
             && !schema.posResult.contains(item)  // dont evalute items already in our pos result set
@@ -65,6 +68,14 @@ public class ExtendedCR {
 
             boolean knownState = item.knownState;
 
+            if (debug) {
+                logger.info("***** updateResultItem "+schema+" "+"item="+item);
+                logger.info("actionTaken="+actionTaken+" actionTime="+actionTime+" clock="+stage.clock);
+                logger.info("item.lastPosTransition="+item.lastPosTransition +", item.lastNegTransition="+item.lastNegTransition);
+                logger.info("posTransition="+posTransition +", negTransition="+negTransition);
+            }
+
+
             // read out the existing statistics on the probablity of result transition with/without the action
 
             float positiveTransitionsA = posTransitionActionTaken.get(id);
@@ -72,6 +83,17 @@ public class ExtendedCR {
 
             float negativeTransitionsA = negTransitionActionTaken.get(id);
             float negativeTransitionsNA = negTransitionActionNotTaken.get(id);
+
+            if (debug) {
+                logger.info("item.predictedPositiveTransition == "+item.predictedPositiveTransition+", knownState = "+knownState);
+                logger.info(
+                    "positiveTransitionsA=" + positiveTransitionsA +
+                    ", positiveTransitionsNA=" + positiveTransitionsNA +
+                    ", negativeTransitionsA=" + negativeTransitionsA +
+                    ", negativeTransitionsNA=" + negativeTransitionsNA);
+            }
+
+
 
             // Update the item state transition counters 
 
@@ -82,15 +104,21 @@ public class ExtendedCR {
                     if (actionTaken) {
                         posTransitionActionTaken.set(id,  positiveTransitionsA*recencyBias + 1);
                         posTransitionActionNotTaken.set(id,  positiveTransitionsNA*recencyBias);
+                        if (debug) {
+                            logger.info("==> actionTaken, increment posTransitionActionTaken");
+                        }
                     } else {
-                        posTransitionActionNotTaken.set(id, positiveTransitionsNA + 1);
+                        posTransitionActionNotTaken.set(id, positiveTransitionsNA*recencyBias + 1);
+                        if (debug) {
+                            logger.info("==> action NOT Taken, increment posTransitionActionNotTaken");
+                        }
                     }
                 } else if (negTransition && item.predictedNegativeTransition == null) { // 1->0 transition
                     if (actionTaken) {
                         negTransitionActionTaken.set(id, negativeTransitionsA*recencyBias + 1);
                         negTransitionActionNotTaken.set(id, negativeTransitionsNA*recencyBias);
                     } else {
-                        negTransitionActionNotTaken.set(id, negativeTransitionsNA + 1);
+                        negTransitionActionNotTaken.set(id, negativeTransitionsNA*recencyBias + 1);
                     }
                 }
                 /* code for taking stats on items which remain in their state, with no transition
@@ -116,6 +144,9 @@ public class ExtendedCR {
             int totalPositiveTrials = (int) (positiveTransitionsA + positiveTransitionsNA);
             int totalNegativeTrials = (int) (negativeTransitionsA + negativeTransitionsNA);
 
+            if (debug) {
+                logger.info("positiveTransitionCorrelation = "+positiveTransitionCorrelation+" positiveTransitionsA="+positiveTransitionsA);
+            }
             /** per GLD: "My implementation used an ad hoc method that was tied to its
                 space-limited statistics collection method. But the real way to do it
                 is to use a threshold of statistical significance. So just pre-compute

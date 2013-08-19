@@ -15,8 +15,8 @@ public class Item {
     Schema predictedPositiveTransition = null;
     Schema predictedNegativeTransition = null;
 
-    long lastPosTransition =  Long.MIN_VALUE;
-    long lastNegTransition =  Long.MIN_VALUE;
+    long lastPosTransition =  -1000;
+    long lastNegTransition =  -1000;
 
 
     /** Synthetic items may be in an unknown state */
@@ -70,8 +70,8 @@ public class Item {
         p.println("predictedPositiveTransition: "+predictedPositiveTransition);
         p.println("predictedNegativeTransition: "+predictedNegativeTransition);
 
-        p.println("&Delta; lastPosTransition: "+ (stage.clock - lastPosTransition));
-        p.println("&Delta; lastNegTransition: "+ (stage.clock - lastNegTransition));
+        p.println("&Delta; lastPosTransition: "+ (lastPosTransition < 0 ? "never" : (stage.clock - lastPosTransition)));
+        p.println("&Delta; lastNegTransition: "+ (lastNegTransition < 0 ? "never" : (stage.clock - lastNegTransition)));
 
 
         p.println("value: "+value);

@@ -25,7 +25,7 @@ public class Stage
     public ArrayList<Action> voluntaryActions = new ArrayList<Action>();
     
     /** The time at which the most recent action was initiated */
-    public long lastActionTime = Long.MIN_VALUE;
+    public long lastActionTime = -1000;
     public WorldState worldState;
 
     public long clock = 0;
@@ -39,8 +39,10 @@ public class Stage
     public int countSyntheticItems() {
         int n = 0;
         for (Item item: items) {
-            if (item.type == Item.ItemType.SYNTHETIC) {
-                n++;
+            if (item != null) {
+                if (item.type == Item.ItemType.SYNTHETIC) {
+                    n++;
+                }
             }
         }
         return n;
@@ -117,8 +119,10 @@ public class Stage
         // Create schemas for the primitive actions
         Action.Type types[] = {
             //Action.Type.HAND1_LEFT, Action.Type.HAND1_RIGHT, 
-            Action.Type.HAND1_UP, Action.Type.HAND1_DOWN,
+            Action.Type.HAND1_DOWN,
             Action.Type.HAND1_GRASP, Action.Type.HAND1_UNGRASP,
+            Action.Type.HAND1_UP, 
+
             //            Action.Type.CENTER_GAZE,
             //            Action.Type.FOVEATE_NEXT_MOTION,
             /*
@@ -159,6 +163,8 @@ public class Stage
         }
     }
 
+    ArrayList<Item> changedItems = new ArrayList<Item>();
+
     /**
        
      */
@@ -168,31 +174,40 @@ public class Stage
             Schema schema = schemas.get(i);
             // Did we recently perform our specified action?
             schema.actionTaken = ((clock - schema.lastTimeActivated) <= ACTION_STEP_TIME);
+            if (schema.actionTaken) {
+                logger.info("updateMarginalAttribution actionTaken "+schema);
+            } else {
+                logger.info("updateMarginalAttribution NOT actionTaken "+schema);
+            }
             schema.updateCounters();
         }
 
-        // Optimization here; we only look at items which have changed since the last action was taken.
-        // We use the time-sorted list of SensorInput from WorldState, which map 1:1 with Items
-        while (true) {
-            SensorInput si = worldState.inputsByTransitionTime.pollLast();
-            if (si == null) {
-                break;
-            } else {
-                long mostRecentTransitionTime = Math.max(si.lastPosTransition, si.lastNegTransition);
-                if (mostRecentTransitionTime <= lastActionTime) {
-                    break;
-                }
+        changedItems.clear();
+        // Copy sensorinputs to items
+        for (SensorInput si : worldState.inputs.values()) {
+            long mostRecentTransitionTime = Math.max(si.lastPosTransition, si.lastNegTransition);
+            if (mostRecentTransitionTime > lastActionTime) {
                 Item item = items.get(si.id);
                 if (item == null) {
                     logger.error(String.format("updateMarginalAttribution: error no Item %d found for %s", si.id, si));
                 } else {
                     item.lastNegTransition = si.lastNegTransition;
                     item.lastPosTransition = si.lastPosTransition;
-                    for (int j = 0; j < nschemas; j++) {
-                        Schema schema = schemas.get(j);
-                        schema.runMarginalAttribution(item, ACTION_STEP_TIME);
+                    item.value = si.value;
+                    changedItems.add(item);
+                    logger.info(clock + ": add changed item "+item);
+                    if (item.id == 127 || item.id==126) { //hand1.grasp-one
+                        logger.info("stage.updateMarginalAttr "+item.toString() + " delta neg = "+(clock - item.lastNegTransition) +
+                                    " delta pos = " + (clock - item.lastPosTransition));
                     }
                 }
+            }
+        }
+
+        for (Item item: changedItems) {
+            for (int j = 0; j < nschemas; j++) {
+                Schema schema = schemas.get(j);
+                schema.runMarginalAttribution(item, clock-ACTION_STEP_TIME);
             }
         }
     }
@@ -207,27 +222,26 @@ public class Stage
             String path = s.path;
             boolean newValue = s.value;
 
-            // USE HASHMAP
-            // ensure that we have enough slots in the items list
+            // Ensure that we have enough slots in the items list to put this item by id
             while(items.size() < s.id+1) {
-                Item item = new Item(this, null, -1, newValue, Item.ItemType.PRIMITIVE);
-                items.add(item);
-                int index = items.size()-1;
-                item.id = index;
-                item.name = String.format("#%d:%s",index,path);
+                items.add(null);
             }
             
             Item item = items.get(s.id);
-            item.value = newValue;
+            if (item == null) {
+                String name = String.format("#%d:%s",s.id,path);
+                item = new Item(this, name, s.id, newValue, Item.ItemType.PRIMITIVE);
+            }
             item.lastNegTransition = s.lastNegTransition;
             item.lastPosTransition = s.lastPosTransition;
+            items.set(s.id, item);
         }
     }
 
     Random rand = new Random();
 
     /** How long to wait between actions */
-    public int ACTION_STEP_TIME = 15;
+    public int ACTION_STEP_TIME = 5;
 
     /** The current schema we are executing */
     public Schema currentSchema = null;
@@ -247,6 +261,7 @@ public class Stage
         // Clock speed is 60Hz
         if ((clock % ACTION_STEP_TIME) == 0) { // perform an action, and do learning, every nth clock cycle
 
+            logger.info("processWorldStep clock="+clock);
             updateMarginalAttribution(); // update statistics, from results of last action taken
 
             if (currentSchema != null) {
@@ -257,8 +272,10 @@ public class Stage
             // TODO [hqm 2013-08] This will of course need to be elaborated when we have compound actions implemented.
             // For now each schema is mapped one-to-one to a primitive action.
             // We pick a primitive action at random, then execute a schema that uses it at random.
-            currentAction = actions.get(rand.nextInt(actions.size()));
-            currentSchema = currentAction.schemas.get(rand.nextInt(currentAction.schemas.size()));
+            //currentAction = actions.get(rand.nextInt(actions.size()));
+            //currentSchema = currentAction.schemas.get(rand.nextInt(currentAction.schemas.size()));
+            currentAction = actions.get((int)(clock / ACTION_STEP_TIME) % actions.size());
+            currentSchema = currentAction.schemas.get(0);
 
             if (currentAction.type == Action.Type.COMPOUND) {
                 throw new RuntimeException("setMotorActions: we do not support the mapping from compound actions to primitive actions yet");
@@ -271,9 +288,8 @@ public class Stage
             lastActionTime = clock;
 
             logger.debug("select action "+currentAction);
+            // Send the selected actions to the sensorimotor system to be executed
             worldState.actions.add(currentAction);
-
-            // 
             sms.processActions(worldState);
         }
     }

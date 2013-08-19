@@ -33,7 +33,7 @@ public class Action {
     String    name;
     int       index;
     boolean   activated;
-    long      lastActivatedAt = Long.MIN_VALUE;
+    long      lastActivatedAt = -1000;
 
     Type  type;
 

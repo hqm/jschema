@@ -59,8 +59,8 @@ public class Schema {
     /** How long this schema typically remains applicable. Used to maintain the default on time of the synthetic item. */
     public float duration = 120;
     public float cost = 0;
-    public long lastTimeActivated = Long.MIN_VALUE;
-    public long lastTimeSucceeded = Long.MIN_VALUE;
+    public long lastTimeActivated = -1000;
+    public long lastTimeSucceeded = -1000;
     long creationTime = 0;
 
     float correlation() {
@@ -141,10 +141,14 @@ public class Schema {
         }
     }
 
-    public void runMarginalAttribution(Item item, long stepTime) {
+    /**
+       @param item the item for which we're updating statistics
+       @param lastTimeActivityTime the time that any action was taken (not necessarily our action)
+     */
+    public void runMarginalAttribution(Item item, long lastActivityTime) {
         // Run the marginal attribution heuristics to decide whether to spin off
         // a new schema, with addtional item in the result set
-        xresult.updateResultItem(stage, this, item, actionTaken, stepTime);
+        xresult.updateResultItem(stage, this, item, actionTaken, lastActivityTime);
     }
 
     /**

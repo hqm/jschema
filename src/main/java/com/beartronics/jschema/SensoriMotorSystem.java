@@ -24,6 +24,8 @@ public class SensoriMotorSystem {
 
     public JSchema app;
 
+    public WorldState worldState;
+
     // Object planes
     public Plane plane0; // back plane
     public Plane plane1; // front plane
@@ -181,7 +183,8 @@ public class SensoriMotorSystem {
         hand2 = plane1.addHand( xpos, ypos, 32, 32, 5, app.color(255,0,0));
         hand1.alpha = 255;
         hand2.alpha = 255;
-        hand1.hjog(-1,0);
+        hand1.hjog(-2,0);
+        hand1.vjog(3,0);
         hand2.hjog(1,0);
 
         hand1.updatePosition(xpos,ypos);
@@ -327,6 +330,8 @@ public class SensoriMotorSystem {
 
         }
     }
+    String lastActionString = "";
+
 
     void displayInfoText() {
         app.fill(0);
@@ -340,7 +345,12 @@ public class SensoriMotorSystem {
                                 app.stage.schemas.size(),
                                 app.stage.items.size(),
                                 app.stage.actions.size()), 20, 72);
-        app.text(String.format("last actions: %s", worldState.actions), 20, 82);
+        String desc = worldState.actions.toString();
+        if (!desc.equals("[]")) {
+            lastActionString = desc;
+        }
+        app.text(String.format("current actions: %s", worldState.actions), 20, 82);
+        app.text(String.format("last actions: %s", lastActionString), 20, 92);
     }
 
     void displayRetinaView() {
@@ -579,8 +589,6 @@ public class SensoriMotorSystem {
     void mousePressed() {
         currentPlane.mousePressed();
     }
-
-    WorldState worldState;
 
     public WorldState getWorldState() {
         return worldState;

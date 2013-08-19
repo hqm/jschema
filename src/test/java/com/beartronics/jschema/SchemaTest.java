@@ -12,11 +12,16 @@ public class SchemaTest extends TestCase {
     JSchema app;
     SensoriMotorSystem sms;
     Stage stage;
-    
+    WorldState worldState;
+
     protected void setUp() {
         app = new JSchema();
         sms = new SensoriMotorSystem(app, null);
         stage = new Stage(sms);
+        worldState = new WorldState();
+        sms.worldState = worldState;
+        System.out.println("SchemaTest setup sms.worldState ="+sms.worldState);
+        stage.initWorld();
     }
 
     public void testCreate() {
@@ -30,49 +35,44 @@ public class SchemaTest extends TestCase {
      * change a Sensory item value, and check that Schema mechanism sees the change.
      */
     public void testItemTransition() {
-        long clock = 0;
-        WorldState worldState = new WorldState();
-        sms.worldState = worldState;
-        worldState.setClock(clock);
+        worldState.setClock(0);
 
         // Make a transition on grasp-sensor input
         worldState.setSensorInput("hand1.grasp-one", 0, false);
         SensorInput s = worldState.inputs.get("hand1.grasp-one");
         assertEquals("hand1.grasp-one", s.path);
         assertEquals(false, s.value);
-        assertEquals( Integer.MIN_VALUE, s.lastPosTransition);
-        assertEquals( Integer.MIN_VALUE, s.lastNegTransition );
+        assertEquals( Long.MIN_VALUE, s.lastPosTransition);
+        assertEquals( Long.MIN_VALUE, s.lastNegTransition );
 
         
         // transition grasp-sensor from 0->1. lastPosTransition should be equal to clock time
-        clock  = 5;
-        worldState.setClock(clock);
+        worldState.setClock(5);
         worldState.setSensorInput("hand1.grasp-one", 0, true);        
         assertEquals("hand1.grasp-one", s.path);
         assertEquals(5, s.lastPosTransition);
-        assertEquals(Integer.MIN_VALUE, s.lastNegTransition);        
+        assertEquals(Long.MIN_VALUE, s.lastNegTransition);        
 
         // transition back 1->0 , should see lastNegTransition set to clock time
-        clock = 8;
-        worldState.setClock(clock);
+        worldState.setClock(8);
         worldState.setSensorInput("hand1.grasp-one", 0, false);        
         assertEquals(5, s.lastPosTransition);
         assertEquals(8, s.lastNegTransition);        
 
         // advance clock, copy sensorimotor inputs to schema engine.
         // Should see the values copied from the SensorInput to the corresponding Item object.
-        clock = 12;
-        HashSet<Item> changed = stage.copySMSInputToItems(worldState);
+        worldState.setClock(12);
+        stage.copySMSInputToItems(worldState);
+        assertEquals(1, stage.items.size());
         Item item = stage.items.get(0);
+        System.out.println("item = "+item);
         assertEquals(false, item.value);
         assertEquals(s.lastNegTransition, item.lastNegTransition);
         assertEquals(s.lastPosTransition, item.lastPosTransition );
-        assertEquals(1, changed.size());
-        assertEquals(true, changed.contains(item));
         
         // Create a schema, and activate it.
-        clock = 14;
-        Action grasp = new Action(stage, "testaction", Action.Type.HAND1_GRASP, 0, false);
+        worldState.setClock(14);
+        Action grasp = new Action(stage, "hand1-grasp", Action.Type.HAND1_GRASP, 0);
         Schema schema = new Schema(stage, 0, grasp);
         assertEquals(false, schema.actionTaken);
         assertEquals(null, schema.syntheticItem);
@@ -80,9 +80,9 @@ public class SchemaTest extends TestCase {
 
         // Run marginal attribution. Schema should show as activated.
         // extended result stats should increment one on the item's positive-transition-with-action-taken counter.
-        clock = 20;
-        changed = stage.copySMSInputToItems(worldState);
-        schema.runMarginalAttribution(item);
+        worldState.setClock(20);
+        stage.copySMSInputToItems(worldState);
+        stage.updateMarginalAttribution();
         assertEquals(true, schema.actionTaken);
         assertEquals(1.0f, schema.xresult.posTransitionActionTaken.get(0));
         assertEquals(0.0f, schema.xresult.negTransitionActionTaken.get(0));
