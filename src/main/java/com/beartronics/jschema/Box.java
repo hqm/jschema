@@ -22,8 +22,6 @@ import processing.opengl.*;
 public class Box extends Object2D {
 
     // We need to keep track of a Body and a width and height
-    public float w;
-    public float h;
     float alpha = 255;
     final static int MAX_DENSITY = 10;
 

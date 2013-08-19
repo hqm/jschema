@@ -43,9 +43,11 @@ public class WorldState {
             s.lastNegTransition = clock;
         }
 
-        if (s.id == 127 || s.id==126) {
+        /*
+          if (s.id == 127 || s.id==126) {
             logger.info("setSensorInput "+clock+" "+s+" lastPos="+s.lastPosTransition+" lastNeg="+s.lastNegTransition);
         }
+        */
         return s;
     }
 

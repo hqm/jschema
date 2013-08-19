@@ -126,6 +126,11 @@ public class JSchema extends PApplet {
     }
 
     public void keyPressed() {
+        // disengage the clutch
+        if (key == 'p') {
+            stage.run = !stage.run;
+        }
+
         sms.keyPressed();
     }
         

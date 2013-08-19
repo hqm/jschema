@@ -39,11 +39,8 @@ public class ExtendedCR {
     static final int MIN_TRIALS = 5;
     static final float recencyBias = 0.999f;
 
-    // event transitions can be seen up to 1 second in the past
-    static final int eventTransitionMaxInterval = 60; 
-
     /** table of correlation threshold needed to spin off a schema, vs log of number of trials */
-    double spinoff_correlation_threshold[] = {10.0, 6.0, 4.0, 3.0, 2.5, 2.0, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5 };
+    double spinoff_correlation_threshold[] = {20.0, 15.0, 10.0, 8.0, 4.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0 };
 
     /**
      * Made Up Minds Section 4.1.2  pp. 73
@@ -157,11 +154,6 @@ public class ExtendedCR {
             if (positiveTransitionsA > MIN_TRIALS) {
                 double threshold = spinoff_correlation_threshold[(int) Math.floor(Math.log(totalPositiveTrials))];
                 if (positiveTransitionCorrelation > threshold) {
-                    logger.info("attempt spinoff "+schema+" item "+item+" pos correlation="+positiveTransitionCorrelation+" threshold="+threshold+" totaltrials="+totalPositiveTrials+" p(A)/p(NA)"+positiveTransitionsA+" / "+positiveTransitionsNA);
-                    //if (item.id == 129) {
-                    //logger.info("attempt spin off "+schema + " with result item "+item+" pos_child-with-result-exists="+
-                    //schema.childWithResultExists(item, true));
-                    //}
                     schema.spinoffWithNewResultItem(item, true);
                 }
             }

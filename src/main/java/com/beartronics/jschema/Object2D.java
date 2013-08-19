@@ -262,7 +262,7 @@ public abstract class Object2D {
      * param obj2
      */
     public void weld(Object2D obj1, Object2D obj2) {
-        app.println("weld "+obj1+" to "+obj2);
+        logger.debug("weld "+obj1+" to "+obj2);
         WeldJointDef wd = new WeldJointDef();
         //wd.collideConnected = false;
         wd.initialize(obj1.body, obj2.body, obj1.body.getWorldCenter());

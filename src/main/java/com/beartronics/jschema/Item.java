@@ -124,7 +124,7 @@ public class Item {
         } else {
             val += value;
         }
-        return "Item-"+id+" "+type+" "+lname+" := "+val;
+        return "Item-"+id+" "+type+" "+lname; // +" := "+val;
 
     }
     public String makeLink() {

@@ -276,6 +276,7 @@ public class Schema {
         stage.schemas.add(child);
         stage.ensureXCRcapacities();
         
+        logger.info("spun off new schema "+child);
         return child;
     }
 
@@ -348,7 +349,7 @@ public class Schema {
     }
 
     public String makeLink() {
-        return String.format("<a href=\"/items/schema?id=%d\">Schema %d %s ~%s /%s/%s ~%s</a>",
+        return String.format("<a href=\"/items/schema?id=%d\">Schema %d <font color=green>%s</font> <font color=red>~%s</font> /%s/<font color=green>%s</font> <font color=red>~%s</font></a>",
                              id, id, posContext, negContext, action, posResult, negResult);
     }
 

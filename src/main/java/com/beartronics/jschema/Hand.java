@@ -218,12 +218,12 @@ public class Hand extends Box {
         if (x > app.sms.WORLD_WIDTH-10) { x = app.sms.WORLD_WIDTH-10; }
         
         updateMouseJointPos(x,y);
-        Vec2 pos = body.getPosition();
+        //Vec2 pos = body.getPosition();
         // Is there a bug with apply the force here? We're applying
         // the force at the current position of the hand, not the
         // position it will finally be at when the mousejoint spring
         // forces are resolved.
-        body.applyLinearImpulse(new Vec2(handForceX, handForceY), pos);
+        //        body.applyLinearImpulse(new Vec2(handForceX, handForceY), pos);
     }
     
 
@@ -232,65 +232,43 @@ public class Hand extends Box {
     public final static int TOUCH_RIGHT  =  4;
     public final static int TOUCH_BOTTOM =  8;
 
+    public final static float TOUCH_DIST = 20.0f;
     /** returns a bit vector which designates which sides feel a touch contact
      *
      * For now this uses absolute angle-0 coordinates. We need to rotate the normal vectors
      * by the hand angle to get the correct sides if the hand is rotated.
      */
     public int touchingSides() {
+        Vec2 mycenter = this.getPosition();
         int sides = 0;
-        ContactEdge cedge = body.getContactList();
-        StringBuilder s = null;
-        if (cedge != null) {
-            s = new StringBuilder();
-        }
-        while (cedge != null) {
-            Contact c = cedge.contact;
-            if (c.getManifold().pointCount > 0) {
-                // This is a contact from a touching object which points back to our body
-                WorldManifold wm = new WorldManifold();
-                c.getWorldManifold(wm);
-                Vec2 wpts[] = wm.points;
-                int csides = getSidesFromContactPoints(wpts);
-                sides |= csides;
+        for (Object2D obj: touchingObjects()) {
+            Vec2 ocenter = obj.getPosition();
+            float dy = (ocenter.y - mycenter.y);
+            float erry = Math.abs(Math.abs(dy) - ((h + obj.h)/2));
+            if (erry < TOUCH_DIST) {
+                if (dy > 0) {
+                    sides |= TOUCH_BOTTOM;
+                } else {
+                    sides |= TOUCH_TOP;
+                }
             }
-            cedge = cedge.next;
-        }
+            float dx = (ocenter.x - mycenter.x);
+            float errx = Math.abs(Math.abs(dx) - ((w + obj.w)/2));
+            if (errx < TOUCH_DIST) {
+                if (dx > 0) {
+                    sides |= TOUCH_RIGHT;
+                } else {
+                    sides |= TOUCH_LEFT;
+                }
+            }
 
+            //            app.println(""+this+ " touching "+obj);
+            //            app.println("...> ocenter="+ocenter+" mycenter="+mycenter+", dy="+dy+", dx="+dx+" mywidth="+w+" objwidth="+obj.w+" myheight="+h+" objheight="+obj.h+" errx="+errx+", erry="+erry+" sides="+sides);
+
+        }
         return sides;
     }
 
-    /** Figures out which sides of the hand are being touched by objects on the Contacts list.
-     *
-     * For now just take one point and see where it is relative to hand's center point.
-     @param wpts a list of WorldManifold contact points
-     @return a SIDES bit vector
-     */
-    public int getSidesFromContactPoints(Vec2 wpts[]) {
-        Vec2 bcenter = body.getPosition();
-        int sides = 0;
-
-        Vec2 p0 = wpts[0];
-        Vec2 p1 = wpts[1];
-        Vec2 delta = p0.sub(p1);
-        Vec2 d = p0.sub(bcenter);
-
-        // single point of contact?
-        if (Math.abs(d.x) > Math.abs(d.y)) {
-            if (d.x < 0) {
-                sides |= TOUCH_LEFT;
-            } else {
-                sides |= TOUCH_RIGHT;
-            }
-        } else {
-            if (d.y > 0) {
-                sides |= TOUCH_TOP;
-            } else {
-                sides |= TOUCH_BOTTOM;
-            }
-        }
-        return sides;
-    }
 
     String touchString() {
         StringBuilder s = new StringBuilder();

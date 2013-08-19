@@ -318,3 +318,17 @@ w.setSensorInput("foo", 0, false)
 
 
 
++ Action cycle should be that an action is taken, then system waits for input transitions to
+settle down, with some max time to wait for things to quiesce, then does learning step.
+
+
+
++ Should we restrict spinoffs from schemas tht have no context items? 
+
+Or do schemas with no context (only results) not get synthetic items? Because they're not
+potentially useful enough for that? 
+
++ do we need a pool of schemas, from which new ones are pulled, and when full, old ones
+are recycled? 
+
+
