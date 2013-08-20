@@ -220,7 +220,7 @@ public class SensoriMotorSystem {
 
 
         p.addBoundary(100, app.height-50, 10f, 100f );
-        p.addBoundary(160, app.height-50, 10f, 100f );
+        p.addBoundary(300, app.height-50, 10f, 100f );
         p.addBoundary(900, app.height-80, 10f, 160f );
         p.addBoundary(1200, app.height-100, 10f, 200f );
     }
@@ -238,10 +238,10 @@ public class SensoriMotorSystem {
     void initialPhysobjs(Plane p) {
         int bottom = app.height;
         p.addBox(500, bottom -10, 64, 64, 1);
+        p.addBox(500, bottom -10, 64, 64, 1);
+        p.addBox(500, bottom -10, 64, 64, 1);
+        p.addBox(500, bottom -10, 64, 64, 1);
         /*
-          p.addBox(500, bottom -10, 64, 64, 1);
-        p.addBox(500, bottom -10, 64, 64, 1);
-        p.addBox(500, bottom -10, 64, 64, 1);
         p.addBox(500, bottom -10, 64, 64, 1);
         p.addBox(500, bottom -10, 64, 64, 1);
         */
@@ -261,9 +261,10 @@ public class SensoriMotorSystem {
         p.addBox(240, bottom-200, 30, 20, 8);
 
         */
+
         /*
-          p.addBall(1000, bottom-100, 40);
-        p.addBall(200, bottom-100, 40);
+          p.addBall(200, bottom-100, 40);
+          p.addBall(260, bottom-100, 40);
         */
 
         /*

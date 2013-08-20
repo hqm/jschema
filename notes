@@ -332,3 +332,27 @@ potentially useful enough for that?
 are recycled? 
 
 
++ need to get action selection to repeat recently successful spun off schemas? 
+
+Gson gson = new GsonBuilder()
+.excludeFieldsWithModifier(Modifier.STATIC)	
+.enableComplexMapKeySerialization()
+.serializeNulls()
+.setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
+.setPrettyPrinting()
+.setVersion(1.0)
+.create();
+
+
+gson = GsonBuilder.new().excludeFieldsWithModifier(Modifier.STATIC) .enableComplexMapKeySerialization() .serializeNulls() .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE) .setPrettyPrinting() .setVersion(1.0) .create()
+
+gson = GsonBuilder.new().excludeFieldsWithModifier(Modifier.STATIC).create()
+
+
+import java.lang.reflect.Modifier;
+
+Gson gson = new GsonBuilder()
+    .excludeFieldsWithModifier(Modifier.STATIC)
+    .create();
+
+http://stackoverflow.com/questions/4231092/gson-illegalstateexception
