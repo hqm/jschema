@@ -356,3 +356,5 @@ Gson gson = new GsonBuilder()
     .create();
 
 http://stackoverflow.com/questions/4231092/gson-illegalstateexception
+
+use Trove HashMap (hashset?) implementation
