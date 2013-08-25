@@ -8,6 +8,7 @@ import java.io.*;
 public class Item {
     String name;
     boolean value;
+    boolean prevValue; // the value before the most recent action was taken
 
     /** Section 4.1.2 pp 73. We need to indicate if these value transitions were 'explained'
      * by a schema which was just activated and predicted they would occur.
@@ -55,7 +56,8 @@ public class Item {
     }
 
     public void setValue(boolean v) {
-        this.value = v;
+        prevValue = value;
+        value = v;
     }
 
     public String toHTML() {

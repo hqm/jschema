@@ -9,7 +9,7 @@ public class Action {
 
     public enum Type {
         // a synthetic action
-        COMPOUND, 
+        COMPOSITE, 
             // list of possible primitive actions
         MOVE_LEFT, MOVE_RIGHT, MOVE_UP, MOVE_DOWN,
         GAZE_LEFT, GAZE_RIGHT, GAZE_UP, GAZE_DOWN,

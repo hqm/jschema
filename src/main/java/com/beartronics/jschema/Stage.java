@@ -24,6 +24,9 @@ public class Stage
     /** Actions that we decide to take in a given time step */
     public ArrayList<Action> voluntaryActions = new ArrayList<Action>();
     
+    /** List of schemas that were activated on the last time step */
+    public ArrayList<Schema> activatedSchemas = new ArrayList<Schema>();
+
     /** The time at which the most recent action was initiated */
     public long lastActionTime = -1000;
     public WorldState worldState;
@@ -168,23 +171,8 @@ public class Stage
        
      */
     void updateMarginalAttribution() {
-        int nschemas = schemas.size();
-        for (int i = 0 ; i < nschemas; i++) {
-            Schema schema = schemas.get(i);
-            // Did we recently perform our specified action?
-            schema.actionTaken = ((clock - schema.lastTimeActivated) <= ACTION_STEP_TIME);
-            /*
-            if (schema.actionTaken) {
-                logger.info("updateMarginalAttribution actionTaken "+schema);
-            } else {
-                logger.info("updateMarginalAttribution NOT actionTaken "+schema);
-            }
-            */
-            schema.updateCounters();
-        }
-
         changedItems.clear();
-        // Copy sensorinputs to items
+        // Copy the state information from SensorInputs which changed state since the last action, to Items
         for (SensorInput si : worldState.inputs.values()) {
             long mostRecentTransitionTime = Math.max(si.lastPosTransition, si.lastNegTransition);
             if (mostRecentTransitionTime > lastActionTime) {
@@ -194,27 +182,48 @@ public class Stage
                 } else {
                     item.lastNegTransition = si.lastNegTransition;
                     item.lastPosTransition = si.lastPosTransition;
-                    item.value = si.value;
+                    item.setValue(si.value);
                     changedItems.add(item);
                     logger.debug(clock + ": add changed item "+item);
-                    /*
-                    if (item.id == 127 || item.id==126) { //hand1.grasp-one
-                        logger.info("stage.updateMarginalAttr "+item.toString() + " delta neg = "+(clock - item.lastNegTransition) +
-                                    " delta pos = " + (clock - item.lastPosTransition));
-                    }
-                    */
                 }
             }
         }
         if (changedItems.size() > 0) {
             logger.debug("changedItems = "+changedItems);
         }
+        
+        // [A] TODO Need to augment this to transition "conjunct" items. E.g., if there's a "xyz/a/p" then we need
+        // to find if x,y,z all just transitioned with correct sign, and then run marginal attribution on the
+        // corresponding conjunct item "xyz".
+
+        long lastActionTime = clock-ACTION_STEP_TIME;
+
+        // Update ExtendedResults counters on all bare schemas
+        int nschemas = schemas.size();
         for (Item item: changedItems) {
             for (int j = 0; j < nschemas; j++) {
                 Schema schema = schemas.get(j);
-                schema.runMarginalAttribution(item, clock-ACTION_STEP_TIME);
+                if (schema.bare) {
+                    schema.updateResultsCounters(item, lastActionTime);
+                }
             }
         }
+
+
+        //For all schemas which were activated, check if they succeeded
+        // If so, update their context counters for every item.                                                        
+
+        // Don't forget we must implement [A] above and have virtual items for each conjunct which is in any schema's result
+
+        for (Schema schema: activatedSchemas) {
+            if (!schema.bare) {
+                schema.handleActivation();
+            }
+            schema.actionTaken = false;
+        }
+
+        activatedSchemas.clear();
+
     }
 
     /** This is called once during init to create corresponding Items for the primitive SensorInputs
@@ -263,6 +272,7 @@ public class Stage
         for (Action a: worldState.actions) {
             a.activated = false;
         }
+
         worldState.actions.clear();
 
         // Clock speed is 60Hz
@@ -276,9 +286,9 @@ public class Stage
                 currentSchema.clearPredictedTransitions();
             }
 
-            // TODO [hqm 2013-08] This will of course need to be elaborated when we have compound actions implemented.
+            // TODO [hqm 2013-08] This will of course need to be elaborated when we have composite-actions implemented.
             // For now each schema is mapped one-to-one to a primitive action.
-            // We pick a primitive action at random, then execute a schema that uses it at random.
+            // We pick a primitive action at random, then activate all applicable schemas that use it, at random.
 
             currentAction = actions.get(rand.nextInt(actions.size()));
             currentSchema = currentAction.schemas.get(rand.nextInt(currentAction.schemas.size()));
@@ -287,13 +297,15 @@ public class Stage
              currentSchema = currentAction.schemas.get(0);
             */
 
-            if (currentAction.type == Action.Type.COMPOUND) {
+            if (currentAction.type == Action.Type.COMPOSITE) {
                 throw new RuntimeException("setMotorActions: we do not support the mapping from compound actions to primitive actions yet");
             }
 
-            // Need to implicitly activate any schemas who share this action
+
+            // Need to implicitly activate any schemas who share the newly chosen action
             for (Schema schema: currentAction.schemas) {
                 schema.activate();
+                activatedSchemas.add(schema);
             }
             lastActionTime = clock;
 

@@ -17,6 +17,7 @@ public class Schema {
 
     // Numerical id of this schema
     public int id = 0;
+    public boolean bare = true;
 
     // The items in this schema's context list
     public HashSet<Item> posContext = new HashSet<Item>();
@@ -72,10 +73,10 @@ public class Schema {
     }
 
     // Extended Context counters
-    ExtendedCR xcontext = new ExtendedCR();
+    ExtendedContext xcontext = new ExtendedContext();
 
     // Extended Result counters
-    ExtendedCR xresult = new ExtendedCR();
+    ExtendedResult xresult = new ExtendedResult();
 
     // List of schemas who override this schema;
     // defer to these more specific schemas when they are also applicable
@@ -111,14 +112,12 @@ public class Schema {
     public void activate() {
         activations += 1;
         action.activate(true);
+        actionTaken = true;
         lastTimeActivated = stage.clock;
     }
 
+    // Schema's action was taken, and it's predicted results set was satisfied
     public void handleSuccessfulActivation() {
-        if (posResult.size() == 0 && negResult.size() == 0) {
-            // bare schema makes no predictions, has no synthetic item to maintain
-            return;
-        }
         if (syntheticItem != null) {
             syntheticItem.setValue(true);
         }
@@ -139,76 +138,93 @@ public class Schema {
         for (Item item: negResult) {
             item.predictedNegativeTransition = this;
         }
+        
     }
 
     /**
        @param item the item for which we're updating statistics
        @param lastTimeActivityTime the time that any action was taken (not necessarily our action)
      */
-    public void runMarginalAttribution(Item item, long lastActivityTime) {
+    public void updateResultsCounters(Item item, long lastActivityTime) {
         // Run the marginal attribution heuristics to decide whether to spin off
-        // a new schema, with addtional item in the result set
+        // a new schema with new results
         xresult.updateResultItem(stage, this, item, actionTaken, lastActivityTime);
     }
+
 
     /**
      * Update our statistics on success and failure
      *
      * 
      */
-    public void updateCounters() {
-        if (syntheticItem != null) {
+    public void handleActivation() {
+        // Absent evidence to the contrary, we deactivate this schema after it's duration has expired
+        if (stage.clock > (lastTimeActivated + duration)) {
+            syntheticItem.setValue(false);
+            syntheticItem.knownState = false;
+        }
 
-            // Absent evidence to the contrary, we deactivate this schema after it's duration has expired
-            if (stage.clock > (lastTimeActivated + duration)) {
-                syntheticItem.setValue(false);
-                syntheticItem.knownState = false;
-            }
+        // schemas succeeded if context was satisfied, action taken, and results obtained
 
-            // schemas succeeded if context was satisfied, action taken, and results obtained
+        // If we have empty results list, then we only update results stats, and look for
+        // potential spinoff condition (prob. that some item transitions more with action than without)
 
-            // If we have empty results list, then we only update results stats, and look for
-            // potential spinoff condition (prob. that some item transitions more with action than without)
+        applicable = true;
+        succeeded = true;
 
-            applicable = true;
-            succeeded = true;
-
-            for (Item item: posContext) {
+        for (Item item: posContext) {
+            if (!item.knownState) {
+                applicable = false;
+            } else {
                 applicable &= item.value;
             }
-            for (Item item: negContext) {
+        }
+        for (Item item: negContext) {
+            if (!item.knownState) {
+                applicable = false;
+            } else {
                 applicable &= !item.value;
             }
+        }
 
-            if (applicable) {
+        if (applicable) {
 
-                for (Item item: posResult) {
+            for (Item item: posResult) {
+                if (!item.knownState) {
+                    succeeded = false;
+                } else {
                     succeeded &= item.value;
                 }
-                for (Item item: negResult) {
+            }
+            for (Item item: negResult) {
+                if (!item.knownState) {
+                    succeeded = false;
+                } else {
                     succeeded &= !item.value;
                 }
-
-                // Did we just perform our specified action, within the valid time window?
-                if (actionTaken && succeeded) {
-                    // TODO [hqm 2013-07] Need to bias this statistic towards more recent activations
-                    succeededWithActivation++;
-                    handleSuccessfulActivation();
-                    //syntheticItem.setValue(true);
-                }
-
-                if (actionTaken && !succeeded) {
-                    // TODO [hqm 2013-07] Need to bias this statistic towards more recent activations
-                    failedWithActivation++;
-                    //syntheticItem.setValue(false);
-                }
-
-                if (!actionTaken && succeeded ) {
-                    succeededWithoutActivation++;
-                    //syntheticItem.setValue(false);
-                }
-
             }
+
+            xcontext.updateContextItems(stage, this, succeeded, lastTimeActivated);
+
+
+            // Did we just perform our specified action, within the valid time window?
+            if (actionTaken && succeeded) {
+                // TODO [hqm 2013-07] Need to bias this statistic towards more recent activations
+                succeededWithActivation++;
+                handleSuccessfulActivation();
+            }
+
+            if (actionTaken && !succeeded) {
+                // TODO [hqm 2013-07] Need to bias this statistic towards more recent activations
+                failedWithActivation++;
+                if (syntheticItem != null) { syntheticItem.setValue(false); }
+            }
+
+            if (!actionTaken && succeeded ) {
+                succeededWithoutActivation++;
+                // TODO [hqm 2013-08] ?? What should we do with synthetic item in this case?
+            }
+
         }
     }
 
@@ -220,9 +236,9 @@ public class Schema {
         We want to be careful not to spin off a result item that is our own synthetic item.
      */
     public void spinoffWithNewResultItem(Item item, boolean sense) {
-        if (item == syntheticItem) return;
         xresult.ignoreItems.set(item.id);
         Schema schema = spinoffNewSchema();
+        schema.bare = false;
         children.add(schema);
         if (sense == POSITIVE) {
             schema.posResult.add(item);
@@ -232,6 +248,20 @@ public class Schema {
             xresult.clearNegativeItems(item.id);
         }
 
+    }
+
+    public void spinoffWithNewContextItem(Item item, boolean sense) {
+        xcontext.ignoreItems.set(item.id);
+        Schema schema = spinoffNewSchema();
+        schema.bare = false;
+        children.add(schema);
+        if (sense == POSITIVE) {
+            schema.posContext.add(item);
+            xcontext.clearOnItems(item.id);
+        } else {
+            schema.negContext.add(item);
+            xcontext.clearOffItems(item.id);
+        }
     }
 
     // Search all children to find one which has this item in its result

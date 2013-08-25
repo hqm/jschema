@@ -358,3 +358,32 @@ Gson gson = new GsonBuilder()
 http://stackoverflow.com/questions/4231092/gson-illegalstateexception
 
 use Trove HashMap (hashset?) implementation
+
+================
+
+implement context spinoff
+
+if you have 
+
+p/a/x
+
+and there is an xy/b/z someplace , and the marginal attribution for p/a/x 
+notices that
+
+p/a/x  { xy is correlated }
+
+do you then spin off 
+
+p/a/xy ? 
+
++ What if:
+
+  you have p/a/x, and its extended result sees that the "ghi" of some other schema ghi/b/z is correlated?
+
+  Does that spin off p/a/ghi ? Is there some info we're losing about the result x? 
+
+
+Does a 'transition' of a conjunct 'xy' or 'ghi' mean that they all transition from off to at the same time ? 
+
+
+

@@ -2,8 +2,6 @@ package com.beartronics.jschema;
 
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
-import gnu.trove.list.TFloatList;
-import gnu.trove.list.array.TFloatArrayList;
 
 import java.util.Iterator;
 import java.util.List;
@@ -14,33 +12,33 @@ import java.io.*;
 import org.apache.log4j.Logger;
 
 // Holds the extended context or result arrays
-public class ExtendedCR {
+public class ExtendedResult {
 
-    static Logger logger = Logger.getLogger(ExtendedCR.class);
+    static Logger logger = Logger.getLogger(ExtendedResult.class);
 
     /* Ignore these items when doing marginal attribution */
     public BitSet ignoreItems = new BitSet();
 
-    TFloatArrayList posTransitionActionTaken = new TFloatArrayList();
-    TFloatArrayList posTransitionActionNotTaken = new TFloatArrayList();
+    TIntArrayList posTransitionActionTaken = new TIntArrayList();
+    TIntArrayList posTransitionActionNotTaken = new TIntArrayList();
 
-    TFloatArrayList negTransitionActionTaken = new TFloatArrayList();
-    TFloatArrayList negTransitionActionNotTaken = new TFloatArrayList();
+    TIntArrayList negTransitionActionTaken = new TIntArrayList();
+    TIntArrayList negTransitionActionNotTaken = new TIntArrayList();
 
     /* need to figure out if these are important
-    TFloatArrayList remainedOnActionTaken = new TFloatArrayList();
-    TFloatArrayList remainedOnActionNotTaken = new TFloatArrayList();
+    TIntArrayList remainedOnActionTaken = new TIntArrayList();
+    TIntArrayList remainedOnActionNotTaken = new TIntArrayList();
 
-    TFloatArrayList remainedOffActionTaken = new TFloatArrayList();
-    TFloatArrayList remainedOffActionNotTaken = new TFloatArrayList();
+    TIntArrayList remainedOffActionTaken = new TIntArrayList();
+    TIntArrayList remainedOffActionNotTaken = new TIntArrayList();
     */
 
     
     static final int MIN_TRIALS = 5;
-    static final float recencyBias = 0.999f;
 
+    // Make this table use proper 95% correlation stats
     /** table of correlation threshold needed to spin off a schema, vs log of number of trials */
-    double spinoff_correlation_threshold[] = {20.0, 15.0, 10.0, 8.0, 4.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0 };
+    double spinoff_correlation_threshold[] = {4.0, 2.0, 1.8, 1.6, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5};
 
     /**
      * Made Up Minds Section 4.1.2  pp. 73
@@ -54,10 +52,7 @@ public class ExtendedCR {
         //boolean debug = (id == 127 || id == 126) && (schema.action.type == Action.Type.HAND1_GRASP);
         boolean debug=false;
 
-        if (!ignoreItems.get(id) 
-            // TODO [are these filters needed?? redundant with ignoreItems?]
-            && !schema.posResult.contains(item)  // dont evalute items already in our pos result set
-            && !schema.negResult.contains(item)) {// dont evaluate items already in our neg result set
+        if (!ignoreItems.get(id)) {
 
             // Was there a transition since the action was taken?
             boolean posTransition = item.lastPosTransition > actionTime;
@@ -74,12 +69,12 @@ public class ExtendedCR {
 
 
             // read out the existing statistics on the probablity of result transition with/without the action
+            
+            int positiveTransitionsA = posTransitionActionTaken.get(id);
+            int positiveTransitionsNA = posTransitionActionNotTaken.get(id);
 
-            float positiveTransitionsA = posTransitionActionTaken.get(id);
-            float positiveTransitionsNA = posTransitionActionNotTaken.get(id);
-
-            float negativeTransitionsA = negTransitionActionTaken.get(id);
-            float negativeTransitionsNA = negTransitionActionNotTaken.get(id);
+            int negativeTransitionsA = negTransitionActionTaken.get(id);
+            int negativeTransitionsNA = negTransitionActionNotTaken.get(id);
 
             if (debug) {
                 logger.info("item.predictedPositiveTransition == "+item.predictedPositiveTransition+", knownState = "+knownState);
@@ -99,23 +94,23 @@ public class ExtendedCR {
             if (knownState) {
                 if (posTransition && item.predictedPositiveTransition == null) { // 0->1 transition
                     if (actionTaken) {
-                        posTransitionActionTaken.set(id,  positiveTransitionsA*recencyBias + 1);
-                        posTransitionActionNotTaken.set(id,  positiveTransitionsNA*recencyBias);
+                        posTransitionActionTaken.set(id,  positiveTransitionsA + 1);
+                        posTransitionActionNotTaken.set(id,  positiveTransitionsNA);
                         if (debug) {
                             logger.info("==> actionTaken, increment posTransitionActionTaken");
                         }
                     } else {
-                        posTransitionActionNotTaken.set(id, positiveTransitionsNA*recencyBias + 1);
+                        posTransitionActionNotTaken.set(id, positiveTransitionsNA + 1);
                         if (debug) {
                             logger.info("==> action NOT Taken, increment posTransitionActionNotTaken");
                         }
                     }
                 } else if (negTransition && item.predictedNegativeTransition == null) { // 1->0 transition
                     if (actionTaken) {
-                        negTransitionActionTaken.set(id, negativeTransitionsA*recencyBias + 1);
-                        negTransitionActionNotTaken.set(id, negativeTransitionsNA*recencyBias);
+                        negTransitionActionTaken.set(id, negativeTransitionsA + 1);
+                        negTransitionActionNotTaken.set(id, negativeTransitionsNA);
                     } else {
-                        negTransitionActionNotTaken.set(id, negativeTransitionsNA*recencyBias + 1);
+                        negTransitionActionNotTaken.set(id, negativeTransitionsNA + 1);
                     }
                 }
                 /* code for taking stats on items which remain in their state, with no transition
@@ -202,7 +197,7 @@ public class ExtendedCR {
     /**
        Makes sure array a can be indexed up to n-1
      */
-    void growArray(TFloatArrayList a, int n) {
+    void growArray(TIntArrayList a, int n) {
         int delta = n - a.size();
         for (int i = 0; i < delta; i++) {
             a.add(0);
