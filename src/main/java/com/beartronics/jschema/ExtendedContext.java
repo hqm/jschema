@@ -26,10 +26,10 @@ public class ExtendedContext {
     TIntArrayList offWhenActionSucceeds = new TIntArrayList();
     TIntArrayList offWhenActionFails = new TIntArrayList();
 
-    static final int MIN_TRIALS = 20;
+    static final int MIN_TRIALS = 25;
 
     /** table of correlation threshold needed to spin off a schema, vs log of number of trials */
-    double spinoff_correlation_threshold[] = {10.0, 7.0, 5.0, 3.0, 2.0, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5};
+    double spinoff_correlation_threshold[] = {5.0, 4.0, 2.0, 2.0, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5};
 
     /**
      * Made Up Minds Section 4.1.2  
@@ -77,14 +77,14 @@ public class ExtendedContext {
                     int totalOffTrials = (int) (off_succeeded + off_failed);
 
                     
-                    if (totalOnTrials > MIN_TRIALS) {
+                    if (totalOnTrials + totalOffTrials > MIN_TRIALS) {
                         double threshold = spinoff_correlation_threshold[(int) Math.floor(Math.log(totalOnTrials))];
                         if ((onValueCorrelation / offValueCorrelation) > threshold) {
                             schema.spinoffWithNewContextItem(item, true);
                         }
                     }
 
-                    if (totalOffTrials > MIN_TRIALS) {
+                    if (totalOnTrials + totalOffTrials > MIN_TRIALS) {
                         double threshold = spinoff_correlation_threshold[(int) Math.floor(Math.log(totalOffTrials))];
                         if ((offValueCorrelation / onValueCorrelation) > threshold) {
                             schema.spinoffWithNewContextItem(item, false);

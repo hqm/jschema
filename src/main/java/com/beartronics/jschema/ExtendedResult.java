@@ -38,7 +38,7 @@ public class ExtendedResult {
 
     // Make this table use proper 95% correlation stats
     /** table of correlation threshold needed to spin off a schema, vs log of number of trials */
-    double spinoff_correlation_threshold[] = {4.0, 2.0, 1.8, 1.6, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5};
+    double spinoff_correlation_threshold[] = {4.0, 2.0, 1.8, 1.6, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5};
 
     /**
      * Made Up Minds Section 4.1.2  pp. 73

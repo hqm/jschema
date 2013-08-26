@@ -387,3 +387,5 @@ Does a 'transition' of a conjunct 'xy' or 'ghi' mean that they all transition fr
 
 
 
++ Should the simpler schemas (less context and result items) have a higher number of trials threshold before
+they spin off, on the assumption that they are noisier? 
