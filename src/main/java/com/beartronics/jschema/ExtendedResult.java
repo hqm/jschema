@@ -49,9 +49,6 @@ public class ExtendedResult {
     void updateResultItem(Stage stage, Schema schema, Item item, boolean actionTaken, long actionTime) {
         int id = item.id;
 
-        //boolean debug = (id == 127 || id == 126) && (schema.action.type == Action.Type.HAND1_GRASP);
-        boolean debug=false;
-
         if (!ignoreItems.get(id)) {
 
             // Was there a transition since the action was taken?
@@ -59,13 +56,6 @@ public class ExtendedResult {
             boolean negTransition = item.lastNegTransition > actionTime;
 
             boolean knownState = item.knownState;
-
-            if (debug) {
-                logger.info("***** updateResultItem "+schema+" "+"item="+item);
-                logger.info("actionTaken="+actionTaken+" actionTime="+actionTime+" clock="+stage.clock);
-                logger.info("item.lastPosTransition="+item.lastPosTransition +", item.lastNegTransition="+item.lastNegTransition);
-                logger.info("posTransition="+posTransition +", negTransition="+negTransition);
-            }
 
 
             // read out the existing statistics on the probablity of result transition with/without the action
@@ -76,17 +66,6 @@ public class ExtendedResult {
             int negativeTransitionsA = negTransitionActionTaken.get(id);
             int negativeTransitionsNA = negTransitionActionNotTaken.get(id);
 
-            if (debug) {
-                logger.info("item.predictedPositiveTransition == "+item.predictedPositiveTransition+", knownState = "+knownState);
-                logger.info(
-                    "positiveTransitionsA=" + positiveTransitionsA +
-                    ", positiveTransitionsNA=" + positiveTransitionsNA +
-                    ", negativeTransitionsA=" + negativeTransitionsA +
-                    ", negativeTransitionsNA=" + negativeTransitionsNA);
-            }
-
-
-
             // Update the item state transition counters 
 
             // A synthetic item may be in an unknown state, in which case we do not want
@@ -96,14 +75,8 @@ public class ExtendedResult {
                     if (actionTaken) {
                         posTransitionActionTaken.set(id,  positiveTransitionsA + 1);
                         posTransitionActionNotTaken.set(id,  positiveTransitionsNA);
-                        if (debug) {
-                            logger.info("==> actionTaken, increment posTransitionActionTaken");
-                        }
                     } else {
                         posTransitionActionNotTaken.set(id, positiveTransitionsNA + 1);
-                        if (debug) {
-                            logger.info("==> action NOT Taken, increment posTransitionActionNotTaken");
-                        }
                     }
                 } else if (negTransition && item.predictedNegativeTransition == null) { // 1->0 transition
                     if (actionTaken) {
@@ -136,9 +109,6 @@ public class ExtendedResult {
             int totalPositiveTrials = (int) (positiveTransitionsA + positiveTransitionsNA);
             int totalNegativeTrials = (int) (negativeTransitionsA + negativeTransitionsNA);
 
-            if (debug) {
-                logger.info("positiveTransitionCorrelation = "+positiveTransitionCorrelation+" positiveTransitionsA="+positiveTransitionsA);
-            }
             /** per GLD: "My implementation used an ad hoc method that was tied to its
                 space-limited statistics collection method. But the real way to do it
                 is to use a threshold of statistical significance. So just pre-compute
@@ -181,7 +151,7 @@ public class ExtendedResult {
         for (int n = 0; n < items.size(); n++) {
             Item item = items.get(n);
             if (item != null) {
-                p.println(String.format("%d %s &uarr; %f [A: %s, !A: %s],  &darr; %f [A: %s, !A: %s]",
+                p.println(String.format("%d %s <b>^</b> %f [A: %s, !A: %s],  <b>v</b> %f [A: %s, !A: %s]",
                                         n, item.makeLink(),
                                         (float) posTransitionActionTaken.get(n) /  (float) posTransitionActionNotTaken.get(n),
                                         posTransitionActionTaken.get(n), posTransitionActionNotTaken.get(n),

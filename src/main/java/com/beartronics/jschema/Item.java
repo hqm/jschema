@@ -22,6 +22,7 @@ public class Item {
 
     /** Synthetic items may be in an unknown state */
     boolean knownState = true;
+    boolean prevKnownState = true;
 
     float generality;
     float accessibility;
@@ -53,6 +54,11 @@ public class Item {
         this.id = index;
         this.value = value;
         this.type = ItemType.PRIMITIVE;
+    }
+
+    public void setKnownState(boolean v) {
+        prevKnownState = knownState;
+        knownState = v;
     }
 
     public void setValue(boolean v) {

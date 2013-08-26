@@ -26,11 +26,10 @@ public class ExtendedContext {
     TIntArrayList offWhenActionSucceeds = new TIntArrayList();
     TIntArrayList offWhenActionFails = new TIntArrayList();
 
-    static final int MIN_TRIALS = 5;
-    static final float recencyBias = 0.999f;
+    static final int MIN_TRIALS = 20;
 
     /** table of correlation threshold needed to spin off a schema, vs log of number of trials */
-    double spinoff_correlation_threshold[] = {4.0, 2.0, 1.8, 1.6, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5};
+    double spinoff_correlation_threshold[] = {10.0, 7.0, 5.0, 3.0, 2.0, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5};
 
     /**
      * Made Up Minds Section 4.1.2  
@@ -41,54 +40,55 @@ public class ExtendedContext {
      * Update transition statistics with respect to whether the our schema's action was taken or not.
      */
     void updateContextItems(Stage stage, Schema schema, Boolean succeeded, long actionTime) {
-        for (Item item: stage.items) {
-            int id = item.id;
-
-            //boolean debug = (id == 127 || id == 126) && (schema.action.type == Action.Type.HAND1_GRASP);
-            boolean debug=false;
-
+        ArrayList<Item> items = stage.items;
+        int nitems = items.size();
+        for (int id = 0; id < nitems; id++) {
             if (!ignoreItems.get(id)) {
+                Item item = items.get(id);
+                if (item != null) {
 
-                int on_succeeded = onWhenActionSucceeds.get(id);
-                int on_failed = onWhenActionFails.get(id);
+                    int on_succeeded = onWhenActionSucceeds.get(id);
+                    int on_failed = onWhenActionFails.get(id);
 
-                int off_succeeded = offWhenActionSucceeds.get(id);
-                int off_failed = offWhenActionFails.get(id);
+                    int off_succeeded = offWhenActionSucceeds.get(id);
+                    int off_failed = offWhenActionFails.get(id);
 
 
-                if (item.knownState) {
-                    if (item.value == true) {
-                        if (succeeded) {
-                            onWhenActionSucceeds.set(id, on_succeeded+ 1);
+                    if (item.prevKnownState) {
+                        if (item.prevValue == true) {
+                            if (succeeded) {
+                                onWhenActionSucceeds.set(id, on_succeeded+ 1);
+                            } else {
+                                onWhenActionFails.set(id, on_failed + 1);
+                            }
                         } else {
-                            onWhenActionFails.set(id, on_failed + 1);
-                        }
-                    } else {
-                        if (succeeded) {
-                            offWhenActionSucceeds.set(id, off_succeeded + 1);
-                        } else {
-                            offWhenActionFails.set(id, off_failed + 1);
+                            if (succeeded) {
+                                offWhenActionSucceeds.set(id, off_succeeded + 1);
+                            } else {
+                                offWhenActionFails.set(id, off_failed + 1);
+                            }
                         }
                     }
-                }
 
-                float onValueCorrelation = (float) on_succeeded / (float) on_failed;
-                float offValueCorrelation = (float) off_succeeded / (float) off_failed;
+                    float onValueCorrelation = (float) on_succeeded / (float) Math.max(1, on_failed);
+                    float offValueCorrelation = (float) off_succeeded / (float) Math.max(1, off_failed);
 
-                int totalOnTrials = (int) (on_succeeded + on_failed);
-                int totalOffTrials = (int) (off_succeeded + off_failed);
+                    int totalOnTrials = (int) (on_succeeded + on_failed);
+                    int totalOffTrials = (int) (off_succeeded + off_failed);
 
-                if (onValueCorrelation > MIN_TRIALS) {
-                    double threshold = spinoff_correlation_threshold[(int) Math.floor(Math.log(totalOnTrials))];
-                    if (onValueCorrelation > threshold) {
-                        schema.spinoffWithNewContextItem(item, true);
+                    
+                    if (totalOnTrials > MIN_TRIALS) {
+                        double threshold = spinoff_correlation_threshold[(int) Math.floor(Math.log(totalOnTrials))];
+                        if ((onValueCorrelation / offValueCorrelation) > threshold) {
+                            schema.spinoffWithNewContextItem(item, true);
+                        }
                     }
-                }
 
-                if (offValueCorrelation > MIN_TRIALS) {
-                    double threshold = spinoff_correlation_threshold[(int) Math.floor(Math.log(totalOffTrials))];
-                    if (offValueCorrelation > threshold) {
-                        schema.spinoffWithNewContextItem(item, false);
+                    if (totalOffTrials > MIN_TRIALS) {
+                        double threshold = spinoff_correlation_threshold[(int) Math.floor(Math.log(totalOffTrials))];
+                        if ((offValueCorrelation / onValueCorrelation) > threshold) {
+                            schema.spinoffWithNewContextItem(item, false);
+                        }
                     }
                 }
             }
@@ -113,13 +113,19 @@ public class ExtendedContext {
         //growArrays(stage.nitems);
         for (int n = 0; n < items.size(); n++) {
             Item item = items.get(n);
+            float reliabilityWhenOn = (float) onWhenActionSucceeds.get(n) /  (float) onWhenActionFails.get(n);
+            float reliabilityWhenOff =  (float) offWhenActionSucceeds.get(n) / (float) offWhenActionFails.get(n);
             if (item != null) {
-                p.println(String.format("%d %s On %f [Succ.: %s, Fail: %s],  Off %f [Succ.: %s, Fail: %s]",
+                p.println(String.format("%d %s On %f [Succ.: %s, Fail: %s],  Off %f [Succ.: %s, Fail: %s] 1/0 %f 0/1 %f <b>%s</b>",
                                         n, item.makeLink(),
-                                        (float) onWhenActionSucceeds.get(n) /  (float) onWhenActionFails.get(n),
+                                        reliabilityWhenOn,
                                         onWhenActionSucceeds.get(n), onWhenActionFails.get(n),
-                                        (float) offWhenActionSucceeds.get(n) / (float) offWhenActionFails.get(n),
-                                        offWhenActionSucceeds.get(n), offWhenActionFails.get(n)));
+                                        reliabilityWhenOff,
+                                        offWhenActionSucceeds.get(n), offWhenActionFails.get(n),
+                                        reliabilityWhenOn / reliabilityWhenOff,
+                                        reliabilityWhenOff / reliabilityWhenOn,
+                                        ignoreItems.get(n) ? "IGNORE" : ""
+                                        ));
             }
         }
 

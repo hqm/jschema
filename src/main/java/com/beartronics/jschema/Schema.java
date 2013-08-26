@@ -97,6 +97,7 @@ public class Schema {
 
     public void makeSyntheticItem() {
         this.syntheticItem = stage.makeSyntheticItem(this);
+        this.syntheticItem.setKnownState(false);
     }
 
     void clearPredictedTransitions() {
@@ -161,7 +162,7 @@ public class Schema {
         // Absent evidence to the contrary, we deactivate this schema after it's duration has expired
         if (stage.clock > (lastTimeActivated + duration)) {
             syntheticItem.setValue(false);
-            syntheticItem.knownState = false;
+            syntheticItem.setKnownState(false);
         }
 
         // schemas succeeded if context was satisfied, action taken, and results obtained
@@ -262,6 +263,7 @@ public class Schema {
             schema.negContext.add(item);
             xcontext.clearOffItems(item.id);
         }
+        logger.debug("spun off context item "+item+" sense="+sense+": "+this.toHTML());
     }
 
     // Search all children to find one which has this item in its result
@@ -306,7 +308,7 @@ public class Schema {
         stage.schemas.add(child);
         stage.ensureXCRcapacities();
         
-        logger.info("spun off new schema "+child);
+        logger.debug("spun off new schema "+child);
         return child;
     }
 
@@ -373,8 +375,15 @@ public class Schema {
         /*        p.println("<b>xcontext</b>");
         p.println(xcontext.toHTML(stage, this));
         */
-        p.println("<b>xresult</b>");
+        p.println("<table rows=2 border=1>");
+        p.println("<tr><th>Extended Context</th><th>Extended Result</th></tr>");
+        p.println("<tr><td align=left><pre>");
+        p.println(xcontext.toHTML(stage, this));
+        p.println("</td>");
+        p.println("<td align=left><pre>");
         p.println(xresult.toHTML(stage, this));
+        p.println("</td></tr>");
+        p.println("</table>");
         return s.toString();
     }
 
