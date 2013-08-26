@@ -252,6 +252,7 @@ public class Schema {
     }
 
     public void spinoffWithNewContextItem(Item item, boolean sense) {
+        logger.info("spinoffWithNewContextItem: "+this+ "sense="+sense+ ":= "+xcontext.describeContextItem(item));
         xcontext.ignoreItems.set(item.id);
         Schema schema = spinoffNewSchema();
         schema.bare = false;
@@ -263,7 +264,6 @@ public class Schema {
             schema.negContext.add(item);
             xcontext.clearOffItems(item.id);
         }
-        logger.debug("spun off context item "+item+" sense="+sense+": "+this.toHTML());
     }
 
     // Search all children to find one which has this item in its result

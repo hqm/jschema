@@ -117,14 +117,14 @@ public class ExtendedResult {
             */
 
             if (positiveTransitionsA > MIN_TRIALS) {
-                double threshold = spinoff_correlation_threshold[(int) Math.floor(Math.log(totalPositiveTrials))];
+                double threshold = spinoff_correlation_threshold[(int) Math.floor(Math.log10(totalPositiveTrials))];
                 if (positiveTransitionCorrelation > threshold) {
                     schema.spinoffWithNewResultItem(item, true);
                 }
             }
                 
             if (negativeTransitionsA > MIN_TRIALS) {
-                double threshold = spinoff_correlation_threshold[(int)Math.floor(Math.log(totalNegativeTrials))];
+                double threshold = spinoff_correlation_threshold[(int)Math.floor(Math.log10(totalNegativeTrials))];
                 if (negativeTransitionCorrelation > threshold) {
                     schema.spinoffWithNewResultItem(item, false);
                 }

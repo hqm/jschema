@@ -29,7 +29,7 @@ public class ExtendedContext {
     static final int MIN_TRIALS = 25;
 
     /** table of correlation threshold needed to spin off a schema, vs log of number of trials */
-    double spinoff_correlation_threshold[] = {5.0, 4.0, 2.0, 2.0, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5};
+    double spinoff_reliability_threshold[] = {5.0, 3.0, 2.0, 1.7, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5};
 
     /**
      * Made Up Minds Section 4.1.2  
@@ -57,36 +57,40 @@ public class ExtendedContext {
                     if (item.prevKnownState) {
                         if (item.prevValue == true) {
                             if (succeeded) {
-                                onWhenActionSucceeds.set(id, on_succeeded+ 1);
+                                on_succeeded++;
+                                onWhenActionSucceeds.set(id, on_succeeded);
                             } else {
-                                onWhenActionFails.set(id, on_failed + 1);
+                                on_failed++;
+                                onWhenActionFails.set(id, on_failed);
                             }
                         } else {
                             if (succeeded) {
-                                offWhenActionSucceeds.set(id, off_succeeded + 1);
+                                off_succeeded++;
+                                offWhenActionSucceeds.set(id, off_succeeded);
                             } else {
-                                offWhenActionFails.set(id, off_failed + 1);
+                                off_failed++;
+                                offWhenActionFails.set(id, off_failed);
                             }
                         }
                     }
 
-                    float onValueCorrelation = (float) on_succeeded / (float) Math.max(1, on_failed);
-                    float offValueCorrelation = (float) off_succeeded / (float) Math.max(1, off_failed);
+                    float onValueReliability = (float) on_succeeded / ((float) (on_failed + on_succeeded));
+                    float offValueReliability = (float) off_succeeded / ((float) (off_succeeded + off_failed ));
 
                     int totalOnTrials = (int) (on_succeeded + on_failed);
                     int totalOffTrials = (int) (off_succeeded + off_failed);
 
                     
                     if (totalOnTrials + totalOffTrials > MIN_TRIALS) {
-                        double threshold = spinoff_correlation_threshold[(int) Math.floor(Math.log(totalOnTrials))];
-                        if ((onValueCorrelation / offValueCorrelation) > threshold) {
+                        double threshold = spinoff_reliability_threshold[(int) Math.floor(Math.log10(totalOnTrials + totalOffTrials))];
+                        if ((onValueReliability / offValueReliability) > threshold) {
                             schema.spinoffWithNewContextItem(item, true);
                         }
                     }
 
                     if (totalOnTrials + totalOffTrials > MIN_TRIALS) {
-                        double threshold = spinoff_correlation_threshold[(int) Math.floor(Math.log(totalOffTrials))];
-                        if ((offValueCorrelation / onValueCorrelation) > threshold) {
+                        double threshold = spinoff_reliability_threshold[(int) Math.floor(Math.log10(totalOnTrials + totalOffTrials))];
+                        if ((offValueReliability / onValueReliability) > threshold) {
                             schema.spinoffWithNewContextItem(item, false);
                         }
                     }
@@ -113,23 +117,30 @@ public class ExtendedContext {
         //growArrays(stage.nitems);
         for (int n = 0; n < items.size(); n++) {
             Item item = items.get(n);
-            float reliabilityWhenOn = (float) onWhenActionSucceeds.get(n) /  (float) onWhenActionFails.get(n);
-            float reliabilityWhenOff =  (float) offWhenActionSucceeds.get(n) / (float) offWhenActionFails.get(n);
             if (item != null) {
-                p.println(String.format("%d %s On %f [Succ.: %s, Fail: %s],  Off %f [Succ.: %s, Fail: %s] 1/0 %f 0/1 %f <b>%s</b>",
-                                        n, item.makeLink(),
-                                        reliabilityWhenOn,
-                                        onWhenActionSucceeds.get(n), onWhenActionFails.get(n),
-                                        reliabilityWhenOff,
-                                        offWhenActionSucceeds.get(n), offWhenActionFails.get(n),
-                                        reliabilityWhenOn / reliabilityWhenOff,
-                                        reliabilityWhenOff / reliabilityWhenOn,
-                                        ignoreItems.get(n) ? "IGNORE" : ""
-                                        ));
+                p.println(describeContextItem(item));
             }
         }
 
         return s.toString();
+    }
+
+    String describeContextItem(Item item) {
+        int n = item.id;
+        float reliabilityWhenOn = (float) onWhenActionSucceeds.get(n) /  (float) onWhenActionFails.get(n);
+        float reliabilityWhenOff =  (float) offWhenActionSucceeds.get(n) / (float) offWhenActionFails.get(n);
+
+
+        return String.format("%d %s On %f [Succ.: %s, Fail: %s],  Off %f [Succ.: %s, Fail: %s] 1/0 %f 0/1 %f <b>%s</b>",
+                             n, item.makeLink(),
+                             reliabilityWhenOn,
+                             onWhenActionSucceeds.get(n), onWhenActionFails.get(n),
+                             reliabilityWhenOff,
+                             offWhenActionSucceeds.get(n), offWhenActionFails.get(n),
+                             reliabilityWhenOn / reliabilityWhenOff,
+                             reliabilityWhenOff / reliabilityWhenOn,
+                             ignoreItems.get(n) ? "IGNORE" : ""
+                             );
     }
 
 
