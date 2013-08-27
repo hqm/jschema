@@ -784,7 +784,9 @@ public class SensoriMotorSystem {
     }
 
     static final double MOTION_THRESHOLD = 1;
-    public void computeMotionSensors() {
+
+    /** This attempts to compute all quadrants which are covered by an objects bounding box */
+    public void computeMotionSensorsBBOX() {
         vision.clearMotionSensors();
         for (Plane plane: planes) {
             for (Object2D obj: plane.physobjs) {
@@ -821,6 +823,30 @@ public class SensoriMotorSystem {
                     }
                 }
 
+            }
+        }
+    }
+
+    public void computeMotionSensors() {
+        vision.clearMotionSensors();
+        for (Plane plane: planes) {
+            for (Object2D obj: plane.physobjs) {
+                Vec2 pos = obj.getPosition();
+
+                Vec2 vmotion = obj.body.getLinearVelocity();
+
+                // translate these coordinates to retina frame of reference
+                Vec2 offset = new Vec2(xpos-app.width/2, ypos-app.width/2);
+                offset.x -= gazeXpos;
+                offset.y += gazeYpos;
+                pos.subLocal(offset);
+                
+                int x1 = (int) Math.floor(pos.x / QUADRANT_SIZE);
+                int y1 = (int) Math.floor(pos.y / QUADRANT_SIZE);
+
+                if (vmotion.lengthSquared() > MOTION_THRESHOLD) {
+                    vision.setMotionAtQuadrant(x1, y1, vmotion);
+                }
             }
         }
     }
