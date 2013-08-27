@@ -2,6 +2,7 @@ package com.beartronics.jschema;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.ArrayList;
 import java.io.*;
 
 
@@ -82,33 +83,40 @@ public class Item {
         p.println("&Delta; lastNegTransition: "+ (lastNegTransition < 0 ? "never" : (stage.clock - lastNegTransition)));
 
 
-        p.println("value: "+value);
-        p.println("knownState: "+knownState);
+        p.println("value: "+value+", (prev: "+prevValue+")");
+        p.println("knownState: "+knownState + ", (prev: "+prevKnownState+")");
 
         p.println("in posContext of schemas:");
         // find all schemas which include us in their context
-        for (Schema schema: stage.schemas) {
+        ArrayList<Schema> schemas = stage.schemas;
+        int nschemas = schemas.size();
+        for (int n = 0; n < nschemas; n++) {
+            Schema schema = schemas.get(n);
             if (schema.posContext.contains(this)) {
                 p.println(schema.makeLink());
             }
         }
+
         p.println("in negContext of schemas:");
         // find all schemas which include us in their context
-        for (Schema schema: stage.schemas) {
+        for (int n = 0; n < nschemas; n++) {
+            Schema schema = schemas.get(n);
             if (schema.negContext.contains(this)) {
                 p.println(schema.makeLink());
             }
         }
         p.println("in posResult of schemas:");
         // find all schemas which include us in their result
-        for (Schema schema: stage.schemas) {
+        for (int n = 0; n < nschemas; n++) {
+            Schema schema = schemas.get(n);
             if (schema.posResult.contains(this)) {
                 p.println(schema.makeLink());
             }
         }
         p.println("in negResult of schemas:");
         // find all schemas which include us in their result
-        for (Schema schema: stage.schemas) {
+        for (int n = 0; n < nschemas; n++) {
+            Schema schema = schemas.get(n);
             if (schema.negResult.contains(this)) {
                 p.println(schema.makeLink());
             }
@@ -141,8 +149,8 @@ public class Item {
             lname = "S-" + hostSchema.id + "_" + hostSchema.action.type.toString();
         }
 
-        return String.format("<a href=\"/items/item?id=%d\">Item-%d %s %s</a>",
-                             id, id, lname, type);
+        return String.format("<a href=\"/items/item?id=%d\">Item-%d %s %s %s</a>",
+                             id, id, lname, type != ItemType.PRIMITIVE ? type : "", value ? "<font color=green>TRUE</font>" : "");
     }
 
 

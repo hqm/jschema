@@ -237,10 +237,10 @@ public class SensoriMotorSystem {
 
     void initialPhysobjs(Plane p) {
         int bottom = app.height;
-        p.addBox(500, bottom -10, 64, 64, 1);
-        p.addBox(500, bottom -10, 64, 64, 1);
-        p.addBox(500, bottom -10, 64, 64, 1);
-        p.addBox(500, bottom -10, 64, 64, 1);
+        p.addBox(100, bottom -10, 64, 64, 1);
+        p.addBox(100, bottom -10, 64, 64, 1);
+        p.addBox(100, bottom -10, 64, 64, 1);
+        p.addBox(100, bottom -10, 64, 64, 1);
         /*
         p.addBox(500, bottom -10, 64, 64, 1);
         p.addBox(500, bottom -10, 64, 64, 1);
@@ -1135,14 +1135,14 @@ public class SensoriMotorSystem {
     public void computeTouchSensors() {
         // update joint position sensors
         for (int i = -5; i < 6; i++) {
-            worldState.setSensorInput("hand1.gross.x."+i, sensorID++, hand1.grossX == i);
-            worldState.setSensorInput("hand1.gross.y."+i, sensorID++, hand1.grossY == i);
-            worldState.setSensorInput("hand1.fine.x."+i,  sensorID++, hand1.fineX == i);
-            worldState.setSensorInput("hand1.fine.y."+i,  sensorID++, hand1.fineY == i);
-            worldState.setSensorInput("hand2.gross.x."+i, sensorID++, hand2.grossX == i);
-            worldState.setSensorInput("hand2.gross.y."+i, sensorID++, hand2.grossY == i);
-            worldState.setSensorInput("hand2.fine.x."+i,  sensorID++, hand2.fineX == i);
-            worldState.setSensorInput("hand2.fine.y."+i,  sensorID++, hand2.fineY == i);
+            worldState.setSensorInput("hand1.gross.x."+i, sensorID++, Math.round(hand1.grossX) == i);
+            worldState.setSensorInput("hand1.gross.y."+i, sensorID++, Math.round(hand1.grossY) == i);
+            worldState.setSensorInput("hand1.fine.x."+i,  sensorID++, Math.round(hand1.fineX) == i);
+            worldState.setSensorInput("hand1.fine.y."+i,  sensorID++, Math.round(hand1.fineY) == i);
+            worldState.setSensorInput("hand2.gross.x."+i, sensorID++, Math.round(hand2.grossX) == i);
+            worldState.setSensorInput("hand2.gross.y."+i, sensorID++, Math.round(hand2.grossY) == i);
+            worldState.setSensorInput("hand2.fine.x."+i,  sensorID++, Math.round(hand2.fineX) == i);
+            worldState.setSensorInput("hand2.fine.y."+i,  sensorID++, Math.round(hand2.fineY) == i);
         }
 
         // gaze angle sensor

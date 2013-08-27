@@ -29,7 +29,7 @@ public class ExtendedContext {
     static final int MIN_TRIALS = 25;
 
     /** table of correlation threshold needed to spin off a schema, vs log of number of trials */
-    double spinoff_reliability_threshold[] = {5.0, 3.0, 2.0, 1.7, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5};
+    double spinoff_reliability_threshold[] = {4.0, 3.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0};
 
     /**
      * Made Up Minds Section 4.1.2  
@@ -53,7 +53,6 @@ public class ExtendedContext {
                     int off_succeeded = offWhenActionSucceeds.get(id);
                     int off_failed = offWhenActionFails.get(id);
 
-
                     if (item.prevKnownState) {
                         if (item.prevValue == true) {
                             if (succeeded) {
@@ -73,6 +72,12 @@ public class ExtendedContext {
                             }
                         }
                     }
+
+                    if ( (on_succeeded == 0 && on_failed == 0) ||
+                         (off_succeeded == 0 && off_failed == 0)) {
+                        continue;
+                    }
+
 
                     float onValueReliability = (float) on_succeeded / ((float) (on_failed + on_succeeded));
                     float offValueReliability = (float) off_succeeded / ((float) (off_succeeded + off_failed ));

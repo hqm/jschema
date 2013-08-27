@@ -60,11 +60,11 @@ public class Hand extends Box {
         
         // Compute what the gross and find motor position settings have to be to set the hand
         // at its current position
-        grossX = (pos.x - xpos) / GROSS_DIST;
-        fineX =  ((pos.x - xpos) % GROSS_DIST) / FINE_DIST;
+        grossX = Math.round((pos.x - xpos) / GROSS_DIST);
+        fineX =  Math.round(((pos.x - xpos) % GROSS_DIST) / FINE_DIST);
 
-        grossY = (pos.y - ypos) / GROSS_DIST;
-        fineY =  ((pos.y - ypos) % GROSS_DIST) / FINE_DIST;
+        grossY = Math.round((pos.y - ypos) / GROSS_DIST);
+        fineY =  Math.round(((pos.y - ypos) % GROSS_DIST) / FINE_DIST);
 
         app.println("pos.x - xpos = "+(pos.x - xpos));
         app.println("pos.y - ypos = "+(pos.y - ypos));
@@ -197,15 +197,15 @@ public class Hand extends Box {
         float reachY = app.sms.reachY;
 
         // enforce limits as to how far hand can move relative to body
-        if (grossX > reachX/2)   { grossX = reachX/2; }
-        if (grossX < -reachX/2)  { grossX = -reachX/2; }
-        if (fineX > reachX/2) { fineX = reachX/2; }
-        if (fineX < -reachX/2) { fineX = -reachX/2; }
+        if (grossX > reachX/2)   { grossX = (float) Math.floor(reachX/2); }
+        if (grossX < -reachX/2)  { grossX = (float) Math.floor(-reachX/2); }
+        if (fineX > reachX/2) { fineX = (float) Math.floor(reachX/2); }
+        if (fineX < -reachX/2) { fineX = (float) Math.floor(-reachX/2); }
 
-        if (grossY > reachY/2)   { grossY = reachY/2; }
-        if (grossY < -reachY/2)  { grossY = -reachY/2; }
-        if (fineY > reachY/2) { fineY = reachY/2; }
-        if (fineY < -reachY/2) { fineY = -reachY/2; }
+        if (grossY > reachY/2)   { grossY = (float) Math.floor(reachY/2); }
+        if (grossY < -reachY/2)  { grossY = (float) Math.floor(-reachY/2); }
+        if (fineY > reachY/2) { fineY = (float) Math.floor(reachY/2); }
+        if (fineY < -reachY/2) { fineY = (float) Math.floor(-reachY/2); }
 
 
         // compute hand position from gross+fine positioning
