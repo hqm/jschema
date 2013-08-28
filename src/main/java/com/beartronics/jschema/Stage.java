@@ -93,6 +93,7 @@ public class Stage
 
     public Stage(SensoriMotorSystem s) {
         this.sms = s;
+        s.stage = this;
     }
 
     public void run() {
@@ -121,7 +122,7 @@ public class Stage
     void initSchemas() {
         // Create schemas for the primitive actions
         Action.Type types[] = {
-            Action.Type.HAND1_LEFT, Action.Type.HAND1_RIGHT, 
+            //            Action.Type.HAND1_LEFT, Action.Type.HAND1_RIGHT, 
             Action.Type.HAND1_UP, Action.Type.HAND1_DOWN,
             /**
             Action.Type.HAND1_GRASP, 
@@ -185,7 +186,9 @@ public class Stage
                     item.lastPosTransition = si.lastPosTransition;
                     item.setValue(si.value);
                     changedItems.add(item);
-                    logger.debug(clock + ": add changed item "+item);
+                    logger.debug(clock + ": add changed item "+item+
+                                 (si.lastPosTransition > lastActionTime ? " POS " : "") +
+                                 (si.lastNegTransition > lastActionTime ? " NEG " : "") );
                 }
             }
         }
@@ -256,7 +259,7 @@ public class Stage
     Random rand = new Random();
 
     /** How long to wait between actions */
-    public int ACTION_STEP_TIME = 5;
+    public int ACTION_STEP_TIME = 15;
 
     /** The current schema we are executing */
     public Schema currentSchema = null;

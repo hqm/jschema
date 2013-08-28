@@ -197,15 +197,15 @@ public class Hand extends Box {
         float reachY = app.sms.reachY;
 
         // enforce limits as to how far hand can move relative to body
-        if (grossX > reachX/2)   { grossX = (float) Math.floor(reachX/2); }
-        if (grossX < -reachX/2)  { grossX = (float) Math.floor(-reachX/2); }
-        if (fineX > reachX/2) { fineX = (float) Math.floor(reachX/2); }
-        if (fineX < -reachX/2) { fineX = (float) Math.floor(-reachX/2); }
+        if (grossX > reachX)   { grossX = (float) Math.floor(reachX); }
+        if (grossX < -reachX)  { grossX = (float) Math.floor(-reachX); }
+        if (fineX > reachX) { fineX = (float) Math.floor(reachX); }
+        if (fineX < -reachX) { fineX = (float) Math.floor(-reachX); }
 
-        if (grossY > reachY/2)   { grossY = (float) Math.floor(reachY/2); }
-        if (grossY < -reachY/2)  { grossY = (float) Math.floor(-reachY/2); }
-        if (fineY > reachY/2) { fineY = (float) Math.floor(reachY/2); }
-        if (fineY < -reachY/2) { fineY = (float) Math.floor(-reachY/2); }
+        if (grossY > reachY)   { grossY = (float) Math.floor(reachY); }
+        if (grossY < -reachY)  { grossY = (float) Math.floor(-reachY); }
+        if (fineY > reachY) { fineY = (float) Math.floor(reachY); }
+        if (fineY < -reachY) { fineY = (float) Math.floor(-reachY); }
 
 
         // compute hand position from gross+fine positioning

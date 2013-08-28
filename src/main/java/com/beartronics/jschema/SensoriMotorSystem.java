@@ -23,7 +23,7 @@ public class SensoriMotorSystem {
     static Logger logger = Logger.getLogger(SensoriMotorSystem.class.getName());
 
     public JSchema app;
-
+    public Stage stage;
     public WorldState worldState;
 
     // Object planes
@@ -83,8 +83,8 @@ public class SensoriMotorSystem {
     public Hand hand2;
 
     // max number of gross and fine motor steps that arms can take
-    public int reachX = 5;
-    public int reachY = 5;
+    public int reachX = 3;
+    public int reachY = 3;
     // arm motor step size
     public int dGross = 100;
     public int dFine = 20;
@@ -340,15 +340,15 @@ public class SensoriMotorSystem {
     void displayInfoText() {
         app.fill(0);
         app.text("alt-click to create box, click to grasp, ctrl-click to lift, L and R key to rotate grip, shift for transparent, space/enter toggle single-step", 20,12);
-        app.text("clock = "+app.stage.clock + " plane="+planes.indexOf(currentPlane), 20,22);
+        app.text("clock = "+stage.clock + " plane="+planes.indexOf(currentPlane), 20,22);
         app.text("xpos="+xpos+ "   ypos="+ypos,20,32);
         app.text("hand1 "+showHandInfo(hand1),20,42);
         app.text("hand2 "+showHandInfo(hand2),20,52);
         app.text("gazeX="+gazeXpos+" gazeY="+gazeYpos, 20, 62);
         app.text( String.format("%d schemas, %d items, %d actions", 
-                                app.stage.schemas.size(),
-                                app.stage.items.size(),
-                                app.stage.actions.size()), 20, 72);
+                                stage.schemas.size(),
+                                stage.items.size(),
+                                stage.actions.size()), 20, 72);
         String desc = worldState.actions.toString();
         if (!desc.equals("[]")) {
             lastActionString = desc;
@@ -431,7 +431,7 @@ public class SensoriMotorSystem {
         
 
         // draw the max range the hands can move
-        app.rect(cx, ypos, reachX*dGross + reachX*dFine, reachY*dGross+ reachY*dFine);
+        app.rect(cx, ypos, 2*reachX*dGross + 2*reachX*dFine, 2*reachY*dGross+ 2*reachY*dFine);
         app.popStyle();
         app.popMatrix();
 
@@ -731,11 +731,13 @@ public class SensoriMotorSystem {
 
     /// Fills in the sensory input values
     public WorldState computeWorldState() {
-        sensorID = 0;
-        worldState.setClock(app.stage.clock);
-        computeTouchSensors();
-        computeVisionSensor();
-        computeAudioSensors();
+        if (stage != null) {
+            sensorID = 0;
+            worldState.setClock(stage.clock);
+            computeTouchSensors();
+            //computeVisionSensor();
+            //        computeAudioSensors();
+        }
         return worldState;
     }
 
@@ -1160,7 +1162,7 @@ public class SensoriMotorSystem {
     // Includes proprioceptive sensors
     public void computeTouchSensors() {
         // update joint position sensors
-        for (int i = -5; i < 6; i++) {
+        for (int i = -3; i <= 3; i++) {
             worldState.setSensorInput("hand1.gross.x."+i, sensorID++, Math.round(hand1.grossX) == i);
             worldState.setSensorInput("hand1.gross.y."+i, sensorID++, Math.round(hand1.grossY) == i);
             worldState.setSensorInput("hand1.fine.x."+i,  sensorID++, Math.round(hand1.fineX) == i);
@@ -1170,6 +1172,9 @@ public class SensoriMotorSystem {
             worldState.setSensorInput("hand2.fine.x."+i,  sensorID++, Math.round(hand2.fineX) == i);
             worldState.setSensorInput("hand2.fine.y."+i,  sensorID++, Math.round(hand2.fineY) == i);
         }
+
+        // *** TODO debugging remove me
+        if (true) return;
 
         // gaze angle sensor
         for (int i = -5; i < 6; i++) {
