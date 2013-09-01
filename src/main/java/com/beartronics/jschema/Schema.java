@@ -58,7 +58,7 @@ public class Schema {
     // See pp. 55
     // correlation, reliability, duration, cost
     /** How long this schema typically remains applicable. Used to maintain the default on time of the synthetic item. */
-    public float duration = 120;
+    public float duration = 30;
     public float cost = 0;
     public long lastTimeActivated = -1000;
     public long lastTimeSucceeded = -1000;

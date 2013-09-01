@@ -389,3 +389,13 @@ Does a 'transition' of a conjunct 'xy' or 'ghi' mean that they all transition fr
 
 + Should the simpler schemas (less context and result items) have a higher number of trials threshold before
 they spin off, on the assumption that they are noisier? 
+
+================================================================
+
+
+Need to get adjacency map case working -- start with 1-d hand motion.
+
+Is there any advantage to the approach of keeping proprioceptive X and Y separate, vs a single hand@x,y sensory input? 
+
+
+- make grossx, finex be zero based, no negative values, too confusing to read

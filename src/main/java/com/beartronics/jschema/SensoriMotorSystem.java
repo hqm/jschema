@@ -1163,14 +1163,16 @@ public class SensoriMotorSystem {
     public void computeTouchSensors() {
         // update joint position sensors
         for (int i = -3; i <= 3; i++) {
-            worldState.setSensorInput("hand1.gross.x."+i, sensorID++, Math.round(hand1.grossX) == i);
+            //            worldState.setSensorInput("hand1.gross.x."+i, sensorID++, Math.round(hand1.grossX) == i);
             worldState.setSensorInput("hand1.gross.y."+i, sensorID++, Math.round(hand1.grossY) == i);
-            worldState.setSensorInput("hand1.fine.x."+i,  sensorID++, Math.round(hand1.fineX) == i);
+            /**
+               worldState.setSensorInput("hand1.fine.x."+i,  sensorID++, Math.round(hand1.fineX) == i);
             worldState.setSensorInput("hand1.fine.y."+i,  sensorID++, Math.round(hand1.fineY) == i);
             worldState.setSensorInput("hand2.gross.x."+i, sensorID++, Math.round(hand2.grossX) == i);
             worldState.setSensorInput("hand2.gross.y."+i, sensorID++, Math.round(hand2.grossY) == i);
             worldState.setSensorInput("hand2.fine.x."+i,  sensorID++, Math.round(hand2.fineX) == i);
             worldState.setSensorInput("hand2.fine.y."+i,  sensorID++, Math.round(hand2.fineY) == i);
+            **/
         }
 
         // *** TODO debugging remove me
