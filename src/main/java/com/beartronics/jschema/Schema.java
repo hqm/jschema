@@ -33,6 +33,8 @@ public class Schema {
     // Was this action taken recently (within the last time window)
     public boolean actionTaken;
 
+    public Item conjunctItem = null;
+
     public boolean succeeded = false;
     public boolean applicable = false;
 
@@ -154,25 +156,10 @@ public class Schema {
 
 
     /**
-     * Update our statistics on success and failure
-     *
-     * 
+       Checks if the context is satisfied
      */
-    public void handleActivation() {
-        // Absent evidence to the contrary, we deactivate this schema after it's duration has expired
-        if (stage.clock > (lastTimeActivated + duration)) {
-            syntheticItem.setValue(false);
-            syntheticItem.setKnownState(false);
-        }
-
-        // schemas succeeded if context was satisfied, action taken, and results obtained
-
-        // If we have empty results list, then we only update results stats, and look for
-        // potential spinoff condition (prob. that some item transitions more with action than without)
-
+    public void updateApplicableFlag() {
         applicable = true;
-        succeeded = true;
-
         for (Item item: posContext) {
             if (!item.knownState) {
                 applicable = false;
@@ -187,6 +174,43 @@ public class Schema {
                 applicable &= !item.value;
             }
         }
+    }
+
+    /** assumes applicable has already been calculated */
+    public void updateConjunctItem(long lastActivityTime) {
+        // Update the conjunct item, if there is one, which is tracking our context's value
+        if (conjunctItem != null) {
+            boolean oldval = conjunctItem.value;
+            if (applicable && !oldval) {
+                conjunctItem.lastPosTransition = lastActivityTime;
+            } else if (!applicable && oldval) {
+                conjunctItem.lastNegTransition = lastActivityTime;
+            }
+            conjunctItem.value = applicable;
+            conjunctItem.prevValue = oldval;
+        }
+    }
+
+    /**
+     * Update our statistics on success and failure
+     *
+     * 
+     */
+    public void handleActivation() {
+        // Absent evidence to the contrary, we deactivate this schema after it's duration has expired
+        if (stage.clock > (lastTimeActivated + duration)) {
+            syntheticItem.setValue(false);
+            syntheticItem.setKnownState(false);
+            logger.info("handleActivation "+this+" timed out synthetic item "+syntheticItem);
+        }
+
+        // schemas succeeded if context was satisfied, action taken, and results obtained
+
+        // If we have empty results list, then we only update results stats, and look for
+        // potential spinoff condition (prob. that some item transitions more with action than without)
+
+
+        succeeded = true;
 
         if (applicable) {
 
@@ -207,6 +231,8 @@ public class Schema {
 
             xcontext.updateContextItems(stage, this, succeeded, lastTimeActivated);
 
+            logger.info("handleActivation "+this+" applicable=true, succeeded="+succeeded);
+
 
             // Did we just perform our specified action, within the valid time window?
             if (actionTaken && succeeded) {
@@ -221,12 +247,18 @@ public class Schema {
                 if (syntheticItem != null) { syntheticItem.setValue(false); }
             }
 
+            // TODO [hqm 2013-08] ?? What should we do with synthetic item in this case?
+            // TODO case currently will never happen because handleActivation is only called when actionTaken=true
+            // Do we need to call handleActivation on all schemas whenever any action is taken?? 
             if (!actionTaken && succeeded ) {
                 succeededWithoutActivation++;
-                // TODO [hqm 2013-08] ?? What should we do with synthetic item in this case?
             }
 
+        } else {
+            logger.info("handleActivation "+this+" applicable=false");
         }
+
+
     }
 
     static final boolean POSITIVE = true;
@@ -263,6 +295,19 @@ public class Schema {
         } else {
             schema.negContext.add(item);
             xcontext.clearOffItems(item.id);
+        }
+
+        // If more than one item in the context, create a pseudo-item for the conjunction of the items,
+        // so that schemas can consider using it as the result for a new spin-off schema.
+        if ((schema.posContext.size() + schema.negContext.size()) > 1) {
+            // Create a new conjunct item for our context items. This will be
+            // a candidate for inclusion in result of a new schema.
+            int nitems = stage.items.size();
+            String name = String.format("%s-%s-~%s", Integer.toString(nitems), schema.posContext, schema.negContext);
+            Item citem = new Item(stage, name, nitems, false, Item.ItemType.CONTEXT_CONJUNCTION);
+            schema.conjunctItem = citem;
+            stage.items.add(citem);
+            stage.conjunctItems.add(citem);
         }
     }
 
@@ -369,6 +414,8 @@ public class Schema {
         p.println("failedWithActivation = "+failedWithActivation);
         p.println("applicable: "+applicable);
         p.println("value: " +value);
+        p.println("lastTimeActivated: "+lastTimeActivated);
+        p.println("lastTimeSucceeded: "+lastTimeSucceeded);
         p.println("duration: " +duration);
         p.println("cost: " +cost);
         p.println("correlation(): " +correlation());

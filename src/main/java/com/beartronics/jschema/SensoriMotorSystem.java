@@ -291,7 +291,7 @@ public class SensoriMotorSystem {
 
         float torque = h.getJointTorque();
 
-        String info = String.format("grossX=(%.1f,%.1f) fineX=(%.1f,%.1f) FJoint=(%.1f, %.1f) TRQ=%.1f %s [touching %s] [grasp %s]",
+        String info = String.format("gross: X=%.1f Y=%.1f) fine: X=%.1f Y=%.1f FJoint:x=%.1f y=%.1f TRQ=%.1f %s [touching %s] [grasp %s]",
                                     h.grossX, h.grossY,
                                     h.fineX, h.fineY,
                                     jf.x*100, jf.y*100,
@@ -313,7 +313,7 @@ public class SensoriMotorSystem {
             }
 
             for (Plane plane: planes) {
-                plane.draw();
+                plane.step();
             }
 
             // draw viewport and gaze location

@@ -21,6 +21,12 @@ public class Stage
     public ArrayList<Action> actions = new ArrayList<Action>();
     public ArrayList<Item> items     = new ArrayList<Item>();
 
+    // List of the 'conjunct items', which appear as the context of schemas.
+    public ArrayList<Item> conjunctItems     = new ArrayList<Item>();
+
+    // Items which represent the context item list of an existing schema
+    public ArrayList<Item> conjunct_items     = new ArrayList<Item>();
+
     /** Actions that we decide to take in a given time step */
     public ArrayList<Action> voluntaryActions = new ArrayList<Action>();
     
@@ -58,12 +64,6 @@ public class Stage
         StringWriter s = new StringWriter();
         PrintWriter p = new PrintWriter(s);
         p.println("<html><body>");
-        p.println(String.format("clock: %d, items: %d (%d syn), schemas: %d, actions: %d\n",
-                                clock,
-                                items.size(),
-                                countSyntheticItems(),
-                                schemas.size(),
-                                actions.size()));
         p.println("<table border=1>");
         p.println("<tr><th>Items</th><th>Schemas</th><th>Actions</th></tr>");
         for (int i = 0; i < items.size(); i++) {
@@ -202,17 +202,25 @@ public class Stage
 
         long lastActionTime = clock-ACTION_STEP_TIME;
 
-        // Update ExtendedResults counters on all bare schemas
         int nschemas = schemas.size();
+        for (int j = 0; j < nschemas; j++) {
+            Schema schema = schemas.get(j);
+            schema.updateConjunctItem(lastActionTime+1);
+        }
+
+        // Update ExtendedResults counters on all bare schemas
         for (Item item: changedItems) {
             for (int j = 0; j < nschemas; j++) {
                 Schema schema = schemas.get(j);
                 if (schema.bare) {
                     schema.updateResultsCounters(item, lastActionTime);
+                } else {
+                    schema.updateApplicableFlag();
                 }
             }
         }
 
+        
 
         //For all schemas which were activated, check if they succeeded
         // If so, update their context counters for every item.                                                        
@@ -323,7 +331,7 @@ public class Stage
     // Make a synthetic item for a schema
     Item makeSyntheticItem(Schema s) {
         int nitems = items.size();
-        Item item = new Item(this, String.format(Integer.toString(nitems), nitems), nitems, false, Item.ItemType.SYNTHETIC);
+        Item item = new Item(this, Integer.toString(nitems), nitems, false, Item.ItemType.SYNTHETIC);
         item.hostSchema = s;
         items.add(item);
         nitems++;

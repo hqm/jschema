@@ -94,10 +94,18 @@ public class WebServer implements Container {
     }
 
     void header(PrintStream body) {
+        Stage stage = app.stage;
         body.println("<html>");
         body.println("<style>\n"+stylesheet+"\n</style>");
         body.println("<body>");
         body.println("<b><tt>JSchema v "+JSchema.VERSION+" </tt></b>");
+        body.println(String.format("clock: %d <%d>, items: %d (%d syn), schemas: %d, actions: %d\n",
+                                stage.clock,
+                                stage.lastActionTime,
+                                stage.items.size(),
+                                stage.countSyntheticItems(),
+                                stage.schemas.size(),
+                                stage.actions.size()));
         body.println(linkToMainPage());
 
     }

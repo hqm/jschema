@@ -274,9 +274,6 @@ public class Plane implements ContactListener {
         translateY = y;
     }
 
-    void step() {
-        box2d.step();
-    }
 
     /* move the all the cells in the visual field to current head location */
     void updateHeadPosition(float x, float y) {
@@ -286,7 +283,7 @@ public class Plane implements ContactListener {
     float ROTATION_INCR = 0.5f;
     int L_KEY = 76;
     int R_KEY = 82;
-    void draw() {
+    void step() {
 
         // rotates the grasped object with arrow keys
         if (pickedThing != null) {
