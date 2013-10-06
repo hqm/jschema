@@ -2,6 +2,7 @@ package com.beartronics.jschema;
 
 import java.util.*;
 import java.io.*;
+import com.typesafe.config.*;
 
 import org.apache.log4j.Logger;
 
@@ -13,6 +14,8 @@ import org.apache.log4j.Logger;
 public class Stage
 {
     static Logger logger = Logger.getLogger(Stage.class.getName());
+
+    Config config;
 
     public JSchema app;
     public SensoriMotorSystem sms;
@@ -36,6 +39,10 @@ public class Stage
     /** The time at which the most recent action was initiated */
     public long lastActionTime = -1000;
     public WorldState worldState;
+
+    public boolean atActionBoundary() {
+        return ((clock % actionStepTime) == 0);
+    }
 
     public long clock = 0;
     public long clockStep() {
@@ -91,7 +98,8 @@ public class Stage
 
     }
 
-    public Stage(SensoriMotorSystem s) {
+    public Stage(SensoriMotorSystem s, Config config) {
+        this.config = config;
         this.sms = s;
         s.stage = this;
     }
@@ -107,8 +115,25 @@ public class Stage
         }
     }
 
+    List<Double> contextSpinoffReliabilityThresholds;
+    List<Double> resultSpinoffCorrelationThresholds;
+    int contextSpinoffMinTrials;
+    int resultSpinoffMinTrials;
+
+    public void readConfigParams() {
+        contextSpinoffReliabilityThresholds = config.getDoubleList("extended-context.spinoff-reliability-thresholds");
+        resultSpinoffCorrelationThresholds = config.getDoubleList("extended-result.spinoff-correlation-thresholds");
+        contextSpinoffMinTrials = config.getInt("extended-context.min-trials");
+        resultSpinoffMinTrials = config.getInt("extended-result.min-trials");;
+        actionStepTime = config.getInt("action-step-time");
+        
+    }
+
+
     public void initWorld() {
         logger.info("Stage initializing world "+ this);
+
+        readConfigParams();
         worldState = sms.getWorldState();
         initSchemas();
         copySMSInputToItems(worldState);
@@ -174,6 +199,13 @@ public class Stage
      */
     void updateMarginalAttribution() {
         changedItems.clear();
+
+        // for each item, copy its current value to prevValue slot
+        for (Item item: items) {
+            item.prevValue = item.value;
+            item.prevKnownState = item.knownState;
+        }
+
         // Copy the state information from SensorInputs which changed state since the last action, to Items
         for (SensorInput si : worldState.inputs.values()) {
             long mostRecentTransitionTime = Math.max(si.lastPosTransition, si.lastNegTransition);
@@ -200,7 +232,7 @@ public class Stage
         // to find if x,y,z all just transitioned with correct sign, and then run marginal attribution on the
         // corresponding conjunct item "xyz".
 
-        long lastActionTime = clock-ACTION_STEP_TIME;
+        long lastActionTime = clock-actionStepTime;
 
         int nschemas = schemas.size();
         for (int j = 0; j < nschemas; j++) {
@@ -267,7 +299,7 @@ public class Stage
     Random rand = new Random();
 
     /** How long to wait between actions */
-    public int ACTION_STEP_TIME = 15;
+    public int actionStepTime;
 
     /** The current schema we are executing */
     public Schema currentSchema = null;
@@ -288,7 +320,7 @@ public class Stage
         worldState.actions.clear();
 
         // Clock speed is 60Hz
-        if (run && ((clock % ACTION_STEP_TIME) == 0)) { // perform an action, and do learning, every nth clock cycle
+        if (run && ((clock % actionStepTime) == 0)) { // perform an action, and do learning, every nth clock cycle
 
             //logger.info("processWorldStep clock="+clock);
             updateMarginalAttribution(); // update statistics, from results of last action taken
@@ -305,7 +337,7 @@ public class Stage
             currentAction = actions.get(rand.nextInt(actions.size()));
             currentSchema = currentAction.schemas.get(rand.nextInt(currentAction.schemas.size()));
 
-            /*currentAction = actions.get((int)(clock / ACTION_STEP_TIME) % actions.size());
+            /*currentAction = actions.get((int)(clock / actionStepTime) % actions.size());
              currentSchema = currentAction.schemas.get(0);
             */
 
@@ -341,8 +373,6 @@ public class Stage
     public int nitems() {
         return items.size();
     }
-
-    public static int INITIAL_ITEMS = 1000;
 
     public String toString() {
         int nitems = items.size();

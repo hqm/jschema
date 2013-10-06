@@ -399,3 +399,14 @@ Is there any advantage to the approach of keeping proprioceptive X and Y separat
 
 
 - make grossx, finex be zero based, no negative values, too confusing to read
+
+================================================================
+
+When you spin off a new schema (in particular a new schema with a
+context item), what if any parts of the extended context and result do
+you copy to the new child schema, and what entries in the extended
+context and extended result if any do you reset in the parent schema?
+
+
+================
+Make a JSON config file for all params so they are in one place!

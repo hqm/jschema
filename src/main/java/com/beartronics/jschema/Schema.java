@@ -178,7 +178,7 @@ public class Schema {
 
     /** assumes applicable has already been calculated */
     public void updateConjunctItem(long lastActivityTime) {
-        // Update the conjunct item, if there is one, which is tracking our context's value
+        // Update the conjunct-item value transitions, if there is one, which is tracking our context's value
         if (conjunctItem != null) {
             boolean oldval = conjunctItem.value;
             if (applicable && !oldval) {
@@ -285,29 +285,39 @@ public class Schema {
 
     public void spinoffWithNewContextItem(Item item, boolean sense) {
         logger.info("spinoffWithNewContextItem: "+this+ "sense="+sense+ ":= "+xcontext.describeContextItem(item));
-        xcontext.ignoreItems.set(item.id);
-        Schema schema = spinoffNewSchema();
-        schema.bare = false;
-        children.add(schema);
-        if (sense == POSITIVE) {
-            schema.posContext.add(item);
-            xcontext.clearOnItems(item.id);
+
+
+        if (sense == true) { // positive value
+            xcontext.ignoreItemsOn.set(item.id);
         } else {
-            schema.negContext.add(item);
-            xcontext.clearOffItems(item.id);
+            xcontext.ignoreItemsOff.set(item.id);
+        }
+        Schema child = spinoffNewSchema();
+
+        xcontext.clearAllCounters();
+
+        child.bare = false;
+        children.add(child);
+        if (sense == POSITIVE) {
+            child.posContext.add(item);
+            logger.info("clearOnItems "+child+" item "+item);
+        } else {
+            child.negContext.add(item);
+            logger.info("clearOffItems "+child+" item "+item);
         }
 
         // If more than one item in the context, create a pseudo-item for the conjunction of the items,
         // so that schemas can consider using it as the result for a new spin-off schema.
-        if ((schema.posContext.size() + schema.negContext.size()) > 1) {
+        if ((child.posContext.size() + child.negContext.size()) > 1) {
             // Create a new conjunct item for our context items. This will be
             // a candidate for inclusion in result of a new schema.
             int nitems = stage.items.size();
-            String name = String.format("%s-%s-~%s", Integer.toString(nitems), schema.posContext, schema.negContext);
+            String name = String.format("%s-%s-~%s", Integer.toString(nitems), child.posContext, child.negContext);
             Item citem = new Item(stage, name, nitems, false, Item.ItemType.CONTEXT_CONJUNCTION);
-            schema.conjunctItem = citem;
+            child.conjunctItem = citem;
             stage.items.add(citem);
             stage.conjunctItems.add(citem);
+            stage.ensureXCRcapacities();
         }
     }
 

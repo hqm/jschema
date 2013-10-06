@@ -58,12 +58,10 @@ public class Item {
     }
 
     public void setKnownState(boolean v) {
-        prevKnownState = knownState;
         knownState = v;
     }
 
     public void setValue(boolean v) {
-        prevValue = value;
         value = v;
     }
 

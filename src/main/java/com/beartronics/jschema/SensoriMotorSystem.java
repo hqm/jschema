@@ -302,8 +302,11 @@ public class SensoriMotorSystem {
 
 
     void draw() {
-        if (run || singleStep) {
+        if (run || singleStep || multiStep) {
             singleStep = false;
+            if (stage.atActionBoundary()) {
+                multiStep = false;
+            }
 
             app.rectMode(PConstants.CORNER);
             if (planes.indexOf(currentPlane) == 0) {
@@ -525,6 +528,8 @@ public class SensoriMotorSystem {
 
     boolean run = false;
     boolean singleStep = true;
+    // Step N clock cycles, where N is the marginal attribution action-time period
+    boolean multiStep = true;
 
     public void keyPressed() {
         downKeys[app.keyCode] = 1;
@@ -562,12 +567,12 @@ public class SensoriMotorSystem {
             gazeLeft(GAZE_INCR);
         } else if (app.key == 'f') {
             gazeRight(GAZE_INCR);
-        } else if (app.key == ' ') {
+        } else if (app.key == ' ') { // SPACE char means single step at action level
             run = false;
-            singleStep = true;
+            multiStep = true;
         } else if (app.keyCode == PConstants.ENTER) {
             run = true;
-            singleStep = false;
+            multiStep = false;
         }
     }
         

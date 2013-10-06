@@ -4,6 +4,8 @@ import processing.core.PApplet;
 
 import com.shigeodayo.pframe.*;
 
+import com.google.gson.*;
+
 import controlP5.*;
 import pbox2d.*;
 import org.jbox2d.collision.shapes.*;
@@ -40,7 +42,7 @@ import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 
 
-
+import com.typesafe.config.*;
 
 public class JSchema extends PApplet {
 
@@ -53,10 +55,16 @@ public class JSchema extends PApplet {
 
     public boolean interactive = true;
 
+    Config config;
+
     public JSchema() {
         JSchema.app = this;
         logger.info("JSchema app created.");
+        // load config file
+        config = ConfigFactory.load();
+        config.checkValid(ConfigFactory.defaultReference(), "application");
     }
+
     PBox2D box2d = null;
 
     PBox2D createBox2D() {
@@ -81,8 +89,7 @@ public class JSchema extends PApplet {
     PFrame retinaFrame = null;
     RetinaView retinaView = null;
     PGraphics retinaImage = null;
-
-
+    
     public void setup() {
         size(1200, 800);
 
@@ -97,7 +104,7 @@ public class JSchema extends PApplet {
 
         sms = new SensoriMotorSystem(this, retinaImage);
         sms.setupDisplay();
-        stage = new Stage(sms);
+        stage = new Stage(sms, config);
         sms.computeWorldState();
         stage.initWorld();
         frameRate(1024);
@@ -110,7 +117,7 @@ public class JSchema extends PApplet {
             try {
                 // The SensoriMotorSystem will draw a global view for debugging, and also will render an image from
                 // the head viewpoint into the retinaImage view.
-                if (sms.run || sms.singleStep) {
+                if (sms.run || sms.singleStep || sms.multiStep) {
                     // The Schema engine will read the worldState from the sms, and
                     // set any motor actions it wants to
                     stage.processWorldStep(sms);

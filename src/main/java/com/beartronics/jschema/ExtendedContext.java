@@ -19,21 +19,18 @@ public class ExtendedContext {
     static Logger logger = Logger.getLogger(ExtendedContext.class);
 
     /* Ignore these items when doing marginal attribution */
-    public BitSet ignoreItems = new BitSet();
+    public BitSet ignoreItemsOn = new BitSet();
+    public BitSet ignoreItemsOff = new BitSet();
 
     TIntArrayList onWhenActionSucceeds = new TIntArrayList();
     TIntArrayList onWhenActionFails = new TIntArrayList();
     TIntArrayList offWhenActionSucceeds = new TIntArrayList();
     TIntArrayList offWhenActionFails = new TIntArrayList();
 
-    static final int MIN_TRIALS = 25;
-
-    /** table of correlation threshold needed to spin off a schema, vs log of number of trials */
-    double spinoff_reliability_threshold[] = {4.0, 3.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0};
-
     /**
      * Made Up Minds Section 4.1.2  
      *
+
      * @param the schema was activated 
      * @params whether the action succeeded or failed on last activation
      * take statistics on which items were on/off right before the action was initiated
@@ -41,77 +38,112 @@ public class ExtendedContext {
      */
     void updateContextItems(Stage stage, Schema schema, Boolean succeeded, long actionTime) {
         ArrayList<Item> items = stage.items;
+
+        logger.info("*********************");
+        logger.info(String.format("updateContextItems Schema %s succeeded=%s", schema, succeeded));
+
+        /* See 4.1.3 Suppressing redundant attribution, to avoid exponential spinoffs.
+           We check our lists of  "ignoreItems", to see if any item listed there has the specified value,
+           and if so we do not do marginal attribution. Some child schema that we spun off
+           will do the marginal attribution.
+        */
+
         int nitems = items.size();
         for (int id = 0; id < nitems; id++) {
-            if (!ignoreItems.get(id)) {
-                Item item = items.get(id);
-                if (item != null) {
+            Item item = items.get(id);
+            if (item.prevKnownState) {
+                boolean val = item.prevValue;
+                if ( (ignoreItemsOn.get(id) && val) ||
+                     (ignoreItemsOff.get(id) && !val) ) {
+                    logger.info("updateContextItems suppressed by "+item);
+                    return;
+                }
+            }
+        }
 
-                    int on_succeeded = onWhenActionSucceeds.get(id);
-                    int on_failed = onWhenActionFails.get(id);
 
-                    int off_succeeded = offWhenActionSucceeds.get(id);
-                    int off_failed = offWhenActionFails.get(id);
+        for (int id = 0; id < nitems; id++) {
+            Item item = items.get(id);
+            if (item != null) {
 
-                    if (item.prevKnownState) {
-                        if (item.prevValue == true) {
-                            if (succeeded) {
-                                on_succeeded++;
-                                onWhenActionSucceeds.set(id, on_succeeded);
-                            } else {
-                                on_failed++;
-                                onWhenActionFails.set(id, on_failed);
-                            }
+                int on_succeeded = onWhenActionSucceeds.get(id);
+                int on_failed = onWhenActionFails.get(id);
+
+                int off_succeeded = offWhenActionSucceeds.get(id);
+                int off_failed = offWhenActionFails.get(id);
+                //
+                //logger.info(String.format("   %s pval=%s pknownstate=%s", item, item.prevValue, item.prevKnownState));
+
+
+                if (item.prevKnownState) {
+                    if (item.prevValue == true) {
+                        if (succeeded) {
+                            on_succeeded += 1;
+                            onWhenActionSucceeds.set(id, on_succeeded);
+                            //logger.info("increment onWhenActionSucceeds "+item+" "+on_succeeded);
                         } else {
-                            if (succeeded) {
-                                off_succeeded++;
-                                offWhenActionSucceeds.set(id, off_succeeded);
-                            } else {
-                                off_failed++;
-                                offWhenActionFails.set(id, off_failed);
-                            }
+                            on_failed += 1;
+                            onWhenActionFails.set(id, on_failed);
+                            //logger.info("increment onWhenActionfails "+item+" "+on_failed);
+                        }
+                    } else {
+                        if (succeeded) {
+                            off_succeeded += 1;
+                            offWhenActionSucceeds.set(id, off_succeeded);
+                            //logger.info("increment offWhenActionSucceeds "+item+" "+off_succeeded);
+                        } else {
+                            off_failed += 1;
+                            offWhenActionFails.set(id, off_failed);
+                            //logger.info("increment offWhenActionFails "+item+" "+off_failed);
                         }
                     }
+                }
 
-                    if ( (on_succeeded == 0 && on_failed == 0) ||
-                         (off_succeeded == 0 && off_failed == 0)) {
-                        continue;
-                    }
+                if ( (on_succeeded == 0 && on_failed == 0) ||
+                     (off_succeeded == 0 && off_failed == 0)) {
+                    continue;
+                }
 
 
-                    float onValueReliability = (float) on_succeeded / ((float) (on_failed + on_succeeded));
-                    float offValueReliability = (float) off_succeeded / ((float) (off_succeeded + off_failed ));
+                float onValueReliability = (float) on_succeeded / ((float) (on_failed + on_succeeded));
+                float offValueReliability = (float) off_succeeded / ((float) (off_succeeded + off_failed ));
 
-                    int totalOnTrials = (int) (on_succeeded + on_failed);
-                    int totalOffTrials = (int) (off_succeeded + off_failed);
+                int totalOnTrials = (int) (on_succeeded + on_failed);
+                int totalOffTrials = (int) (off_succeeded + off_failed);
 
                     
-                    if (totalOnTrials + totalOffTrials > MIN_TRIALS) {
-                        double threshold = spinoff_reliability_threshold[(int) Math.floor(Math.log10(totalOnTrials + totalOffTrials))];
-                        if ((onValueReliability / offValueReliability) > threshold) {
-                            schema.spinoffWithNewContextItem(item, true);
-                        }
-                    }
+                double threshold = stage.contextSpinoffReliabilityThresholds.get((int) Math.floor(Math.log10(totalOnTrials + totalOffTrials)));
 
-                    if (totalOnTrials + totalOffTrials > MIN_TRIALS) {
-                        double threshold = spinoff_reliability_threshold[(int) Math.floor(Math.log10(totalOnTrials + totalOffTrials))];
-                        if ((offValueReliability / onValueReliability) > threshold) {
-                            schema.spinoffWithNewContextItem(item, false);
-                        }
+                if (totalOnTrials + totalOffTrials > stage.contextSpinoffMinTrials) {
+                    if ((onValueReliability / offValueReliability) > threshold) {
+                        schema.spinoffWithNewContextItem(item, true);
                     }
+                }
+
+                if (totalOnTrials + totalOffTrials > stage.contextSpinoffMinTrials) {
+                    /* XXX TURN THIS BACK ON WHEN WE FIGURE OUT BUG
+                    if ((offValueReliability / onValueReliability) > threshold) {
+                        schema.spinoffWithNewContextItem(item, false);
+                    }
+                    */
                 }
             }
         }
     }
 
-    public void clearOffItems(int itemId) {
-        offWhenActionFails.set(itemId, 0);
-        offWhenActionSucceeds.set(itemId, 0);
+
+    public void clearCounterForItem(int itemNumber) {
+        offWhenActionFails.set(itemNumber, 0);
+        offWhenActionSucceeds.set(itemNumber, 0);
+        onWhenActionSucceeds.set(itemNumber, 0);
+        onWhenActionFails.set(itemNumber, 0);
     }
 
-    public void clearOnItems(int itemId) {
-        onWhenActionSucceeds.set(itemId, 0);
-        onWhenActionFails.set(itemId, 0);
+    public void clearAllCounters() {
+        offWhenActionFails.fill(0);
+        offWhenActionSucceeds.fill(0);
+        onWhenActionSucceeds.fill(0);
+        onWhenActionFails.fill(0);
     }
 
     public String toHTML(Stage stage, Schema schema) {
@@ -136,7 +168,7 @@ public class ExtendedContext {
         float reliabilityWhenOff =  (float) offWhenActionSucceeds.get(n) / (float) offWhenActionFails.get(n);
 
 
-        return String.format("%d %s On %f [Succ.: %s, Fail: %s],  Off %f [Succ.: %s, Fail: %s] 1/0 %f 0/1 %f <b>%s</b>",
+        return String.format("%d %s On %f [Succ.: %s, Fail: %s],  Off %f [Succ.: %s, Fail: %s] 1/0 %f 0/1 %f <b>%s</b> <b>%s</b>",
                              n, item.makeLink(),
                              reliabilityWhenOn,
                              onWhenActionSucceeds.get(n), onWhenActionFails.get(n),
@@ -144,7 +176,8 @@ public class ExtendedContext {
                              offWhenActionSucceeds.get(n), offWhenActionFails.get(n),
                              reliabilityWhenOn / reliabilityWhenOff,
                              reliabilityWhenOff / reliabilityWhenOn,
-                             ignoreItems.get(n) ? "IGNORE" : ""
+                             ignoreItemsOn.get(n) ? "IGNORE ON" : "",
+                             ignoreItemsOff.get(n) ? "IGNORE OFF" : ""
                              );
     }
 

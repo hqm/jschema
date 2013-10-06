@@ -33,13 +33,6 @@ public class ExtendedResult {
     TIntArrayList remainedOffActionNotTaken = new TIntArrayList();
     */
 
-    
-    static final int MIN_TRIALS = 5;
-
-    // Make this table use proper 95% correlation stats
-    /** table of correlation threshold needed to spin off a schema, vs log of number of trials */
-    double spinoff_correlation_threshold[] = {4.0, 2.0, 1.8, 1.6, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5};
-
     /**
      * Made Up Minds Section 4.1.2  pp. 73
      *
@@ -116,15 +109,15 @@ public class ExtendedResult {
                 supported by a given sample size."
             */
 
-            if (positiveTransitionsA > MIN_TRIALS) {
-                double threshold = spinoff_correlation_threshold[(int) Math.floor(Math.log10(totalPositiveTrials))];
+            if (positiveTransitionsA > stage.resultSpinoffMinTrials) {
+                double threshold = (stage.resultSpinoffCorrelationThresholds).get((int) Math.floor(Math.log10(totalPositiveTrials)));
                 if (positiveTransitionCorrelation > threshold) {
                     schema.spinoffWithNewResultItem(item, true);
                 }
             }
                 
-            if (negativeTransitionsA > MIN_TRIALS) {
-                double threshold = spinoff_correlation_threshold[(int)Math.floor(Math.log10(totalNegativeTrials))];
+            if (negativeTransitionsA > stage.resultSpinoffMinTrials) {
+                double threshold = (stage.resultSpinoffCorrelationThresholds).get((int)Math.floor(Math.log10(totalNegativeTrials)));
                 if (negativeTransitionCorrelation > threshold) {
                     schema.spinoffWithNewResultItem(item, false);
                 }
