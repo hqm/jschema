@@ -186,6 +186,26 @@ public class Hand extends Box {
         updatePosition(app.sms.xpos, app.sms.ypos);
     }
 
+    // Returns the actual hand gross position (using body-relative coordinates)
+    public Vec2 actualGrossPosition() {
+        Vec2 pos = getPosition();
+        float dx = pos.x - app.sms.xpos;
+        float dy = pos.y - app.sms.ypos;
+        float gx = (float) Math.round(dx / GROSS_DIST);
+        float gy = (float) Math.round(dy / GROSS_DIST);
+        return new Vec2(gx, gy);
+    }
+
+    // Returns the actual hand fine position
+    public Vec2 actualFinePosition() {
+        Vec2 pos = getPosition();
+        float dx = pos.x - app.sms.xpos;
+        float dy = pos.y - app.sms.ypos;
+        float fx = (float)Math.round(Math.round(dx % GROSS_DIST) / FINE_DIST);
+        float fy = (float)Math.round(Math.round(dy % GROSS_DIST) / FINE_DIST);
+        return new Vec2(fx, fy);
+    }
+
     /**
        Update absolute pixel coord of the 'mousejoint' which hold the hand in position.
        @param  x body xpos
@@ -313,13 +333,15 @@ public class Hand extends Box {
         // Get its angle of rotation
         float a = body.getAngle();
         float alpha = app.map(density, 0, MAX_DENSITY, 0, 255);
-        return String.format("{HAND %d x,y=(%.1f, %.1f) gx,gy=(%.1f,%.1f) fx,fy=(%.1f,%.1f)  rot=%f}",index, pos.x,pos.y,grossX,grossY,fineX,fineY, getAngle());
+        Vec2 agpos = actualGrossPosition();
+        return String.format("{HAND %d x,y=(%.1f, %.1f) agpos=(%.1f, %1.f) gpos=(%.1f,%.1f) fpos=(%.1f,%.1f)  rot=%f}",index, agpos.x, agpos.y, pos.x,pos.y,grossX,grossY,fineX,fineY, getAngle());
     }
 
 
     public String toString() {
         // We look at each body and get its screen position
         Vec2 pos = box2d.getBodyPixelCoord(body);
+        Vec2 agpos = actualGrossPosition();
         // Get its angle of rotation
         float a = body.getAngle();
         float alpha = app.map(density, 0, MAX_DENSITY, 0, 255);
@@ -327,7 +349,7 @@ public class Hand extends Box {
         for (Object2D obj: getWeldedObjects()) {
             grasps.append(obj.toShortString() +", ");
         }
-        return String.format("{HAND %d x,y=(%.1f, %.1f) gx,gy=(%.1f,%.1f) fx,fy=(%.1f,%.1f)  rot=%f  grasping[%s]}",index, pos.x,pos.y,grossX,grossY,fineX,fineY, getAngle(), grasps);
+        return String.format("{HAND %d x,y=(%.1f, %.1f) agpos=(%.1f, %.1f) gpos=(%.1f,%.1f) gpos=(%.1f,%.1f)  rot=%f  grasping[%s]}",index, pos.x,pos.y,agpos.x, agpos.y, grossX,grossY,fineX,fineY, getAngle(), grasps);
     }
 
 

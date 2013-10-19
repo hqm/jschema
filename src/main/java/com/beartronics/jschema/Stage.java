@@ -40,7 +40,7 @@ public class Stage
     public long lastActionTime = -1000;
     public WorldState worldState;
 
-    public boolean atActionBoundary() {
+    public boolean atActionStep() {
         return ((clock % actionStepTime) == 0);
     }
 
@@ -206,10 +206,11 @@ public class Stage
             item.prevKnownState = item.knownState;
         }
 
+        // Update primitive items' values from the primitive inputs.
         // Copy the state information from SensorInputs which changed state since the last action, to Items
         for (SensorInput si : worldState.inputs.values()) {
             long mostRecentTransitionTime = Math.max(si.lastPosTransition, si.lastNegTransition);
-            if (mostRecentTransitionTime > lastActionTime) {
+            if (mostRecentTransitionTime >= lastActionTime) {
                 Item item = items.get(si.id);
                 if (item == null) {
                     logger.error(String.format("updateMarginalAttribution: error no Item %d found for %s", si.id, si));
@@ -219,8 +220,8 @@ public class Stage
                     item.setValue(si.value);
                     changedItems.add(item);
                     logger.debug(clock + ": add changed item "+item+
-                                 (si.lastPosTransition > lastActionTime ? " POS " : "") +
-                                 (si.lastNegTransition > lastActionTime ? " NEG " : "") );
+                                 (si.lastPosTransition >= lastActionTime ? " POS " : "") +
+                                 (si.lastNegTransition >= lastActionTime ? " NEG " : "") );
                 }
             }
         }
@@ -232,27 +233,32 @@ public class Stage
         // to find if x,y,z all just transitioned with correct sign, and then run marginal attribution on the
         // corresponding conjunct item "xyz".
 
-        long lastActionTime = clock-actionStepTime;
+        // This *could* differ, if we don't want learning to look back
+        // too far. But for now, looking back to the last action seems
+        // reasonable. Later we might want to look back over the last
+        // several actions, but then there is a credit assignment
+        // problem.  If a composite action is initiated, we need to
+        // store it's start time, to properly correlate results. So in that case maybe the sub-actions that are run
+        // as part of it's execution don't count for learning? Or is there a way to do both at once?  The xresult update
+        // assignment might run for multiple schemas, but the context learning would go back to the composite action init time?
 
+        long actionLookback = lastActionTime;
         int nschemas = schemas.size();
-        for (int j = 0; j < nschemas; j++) {
-            Schema schema = schemas.get(j);
-            schema.updateConjunctItem(lastActionTime+1);
-        }
 
         // Update ExtendedResults counters on all bare schemas
         for (Item item: changedItems) {
             for (int j = 0; j < nschemas; j++) {
                 Schema schema = schemas.get(j);
                 if (schema.bare) {
-                    schema.updateResultsCounters(item, lastActionTime);
+                    schema.updateResultsCounters(item, actionLookback);
                 } else {
                     schema.updateApplicableFlag();
+                    if (schema.conjunctItem != null) {
+                        schema.updateConjunctItem(actionLookback);
+                    }
                 }
             }
         }
-
-        
 
         //For all schemas which were activated, check if they succeeded
         // If so, update their context counters for every item.                                                        
@@ -316,13 +322,13 @@ public class Stage
         for (Action a: worldState.actions) {
             a.activated = false;
         }
-
         worldState.actions.clear();
 
         // Clock speed is 60Hz
-        if (run && ((clock % actionStepTime) == 0)) { // perform an action, and do learning, every nth clock cycle
+        if (run && atActionStep()) { // perform an action, and do learning, every nth clock cycle
 
-            //logger.info("processWorldStep clock="+clock);
+            logger.info(String.format("processWorldStep clock=%d HAND1-Y=%s",clock, sms.hand1.grossY ));
+
             updateMarginalAttribution(); // update statistics, from results of last action taken
 
             if (currentSchema != null) {
@@ -351,6 +357,7 @@ public class Stage
                 schema.activate();
                 activatedSchemas.add(schema);
             }
+
             lastActionTime = clock;
 
             logger.debug("select action "+currentAction);
@@ -358,6 +365,9 @@ public class Stage
             worldState.actions.add(currentAction);
             sms.processActions(worldState);
         }
+
+        sms.stepPhysicalWorld();
+
     }
 
     // Make a synthetic item for a schema

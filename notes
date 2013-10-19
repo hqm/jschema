@@ -410,3 +410,12 @@ context and extended result if any do you reset in the parent schema?
 
 ================
 Make a JSON config file for all params so they are in one place!
+
+================
+
+Seems to be bug with move hand logging effect of hand position two units away
+
+Add debug logging to extended-result ,to show what input delta we're
+tallying. Check if we're getting correct results 
+
+- then move to extended result, log what preconditions we're tallying. 

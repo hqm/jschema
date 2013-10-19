@@ -291,7 +291,12 @@ public class SensoriMotorSystem {
 
         float torque = h.getJointTorque();
 
-        String info = String.format("gross: X=%.1f Y=%.1f) fine: X=%.1f Y=%.1f FJoint:x=%.1f y=%.1f TRQ=%.1f %s [touching %s] [grasp %s]",
+        Vec2 pos = h.getPosition();
+
+        Vec2 actualGPos = h.actualGrossPosition();
+        Vec2 actualFPos = h.actualFinePosition();
+        String info = String.format("sensedGross: (X: %.1f, Y: %.1f)  gross: (X: %.1f, Y: %.1f) fine: (X: %.1f, Y: %.1f) FJoint:x=%.1f y=%.1f TRQ=%.1f %s [touching %s] [grasp %s]",
+                                    actualGPos.x, actualGPos.y,
                                     h.grossX, h.grossY,
                                     h.fineX, h.fineY,
                                     jf.x*100, jf.y*100,
@@ -301,10 +306,11 @@ public class SensoriMotorSystem {
     }
 
 
-    void draw() {
+    // Do one timestep of simulation of the world
+    void stepPhysicalWorld() {
         if (run || singleStep || multiStep) {
             singleStep = false;
-            if (stage.atActionBoundary()) {
+            if (stage.atActionStep()) {
                 multiStep = false;
             }
 
@@ -570,6 +576,9 @@ public class SensoriMotorSystem {
         } else if (app.key == ' ') { // SPACE char means single step at action level
             run = false;
             multiStep = true;
+        } else if (app.key == '1') { // SPACE char means single step at action level
+            run = false;
+            singleStep = true;
         } else if (app.keyCode == PConstants.ENTER) {
             run = true;
             multiStep = false;
@@ -1167,16 +1176,22 @@ public class SensoriMotorSystem {
     // Includes proprioceptive sensors
     public void computeTouchSensors() {
         // update joint position sensors
+        Vec2 h1gross = hand1.actualGrossPosition();
+        Vec2 h1fine = hand1.actualFinePosition();
+
+        Vec2 h2gross = hand1.actualGrossPosition();
+        Vec2 h2fine = hand1.actualFinePosition();
+
         for (int i = -3; i <= 3; i++) {
-            //            worldState.setSensorInput("hand1.gross.x."+i, sensorID++, Math.round(hand1.grossX) == i);
-            worldState.setSensorInput("hand1.gross.y."+i, sensorID++, Math.round(hand1.grossY) == i);
+            //            worldState.setSensorInput("hand1.gross.x."+i, sensorID++, Math.round(g1gross.x) == i);
+            worldState.setSensorInput("hand1.gross.y."+i, sensorID++, Math.round(h1gross.y) == i);
             /**
-               worldState.setSensorInput("hand1.fine.x."+i,  sensorID++, Math.round(hand1.fineX) == i);
-            worldState.setSensorInput("hand1.fine.y."+i,  sensorID++, Math.round(hand1.fineY) == i);
-            worldState.setSensorInput("hand2.gross.x."+i, sensorID++, Math.round(hand2.grossX) == i);
-            worldState.setSensorInput("hand2.gross.y."+i, sensorID++, Math.round(hand2.grossY) == i);
-            worldState.setSensorInput("hand2.fine.x."+i,  sensorID++, Math.round(hand2.fineX) == i);
-            worldState.setSensorInput("hand2.fine.y."+i,  sensorID++, Math.round(hand2.fineY) == i);
+               worldState.setSensorInput("hand1.fine.x."+i,  sensorID++, Math.round(h1fine.x) == i);
+            worldState.setSensorInput("hand1.fine.y."+i,  sensorID++, Math.round(h1fine.y) == i);
+            worldState.setSensorInput("hand2.gross.x."+i, sensorID++, Math.round(h2gross.x) == i);
+            worldState.setSensorInput("hand2.gross.y."+i, sensorID++, Math.round(h2gross.y) == i);
+            worldState.setSensorInput("hand2.fine.x."+i,  sensorID++, Math.round(h2fine.x) == i);
+            worldState.setSensorInput("hand2.fine.y."+i,  sensorID++, Math.round(h2fine.y) == i);
             **/
         }
 

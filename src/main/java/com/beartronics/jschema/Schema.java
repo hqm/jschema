@@ -176,19 +176,24 @@ public class Schema {
         }
     }
 
-    /** assumes applicable has already been calculated */
+    /** Assumes 'applicable' has already been calculated. If 'applicable == true' it means the
+        context must be satisfied, i.e., the conjunction of items in the context must be true.
+        There is a 'conjunctItem' that we maintain, and we need to update it's pos and neg transition info.
+        We do that here, by computing if its prior value differs from the current value.
+
+    */
     public void updateConjunctItem(long lastActivityTime) {
         // Update the conjunct-item value transitions, if there is one, which is tracking our context's value
-        if (conjunctItem != null) {
-            boolean oldval = conjunctItem.value;
-            if (applicable && !oldval) {
-                conjunctItem.lastPosTransition = lastActivityTime;
-            } else if (!applicable && oldval) {
-                conjunctItem.lastNegTransition = lastActivityTime;
-            }
-            conjunctItem.value = applicable;
-            conjunctItem.prevValue = oldval;
+        // If 'applicable' is true, that means the value of the context must be true. I'll refer to this as 'newval'
+        boolean newval = this.applicable; 
+        boolean oldval = conjunctItem.value;
+        if (!oldval && newval) {
+            conjunctItem.lastPosTransition = lastActivityTime;
+        } else if (oldval && !newval) {
+            conjunctItem.lastNegTransition = lastActivityTime;
         }
+        conjunctItem.value = newval;
+        conjunctItem.prevValue = oldval;
     }
 
     /**

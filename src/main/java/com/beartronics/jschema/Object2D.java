@@ -241,6 +241,7 @@ public abstract class Object2D {
 
     public void updateMouseJointPos(float x, float y) {
         if (mouseJoint != null) {
+            logger.debug(String.format("%s updateMouseJointPos %f %f",this, x,y));
             // Always convert to world coordinates!
             Vec2 mouseWorld = box2d.coordPixelsToWorld(x,y);
             mouseJoint.setTarget(mouseWorld);

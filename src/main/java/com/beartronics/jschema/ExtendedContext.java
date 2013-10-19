@@ -86,7 +86,7 @@ public class ExtendedContext {
                             onWhenActionFails.set(id, on_failed);
                             //logger.info("increment onWhenActionfails "+item+" "+on_failed);
                         }
-                    } else {
+                    } else { // item prev value was off
                         if (succeeded) {
                             off_succeeded += 1;
                             offWhenActionSucceeds.set(id, off_succeeded);
