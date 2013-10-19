@@ -63,6 +63,7 @@ public class JSchema extends PApplet {
         // load config file
         config = ConfigFactory.load();
         config.checkValid(ConfigFactory.defaultReference(), "application");
+        logger.info(config.root().render());
     }
 
     PBox2D box2d = null;

@@ -124,9 +124,12 @@ public class Stage
         contextSpinoffReliabilityThresholds = config.getDoubleList("extended-context.spinoff-reliability-thresholds");
         resultSpinoffCorrelationThresholds = config.getDoubleList("extended-result.spinoff-correlation-thresholds");
         contextSpinoffMinTrials = config.getInt("extended-context.min-trials");
-        resultSpinoffMinTrials = config.getInt("extended-result.min-trials");;
+        resultSpinoffMinTrials = config.getInt("extended-result.min-trials");
         actionStepTime = config.getInt("action-step-time");
         
+
+        int foo = config.getInt("default-test-val");
+        System.out.println("default-test-val = "+foo);
     }
 
 
