@@ -735,6 +735,8 @@ public class SensoriMotorSystem {
               case HAND2_UNWELD:
                 hand2.unWeldGraspedObjects();
                 break;
+              case NULL_ACTION:
+                break;
               default:
                 app.println("unknown Action type "+action.type);
             }
@@ -1179,19 +1181,19 @@ public class SensoriMotorSystem {
         Vec2 h1gross = hand1.actualGrossPosition();
         Vec2 h1fine = hand1.actualFinePosition();
 
-        Vec2 h2gross = hand1.actualGrossPosition();
-        Vec2 h2fine = hand1.actualFinePosition();
+        Vec2 h2gross = hand2.actualGrossPosition();
+        Vec2 h2fine = hand2.actualFinePosition();
 
         for (int i = -3; i <= 3; i++) {
             //            worldState.setSensorInput("hand1.gross.x."+i, sensorID++, Math.round(g1gross.x) == i);
-            worldState.setSensorInput("hand1.gross.y."+i, sensorID++, Math.round(h1gross.y) == i);
+            worldState.setSensorInput("hand1.gross.y."+i, sensorID++, (int)(h1gross.y) == i);
             /**
-               worldState.setSensorInput("hand1.fine.x."+i,  sensorID++, Math.round(h1fine.x) == i);
-            worldState.setSensorInput("hand1.fine.y."+i,  sensorID++, Math.round(h1fine.y) == i);
-            worldState.setSensorInput("hand2.gross.x."+i, sensorID++, Math.round(h2gross.x) == i);
-            worldState.setSensorInput("hand2.gross.y."+i, sensorID++, Math.round(h2gross.y) == i);
-            worldState.setSensorInput("hand2.fine.x."+i,  sensorID++, Math.round(h2fine.x) == i);
-            worldState.setSensorInput("hand2.fine.y."+i,  sensorID++, Math.round(h2fine.y) == i);
+               worldState.setSensorInput("hand1.fine.x."+i,  sensorID++, (int)(h1fine.x) == i);
+            worldState.setSensorInput("hand1.fine.y."+i,  sensorID++, (int)(h1fine.y) == i);
+            worldState.setSensorInput("hand2.gross.x."+i, sensorID++, (int)(h2gross.x) == i);
+            worldState.setSensorInput("hand2.gross.y."+i, sensorID++, (int)(h2gross.y) == i);
+            worldState.setSensorInput("hand2.fine.x."+i,  sensorID++, (int)(h2fine.x) == i);
+            worldState.setSensorInput("hand2.fine.y."+i,  sensorID++, (int)(h2fine.y) == i);
             **/
         }
 

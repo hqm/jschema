@@ -17,6 +17,8 @@ public class Stage
 
     Config config;
 
+    public int gravity = -50;
+
     public JSchema app;
     public SensoriMotorSystem sms;
 
@@ -126,10 +128,7 @@ public class Stage
         contextSpinoffMinTrials = config.getInt("extended-context.min-trials");
         resultSpinoffMinTrials = config.getInt("extended-result.min-trials");
         actionStepTime = config.getInt("action-step-time");
-        
-
-        int foo = config.getInt("default-test-val");
-        System.out.println("default-test-val = "+foo);
+        gravity = config.getInt("gravity");
     }
 
 
@@ -152,6 +151,7 @@ public class Stage
         Action.Type types[] = {
             //            Action.Type.HAND1_LEFT, Action.Type.HAND1_RIGHT, 
             Action.Type.HAND1_UP, Action.Type.HAND1_DOWN,
+            Action.Type.NULL_ACTION, 
             /**
             Action.Type.HAND1_GRASP, 
 

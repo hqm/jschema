@@ -75,14 +75,14 @@ public class Schema {
     }
 
     // Extended Context counters
-    ExtendedContext xcontext = new ExtendedContext();
+    public ExtendedContext xcontext = new ExtendedContext();
 
     // Extended Result counters
-    ExtendedResult xresult = new ExtendedResult();
+    public ExtendedResult xresult = new ExtendedResult();
 
     // List of schemas who override this schema;
     // defer to these more specific schemas when they are also applicable
-    TIntArrayList XOverride = new TIntArrayList();
+    public TIntArrayList XOverride = new TIntArrayList();
 
     public Action action = null;
     Stage stage = null;
@@ -274,7 +274,11 @@ public class Schema {
         We want to be careful not to spin off a result item that is our own synthetic item.
      */
     public void spinoffWithNewResultItem(Item item, boolean sense) {
-        xresult.ignoreItems.set(item.id);
+        if (sense) {
+            xresult.ignoreItemsPos.set(item.id);
+        } else {
+            xresult.ignoreItemsNeg.set(item.id);
+        }
         Schema schema = spinoffNewSchema();
         schema.bare = false;
         children.add(schema);
@@ -362,8 +366,10 @@ public class Schema {
 
         child.makeSyntheticItem();
         // ignore child's synthetic item
-        xresult.ignoreItems.set(child.syntheticItem.id);
-        child.xresult.ignoreItems.or(xresult.ignoreItems);
+        xresult.ignoreItemsPos.set(child.syntheticItem.id);
+        xresult.ignoreItemsNeg.set(child.syntheticItem.id);
+        child.xresult.ignoreItemsPos.or(xresult.ignoreItemsPos);
+        child.xresult.ignoreItemsNeg.or(xresult.ignoreItemsNeg);
 
         stage.schemas.add(child);
         stage.ensureXCRcapacities();
@@ -434,6 +440,7 @@ public class Schema {
         p.println("duration: " +duration);
         p.println("cost: " +cost);
         p.println("correlation(): " +correlation());
+        p.println("bare: " +bare);
         /*        p.println("<b>xcontext</b>");
         p.println(xcontext.toHTML(stage, this));
         */

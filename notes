@@ -419,3 +419,15 @@ Add debug logging to extended-result ,to show what input delta we're
 tallying. Check if we're getting correct results 
 
 - then move to extended result, log what preconditions we're tallying. 
+
+Q: When you spin off a new schema with a new context item, do you clear the parent schema's extended result?
+
+Q: When you spin off a new schema with a result item, do you clear just that result counter from the parent's
+extended result, or do you clear all extended results?
+
+#####
+Is the criteria for "succeeded" if the result is found in the predicted state, or it *transitions* to the predicted state?
+I.e., is the result for a schema a prediction of value (regardless of whether the value was already in that state) or of a transition? 
+
+
+

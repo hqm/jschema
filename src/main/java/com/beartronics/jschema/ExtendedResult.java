@@ -17,7 +17,8 @@ public class ExtendedResult {
     static Logger logger = Logger.getLogger(ExtendedResult.class);
 
     /* Ignore these items when doing marginal attribution */
-    public BitSet ignoreItems = new BitSet();
+    public BitSet ignoreItemsPos = new BitSet();
+    public BitSet ignoreItemsNeg = new BitSet();
 
     TIntArrayList posTransitionActionTaken = new TIntArrayList();
     TIntArrayList posTransitionActionNotTaken = new TIntArrayList();
@@ -42,14 +43,22 @@ public class ExtendedResult {
     void updateResultItem(Stage stage, Schema schema, Item item, boolean actionTaken, long actionTime) {
         int id = item.id;
 
-        if (!ignoreItems.get(id)) {
+        // Was there a transition since the action was taken?
+        boolean posTransition = item.lastPosTransition > actionTime;
+        boolean negTransition = item.lastNegTransition > actionTime;
+        
+        if (item.id == 0) {
+            logger.info(String.format("item %s item.lastPosTransition %s > actionTime %s ? posTransition == %s",  item, item.lastPosTransition, actionTime, posTransition));
+            logger.info(String.format("item %s item.lastNegTransition %s > actionTime %s ? negTransition == %s",  item, item.lastNegTransition, actionTime, negTransition));
+        }
 
-            // Was there a transition since the action was taken?
-            boolean posTransition = item.lastPosTransition > actionTime;
-            boolean negTransition = item.lastNegTransition > actionTime;
+        boolean knownState = item.knownState;
 
-            boolean knownState = item.knownState;
-
+        if (posTransition && ignoreItemsPos.get(id)) {
+            // ignore
+        } else if (negTransition && ignoreItemsNeg.get(id)) {
+            // ignore
+        } else {
 
             // read out the existing statistics on the probablity of result transition with/without the action
             

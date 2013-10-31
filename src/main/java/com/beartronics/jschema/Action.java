@@ -11,6 +11,7 @@ public class Action {
         // a synthetic action
         COMPOSITE, 
             // list of possible primitive actions
+            NULL_ACTION,
         MOVE_LEFT, MOVE_RIGHT, MOVE_UP, MOVE_DOWN,
         GAZE_LEFT, GAZE_RIGHT, GAZE_UP, GAZE_DOWN,
             CENTER_GAZE,
