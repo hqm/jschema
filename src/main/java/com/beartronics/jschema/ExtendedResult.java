@@ -75,18 +75,18 @@ public class ExtendedResult {
             if (knownState) {
                 if (posTransition && item.predictedPositiveTransition == null) { // 0->1 transition
                     if (actionTaken) {
-                        logger.info(String.format("POS-transition-AT %s %s", item, schema));
+                        logger.info(String.format("POS-transition-AT %s %s %d", item, schema, positiveTransitionsA +1));
                         posTransitionActionTaken.set(id,  positiveTransitionsA + 1);
                     } else {
-                        logger.info(String.format("POS-transition-NAT %s %s", item, schema));
+                        logger.info(String.format("POS-transition-NAT %s %s %d", item, schema, positiveTransitionsNA + 1));
                         posTransitionActionNotTaken.set(id, positiveTransitionsNA + 1);
                     }
                 } else if (negTransition && item.predictedNegativeTransition == null) { // 1->0 transition
                     if (actionTaken) {
-                        logger.info(String.format("NEG-transition-AT %s %s", item, schema));
+                        logger.info(String.format("NEG-transition-AT %s %s %d", item, schema, negativeTransitionsA + 1));
                         negTransitionActionTaken.set(id, negativeTransitionsA + 1);
                     } else {
-                        logger.info(String.format("NEG-transition-NAT %s %s", item, schema));
+                        logger.info(String.format("NEG-transition-NAT %s %s %d", item, schema, negativeTransitionsNA + 1));
                         negTransitionActionNotTaken.set(id, negativeTransitionsNA + 1);
                     }
                 }
@@ -133,6 +133,19 @@ public class ExtendedResult {
                     schema.spinoffWithNewResultItem(item, false);
                 }
             }
+        }
+    }
+
+    public void resetCounters() {
+        resetCounters(negTransitionActionNotTaken);
+        resetCounters(negTransitionActionTaken);
+        resetCounters(posTransitionActionNotTaken);
+        resetCounters(posTransitionActionTaken);
+    }
+
+    public void resetCounters(TIntArrayList a) {
+        for (int i = 0; i < a.size(); i++) {
+            a.set(i, 0);
         }
     }
 

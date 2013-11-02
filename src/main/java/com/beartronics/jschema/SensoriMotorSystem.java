@@ -573,10 +573,10 @@ public class SensoriMotorSystem {
             gazeLeft(GAZE_INCR);
         } else if (app.key == 'f') {
             gazeRight(GAZE_INCR);
-        } else if (app.key == ' ') { // SPACE char means single step at action level
+        } else if (app.key == ' ') { // SPACE char means single step n clock steps ( one action time )
             run = false;
             multiStep = true;
-        } else if (app.key == '1') { // SPACE char means single step at action level
+        } else if (app.key == '1') { // step a single clock
             run = false;
             singleStep = true;
         } else if (app.keyCode == PConstants.ENTER) {

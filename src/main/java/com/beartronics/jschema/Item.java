@@ -107,7 +107,7 @@ public class Item {
         // find all schemas which include us in their result
         for (int n = 0; n < nschemas; n++) {
             Schema schema = schemas.get(n);
-            if (schema.posResult.contains(this)) {
+            if (schema.posResult == this) {
                 p.println(schema.makeLink());
             }
         }
@@ -115,7 +115,7 @@ public class Item {
         // find all schemas which include us in their result
         for (int n = 0; n < nschemas; n++) {
             Schema schema = schemas.get(n);
-            if (schema.negResult.contains(this)) {
+            if (schema.negResult == this) {
                 p.println(schema.makeLink());
             }
         }

@@ -23,8 +23,8 @@ public class Schema {
     public HashSet<Item> posContext = new HashSet<Item>();
     public HashSet<Item> negContext = new HashSet<Item>();
     // The items in this schema's result list
-    public HashSet<Item> posResult  = new HashSet<Item>();
-    public HashSet<Item> negResult  = new HashSet<Item>();
+    public Item posResult = null;
+    public Item negResult = null;
 
     // The synthetic item which is controlled by this schema's successful activation.
     // Also known as the 'reifier' item
@@ -103,11 +103,11 @@ public class Schema {
     }
 
     void clearPredictedTransitions() {
-        for (Item item: posResult) {
-            item.predictedPositiveTransition = null;
+        if (posResult != null) {
+            posResult.predictedPositiveTransition = null;
         }
-        for (Item item: negResult) {
-            item.predictedNegativeTransition = null;
+        if (negResult != null) {
+            negResult.predictedNegativeTransition = null;
         }
     }
 
@@ -135,11 +135,11 @@ public class Schema {
            result item transition more often than the results other "unexplained" occurences.
 
          */
-        for (Item item: posResult) {
-            item.predictedPositiveTransition = this;
+        if (posResult != null) {
+            posResult.predictedPositiveTransition = this;
         }
-        for (Item item: negResult) {
-            item.predictedNegativeTransition = this;
+        if (negResult != null) {
+            negResult.predictedNegativeTransition = this;
         }
         
     }
@@ -219,18 +219,18 @@ public class Schema {
 
         if (applicable) {
 
-            for (Item item: posResult) {
-                if (!item.knownState) {
+            if (posResult != null) {
+                if (!posResult.knownState) {
                     succeeded = false;
                 } else {
-                    succeeded &= item.value;
+                    succeeded &= posResult.value;
                 }
             }
-            for (Item item: negResult) {
-                if (!item.knownState) {
+            if (negResult != null) {
+                if (!negResult.knownState) {
                     succeeded = false;
                 } else {
-                    succeeded &= !item.value;
+                    succeeded &= !negResult.value;
                 }
             }
 
@@ -269,26 +269,47 @@ public class Schema {
     static final boolean POSITIVE = true;
     static final boolean NEGATIVE = true;
 
+    // TODO Could use two hash sets keyed by result item to make this constant time lookup
+    public Schema findChildSchemaWithResult(Item item, boolean sense) {
+        for (Schema child: children) {
+            if (sense == POSITIVE) {
+                if (child.posResult == item) {
+                    return child;
+                }
+            } else {
+                if (child.negResult == item) {
+                    return child;
+                }
+            }
+        }
+        return null;
+    }
+
     /*  Create a new spinoff schema, adding this item to the positive (or negative) result set
 
         We want to be careful not to spin off a result item that is our own synthetic item.
      */
     public void spinoffWithNewResultItem(Item item, boolean sense) {
-        if (sense) {
-            xresult.ignoreItemsPos.set(item.id);
-        } else {
-            xresult.ignoreItemsNeg.set(item.id);
+        // check if this item is already in the result of a child schema
+        if (findChildSchemaWithResult(item, sense) != null) {
+            return;
         }
+
+        // print out the extended result table for logging purposes
+        logger.info("SPINNING OFF RESULT SCHEMA for item "+item+" sense="+sense);
+        logger.info(this.toHTML());
+        xresult.resetCounters();
         Schema schema = spinoffNewSchema();
         schema.bare = false;
         children.add(schema);
         if (sense == POSITIVE) {
-            schema.posResult.add(item);
-            xresult.clearPositiveItems(item.id);
+            schema.posResult = item;
         } else {
-            schema.negResult.add(item);
-            xresult.clearNegativeItems(item.id);
+            schema.negResult = item;
         }
+
+        stage.sms.multiStep = true;
+        stage.sms.run = false;
 
     }
 
@@ -330,25 +351,6 @@ public class Schema {
         }
     }
 
-    // Search all children to find one which has this item in its result
-    public Schema findSchemaWithResult(Item item, boolean positive) {
-        for (Schema child: children) {
-            if (positive && child.posResult.contains(item)) {
-                    return child;
-            }
-            if (!positive && child.negResult.contains(item)) {
-                    return child;
-            }
-
-            Schema found = child.findSchemaWithResult(item, positive);
-            if (found != null) {
-                return found;
-            }
-        }
-        return null;
-    }
-
-
     /**
        copies the context, action, and result lists
      */
@@ -358,8 +360,8 @@ public class Schema {
         // Copy the context and result into the new child schema
         child.posContext.addAll(posContext);
         child.negContext.addAll(negContext);
-        child.posResult.addAll(posResult);
-        child.negResult.addAll(negResult);
+        child.posResult = posResult;
+        child.negResult = negResult;
 
         // TODO verify if we need to do this or something like it
         //child.xcontext.ignoreItems.or(xcontext.ignoreItems);
@@ -426,8 +428,8 @@ public class Schema {
         }
         p.println("posContext: " + itemLinks(posContext));
         p.println("negContext: "+ itemLinks(negContext));
-        p.println("posResult: "+ itemLinks(posResult));
-        p.println("negResult: "+ itemLinks(negResult));
+        p.println("posResult: "+ (posResult == null ? " -- " : posResult.makeLink()));
+        p.println("negResult: "+ (negResult == null ? " -- " : negResult.makeLink()));
         p.println("Synthetic Item: "+ (syntheticItem == null ? "null" : syntheticItem.makeLink()));
         p.println("activations = "+activations);
         p.println("succeededWithActivation = "+succeededWithActivation);
@@ -458,7 +460,7 @@ public class Schema {
 
     public String makeLink() {
         return String.format("<a href=\"/items/schema?id=%d\">Schema %d <font color=green>%s</font> <font color=red>~%s</font> /%s/<font color=green>%s</font> <font color=red>~%s</font></a>",
-                             id, id, posContext, negContext, action, posResult, negResult);
+                             id, id, posContext, negContext, action, posResult == null ? "" : posResult, negResult == null ? "" : negResult);
     }
 
 

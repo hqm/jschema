@@ -431,3 +431,33 @@ I.e., is the result for a schema a prediction of value (regardless of whether th
 
 
 
+================================================================
+	p. 76
+    Suppose, in the example just discussed, that
+    the context-relevance of d to schema /a/x is not obscured; the schema' s extended
+    context discovers this relevance, leading to the construction of the schema d/a/x.
+    The extended-context slot for d in /a/x records that a schema has been spun off
+    from that schema for that (positively included) item. The following embellishment
+    then occurs:
+
+    • All correlation data in all extended context slots of the schema /a/x are reset
+    to zero.
+
+    • Subsequently, whenever /a/x is activated and d is On, the updating of all extended
+    context data for that trial of /a/x is suppressed. The effect of this embellishment
+    is that the extended context of /a/x now maintains correlation
+    data only for trials for which d is not On (resetting the data erases correlations
+    that had been tabulated without this condition). Thus, when d is on,
+    attribution is deferred from /a/x to the more specific applicable schema d/a/x.
+     That schema, of course, can update its own extended context data for the
+    trial, leading to the eventual construction of def/a/x.
+
++ does result spin off reset all counters?? 
+  how do we inhibit redundant result spinoff? 
+
+ -- talk to Gary 
+
++ TODO p 85 child schema reports its applicability to the parent, which can turn on it's synthetic item.
+also if an ovveride conditions obtains in the child, it can turn off the parent's synthetic item
+
+
