@@ -334,7 +334,7 @@ public class Hand extends Box {
         float a = body.getAngle();
         float alpha = app.map(density, 0, MAX_DENSITY, 0, 255);
         Vec2 agpos = actualGrossPosition();
-        return String.format("{HAND %d x,y=(%.1f, %.1f) agpos=(%.1f, %1.f) gpos=(%.1f,%.1f) fpos=(%.1f,%.1f)  rot=%f}",index, agpos.x, agpos.y, pos.x,pos.y,grossX,grossY,fineX,fineY, getAngle());
+        return String.format("{HAND %d x,y=(%.1f, %.1f) agpos=(%.1f, %.1f) gpos=(%.1f,%.1f) fpos=(%.1f,%.1f)  rot=%f}",index, agpos.x, agpos.y, pos.x,pos.y,grossX,grossY,fineX,fineY, getAngle());
     }
 
 

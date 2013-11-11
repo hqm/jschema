@@ -156,9 +156,10 @@ public class Schema {
 
 
     /**
-       Checks if the context is satisfied
+       Checks if the context is satisfied. 
      */
     public void updateApplicableFlag() {
+
         applicable = true;
         for (Item item: posContext) {
             if (!item.knownState) {
@@ -182,15 +183,28 @@ public class Schema {
         We do that here, by computing if its prior value differs from the current value.
 
     */
-    public void updateConjunctItem(long lastActivityTime) {
+    public void updateConjunctItem() {
         // Update the conjunct-item value transitions, if there is one, which is tracking our context's value
         // If 'applicable' is true, that means the value of the context must be true. I'll refer to this as 'newval'
         boolean newval = this.applicable; 
         boolean oldval = conjunctItem.value;
+
         if (!oldval && newval) {
-            conjunctItem.lastPosTransition = lastActivityTime;
+            // conjunction item made a Postitive Transition: new lastPosTransition is max transition time of any of the context items
+            for (Item item: posContext) {
+                conjunctItem.lastPosTransition = Math.max(conjunctItem.lastPosTransition, item.lastPosTransition);
+            }
+            for (Item item: negContext) {
+                conjunctItem.lastPosTransition = Math.max(conjunctItem.lastPosTransition, item.lastNegTransition);
+            }
         } else if (oldval && !newval) {
-            conjunctItem.lastNegTransition = lastActivityTime;
+            // conjunct item made a Negative Transition time: new lastNegTransition is max transition time of any of the context items
+            for (Item item: posContext) {
+                conjunctItem.lastNegTransition = Math.max(conjunctItem.lastNegTransition, item.lastPosTransition);
+            }
+            for (Item item: negContext) {
+                conjunctItem.lastNegTransition = Math.max(conjunctItem.lastNegTransition, item.lastNegTransition);
+            }
         }
         conjunctItem.value = newval;
         conjunctItem.prevValue = oldval;
@@ -269,21 +283,9 @@ public class Schema {
     static final boolean POSITIVE = true;
     static final boolean NEGATIVE = true;
 
-    // TODO Could use two hash sets keyed by result item to make this constant time lookup
-    public Schema findChildSchemaWithResult(Item item, boolean sense) {
-        for (Schema child: children) {
-            if (sense == POSITIVE) {
-                if (child.posResult == item) {
-                    return child;
-                }
-            } else {
-                if (child.negResult == item) {
-                    return child;
-                }
-            }
-        }
-        return null;
-    }
+    // We use these to do a fast lookup to see if we ever spun off a schema with this result item before
+    public HashSet<Item> posResultItemSpinoffs = new HashSet<Item>();
+    public HashSet<Item> negResultItemSpinoffs = new HashSet<Item>();
 
     /*  Create a new spinoff schema, adding this item to the positive (or negative) result set
 
@@ -291,14 +293,24 @@ public class Schema {
      */
     public void spinoffWithNewResultItem(Item item, boolean sense) {
         // check if this item is already in the result of a child schema
-        if (findChildSchemaWithResult(item, sense) != null) {
+        if ((sense && posResultItemSpinoffs.contains(item)) ||
+            (!sense && negResultItemSpinoffs.contains(item))) {
             return;
         }
+
+        if (sense) {
+            xresult.ignoreItemsPos.set(item.id);
+            posResultItemSpinoffs.add(item);
+        } else {
+            xresult.ignoreItemsNeg.set(item.id);
+            negResultItemSpinoffs.add(item);
+        }
+
 
         // print out the extended result table for logging purposes
         logger.info("SPINNING OFF RESULT SCHEMA for item "+item+" sense="+sense);
         logger.info(this.toHTML());
-        xresult.resetCounters();
+
         Schema schema = spinoffNewSchema();
         schema.bare = false;
         children.add(schema);
@@ -308,8 +320,9 @@ public class Schema {
             schema.negResult = item;
         }
 
-        stage.sms.multiStep = true;
-        stage.sms.run = false;
+        // break point in simulation to allow me to examine state
+        //        stage.sms.multiStep = true;
+        //        stage.sms.run = false;
 
     }
 

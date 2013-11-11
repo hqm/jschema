@@ -1185,20 +1185,24 @@ public class SensoriMotorSystem {
         Vec2 h2fine = hand2.actualFinePosition();
 
         for (int i = -3; i <= 3; i++) {
-            //            worldState.setSensorInput("hand1.gross.x."+i, sensorID++, Math.round(g1gross.x) == i);
+            worldState.setSensorInput("hand1.gross.x."+i, sensorID++, (int)(h1gross.x) == i);
             worldState.setSensorInput("hand1.gross.y."+i, sensorID++, (int)(h1gross.y) == i);
-            /**
-               worldState.setSensorInput("hand1.fine.x."+i,  sensorID++, (int)(h1fine.x) == i);
-            worldState.setSensorInput("hand1.fine.y."+i,  sensorID++, (int)(h1fine.y) == i);
-            worldState.setSensorInput("hand2.gross.x."+i, sensorID++, (int)(h2gross.x) == i);
-            worldState.setSensorInput("hand2.gross.y."+i, sensorID++, (int)(h2gross.y) == i);
-            worldState.setSensorInput("hand2.fine.x."+i,  sensorID++, (int)(h2fine.x) == i);
-            worldState.setSensorInput("hand2.fine.y."+i,  sensorID++, (int)(h2fine.y) == i);
-            **/
+            
+            //worldState.setSensorInput("hand1.fine.x."+i,  sensorID++, (int)(h1fine.x) == i);
+            //worldState.setSensorInput("hand1.fine.y."+i,  sensorID++, (int)(h1fine.y) == i);
+
+
+            //worldState.setSensorInput("hand2.gross.x."+i, sensorID++, (int)(h2gross.x) == i);
+            //worldState.setSensorInput("hand2.gross.y."+i, sensorID++, (int)(h2gross.y) == i);
+
+            //worldState.setSensorInput("hand2.fine.x."+i,  sensorID++, (int)(h2fine.x) == i);
+            //worldState.setSensorInput("hand2.fine.y."+i,  sensorID++, (int)(h2fine.y) == i);
         }
 
-        // *** TODO debugging remove me
+        // ****************************************************************
+        // *** TODO DEBUGGING REMOVE ME
         if (true) return;
+        // ****************************************************************
 
         // gaze angle sensor
         for (int i = -5; i < 6; i++) {

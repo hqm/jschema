@@ -149,13 +149,17 @@ public class Stage
     void initSchemas() {
         // Create schemas for the primitive actions
         Action.Type types[] = {
-            //            Action.Type.HAND1_LEFT, Action.Type.HAND1_RIGHT, 
-            Action.Type.HAND1_UP, Action.Type.HAND1_DOWN,
-            Action.Type.NULL_ACTION, 
-            /**
-            Action.Type.HAND1_GRASP, 
+            Action.Type.HAND1_LEFT,
+            Action.Type.HAND1_RIGHT, 
 
-            Action.Type.HAND1_UNGRASP,
+            Action.Type.HAND1_UP,
+            Action.Type.HAND1_DOWN,
+
+            Action.Type.NULL_ACTION, 
+
+            Action.Type.HAND1_GRASP, 
+            Action.Type.HAND1_UNGRASP
+            /*
             Action.Type.CENTER_GAZE,
             Action.Type.FOVEATE_NEXT_MOTION,
 
@@ -173,6 +177,7 @@ public class Stage
             Action.Type.HAND1_WELD, Action.Type.HAND2_WELD,
             Action.Type.HAND1_UNWELD, Action.Type.HAND2_UNWELD
             */
+
         };
         
         int i = 0;
@@ -201,12 +206,31 @@ public class Stage
        
      */
     void updateMarginalAttribution() {
-        changedItems.clear();
+        long actionLookback = lastActionTime;
+        int nschemas = schemas.size();
 
+        changedItems.clear();
+            
+        // N.B.: Run this before we update the item.values, so the
+        // inputs we check reflect if a schema was applicable before
+        // the action was taken.
+        for (int j = 0; j < nschemas; j++) {
+            Schema schema = schemas.get(j);
+            if (!schema.bare) {
+                schema.updateApplicableFlag();
+            }
+        }
+
+        int i = 0;
         // for each item, copy its current value to prevValue slot
         for (Item item: items) {
-            item.prevValue = item.value;
-            item.prevKnownState = item.knownState;
+            if (item == null) {
+                System.err.println("items "+i+" is null");
+            } else {
+                item.prevValue = item.value;
+                item.prevKnownState = item.knownState;
+            }
+            i++;
         }
 
         // Update primitive items' values from the primitive inputs.
@@ -245,9 +269,6 @@ public class Stage
         // as part of it's execution don't count for learning? Or is there a way to do both at once?  The xresult update
         // assignment might run for multiple schemas, but the context learning would go back to the composite action init time?
 
-        long actionLookback = lastActionTime;
-        int nschemas = schemas.size();
-
         // Update ExtendedResults counters on all bare schemas
         for (Item item: changedItems) {
             for (int j = 0; j < nschemas; j++) {
@@ -255,9 +276,8 @@ public class Stage
                 if (schema.bare) {
                     schema.updateResultsCounters(item, actionLookback);
                 } else {
-                    schema.updateApplicableFlag();
                     if (schema.conjunctItem != null) {
-                        schema.updateConjunctItem(actionLookback);
+                        schema.updateConjunctItem();
                     }
                 }
             }
@@ -345,6 +365,7 @@ public class Stage
 
             currentAction = actions.get(rand.nextInt(actions.size()));
             currentSchema = currentAction.schemas.get(rand.nextInt(currentAction.schemas.size()));
+            // List of all schemas that have this action
 
             /*currentAction = actions.get((int)(clock / actionStepTime) % actions.size());
              currentSchema = currentAction.schemas.get(0);
@@ -353,7 +374,6 @@ public class Stage
             if (currentAction.type == Action.Type.COMPOSITE) {
                 throw new RuntimeException("setMotorActions: we do not support the mapping from compound actions to primitive actions yet");
             }
-
 
             // Need to implicitly activate any schemas who share the newly chosen action
             for (Schema schema: currentAction.schemas) {

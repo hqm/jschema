@@ -461,3 +461,12 @@ I.e., is the result for a schema a prediction of value (regardless of whether th
 also if an ovveride conditions obtains in the child, it can turn off the parent's synthetic item
 
 
+
+================================================================
++ When we build conjunct items (for use as targets for result) do we need to make sure not to use them
+as context items for other schemas? Because a conjunct item would be redundant with the schema context list that created it?
+
++ be careful to update the conjunct item values exactly:  lastPosTransition, lastNegTransition, value, prevValue
+all need to be set properly for taking of both context and result statistics.
+
+

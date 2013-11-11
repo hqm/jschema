@@ -123,6 +123,7 @@ public class ExtendedResult {
             if (positiveTransitionsA > stage.resultSpinoffMinTrials) {
                 double threshold = (stage.resultSpinoffCorrelationThresholds).get((int) Math.floor(Math.log10(totalPositiveTrials)));
                 if (positiveTransitionCorrelation > threshold) {
+                    logger.info(String.format("Spinning off positive-transition result %s %s pos-transition-correlation=%f #trials=%d", item, schema, positiveTransitionCorrelation, positiveTransitionsA));
                     schema.spinoffWithNewResultItem(item, true);
                 }
             }
@@ -130,6 +131,7 @@ public class ExtendedResult {
             if (negativeTransitionsA > stage.resultSpinoffMinTrials) {
                 double threshold = (stage.resultSpinoffCorrelationThresholds).get((int)Math.floor(Math.log10(totalNegativeTrials)));
                 if (negativeTransitionCorrelation > threshold) {
+                    logger.info(String.format("Spinning off neg-transition result %s %s neg-transition-correlation=%f #trials=%d", item, schema, negativeTransitionCorrelation, negativeTransitionsA));
                     schema.spinoffWithNewResultItem(item, false);
                 }
             }
@@ -168,7 +170,7 @@ public class ExtendedResult {
         for (int n = 0; n < items.size(); n++) {
             Item item = items.get(n);
             if (item != null) {
-                p.println(String.format("%d %s <b>^</b> %f [A: %s, !A: %s],  <b>v</b> %f [A: %s, !A: %s]",
+                p.println(String.format("%d %s <b>^</b> %f [A: <b>%s</b>, !A: <b>%s</b>],  <b>v</b> %f [A: <b>%s</b>, !A: <b>%s</b>]",
                                         n, item.makeLink(),
                                         (float) posTransitionActionTaken.get(n) /  (float) posTransitionActionNotTaken.get(n),
                                         posTransitionActionTaken.get(n), posTransitionActionNotTaken.get(n),

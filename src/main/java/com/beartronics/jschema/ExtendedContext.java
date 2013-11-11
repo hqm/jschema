@@ -168,7 +168,7 @@ public class ExtendedContext {
         float reliabilityWhenOff =  (float) offWhenActionSucceeds.get(n) / (float) offWhenActionFails.get(n);
 
 
-        return String.format("%d %s On %f [Succ.: %s, Fail: %s],  Off %f [Succ.: %s, Fail: %s] 1/0 %f 0/1 %f <b>%s</b> <b>%s</b>",
+        return String.format("%d %s On %f [Succ.: <b>%s</b>, Fail: <b>%s</b>],  Off %f [Succ.: <b>%s</b>, Fail: <b>%s</b>] 1/0 %f 0/1 %f <b>%s</b> <b>%s</b>",
                              n, item.makeLink(),
                              reliabilityWhenOn,
                              onWhenActionSucceeds.get(n), onWhenActionFails.get(n),
