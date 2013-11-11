@@ -303,19 +303,28 @@ public class Stage
         // as part of it's execution don't count for learning? Or is there a way to do both at once?  The xresult update
         // assignment might run for multiple schemas, but the context learning would go back to the composite action init time?
 
+
+        // Update any CONJUNCT-ITEM values
+        for (Item item: changedItems) {
+            for (int j = 0; j < nschemas; j++) {
+                Schema schema = schemas.get(j);
+                if (!schema.bare && (schema.conjunctItem != null)) {
+                    schema.updateConjunctItem();
+                }
+            }
+        }
+
         // Update ExtendedResults counters on all bare schemas
         for (Item item: changedItems) {
             for (int j = 0; j < nschemas; j++) {
                 Schema schema = schemas.get(j);
                 if (schema.bare) {
                     schema.updateResultsCounters(item, actionLookback);
-                } else {
-                    if (schema.conjunctItem != null) {
-                        schema.updateConjunctItem();
-                    }
                 }
             }
         }
+
+
 
         //For all schemas which were activated, check if they succeeded
         // If so, update their context counters for every item.                                                        

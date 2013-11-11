@@ -197,6 +197,8 @@ public class Schema {
             for (Item item: negContext) {
                 conjunctItem.lastPosTransition = Math.max(conjunctItem.lastPosTransition, item.lastNegTransition);
             }
+            logger.info(String.format("updateConjunctItem POS %s lastPosTransition = %d, clock=%d delta=%d", conjunctItem, conjunctItem.lastPosTransition, stage.clock, stage.clock-conjunctItem.lastPosTransition));
+
         } else if (oldval && !newval) {
             // conjunct item made a Negative Transition time: new lastNegTransition is max transition time of any of the context items
             for (Item item: posContext) {
@@ -205,6 +207,7 @@ public class Schema {
             for (Item item: negContext) {
                 conjunctItem.lastNegTransition = Math.max(conjunctItem.lastNegTransition, item.lastNegTransition);
             }
+            logger.info(String.format("updateConjunctItem NEG %s lastNegTransition = %d, clock=%d delta=%d", conjunctItem, conjunctItem.lastNegTransition, stage.clock, stage.clock-conjunctItem.lastNegTransition));
         }
         conjunctItem.value = newval;
         conjunctItem.prevValue = oldval;

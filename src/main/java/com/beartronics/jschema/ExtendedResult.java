@@ -47,11 +47,6 @@ public class ExtendedResult {
         boolean posTransition = item.lastPosTransition > actionTime;
         boolean negTransition = item.lastNegTransition > actionTime;
         
-        if (item.id == 0) {
-            logger.info(String.format("item %s item.lastPosTransition %s > actionTime %s ? posTransition == %s",  item, item.lastPosTransition, actionTime, posTransition));
-            logger.info(String.format("item %s item.lastNegTransition %s > actionTime %s ? negTransition == %s",  item, item.lastNegTransition, actionTime, negTransition));
-        }
-
         boolean knownState = item.knownState;
 
         if (posTransition && ignoreItemsPos.get(id)) {
