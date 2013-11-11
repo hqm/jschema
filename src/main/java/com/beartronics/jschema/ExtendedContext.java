@@ -64,7 +64,7 @@ public class ExtendedContext {
 
         for (int id = 0; id < nitems; id++) {
             Item item = items.get(id);
-            if (item != null) {
+            if (item != null && item.type != Item.ItemType.CONTEXT_CONJUNCTION) {
 
                 int on_succeeded = onWhenActionSucceeds.get(id);
                 int on_failed = onWhenActionFails.get(id);

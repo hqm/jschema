@@ -44,6 +44,10 @@ public class WebServer implements Container {
              printSenseMap(body);
          } else if (path.matches("/items/map")) {
              printItems(body);
+         } else if (path.matches("/schemas/map")) {
+             printSchemas(body);
+         } else if (path.matches("/actions/map")) {
+             printActions(body);
          } else if (path.matches("/items/action")) {
              showAction(body, request);
          } else if (path.matches("/items/item")) {
@@ -90,7 +94,7 @@ public class WebServer implements Container {
     }
 
     String linkToMainPage() {
-        return "<a href=\"/items/map\">Main Map</a>";
+        return "<a href=\"/items/map\">Items</a>&nbsp;&nbsp;&nbsp; <a href=\"/schemas/map\">Schemas Map</a>&nbsp;&nbsp;&nbsp; <a href=\"/actions/map\">Actions Map</a>";
     }
 
     void header(PrintStream body) {
@@ -136,7 +140,19 @@ public class WebServer implements Container {
 
     void printItems(PrintStream body) {
         header(body);
-        body.println(app.stage.htmlPrintState());
+        body.println(app.stage.htmlPrintItems());
+        footer(body);
+    }
+
+    void printSchemas(PrintStream body) {
+        header(body);
+        body.println(app.stage.htmlPrintSchemas());
+        footer(body);
+    }
+
+    void printActions(PrintStream body) {
+        header(body);
+        body.println(app.stage.htmlPrintActions());
         footer(body);
     }
 

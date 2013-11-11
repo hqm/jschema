@@ -69,12 +69,12 @@ public class Stage
    /**
      * print an HTML table of state of items,schemas,actions
      */
-    public String htmlPrintState() {
+    public String htmlPrintItems() {
         StringWriter s = new StringWriter();
         PrintWriter p = new PrintWriter(s);
         p.println("<html><body>");
         p.println("<table border=1>");
-        p.println("<tr><th>Items</th><th>Schemas</th><th>Actions</th></tr>");
+        p.println("<tr><th>Items</th></tr>");
         for (int i = 0; i < items.size(); i++) {
             p.println("<tr>");
             p.println("<td>");
@@ -82,11 +82,44 @@ public class Stage
             if (item != null) {
                 p.println(item.makeLink());
             }
+            p.println("</tr>");
+        }
+        p.println("</table>");
+        p.println("</body></html>");
+        return s.toString();
+
+    }
+
+    public String htmlPrintSchemas() {
+        StringWriter s = new StringWriter();
+        PrintWriter p = new PrintWriter(s);
+        p.println("<html><body>");
+        p.println("<table border=1>");
+        p.println("<tr><th>Schemas</th></tr>");
+        for (int i = 0; i < schemas.size(); i++) {
+            p.println("<tr>");
             p.println("<td>");
             if (i < schemas.size()) {
                 Schema schema = schemas.get(i);
                 p.println(schema.makeLink());
             }
+            p.println("<td>");
+            p.println("</tr>");
+        }
+        p.println("</table>");
+        p.println("</body></html>");
+        return s.toString();
+
+    }
+
+    public String htmlPrintActions() {
+        StringWriter s = new StringWriter();
+        PrintWriter p = new PrintWriter(s);
+        p.println("<html><body>");
+        p.println("<table border=1>");
+        p.println("<tr><th>Actions</th></tr>");
+        for (int i = 0; i < actions.size(); i++) {
+            p.println("<tr>");
             p.println("<td>");
             if (i < actions.size()) {
                 Action action = actions.get(i);
@@ -99,6 +132,7 @@ public class Stage
         return s.toString();
 
     }
+
 
     public Stage(SensoriMotorSystem s, Config config) {
         this.config = config;
