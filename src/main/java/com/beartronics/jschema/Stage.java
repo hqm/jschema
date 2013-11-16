@@ -260,7 +260,8 @@ public class Stage
         for (Item item: items) {
             if (item == null) {
                 System.err.println("items "+i+" is null");
-            } else {
+            } else if (item.type != Item.ItemType.CONTEXT_CONJUNCTION) {
+                // We update CONTEXT_CONJUNCTION items in a different way, see below
                 item.prevValue = item.value;
                 item.prevKnownState = item.knownState;
             }
@@ -308,7 +309,7 @@ public class Stage
         for (Item item: changedItems) {
             for (int j = 0; j < nschemas; j++) {
                 Schema schema = schemas.get(j);
-                if (!schema.bare && (schema.conjunctItem != null)) {
+                if (schema.conjunctItem != null) {
                     schema.updateConjunctItem();
                 }
             }

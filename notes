@@ -469,4 +469,7 @@ as context items for other schemas? Because a conjunct item would be redundant w
 + be careful to update the conjunct item values exactly:  lastPosTransition, lastNegTransition, value, prevValue
 all need to be set properly for taking of both context and result statistics.
 
++ Build conjunct items instead of conjunct lists  -- easier to deal with
+
++ use X,Y proprioceptive items, and visual items, instead of discrete separate x and y items
 

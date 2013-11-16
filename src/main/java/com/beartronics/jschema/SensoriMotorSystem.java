@@ -1185,18 +1185,14 @@ public class SensoriMotorSystem {
         Vec2 h2fine = hand2.actualFinePosition();
 
         for (int i = -3; i <= 3; i++) {
-            worldState.setSensorInput("hand1.gross.x."+i, sensorID++, (int)(h1gross.x) == i);
-            worldState.setSensorInput("hand1.gross.y."+i, sensorID++, (int)(h1gross.y) == i);
-            
-            //worldState.setSensorInput("hand1.fine.x."+i,  sensorID++, (int)(h1fine.x) == i);
-            //worldState.setSensorInput("hand1.fine.y."+i,  sensorID++, (int)(h1fine.y) == i);
+            for (int j = -3; j < 3; j++) {
+                worldState.setSensorInput("hand1.gross.("+i+","+j+")", sensorID++, ((int)(h1gross.x) == i) && ((int)(h1gross.y) == j));
+                //worldState.setSensorInput("hand2.gross.("+i+","+j+")", sensorID++, ((int)(h2gross.x) == i) && ((int)(h2gross.y) == j));
 
+                //worldState.setSensorInput("hand1.fine."+i+","+j, sensorID++, ((int)(h1fine.x) == i) && ((int)(h1fine.y) == j));
+                //worldState.setSensorInput("hand2.fine."+i+","+j, sensorID++, ((int)(h2fine.x) == i) && ((int)(h2fine.y) == j));
 
-            //worldState.setSensorInput("hand2.gross.x."+i, sensorID++, (int)(h2gross.x) == i);
-            //worldState.setSensorInput("hand2.gross.y."+i, sensorID++, (int)(h2gross.y) == i);
-
-            //worldState.setSensorInput("hand2.fine.x."+i,  sensorID++, (int)(h2fine.x) == i);
-            //worldState.setSensorInput("hand2.fine.y."+i,  sensorID++, (int)(h2fine.y) == i);
+            }
         }
 
         // ****************************************************************
@@ -1206,8 +1202,10 @@ public class SensoriMotorSystem {
 
         // gaze angle sensor
         for (int i = -5; i < 6; i++) {
-            worldState.setSensorInput("gaze.gross.x"+i, sensorID++, Math.round(gazeXpos/50) == i);
-            worldState.setSensorInput("gaze.gross.y"+i, sensorID++, Math.round(gazeYpos/50) == i);
+            for (int j = -5; j < 6; j++) {
+                worldState.setSensorInput("gaze.gross.("+i+","+j+")",
+                                          sensorID++, Math.round(gazeXpos/50) == i && Math.round(gazeYpos/50) == j);
+            }
         }
 
         // update joint force sensors
