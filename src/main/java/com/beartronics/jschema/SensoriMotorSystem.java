@@ -220,8 +220,8 @@ public class SensoriMotorSystem {
 
 
         p.addBoundary(100, app.height-50, 10f, 100f );
-        p.addBoundary(300, app.height-150, 10f, 300f );
-        p.addBoundary(900, app.height-150, 10f, 300f );
+        p.addBoundary(200, app.height-150, 10f, 300f );
+        p.addBoundary(1000, app.height-150, 10f, 300f );
         p.addBoundary(1200, app.height-100, 10f, 200f );
     }
 

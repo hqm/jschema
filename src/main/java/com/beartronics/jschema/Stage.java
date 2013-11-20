@@ -191,8 +191,8 @@ public class Stage
 
             Action.Type.NULL_ACTION, 
 
-            Action.Type.HAND1_GRASP, 
-            Action.Type.HAND1_UNGRASP
+            //            Action.Type.HAND1_GRASP, 
+            //            Action.Type.HAND1_UNGRASP
             /*
             Action.Type.CENTER_GAZE,
             Action.Type.FOVEATE_NEXT_MOTION,
