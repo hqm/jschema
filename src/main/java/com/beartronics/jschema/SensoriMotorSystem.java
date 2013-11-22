@@ -392,7 +392,6 @@ public class SensoriMotorSystem {
             float cx = (id % 20) * 12;
             float cy = (id / 20) * 12;
 
-            // draw the max range the hands can move
             if (v) {
                 app.fill(0);
             } else {
@@ -1185,7 +1184,7 @@ public class SensoriMotorSystem {
         Vec2 h2fine = hand2.actualFinePosition();
 
         for (int i = -3; i <= 3; i++) {
-            for (int j = -3; j < 3; j++) {
+            for (int j = -3; j <= 3; j++) {
                 worldState.setSensorInput("hand1.gross.("+i+","+j+")", sensorID++, ((int)(h1gross.x) == i) && ((int)(h1gross.y) == j));
                 //worldState.setSensorInput("hand2.gross.("+i+","+j+")", sensorID++, ((int)(h2gross.x) == i) && ((int)(h2gross.y) == j));
 
