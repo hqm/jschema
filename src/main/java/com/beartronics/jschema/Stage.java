@@ -42,6 +42,8 @@ public class Stage
     public long lastActionTime = -1000;
     public WorldState worldState;
 
+    public double xresultRecencyBias = 0.9;
+
     public boolean atActionStep() {
         return ((clock % actionStepTime) == 0);
     }
@@ -163,6 +165,7 @@ public class Stage
         resultSpinoffMinTrials = config.getInt("extended-result.min-trials");
         actionStepTime = config.getInt("action-step-time");
         gravity = config.getInt("gravity");
+        xresultRecencyBias = config.getDouble("extended-result.recency_bias");
     }
 
 
@@ -191,13 +194,13 @@ public class Stage
 
             Action.Type.NULL_ACTION, 
 
-            //            Action.Type.HAND1_GRASP, 
-            //            Action.Type.HAND1_UNGRASP
-            /*
+            Action.Type.HAND1_GRASP, 
+            Action.Type.HAND1_UNGRASP,
+            
             Action.Type.CENTER_GAZE,
             Action.Type.FOVEATE_NEXT_MOTION,
 
-            Action.Type.MOVE_LEFT, Action.Type.MOVE_RIGHT, Action.Type.MOVE_UP, Action.Type.MOVE_DOWN,
+            //Action.Type.MOVE_LEFT, Action.Type.MOVE_RIGHT, Action.Type.MOVE_UP, Action.Type.MOVE_DOWN,
             Action.Type.GAZE_LEFT, Action.Type.GAZE_RIGHT, Action.Type.GAZE_UP, Action.Type.GAZE_DOWN,
             Action.Type.FOVEATE_NEXT_OBJECT_LEFT,
             Action.Type.FOVEATE_NEXT_OBJECT_RIGHT,
@@ -205,12 +208,12 @@ public class Stage
             Action.Type.FOVEATE_NEXT_OBJECT_DOWN, 
 
             Action.Type.HAND2_LEFT, Action.Type.HAND2_RIGHT, Action.Type.HAND2_UP, Action.Type.HAND2_DOWN,
-            Action.Type.HAND1_FINE_LEFT, Action.Type.HAND1_FINE_RIGHT, Action.Type.HAND1_FINE_UP, Action.Type.HAND1_FINE_DOWN,
-            Action.Type.HAND2_FINE_LEFT, Action.Type.HAND2_FINE_RIGHT, Action.Type.HAND2_FINE_UP, Action.Type.HAND2_FINE_DOWN,
+            //Action.Type.HAND1_FINE_LEFT, Action.Type.HAND1_FINE_RIGHT, Action.Type.HAND1_FINE_UP, Action.Type.HAND1_FINE_DOWN,
+            //Action.Type.HAND2_FINE_LEFT, Action.Type.HAND2_FINE_RIGHT, Action.Type.HAND2_FINE_UP, Action.Type.HAND2_FINE_DOWN,
             Action.Type.HAND2_GRASP, Action.Type.HAND2_UNGRASP,
             Action.Type.HAND1_WELD, Action.Type.HAND2_WELD,
             Action.Type.HAND1_UNWELD, Action.Type.HAND2_UNWELD
-            */
+
 
         };
         
@@ -255,17 +258,19 @@ public class Stage
             }
         }
 
-        int i = 0;
-        // for each item, copy its current value to prevValue slot
-        for (Item item: items) {
-            if (item == null) {
-                System.err.println("items "+i+" is null");
-            } else if (item.type != Item.ItemType.CONTEXT_CONJUNCTION) {
-                // We update CONTEXT_CONJUNCTION items in a different way, see below
-                item.prevValue = item.value;
-                item.prevKnownState = item.knownState;
+        {
+            int i = 0;
+            // for each item, copy its current value to prevValue slot
+            for (Item item: items) {
+                if (item == null) {
+                    System.err.println("items "+i+" is null");
+                } else if (item.type != Item.ItemType.CONTEXT_CONJUNCTION) {
+                    // We update CONTEXT_CONJUNCTION items in a different way, see below
+                    item.prevValue = item.value;
+                    item.prevKnownState = item.knownState;
+                }
+                i++;
             }
-            i++;
         }
 
         // Update primitive items' values from the primitive inputs.
@@ -316,16 +321,13 @@ public class Stage
         }
 
         // Update ExtendedResults counters on all bare schemas
-        for (Item item: changedItems) {
-            for (int j = 0; j < nschemas; j++) {
-                Schema schema = schemas.get(j);
+        int nitems = items.size();
+        for (int j = 0; j < nschemas; j++) {
+            Schema schema = schemas.get(j);
                 if (schema.bare) {
-                    schema.updateResultsCounters(item, actionLookback);
+                    schema.updateResultsCounters(actionLookback);
                 }
-            }
         }
-
-
 
         //For all schemas which were activated, check if they succeeded
         // If so, update their context counters for every item.                                                        

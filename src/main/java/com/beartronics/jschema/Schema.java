@@ -148,10 +148,22 @@ public class Schema {
        @param item the item for which we're updating statistics
        @param lastTimeActivityTime the time that any action was taken (not necessarily our action)
      */
-    public void updateResultsCounters(Item item, long lastActivityTime) {
+    public void updateResultsCounters(long lastActivityTime) {
         // Run the marginal attribution heuristics to decide whether to spin off
         // a new schema with new results
-        xresult.updateResultItem(stage, this, item, actionTaken, lastActivityTime);
+
+        if (actionTaken) {
+            xresult.numTrialsActionTaken++;
+        } else {
+            xresult.numTrialsActionNotTaken++;
+        }
+
+        int nitems = stage.items.size();
+        ArrayList<Item> items     = stage.items;
+        
+        for (int i = 0; i < nitems; i++) {
+            xresult.updateResultItem(stage, this, items.get(i), actionTaken, lastActivityTime);
+        }
     }
 
 

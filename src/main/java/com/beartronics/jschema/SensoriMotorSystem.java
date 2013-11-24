@@ -1186,7 +1186,7 @@ public class SensoriMotorSystem {
         for (int i = -3; i <= 3; i++) {
             for (int j = -3; j <= 3; j++) {
                 worldState.setSensorInput("hand1.gross.("+i+","+j+")", sensorID++, ((int)(h1gross.x) == i) && ((int)(h1gross.y) == j));
-                //worldState.setSensorInput("hand2.gross.("+i+","+j+")", sensorID++, ((int)(h2gross.x) == i) && ((int)(h2gross.y) == j));
+                worldState.setSensorInput("hand2.gross.("+i+","+j+")", sensorID++, ((int)(h2gross.x) == i) && ((int)(h2gross.y) == j));
 
                 //worldState.setSensorInput("hand1.fine."+i+","+j, sensorID++, ((int)(h1fine.x) == i) && ((int)(h1fine.y) == j));
                 //worldState.setSensorInput("hand2.fine."+i+","+j, sensorID++, ((int)(h2fine.x) == i) && ((int)(h2fine.y) == j));

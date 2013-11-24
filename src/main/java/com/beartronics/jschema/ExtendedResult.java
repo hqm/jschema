@@ -2,6 +2,8 @@ package com.beartronics.jschema;
 
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
+import gnu.trove.list.TDoubleList;
+import gnu.trove.list.array.TDoubleArrayList;
 
 import java.util.Iterator;
 import java.util.List;
@@ -20,18 +22,21 @@ public class ExtendedResult {
     public BitSet ignoreItemsPos = new BitSet();
     public BitSet ignoreItemsNeg = new BitSet();
 
-    TIntArrayList posTransitionActionTaken = new TIntArrayList();
-    TIntArrayList posTransitionActionNotTaken = new TIntArrayList();
+    TDoubleArrayList posTransitionActionTaken = new TDoubleArrayList();
+    TDoubleArrayList posTransitionActionNotTaken = new TDoubleArrayList();
 
-    TIntArrayList negTransitionActionTaken = new TIntArrayList();
-    TIntArrayList negTransitionActionNotTaken = new TIntArrayList();
+    TDoubleArrayList negTransitionActionTaken = new TDoubleArrayList();
+    TDoubleArrayList negTransitionActionNotTaken = new TDoubleArrayList();
+
+    public int numTrialsActionTaken = 0;
+    public int numTrialsActionNotTaken = 0;
 
     /* need to figure out if these are important
-    TIntArrayList remainedOnActionTaken = new TIntArrayList();
-    TIntArrayList remainedOnActionNotTaken = new TIntArrayList();
+    TDoubleArrayList remainedOnActionTaken = new TDoubleArrayList();
+    TDoubleArrayList remainedOnActionNotTaken = new TDoubleArrayList();
 
-    TIntArrayList remainedOffActionTaken = new TIntArrayList();
-    TIntArrayList remainedOffActionNotTaken = new TIntArrayList();
+    TDoubleArrayList remainedOffActionTaken = new TDoubleArrayList();
+    TDoubleArrayList remainedOffActionNotTaken = new TDoubleArrayList();
     */
 
     /**
@@ -57,11 +62,11 @@ public class ExtendedResult {
 
             // read out the existing statistics on the probablity of result transition with/without the action
             
-            int positiveTransitionsA = posTransitionActionTaken.get(id);
-            int positiveTransitionsNA = posTransitionActionNotTaken.get(id);
+            double positiveTransitionsA = posTransitionActionTaken.get(id) * stage.xresultRecencyBias;
+            double positiveTransitionsNA = posTransitionActionNotTaken.get(id)  * stage.xresultRecencyBias;
 
-            int negativeTransitionsA = negTransitionActionTaken.get(id);
-            int negativeTransitionsNA = negTransitionActionNotTaken.get(id);
+            double negativeTransitionsA = negTransitionActionTaken.get(id)  * stage.xresultRecencyBias;
+            double negativeTransitionsNA = negTransitionActionNotTaken.get(id)  * stage.xresultRecencyBias;
 
             // Update the item state transition counters 
 
@@ -70,18 +75,18 @@ public class ExtendedResult {
             if (knownState) {
                 if (posTransition && item.predictedPositiveTransition == null) { // 0->1 transition
                     if (actionTaken) {
-                        logger.info(String.format("POS-transition-AT %s %s %d", item, schema, positiveTransitionsA +1));
+                        logger.info(String.format("POS-transition-AT %s %s %f", item, schema, positiveTransitionsA +1));
                         posTransitionActionTaken.set(id,  positiveTransitionsA + 1);
                     } else {
-                        logger.info(String.format("POS-transition-NAT %s %s %d", item, schema, positiveTransitionsNA + 1));
+                        logger.info(String.format("POS-transition-NAT %s %s %f", item, schema, positiveTransitionsNA + 1));
                         posTransitionActionNotTaken.set(id, positiveTransitionsNA + 1);
                     }
                 } else if (negTransition && item.predictedNegativeTransition == null) { // 1->0 transition
                     if (actionTaken) {
-                        logger.info(String.format("NEG-transition-AT %s %s %d", item, schema, negativeTransitionsA + 1));
+                        logger.info(String.format("NEG-transition-AT %s %s %f", item, schema, negativeTransitionsA + 1));
                         negTransitionActionTaken.set(id, negativeTransitionsA + 1);
                     } else {
-                        logger.info(String.format("NEG-transition-NAT %s %s %d", item, schema, negativeTransitionsNA + 1));
+                        logger.info(String.format("NEG-transition-NAT %s %s %f", item, schema, negativeTransitionsNA + 1));
                         negTransitionActionNotTaken.set(id, negativeTransitionsNA + 1);
                     }
                 }
@@ -103,8 +108,13 @@ public class ExtendedResult {
                 */
             }
 
-            float positiveTransitionCorrelation = (float) positiveTransitionsA / (float) positiveTransitionsNA;
-            float negativeTransitionCorrelation = (float) negativeTransitionsA / (float) negativeTransitionsNA;
+            float positiveTransitionCorrelation =
+                ((float) positiveTransitionsA  / (float) numTrialsActionTaken)
+                /  ((float) positiveTransitionsNA / (float) numTrialsActionNotTaken);
+
+            float negativeTransitionCorrelation = ((float) negativeTransitionsA / (float) numTrialsActionTaken)
+                / ((float) negativeTransitionsNA / (float) numTrialsActionNotTaken);
+
             int totalPositiveTrials = (int) (positiveTransitionsA + positiveTransitionsNA);
             int totalNegativeTrials = (int) (negativeTransitionsA + negativeTransitionsNA);
 
@@ -118,7 +128,7 @@ public class ExtendedResult {
             if (positiveTransitionsA > stage.resultSpinoffMinTrials) {
                 double threshold = (stage.resultSpinoffCorrelationThresholds).get((int) Math.floor(Math.log10(totalPositiveTrials)));
                 if (positiveTransitionCorrelation > threshold) {
-                    logger.info(String.format("Spinning off positive-transition result %s %s pos-transition-correlation=%f #trials=%d", item, schema, positiveTransitionCorrelation, positiveTransitionsA));
+                    logger.info(String.format("Spinning off positive-transition result %s %s pos-transition-correlation=%f #trials=%s", item, schema, positiveTransitionCorrelation, numTrialsActionTaken));
                     schema.spinoffWithNewResultItem(item, true);
                 }
             }
@@ -126,7 +136,7 @@ public class ExtendedResult {
             if (negativeTransitionsA > stage.resultSpinoffMinTrials) {
                 double threshold = (stage.resultSpinoffCorrelationThresholds).get((int)Math.floor(Math.log10(totalNegativeTrials)));
                 if (negativeTransitionCorrelation > threshold) {
-                    logger.info(String.format("Spinning off neg-transition result %s %s neg-transition-correlation=%f #trials=%d", item, schema, negativeTransitionCorrelation, negativeTransitionsA));
+                    logger.info(String.format("Spinning off neg-transition result %s %s neg-transition-correlation=%f #trials=%s", item, schema, negativeTransitionCorrelation, numTrialsActionTaken));
                     schema.spinoffWithNewResultItem(item, false);
                 }
             }
@@ -140,7 +150,7 @@ public class ExtendedResult {
         resetCounters(posTransitionActionTaken);
     }
 
-    public void resetCounters(TIntArrayList a) {
+    public void resetCounters(TDoubleArrayList a) {
         for (int i = 0; i < a.size(); i++) {
             a.set(i, 0);
         }
@@ -165,12 +175,31 @@ public class ExtendedResult {
         for (int n = 0; n < items.size(); n++) {
             Item item = items.get(n);
             if (item != null) {
-                p.println(String.format("%d %s <b>^</b> %f [A: <b>%s</b>, !A: <b>%s</b>],  <b>v</b> %f [A: <b>%s</b>, !A: <b>%s</b>]",
+
+                double positiveTransitionsA = posTransitionActionTaken.get(n);
+                double positiveTransitionsNA = posTransitionActionNotTaken.get(n);
+
+                double negativeTransitionsA = negTransitionActionTaken.get(n);
+                double negativeTransitionsNA = negTransitionActionNotTaken.get(n);
+
+
+                float positiveTransitionCorrelation =
+                    ((float) positiveTransitionsA  / (float) numTrialsActionTaken)
+                    /  ((float) positiveTransitionsNA / (float) numTrialsActionNotTaken);
+                
+                float negativeTransitionCorrelation = ((float) negativeTransitionsA / (float) numTrialsActionTaken)
+                    / ((float) negativeTransitionsNA / (float) numTrialsActionNotTaken);
+
+                p.println(String.format("%d %s <b>^</b> %.2f [A: <b>%.2f</b>/%d, !A: <b>%.2f</b>/%d],  <b>v</b> %.2f [A: <b>%.2f</b>/%d, !A: <b>%.2f</b>/%d]",
                                         n, item.makeLink(),
-                                        (float) posTransitionActionTaken.get(n) /  (float) posTransitionActionNotTaken.get(n),
-                                        posTransitionActionTaken.get(n), posTransitionActionNotTaken.get(n),
-                                        (float) negTransitionActionTaken.get(n) / (float) negTransitionActionNotTaken.get(n),
-                                        negTransitionActionTaken.get(n), negTransitionActionNotTaken.get(n)));
+                                        positiveTransitionCorrelation, positiveTransitionsA, numTrialsActionTaken,
+                                        positiveTransitionsNA, numTrialsActionNotTaken,
+                                        negativeTransitionCorrelation, negativeTransitionsA, numTrialsActionTaken,
+                                        negativeTransitionsNA, numTrialsActionNotTaken));
+                                        
+                                        
+                                        
+
             }
         }
 
@@ -181,7 +210,7 @@ public class ExtendedResult {
     /**
        Makes sure array a can be indexed up to n-1
      */
-    void growArray(TIntArrayList a, int n) {
+    void growArray(TDoubleArrayList a, int n) {
         int delta = n - a.size();
         for (int i = 0; i < delta; i++) {
             a.add(0);
