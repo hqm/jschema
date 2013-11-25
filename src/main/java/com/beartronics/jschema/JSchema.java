@@ -44,6 +44,10 @@ import java.net.SocketAddress;
 
 import com.typesafe.config.*;
 
+// serialization lib
+import com.thoughtworks.xstream.*;
+import java.io.*;
+
 public class JSchema extends PApplet {
 
     static Logger logger = Logger.getLogger(JSchema.class.getName());
@@ -72,6 +76,36 @@ public class JSchema extends PApplet {
         box2d = new PBox2D(this);
         return box2d;
     }
+
+    public void serialize(String fname) {
+        try {
+            XStream xstream = new XStream();
+            Writer sout = new FileWriter(fname);
+            xstream.omitField(Stage.class, "sms");
+            xstream.omitField(Stage.class, "app");
+            xstream.omitField(Stage.class, "config");
+            xstream.toXML(stage, sout);
+            sout.close();
+        } catch (Exception e) {
+            logger.error("could not write serialization for Stage", e);
+        }
+    }
+
+    public Stage deserialize(String filename) {
+        Stage s = null;
+        try {
+            XStream xstream = new XStream();
+            File f = new File(filename);
+            xstream.omitField(Stage.class, "sms");
+            xstream.omitField(Stage.class, "app");
+            s = (Stage) xstream.fromXML(f);
+            this.stage = s;
+        } catch (Exception e) {
+            logger.error("could not read serialization for Stage from "+filename, e);
+        }
+        return s;
+    }
+
 
     public void startWebServer() {
         try {

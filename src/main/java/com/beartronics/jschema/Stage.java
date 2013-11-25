@@ -3,8 +3,6 @@ package com.beartronics.jschema;
 import java.util.*;
 import java.io.*;
 import com.typesafe.config.*;
-import com.thoughtworks.xstream.*;
-
 import org.apache.log4j.Logger;
 
 /**
@@ -49,33 +47,6 @@ public class Stage
         return ((clock % actionStepTime) == 0);
     }
 
-    public void serialize() {
-        try {
-            XStream xstream = new XStream();
-            Writer sout = new FileWriter("/tmp/app_state.xml");
-            xstream.omitField(Stage.class, "sms");
-            xstream.omitField(Stage.class, "app");
-            xstream.omitField(Stage.class, "config");
-            xstream.toXML(this, sout);
-            sout.close();
-        } catch (Exception e) {
-            logger.error("could not write serialization for Stage", e);
-        }
-    }
-
-    public Stage deserialize(String filename) {
-        Stage s = null;
-        try {
-            XStream xstream = new XStream();
-            File f = new File("/tmp/app_state.xml");
-            xstream.omitField(Stage.class, "sms");
-            xstream.omitField(Stage.class, "app");
-            s = (Stage) xstream.fromXML(f);
-        } catch (Exception e) {
-            logger.error("could not read serialization for Stage from "+filename, e);
-        }
-        return s;
-    }
 
     public long clock = 0;
     public long clockStep() {
