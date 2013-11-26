@@ -27,6 +27,9 @@ import java.io.InputStream;
 import java.io.OutputStream; 
 import java.io.IOException; 
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.apache.log4j.Logger;
 
 import org.simpleframework.http.Request;
@@ -77,20 +80,33 @@ public class JSchema extends PApplet {
         return box2d;
     }
 
-    public void serialize(String fname) {
+    // writes the Stage out
+    public void serialize(String fname, Stage stg) {
         try {
             XStream xstream = new XStream();
             Writer sout = new FileWriter(fname);
             xstream.omitField(Stage.class, "sms");
             xstream.omitField(Stage.class, "app");
             xstream.omitField(Stage.class, "config");
-            xstream.toXML(stage, sout);
+            xstream.toXML(stg, sout);
             sout.close();
         } catch (Exception e) {
             logger.error("could not write serialization for Stage", e);
         }
     }
 
+    public void saveStage(String fname) {
+        serialize(fname, stage);
+    }
+
+    public void saveStage() {
+        Date now = new Date();
+      SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-M-d-hh-mm");
+      String fname = "jschema-stage-"+dateFormatter.format(now)+".xml";
+      serialize(fname, stage);
+    }
+
+    // reads a Stage in
     public Stage deserialize(String filename) {
         Stage s = null;
         try {
@@ -98,12 +114,28 @@ public class JSchema extends PApplet {
             File f = new File(filename);
             xstream.omitField(Stage.class, "sms");
             xstream.omitField(Stage.class, "app");
+            xstream.omitField(Stage.class, "worldState");
             s = (Stage) xstream.fromXML(f);
             this.stage = s;
         } catch (Exception e) {
             logger.error("could not read serialization for Stage from "+filename, e);
         }
         return s;
+    }
+
+    public void loadStage(String fname) {
+        Stage newstage = deserialize(fname);
+        newstage.config = config;
+        sms.setupDisplay(); // make new WorldState
+        newstage.sms = sms;
+        newstage.app = this;
+
+        sms.stage = newstage;
+        this.stage = newstage;
+        this.stage.worldState = sms.worldState;
+
+        sms.computeWorldState();
+
     }
 
 
