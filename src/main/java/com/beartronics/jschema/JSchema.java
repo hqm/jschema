@@ -20,7 +20,9 @@ import processing.opengl.*;
 import java.util.HashMap; 
 import java.util.ArrayList; 
 import java.io.File; 
-import java.io.BufferedReader; 
+import java.io.BufferedReader;
+import java.util.zip.GZIPOutputStream;
+import java.util.zip.GZIPInputStream; 
 
 import java.io.PrintWriter; 
 import java.io.InputStream; 
@@ -83,13 +85,20 @@ public class JSchema extends PApplet {
     // writes the Stage out
     public void serialize(String fname, Stage stg) {
         try {
-            XStream xstream = new XStream();
-            Writer sout = new FileWriter(fname);
-            xstream.omitField(Stage.class, "sms");
-            xstream.omitField(Stage.class, "app");
-            xstream.omitField(Stage.class, "config");
-            xstream.toXML(stg, sout);
-            sout.close();
+            FileOutputStream output = new FileOutputStream(fname);
+            try {
+                XStream xstream = new XStream();
+                Writer writer = new OutputStreamWriter(new GZIPOutputStream(output), "UTF-8");
+                xstream.omitField(Stage.class, "sms");
+                xstream.omitField(Stage.class, "app");
+                xstream.omitField(Stage.class, "config");
+                xstream.toXML(stg, writer);
+                writer.close();
+            } catch (Exception e) {
+                logger.error("could not write serialization for Stage", e);
+            } finally {
+                output.close();
+            }
         } catch (Exception e) {
             logger.error("could not write serialization for Stage", e);
         }
@@ -102,7 +111,7 @@ public class JSchema extends PApplet {
     public void saveStage() {
         Date now = new Date();
       SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-M-d-hh-mm");
-      String fname = "jschema-stage-"+dateFormatter.format(now)+".xml";
+      String fname = "jschema-stage-"+dateFormatter.format(now)+".xml.gz";
       serialize(fname, stage);
     }
 
@@ -111,11 +120,12 @@ public class JSchema extends PApplet {
         Stage s = null;
         try {
             XStream xstream = new XStream();
-            File f = new File(filename);
+            FileInputStream fis = new FileInputStream(filename);
+            GZIPInputStream gis = new GZIPInputStream(fis);
             xstream.omitField(Stage.class, "sms");
             xstream.omitField(Stage.class, "app");
             xstream.omitField(Stage.class, "worldState");
-            s = (Stage) xstream.fromXML(f);
+            s = (Stage) xstream.fromXML(gis);
             this.stage = s;
         } catch (Exception e) {
             logger.error("could not read serialization for Stage from "+filename, e);
