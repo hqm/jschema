@@ -118,22 +118,21 @@ public class ExtendedResult {
             int totalNegativeTransitions = (int) (negativeTransitionsA + negativeTransitionsNA);
 
             // probability of any positive transition
-            double nullHypothesisPos = (totalPositiveTransitions / (numTrialsActionTaken + numTrialsActionNotTaken));
-            double nullHypothesisNeg = (totalNegativeTransitions / (numTrialsActionTaken + numTrialsActionNotTaken));
+            double nullHypothesisPos = ((double)totalPositiveTransitions / (double) (numTrialsActionTaken + numTrialsActionNotTaken));
+            double nullHypothesisNeg = ((double)totalNegativeTransitions / (double) (numTrialsActionTaken + numTrialsActionNotTaken));
 
             // Compute Chi-squared value  = Sum (o-e)^2 / e
             double posChiSquared =
                 (Math.pow( (((double) positiveTransitionsA / (double) numTrialsActionTaken) - nullHypothesisPos), 2)
-                 / numTrialsActionTaken) + 
+                 / nullHypothesisPos) + 
                 (Math.pow( (((double) positiveTransitionsNA / (double) numTrialsActionNotTaken) - nullHypothesisPos), 2)
-                 / numTrialsActionNotTaken);
+                 / nullHypothesisPos);
             
             double negChiSquared =
                 (Math.pow( (((double) negativeTransitionsA / (double) numTrialsActionTaken) - nullHypothesisNeg), 2)
-                 / numTrialsActionTaken) + 
+                 / nullHypothesisNeg) + 
                 (Math.pow( (((double) negativeTransitionsNA / (double) numTrialsActionNotTaken) - nullHypothesisNeg), 2)
-                 / numTrialsActionNotTaken);
-
+                 / nullHypothesisNeg);
 
             /** per GLD: "My implementation used an ad hoc method that was tied to its
                 space-limited statistics collection method. But the real way to do it
@@ -202,21 +201,21 @@ public class ExtendedResult {
                 int totalNegativeTransitions = (int) (negativeTransitionsA + negativeTransitionsNA);
 
                 // probability of any positive transition
-                double nullHypothesisPos = (totalPositiveTransitions / (numTrialsActionTaken + numTrialsActionNotTaken));
-                double nullHypothesisNeg = (totalNegativeTransitions / (numTrialsActionTaken + numTrialsActionNotTaken));
+                double nullHypothesisPos = ((double)totalPositiveTransitions / (double)(numTrialsActionTaken + numTrialsActionNotTaken));
+                double nullHypothesisNeg = ((double)totalNegativeTransitions / (double)(numTrialsActionTaken + numTrialsActionNotTaken));
 
                 // Compute Chi-squared value  = Sum (o-e)^2 / e
                 double posChiSquared =
                     (Math.pow( (((double) positiveTransitionsA / (double) numTrialsActionTaken) - nullHypothesisPos), 2)
-                     / numTrialsActionTaken) + 
+                     / nullHypothesisPos) + 
                     (Math.pow( (((double) positiveTransitionsNA / (double) numTrialsActionNotTaken) - nullHypothesisPos), 2)
-                     / numTrialsActionNotTaken);
+                     / nullHypothesisPos);
             
                 double negChiSquared =
                     (Math.pow( (((double) negativeTransitionsA / (double) numTrialsActionTaken) - nullHypothesisNeg), 2)
-                     / numTrialsActionTaken) + 
+                     / nullHypothesisNeg) + 
                     (Math.pow( (((double) negativeTransitionsNA / (double) numTrialsActionNotTaken) - nullHypothesisNeg), 2)
-                     / numTrialsActionNotTaken);
+                     / nullHypothesisNeg);
 
                 
                 // Compute Chi-squared value  = Sum (o-e)^2 / e
