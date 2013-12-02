@@ -2,4 +2,4 @@ export CLASSPATH=.:lib/commons-io-2.4.jar:lib/controlP5.jar:lib/core.jar:lib/glu
 
 export JAVA_OPTS="-Xmx5000m -XX:+HeapDumpOnOutOfMemoryError -XX:MaxPermSize=128M -XX:PermSize=128M"
 # newer jirb does not load the jschema jar file for some reason
-rvm use 1.6.2
+#rvm use 1.6.2

@@ -42,6 +42,7 @@ public class Stage
     public WorldState worldState;
 
     public double xresultRecencyBias = 0.9;
+    public boolean enableSyntheticItems = false;
 
     public boolean atActionStep() {
         return ((clock % actionStepTime) == 0);
@@ -166,6 +167,7 @@ public class Stage
         actionStepTime = config.getInt("action-step-time");
         gravity = config.getInt("gravity");
         xresultRecencyBias = config.getDouble("extended-result.recency_bias");
+        enableSyntheticItems = config.getBoolean("enable-synthetic-items");
     }
 
 

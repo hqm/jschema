@@ -473,3 +473,11 @@ all need to be set properly for taking of both context and result statistics.
 
 + use X,Y proprioceptive items, and visual items, instead of discrete separate x and y items
 
+
+================
+When spinoff happens, log everything, put in string in schema for easy access, se we see counter values
+
+-- look up override conditions, how are those represented in parent?
+- remember override conditons when doing planning
+
+

@@ -85,10 +85,15 @@ public class JSchema extends PApplet {
     // writes the Stage out
     public void serialize(String fname, Stage stg) {
         try {
-            FileOutputStream output = new FileOutputStream(fname);
+            OutputStream ostream = new FileOutputStream(fname);
             try {
                 XStream xstream = new XStream();
-                Writer writer = new OutputStreamWriter(new GZIPOutputStream(output), "UTF-8");
+
+                if (fname.endsWith(".gz")) {
+                    ostream = new GZIPOutputStream(ostream);
+                }
+
+                Writer writer = new OutputStreamWriter(ostream,  "UTF-8");
                 xstream.omitField(Stage.class, "sms");
                 xstream.omitField(Stage.class, "app");
                 xstream.omitField(Stage.class, "config");
@@ -97,7 +102,7 @@ public class JSchema extends PApplet {
             } catch (Exception e) {
                 logger.error("could not write serialization for Stage", e);
             } finally {
-                output.close();
+                ostream.close();
             }
         } catch (Exception e) {
             logger.error("could not write serialization for Stage", e);
@@ -108,10 +113,14 @@ public class JSchema extends PApplet {
         serialize(fname, stage);
     }
 
-    public void saveStage() {
+    public void saveStage(boolean compress) {
         Date now = new Date();
       SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-M-d-hh-mm");
-      String fname = "jschema-stage-"+dateFormatter.format(now)+".xml.gz";
+      String fname = "jschema-stage-"+dateFormatter.format(now)+".xml";
+      if (compress) {
+          fname += ".gz";
+      }
+
       serialize(fname, stage);
     }
 
@@ -120,12 +129,15 @@ public class JSchema extends PApplet {
         Stage s = null;
         try {
             XStream xstream = new XStream();
-            FileInputStream fis = new FileInputStream(filename);
-            GZIPInputStream gis = new GZIPInputStream(fis);
+            InputStream istream = new FileInputStream(filename);
+            // Is it a compressed file?
+            if (filename.endsWith(".gz")) {
+                istream = new GZIPInputStream(istream);
+            }
             xstream.omitField(Stage.class, "sms");
             xstream.omitField(Stage.class, "app");
             xstream.omitField(Stage.class, "worldState");
-            s = (Stage) xstream.fromXML(gis);
+            s = (Stage) xstream.fromXML(istream);
             this.stage = s;
         } catch (Exception e) {
             logger.error("could not read serialization for Stage from "+filename, e);

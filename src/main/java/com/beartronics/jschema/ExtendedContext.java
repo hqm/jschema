@@ -112,6 +112,7 @@ public class ExtendedContext {
                 int totalOffTrials = (int) (off_succeeded + off_failed);
 
                     
+                // Change to sqrt
                 double threshold = stage.contextSpinoffReliabilityThresholds.get((int) Math.floor(Math.log10(totalOnTrials + totalOffTrials)));
 
                 if (totalOnTrials + totalOffTrials > stage.contextSpinoffMinTrials) {
@@ -120,13 +121,13 @@ public class ExtendedContext {
                     }
                 }
 
-                if (totalOnTrials + totalOffTrials > stage.contextSpinoffMinTrials) {
-                    /* XXX TURN THIS BACK ON WHEN WE FIGURE OUT BUG
+                /*
+                  if (totalOnTrials + totalOffTrials > stage.contextSpinoffMinTrials) {
                     if ((offValueReliability / onValueReliability) > threshold) {
                         schema.spinoffWithNewContextItem(item, false);
                     }
-                    */
                 }
+                */
             }
         }
     }

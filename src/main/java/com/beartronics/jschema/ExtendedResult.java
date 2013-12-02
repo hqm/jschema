@@ -22,6 +22,8 @@ public class ExtendedResult {
     public BitSet ignoreItemsPos = new BitSet();
     public BitSet ignoreItemsNeg = new BitSet();
 
+    double CHI_05 = (double) 3.841; // Chi Squared 5% critical value
+
     TDoubleArrayList posTransitionActionTaken = new TDoubleArrayList();
     TDoubleArrayList posTransitionActionNotTaken = new TDoubleArrayList();
 
@@ -75,19 +77,23 @@ public class ExtendedResult {
             if (knownState) {
                 if (posTransition && item.predictedPositiveTransition == null) { // 0->1 transition
                     if (actionTaken) {
-                        logger.info(String.format("POS-transition-AT %s %s %f", item, schema, positiveTransitionsA +1));
-                        posTransitionActionTaken.set(id,  positiveTransitionsA + 1);
+                        positiveTransitionsA++;
+                        logger.debug(String.format("POS-transition-AT %s %s %f", item, schema, positiveTransitionsA));
+                        posTransitionActionTaken.set(id,  positiveTransitionsA);
                     } else {
-                        logger.info(String.format("POS-transition-NAT %s %s %f", item, schema, positiveTransitionsNA + 1));
-                        posTransitionActionNotTaken.set(id, positiveTransitionsNA + 1);
+                        positiveTransitionsNA++;
+                        logger.debug(String.format("POS-transition-NAT %s %s %f", item, schema, positiveTransitionsNA));
+                        posTransitionActionNotTaken.set(id, positiveTransitionsNA);
                     }
                 } else if (negTransition && item.predictedNegativeTransition == null) { // 1->0 transition
                     if (actionTaken) {
-                        logger.info(String.format("NEG-transition-AT %s %s %f", item, schema, negativeTransitionsA + 1));
-                        negTransitionActionTaken.set(id, negativeTransitionsA + 1);
+                        negativeTransitionsA++;
+                        logger.debug(String.format("NEG-transition-AT %s %s %f", item, schema, negativeTransitionsA));
+                        negTransitionActionTaken.set(id, negativeTransitionsA);
                     } else {
-                        logger.info(String.format("NEG-transition-NAT %s %s %f", item, schema, negativeTransitionsNA + 1));
-                        negTransitionActionNotTaken.set(id, negativeTransitionsNA + 1);
+                        negativeTransitionsNA++;
+                        logger.debug(String.format("NEG-transition-NAT %s %s %f", item, schema, negativeTransitionsNA));
+                        negTransitionActionNotTaken.set(id, negativeTransitionsNA);
                     }
                 }
                 /* code for taking stats on items which remain in their state, with no transition
@@ -108,15 +114,26 @@ public class ExtendedResult {
                 */
             }
 
-            float positiveTransitionCorrelation =
-                ((float) positiveTransitionsA  / (float) numTrialsActionTaken)
-                /  ((float) positiveTransitionsNA / (float) numTrialsActionNotTaken);
+            int totalPositiveTransitions = (int) (positiveTransitionsA + positiveTransitionsNA);
+            int totalNegativeTransitions = (int) (negativeTransitionsA + negativeTransitionsNA);
 
-            float negativeTransitionCorrelation = ((float) negativeTransitionsA / (float) numTrialsActionTaken)
-                / ((float) negativeTransitionsNA / (float) numTrialsActionNotTaken);
+            // probability of any positive transition
+            double nullHypothesisPos = (totalPositiveTransitions / (numTrialsActionTaken + numTrialsActionNotTaken));
+            double nullHypothesisNeg = (totalNegativeTransitions / (numTrialsActionTaken + numTrialsActionNotTaken));
 
-            int totalPositiveTrials = (int) (positiveTransitionsA + positiveTransitionsNA);
-            int totalNegativeTrials = (int) (negativeTransitionsA + negativeTransitionsNA);
+            // Compute Chi-squared value  = Sum (o-e)^2 / e
+            double posChiSquared =
+                (Math.pow( (((double) positiveTransitionsA / (double) numTrialsActionTaken) - nullHypothesisPos), 2)
+                 / numTrialsActionTaken) + 
+                (Math.pow( (((double) positiveTransitionsNA / (double) numTrialsActionNotTaken) - nullHypothesisPos), 2)
+                 / numTrialsActionNotTaken);
+            
+            double negChiSquared =
+                (Math.pow( (((double) negativeTransitionsA / (double) numTrialsActionTaken) - nullHypothesisNeg), 2)
+                 / numTrialsActionTaken) + 
+                (Math.pow( (((double) negativeTransitionsNA / (double) numTrialsActionNotTaken) - nullHypothesisNeg), 2)
+                 / numTrialsActionNotTaken);
+
 
             /** per GLD: "My implementation used an ad hoc method that was tied to its
                 space-limited statistics collection method. But the real way to do it
@@ -126,17 +143,15 @@ public class ExtendedResult {
             */
 
             if (positiveTransitionsA > stage.resultSpinoffMinTrials) {
-                double threshold = (stage.resultSpinoffCorrelationThresholds).get((int) Math.floor(Math.log10(totalPositiveTrials)));
-                if (positiveTransitionCorrelation > threshold) {
-                    logger.info(String.format("Spinning off positive-transition result %s %s pos-transition-correlation=%f #trials=%s", item, schema, positiveTransitionCorrelation, numTrialsActionTaken));
+                if (posChiSquared > CHI_05) {
+                    logger.info(String.format("Spinning off positive-transition result %s %s pos-transition-correlation=%f #trials=%s", item, schema, posChiSquared, numTrialsActionTaken));
                     schema.spinoffWithNewResultItem(item, true);
                 }
             }
                 
             if (negativeTransitionsA > stage.resultSpinoffMinTrials) {
-                double threshold = (stage.resultSpinoffCorrelationThresholds).get((int)Math.floor(Math.log10(totalNegativeTrials)));
-                if (negativeTransitionCorrelation > threshold) {
-                    logger.info(String.format("Spinning off neg-transition result %s %s neg-transition-correlation=%f #trials=%s", item, schema, negativeTransitionCorrelation, numTrialsActionTaken));
+                if (negChiSquared > CHI_05) {
+                    logger.info(String.format("Spinning off neg-transition result %s %s neg-transition-correlation=%f #trials=%s", item, schema, negChiSquared, numTrialsActionTaken));
                     schema.spinoffWithNewResultItem(item, false);
                 }
             }
@@ -175,7 +190,7 @@ public class ExtendedResult {
         for (int n = 0; n < items.size(); n++) {
             Item item = items.get(n);
             if (item != null) {
-
+                
                 double positiveTransitionsA = posTransitionActionTaken.get(n);
                 double positiveTransitionsNA = posTransitionActionNotTaken.get(n);
 
@@ -183,23 +198,34 @@ public class ExtendedResult {
                 double negativeTransitionsNA = negTransitionActionNotTaken.get(n);
 
 
-                float positiveTransitionCorrelation =
-                    ((float) positiveTransitionsA  / (float) numTrialsActionTaken)
-                    /  ((float) positiveTransitionsNA / (float) numTrialsActionNotTaken);
-                
-                float negativeTransitionCorrelation = ((float) negativeTransitionsA / (float) numTrialsActionTaken)
-                    / ((float) negativeTransitionsNA / (float) numTrialsActionNotTaken);
+                int totalPositiveTransitions = (int) (positiveTransitionsA + positiveTransitionsNA);
+                int totalNegativeTransitions = (int) (negativeTransitionsA + negativeTransitionsNA);
 
+                // probability of any positive transition
+                double nullHypothesisPos = (totalPositiveTransitions / (numTrialsActionTaken + numTrialsActionNotTaken));
+                double nullHypothesisNeg = (totalNegativeTransitions / (numTrialsActionTaken + numTrialsActionNotTaken));
+
+                // Compute Chi-squared value  = Sum (o-e)^2 / e
+                double posChiSquared =
+                    (Math.pow( (((double) positiveTransitionsA / (double) numTrialsActionTaken) - nullHypothesisPos), 2)
+                     / numTrialsActionTaken) + 
+                    (Math.pow( (((double) positiveTransitionsNA / (double) numTrialsActionNotTaken) - nullHypothesisPos), 2)
+                     / numTrialsActionNotTaken);
+            
+                double negChiSquared =
+                    (Math.pow( (((double) negativeTransitionsA / (double) numTrialsActionTaken) - nullHypothesisNeg), 2)
+                     / numTrialsActionTaken) + 
+                    (Math.pow( (((double) negativeTransitionsNA / (double) numTrialsActionNotTaken) - nullHypothesisNeg), 2)
+                     / numTrialsActionNotTaken);
+
+                
+                // Compute Chi-squared value  = Sum (o-e)^2 / e
                 p.println(String.format("%d %s <b>^</b> %.2f [A: <b>%.2f</b>/%d, !A: <b>%.2f</b>/%d],  <b>v</b> %.2f [A: <b>%.2f</b>/%d, !A: <b>%.2f</b>/%d]",
                                         n, item.makeLink(),
-                                        positiveTransitionCorrelation, positiveTransitionsA, numTrialsActionTaken,
+                                        posChiSquared, positiveTransitionsA, numTrialsActionTaken,
                                         positiveTransitionsNA, numTrialsActionNotTaken,
-                                        negativeTransitionCorrelation, negativeTransitionsA, numTrialsActionTaken,
+                                        negChiSquared, negativeTransitionsA, numTrialsActionTaken,
                                         negativeTransitionsNA, numTrialsActionNotTaken));
-                                        
-                                        
-                                        
-
             }
         }
 

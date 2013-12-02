@@ -228,14 +228,19 @@ public class Schema {
     /**
      * Update our statistics on success and failure
      *
+     // if schema's context satisfied, and action taken, it is considered 'activated'
+     // special case, if context is empty, then just taking action considered activated.
+
      * 
      */
     public void handleActivation() {
         // Absent evidence to the contrary, we deactivate this schema after it's duration has expired
         if (stage.clock > (lastTimeActivated + duration)) {
-            syntheticItem.setValue(false);
-            syntheticItem.setKnownState(false);
-            logger.info("handleActivation "+this+" timed out synthetic item "+syntheticItem);
+            if (syntheticItem != null) {
+                syntheticItem.setValue(false);
+                syntheticItem.setKnownState(false);
+                logger.info("handleActivation "+this+" timed out synthetic item "+syntheticItem);
+            }
         }
 
         // schemas succeeded if context was satisfied, action taken, and results obtained
@@ -269,6 +274,7 @@ public class Schema {
 
 
             // Did we just perform our specified action, within the valid time window?
+            // NEED TO ALSO BE APPLICABLE???
             if (actionTaken && succeeded) {
                 // TODO [hqm 2013-07] Need to bias this statistic towards more recent activations
                 succeededWithActivation++;
@@ -343,7 +349,7 @@ public class Schema {
 
     public void spinoffWithNewContextItem(Item item, boolean sense) {
         logger.info("spinoffWithNewContextItem: "+this+ "sense="+sense+ ":= "+xcontext.describeContextItem(item));
-
+        logger.info(this.toHTML());
 
         if (sense == true) { // positive value
             xcontext.ignoreItemsOn.set(item.id);
@@ -394,12 +400,14 @@ public class Schema {
         // TODO verify if we need to do this or something like it
         //child.xcontext.ignoreItems.or(xcontext.ignoreItems);
 
-        child.makeSyntheticItem();
-        // ignore child's synthetic item
-        xresult.ignoreItemsPos.set(child.syntheticItem.id);
-        xresult.ignoreItemsNeg.set(child.syntheticItem.id);
-        child.xresult.ignoreItemsPos.or(xresult.ignoreItemsPos);
-        child.xresult.ignoreItemsNeg.or(xresult.ignoreItemsNeg);
+        if (stage.enableSyntheticItems) {
+            child.makeSyntheticItem();
+            // ignore child's synthetic item
+            xresult.ignoreItemsPos.set(child.syntheticItem.id);
+            xresult.ignoreItemsNeg.set(child.syntheticItem.id);
+            child.xresult.ignoreItemsPos.or(xresult.ignoreItemsPos);
+            child.xresult.ignoreItemsNeg.or(xresult.ignoreItemsNeg);
+        }
 
         stage.schemas.add(child);
         stage.ensureXCRcapacities();
