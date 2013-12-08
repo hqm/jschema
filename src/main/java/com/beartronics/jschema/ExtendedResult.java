@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.BitSet;
 import java.io.*;
 
+import edu.northwestern.at.utils.math.statistics.FishersExactTest;
+
 import org.apache.log4j.Logger;
 
 // Holds the extended context or result arrays
@@ -22,7 +24,7 @@ public class ExtendedResult {
     public BitSet ignoreItemsPos = new BitSet();
     public BitSet ignoreItemsNeg = new BitSet();
 
-    double CHI_05 = (double) 3.841; // Chi Squared 5% critical value
+    double P_THRESHOLD = (double) 0.05; //  5% significance for Fisher exact test
 
     TDoubleArrayList posTransitionActionTaken = new TDoubleArrayList();
     TDoubleArrayList posTransitionActionNotTaken = new TDoubleArrayList();
@@ -114,25 +116,25 @@ public class ExtendedResult {
                 */
             }
 
-            int totalPositiveTransitions = (int) (positiveTransitionsA + positiveTransitionsNA);
-            int totalNegativeTransitions = (int) (negativeTransitionsA + negativeTransitionsNA);
 
-            // probability of any positive transition
-            double nullHypothesisPos = ((double)totalPositiveTransitions / (double) (numTrialsActionTaken + numTrialsActionNotTaken));
-            double nullHypothesisNeg = ((double)totalNegativeTransitions / (double) (numTrialsActionTaken + numTrialsActionNotTaken));
+            //             no-action  action
+            // transition     a          b
+            // no-transition  c          d  
 
-            // Compute Chi-squared value  = Sum (o-e)^2 / e
-            double posChiSquared =
-                (Math.pow( (((double) positiveTransitionsA / (double) numTrialsActionTaken) - nullHypothesisPos), 2)
-                 / nullHypothesisPos) + 
-                (Math.pow( (((double) positiveTransitionsNA / (double) numTrialsActionNotTaken) - nullHypothesisPos), 2)
-                 / nullHypothesisPos);
-            
-            double negChiSquared =
-                (Math.pow( (((double) negativeTransitionsA / (double) numTrialsActionTaken) - nullHypothesisNeg), 2)
-                 / nullHypothesisNeg) + 
-                (Math.pow( (((double) negativeTransitionsNA / (double) numTrialsActionNotTaken) - nullHypothesisNeg), 2)
-                 / nullHypothesisNeg);
+
+            int a = (int) positiveTransitionsNA;
+            int c = (int) numTrialsActionNotTaken;
+            int b = (int) positiveTransitionsA;
+            int d = (int) numTrialsActionTaken;
+
+            double pPos = FishersExactTest.fishersExactTest(a,b,c,d)[0];
+
+            int a2 = (int) negativeTransitionsNA;
+            int c2 = (int) numTrialsActionNotTaken;
+            int b2 = (int) negativeTransitionsA;
+            int d2 = (int) numTrialsActionTaken;
+
+            double pNeg = FishersExactTest.fishersExactTest(a2,b2,c2,d2)[0];
 
             /** per GLD: "My implementation used an ad hoc method that was tied to its
                 space-limited statistics collection method. But the real way to do it
@@ -142,15 +144,15 @@ public class ExtendedResult {
             */
 
             if (positiveTransitionsA > stage.resultSpinoffMinTrials) {
-                if (posChiSquared > CHI_05) {
-                    logger.info(String.format("Spinning off positive-transition result %s %s pos-transition-correlation=%f #trials=%s", item, schema, posChiSquared, numTrialsActionTaken));
+                if (pPos < P_THRESHOLD) {
+                    logger.info(String.format("Spinning off positive-transition result %s %s pos-transition-correlation=%f #trials=%s", item, schema, pPos, numTrialsActionTaken));
                     schema.spinoffWithNewResultItem(item, true);
                 }
             }
                 
             if (negativeTransitionsA > stage.resultSpinoffMinTrials) {
-                if (negChiSquared > CHI_05) {
-                    logger.info(String.format("Spinning off neg-transition result %s %s neg-transition-correlation=%f #trials=%s", item, schema, negChiSquared, numTrialsActionTaken));
+                if (pNeg < P_THRESHOLD) {
+                    logger.info(String.format("Spinning off neg-transition result %s %s neg-transition-correlation=%f #trials=%s", item, schema, pNeg, numTrialsActionTaken));
                     schema.spinoffWithNewResultItem(item, false);
                 }
             }
@@ -189,7 +191,8 @@ public class ExtendedResult {
         for (int n = 0; n < items.size(); n++) {
             Item item = items.get(n);
             if (item != null) {
-                
+
+
                 double positiveTransitionsA = posTransitionActionTaken.get(n);
                 double positiveTransitionsNA = posTransitionActionNotTaken.get(n);
 
@@ -201,29 +204,30 @@ public class ExtendedResult {
                 int totalNegativeTransitions = (int) (negativeTransitionsA + negativeTransitionsNA);
 
                 // probability of any positive transition
-                double nullHypothesisPos = ((double)totalPositiveTransitions / (double)(numTrialsActionTaken + numTrialsActionNotTaken));
-                double nullHypothesisNeg = ((double)totalNegativeTransitions / (double)(numTrialsActionTaken + numTrialsActionNotTaken));
 
-                // Compute Chi-squared value  = Sum (o-e)^2 / e
-                double posChiSquared =
-                    (Math.pow( (((double) positiveTransitionsA / (double) numTrialsActionTaken) - nullHypothesisPos), 2)
-                     / nullHypothesisPos) + 
-                    (Math.pow( (((double) positiveTransitionsNA / (double) numTrialsActionNotTaken) - nullHypothesisPos), 2)
-                     / nullHypothesisPos);
-            
-                double negChiSquared =
-                    (Math.pow( (((double) negativeTransitionsA / (double) numTrialsActionTaken) - nullHypothesisNeg), 2)
-                     / nullHypothesisNeg) + 
-                    (Math.pow( (((double) negativeTransitionsNA / (double) numTrialsActionNotTaken) - nullHypothesisNeg), 2)
-                     / nullHypothesisNeg);
+            int a = (int) positiveTransitionsNA;
+            int c = (int) numTrialsActionNotTaken;
+            int b = (int) positiveTransitionsA;
+            int d = (int) numTrialsActionTaken;
 
-                
+            double pPos = FishersExactTest.fishersExactTest(a,b,c,d)[0];
+
+            int a2 = (int) negativeTransitionsNA;
+            int c2 = (int) numTrialsActionNotTaken;
+            int b2 = (int) negativeTransitionsA;
+            int d2 = (int) numTrialsActionTaken;
+
+            double pNeg = FishersExactTest.fishersExactTest(a2,b2,c2,d2)[0];
+
+
+
+
                 // Compute Chi-squared value  = Sum (o-e)^2 / e
                 p.println(String.format("%d %s <b>^</b> %.2f [A: <b>%.2f</b>/%d, !A: <b>%.2f</b>/%d],  <b>v</b> %.2f [A: <b>%.2f</b>/%d, !A: <b>%.2f</b>/%d]",
                                         n, item.makeLink(),
-                                        posChiSquared, positiveTransitionsA, numTrialsActionTaken,
+                                        pPos, positiveTransitionsA, numTrialsActionTaken,
                                         positiveTransitionsNA, numTrialsActionNotTaken,
-                                        negChiSquared, negativeTransitionsA, numTrialsActionTaken,
+                                        pNeg, negativeTransitionsA, numTrialsActionTaken,
                                         negativeTransitionsNA, numTrialsActionNotTaken));
             }
         }

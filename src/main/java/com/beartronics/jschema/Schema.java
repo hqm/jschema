@@ -249,10 +249,9 @@ public class Schema {
         // potential spinoff condition (prob. that some item transitions more with action than without)
 
 
-        succeeded = true;
-
         if (applicable) {
 
+            succeeded = true;
             if (posResult != null) {
                 if (!posResult.knownState) {
                     succeeded = false;
@@ -298,6 +297,9 @@ public class Schema {
             logger.info("handleActivation "+this+" applicable=false");
         }
 
+        // Set this back to false so we don't trip on it in some later step when we're activated
+        // but not applicable
+        succeeded = false;
 
     }
 

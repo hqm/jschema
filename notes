@@ -481,3 +481,30 @@ When spinoff happens, log everything, put in string in schema for easy access, s
 - remember override conditons when doing planning
 
 
+
+================================================================
+
+
+(a + b)! (c + d)! (a+c)! (b+d)!
+_________________________________
+       a! b! c! d! n!
+
+
+             no-action  action
+
+transition     a          b
+
+no-transition  c          d  
+18 Item-18 #18:hand1.gross.(-2,-1)   ^ NaN [A: 2.00/192, !A: 7.00/5268],  v NaN [A: 3.00/192, !A: 6.00/5268]
+
+a positiveTransitionsNA = 7
+b positiveTransitionsA = 2
+c numTrialsActionNotTaken 5268
+d numTrialsActionTaken, = 192
+
+
+
+
+
+
+
