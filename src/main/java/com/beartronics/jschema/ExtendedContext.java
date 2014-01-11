@@ -53,6 +53,7 @@ public class ExtendedContext {
             Item item = items.get(id);
             if (item.prevKnownState) {
                 boolean val = item.prevValue;
+                // Section 4.1.3 supressing redundant attribution
                 if ( (ignoreItemsOn.get(id) && val) ||
                      (ignoreItemsOff.get(id) && !val) ) {
                     logger.info("updateContextItems suppressed by "+item);
@@ -99,21 +100,19 @@ public class ExtendedContext {
                     }
                 }
 
-                if ( (on_succeeded == 0 && on_failed == 0) ||
-                     (off_succeeded == 0 && off_failed == 0)) {
-                    continue;
-                }
-
-
                 float onValueReliability = (float) on_succeeded / ((float) (on_failed + on_succeeded));
                 float offValueReliability = (float) off_succeeded / ((float) (off_succeeded + off_failed ));
 
                 int totalOnTrials = (int) (on_succeeded + on_failed);
                 int totalOffTrials = (int) (off_succeeded + off_failed);
 
+                if ( totalOnTrials < stage.contextSpinoffMinTrials ||
+                     totalOffTrials < stage.contextSpinoffMinTrials ) {
+                    continue;
+                }
+
                     
-                // Change to sqrt
-                double threshold = stage.contextSpinoffReliabilityThresholds.get((int) Math.floor(Math.log10(totalOnTrials + totalOffTrials)));
+                double threshold = 2.0D;
 
                 if (totalOnTrials + totalOffTrials > stage.contextSpinoffMinTrials) {
                     if ((onValueReliability / offValueReliability) > threshold) {
@@ -121,13 +120,12 @@ public class ExtendedContext {
                     }
                 }
 
-                /*
-                  if (totalOnTrials + totalOffTrials > stage.contextSpinoffMinTrials) {
+                if (totalOnTrials + totalOffTrials > stage.contextSpinoffMinTrials) {
                     if ((offValueReliability / onValueReliability) > threshold) {
                         schema.spinoffWithNewContextItem(item, false);
                     }
                 }
-                */
+
             }
         }
     }

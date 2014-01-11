@@ -503,6 +503,18 @@ c numTrialsActionNotTaken 5268
 d numTrialsActionTaken, = 192
 
 
+   -3 -2 -1  0 
+
+-3  .  O  .  .
+
+-2  x  .  .  .
+
+-1  .  .  .  .
+
+~[]/[Action-1 HAND1_RIGHT]/Item-14 PRIMITIVE #14:hand1.gross.(-2,-3):~null]
+
+sense=false:= 2>Item-2 #2:hand1.gross.(-3,-2)  </a> On 0.000000 [Succ.: <b>0</b>, Fail: <b>5</b>],  Off 0.285714 [Succ.: <b>2</b>, Fail: <b>7</b>] 1/0 0.000000 0/1 Infinity <b></b> <b></b>
+
 
 
 

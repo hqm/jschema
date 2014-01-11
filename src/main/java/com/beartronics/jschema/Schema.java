@@ -360,6 +360,7 @@ public class Schema {
         }
         Schema child = spinoffNewSchema();
 
+        // Section 4.1.3 supressing redundant attribution
         xcontext.clearAllCounters();
 
         child.bare = false;
