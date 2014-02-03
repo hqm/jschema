@@ -1,5 +1,9 @@
-export CLASSPATH=.:lib/commons-io-2.4.jar:lib/controlP5.jar:lib/core.jar:lib/gluegen-rt.jar:lib/jbox2d_2.1.2_ds_v2.jar:lib/jogl-all.jar:lib/jruby-complete-1.7.4.jar:lib/pbox2d.jar:lib/PFrame.jar:lib/simple-5.1.4.jar:lib/slf4j-api-1.6.4.jar:lib/slf4j-log4j12-1.7.5.jar:lib/trove4j-3.0.3.jar:lib/typesafe-config.jar:target/scala-2.10/jschema_2.10-1.1.jar:lib/log4j.jar:lib/gson-2.2.4.jar:lib/gson-2.2.4.jar:lib/xstream/*:lib/xstream-1.4.5.jar:lib/commons-math3-3.2.jar:lib/jsc.jar
-
 export JAVA_OPTS="-Xmx5000m -XX:+HeapDumpOnOutOfMemoryError -XX:MaxPermSize=128M -XX:PermSize=128M"
 # newer jirb does not load the jschema jar file for some reason
 #rvm use 1.6.2
+
+
+export PATH=$PATH:/Users/hqm/src/jschema/jruby-1.7.10/bin
+
+export CLASSPATH=.:lib/PFrame.jar:lib/commons-io-2.4.jar:lib/commons-math3-3.2.jar:lib/controlP5.jar:lib/core.jar:lib/gluegen-rt.jar:lib/gson-2.2.4.jar:lib/jbox2d_2.1.2_ds_v2.jar:lib/jogl-all.jar:lib/jruby-complete-1.7.10.jar:lib/jsc.jar:lib/log4j.jar:lib/pbox2d.jar:lib/simple-5.1.4.jar:lib/slf4j-api-1.6.4.jar:lib/slf4j-log4j12-1.7.5.jar:lib/target/:lib/trove4j-3.0.3.jar:lib/typesafe-config.jar:lib/xstream-1.4.5.jar:/Users/hqm/src/jschema/target/scala-2.10/jschema_2.10-1.1.jar
+

@@ -448,7 +448,7 @@ public class Schema {
     }
 
 
-    public String toHTML() {
+    public String toHTMLText() {
         StringWriter s = new StringWriter();
         PrintWriter p = new PrintWriter(s);
         p.println("<h1>Schema "+id+"</h1>");
@@ -489,6 +489,56 @@ public class Schema {
         p.println("<tr><th>Extended Context</th><th>Extended Result</th></tr>");
         p.println("<tr><td align=left><pre>");
         p.println(xcontext.toHTML(stage, this));
+        p.println("</td>");
+        p.println("<td align=left><pre>");
+        p.println(xresult.toHTML(stage, this));
+        p.println("</td></tr>");
+        p.println("</table>");
+        return s.toString();
+    }
+
+
+    public String toHTML() {
+        StringWriter s = new StringWriter();
+        PrintWriter p = new PrintWriter(s);
+        p.println("<h1>Schema "+id+"</h1>");
+        p.println("<pre>");
+        p.println(this.toString());
+        p.println("Action: "+action.makeLink());
+        p.println("creationTime: "+creationTime);
+        p.println("parent: "+(parent != null ? parent.makeLink() : null));
+        p.print("children: ");
+        if (children.size() > 0) {
+            for (Schema c: children) {
+                p.println(c.makeLink());
+            }
+        } else {
+            p.println("none");
+        }
+        p.println("posContext: " + itemLinks(posContext));
+        p.println("negContext: "+ itemLinks(negContext));
+        p.println("posResult: "+ (posResult == null ? " -- " : posResult.makeLink()));
+        p.println("negResult: "+ (negResult == null ? " -- " : negResult.makeLink()));
+        p.println("Synthetic Item: "+ (syntheticItem == null ? "null" : syntheticItem.makeLink()));
+        p.println("activations = "+activations);
+        p.println("succeededWithActivation = "+succeededWithActivation);
+        p.println("succeededWithoutActivation = "+succeededWithoutActivation);
+        p.println("failedWithActivation = "+failedWithActivation);
+        p.println("applicable: "+applicable);
+        p.println("value: " +value);
+        p.println("lastTimeActivated: "+lastTimeActivated);
+        p.println("lastTimeSucceeded: "+lastTimeSucceeded);
+        p.println("duration: " +duration);
+        p.println("cost: " +cost);
+        p.println("correlation(): " +correlation());
+        p.println("bare: " +bare);
+        /*        p.println("<b>xcontext</b>");
+        p.println(xcontext.toHTML(stage, this));
+        */
+        p.println("<table rows=2 border=1>");
+        p.println("<tr><th>Extended Context</th><th>Extended Result</th></tr>");
+        p.println("<tr><td align=left><pre>");
+        p.println(xcontext.toHTMLBarGraph(stage, this));
         p.println("</td>");
         p.println("<td align=left><pre>");
         p.println(xresult.toHTML(stage, this));

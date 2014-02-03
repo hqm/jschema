@@ -114,13 +114,13 @@ public class ExtendedContext {
                     
                 double threshold = 2.0D;
 
-                if (totalOnTrials + totalOffTrials > stage.contextSpinoffMinTrials) {
+                if (totalOnTrials > stage.contextSpinoffMinTrials &&  totalOffTrials > stage.contextSpinoffMinTrials) {
                     if ((onValueReliability / offValueReliability) > threshold) {
                         schema.spinoffWithNewContextItem(item, true);
                     }
                 }
 
-                if (totalOnTrials + totalOffTrials > stage.contextSpinoffMinTrials) {
+                if (totalOnTrials > stage.contextSpinoffMinTrials &&  totalOffTrials > stage.contextSpinoffMinTrials) {
                     if ((offValueReliability / onValueReliability) > threshold) {
                         schema.spinoffWithNewContextItem(item, false);
                     }
@@ -144,6 +144,61 @@ public class ExtendedContext {
         onWhenActionSucceeds.fill(0);
         onWhenActionFails.fill(0);
     }
+
+
+    public String toHTMLBarGraph(Stage stage, Schema schema) {
+        StringWriter s = new StringWriter();
+        PrintWriter p = new PrintWriter(s);
+        
+        ArrayList<Item> items = stage.items;
+        int maxval = 10;
+        for (int n = 0; n < items.size(); n++) {
+            Item item = items.get(n);
+            if (item != null) {
+                int id = item.id;
+                int m1 = onWhenActionSucceeds.get(id) +  onWhenActionFails.get(id);
+                int m2 =  offWhenActionSucceeds.get(id) + offWhenActionFails.get(id);
+                maxval = Math.max(maxval, m1+m2);
+            }
+        }
+        
+        //growArrays(stage.nitems);
+        for (int n = 0; n < items.size(); n++) {
+            Item item = items.get(n);
+            if (item != null) {
+                p.println(describeContextItemBarGraph(item, maxval));
+            }
+        }
+
+        return s.toString();
+    }
+
+
+    String describeContextItemBarGraph(Item item, int maxval) {
+        int n = item.id;
+        float reliabilityWhenOn = (float) onWhenActionSucceeds.get(n) /  (float) onWhenActionFails.get(n);
+        float reliabilityWhenOff =  (float) offWhenActionSucceeds.get(n) / (float) offWhenActionFails.get(n);
+
+    //  <table cellspacing=0 cellpadding=0><tr><td><div class="chart"><div style="width: 40px;">4</div></div><td> <div class="chart2"><div  style="width: 80px;">8</div></div></tr></table>
+
+        return String.format("%d %s On %.2f <table cellspacing=0 cellpadding=0><tr><td><div class=\"chart\"><div style=\"width: %dpx;\">%d</div></div><td> <div class=\"chart2\"><div  style=\"width: %dpx;\">%d</div></div></tr></table>"+
+                             "Off %.2f <table cellspacing=0 cellpadding=0><tr><td><div class=\"chart\"><div style=\"width: %dpx;\">%d</div></div><td> <div class=\"chart2\"><div  style=\"width: %dpx;\">%d</div></div></tr></table> 1/0 %f 0/1 %f <b>%s</b> <b>%s</b>",
+                             n, item.makeLink(),
+                             reliabilityWhenOn,
+                             onWhenActionSucceeds.get(n), onWhenActionSucceeds.get(n),
+                             onWhenActionFails.get(n), onWhenActionFails.get(n),
+                             reliabilityWhenOff,
+                             offWhenActionSucceeds.get(n), offWhenActionSucceeds.get(n),
+                             offWhenActionFails.get(n), offWhenActionFails.get(n),
+                             reliabilityWhenOn / reliabilityWhenOff,
+                             reliabilityWhenOff / reliabilityWhenOn,
+                             ignoreItemsOn.get(n) ? "IGNORE ON" : "",
+                             ignoreItemsOff.get(n) ? "IGNORE OFF" : ""
+                             );
+
+    }
+
+
 
     public String toHTML(Stage stage, Schema schema) {
         StringWriter s = new StringWriter();

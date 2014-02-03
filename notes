@@ -520,3 +520,5 @@ sense=false:= 2>Item-2 #2:hand1.gross.(-3,-2)  </a> On 0.000000 [Succ.: <b>0</b>
 
 
 
+saveStage() and loadStage() methods
+
