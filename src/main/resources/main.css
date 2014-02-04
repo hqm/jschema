@@ -173,21 +173,27 @@ footer a:link, footer a:visited {
 	}
 
 
-.chart1 div {
+.chart1 {
   font: 10px sans-serif;
   background-color: steelblue;
   text-align: right;
   padding: 3px;
   margin: 1px;
   color: white;
+  float: left;
 }
 
 
-.chart2 div {
+.chart2 {
   font: 10px sans-serif;
   background-color: #c80000;
   text-align: right;
   padding: 3px;
   margin: 1px;
   color: white;
+  float: left;
+}
+
+.ecxtext {
+  float:left;
 }

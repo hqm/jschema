@@ -178,18 +178,21 @@ public class ExtendedContext {
         int n = item.id;
         float reliabilityWhenOn = (float) onWhenActionSucceeds.get(n) /  (float) onWhenActionFails.get(n);
         float reliabilityWhenOff =  (float) offWhenActionSucceeds.get(n) / (float) offWhenActionFails.get(n);
+        if (onWhenActionSucceeds.get(n) == 0 && onWhenActionFails.get(n) == 0
+            && offWhenActionSucceeds.get(n) == 0 && offWhenActionFails.get(n) == 0) {
+            return "";
+        }
 
-    //  <table cellspacing=0 cellpadding=0><tr><td><div class="chart"><div style="width: 40px;">4</div></div><td> <div class="chart2"><div  style="width: 80px;">8</div></div></tr></table>
 
-        return String.format("%d %s On %.2f <table cellspacing=0 cellpadding=0><tr><td><div class=\"chart\"><div style=\"width: %dpx;\">%d</div></div><td> <div class=\"chart2\"><div  style=\"width: %dpx;\">%d</div></div></tr></table>"+
-                             "Off %.2f <table cellspacing=0 cellpadding=0><tr><td><div class=\"chart\"><div style=\"width: %dpx;\">%d</div></div><td> <div class=\"chart2\"><div  style=\"width: %dpx;\">%d</div></div></tr></table> 1/0 %f 0/1 %f <b>%s</b> <b>%s</b>",
+        return String.format("<span class=ecxtext>%d %s On %.2f</span> <span class=\"chart1\" style=\"width: %dpx;\">%d</span><span class=\"chart2\" style=\"width: %dpx;\">%d</span>"+
+                             "<span class=ecxtext>Off %.2f</span><span class=\"chart1\" style=\"width: %dpx;\">%d</span><span class=\"chart2\" style=\"width: %dpx;\">%d</span><span class=ecxtext> 1/0 %f 0/1 %f <b>%s</b> <b>%s</b></span>",
                              n, item.makeLink(),
                              reliabilityWhenOn,
-                             onWhenActionSucceeds.get(n), onWhenActionSucceeds.get(n),
-                             onWhenActionFails.get(n), onWhenActionFails.get(n),
+                             onWhenActionSucceeds.get(n)*4, onWhenActionSucceeds.get(n)*4,
+                             onWhenActionFails.get(n)*4, onWhenActionFails.get(n)*4,
                              reliabilityWhenOff,
-                             offWhenActionSucceeds.get(n), offWhenActionSucceeds.get(n),
-                             offWhenActionFails.get(n), offWhenActionFails.get(n),
+                             offWhenActionSucceeds.get(n)*4, offWhenActionSucceeds.get(n)*4,
+                             offWhenActionFails.get(n)*4, offWhenActionFails.get(n)*4,
                              reliabilityWhenOn / reliabilityWhenOff,
                              reliabilityWhenOff / reliabilityWhenOn,
                              ignoreItemsOn.get(n) ? "IGNORE ON" : "",

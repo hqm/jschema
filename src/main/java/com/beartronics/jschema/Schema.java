@@ -375,6 +375,7 @@ public class Schema {
 
         // If more than one item in the context, create a pseudo-item for the conjunction of the items,
         // so that schemas can consider using it as the result for a new spin-off schema.
+        /*
         if ((child.posContext.size() + child.negContext.size()) > 1) {
             // Create a new conjunct item for our context items. This will be
             // a candidate for inclusion in result of a new schema.
@@ -386,6 +387,7 @@ public class Schema {
             stage.conjunctItems.add(citem);
             stage.ensureXCRcapacities();
         }
+        */
     }
 
     /**
