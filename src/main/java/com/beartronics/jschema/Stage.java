@@ -406,9 +406,11 @@ public class Stage
 
             updateMarginalAttribution(); // update statistics, from results of last action taken
 
-            if (currentSchema != null) {
-                // Sec. 4.1.2 pp. 73
-                currentSchema.clearPredictedTransitions();
+            if (currentAction != null) {
+                for (Schema schema: currentAction.schemas) {
+                    // Sec. 4.1.2 pp. 73
+                    schema.clearPredictedTransitions();
+                }
             }
 
             // TODO [hqm 2013-08] This will of course need to be elaborated when we have composite-actions implemented.
@@ -416,8 +418,6 @@ public class Stage
             // We pick a primitive action at random, then activate all applicable schemas that use it, at random.
 
             currentAction = actions.get(rand.nextInt(actions.size()));
-            currentSchema = currentAction.schemas.get(rand.nextInt(currentAction.schemas.size()));
-            // List of all schemas that have this action
 
             /*currentAction = actions.get((int)(clock / actionStepTime) % actions.size());
              currentSchema = currentAction.schemas.get(0);

@@ -220,7 +220,11 @@ public class ExtendedResult {
             double pNeg = FishersExactTest.fishersExactTest(a2,b2,c2,d2)[0];
 
                 // Compute Chi-squared value  = Sum (o-e)^2 / e
-                p.println(String.format("<tr><td align=left>%d %s <td><b>+</b> %.2f [A: <b>%.2f</b>/%d <td>!A: <b>%.2f</b>/%d]<td>  <b>-</b> %.2f [A: <b>%.2f</b>/%d<td> !A: <b>%.2f</b>/%d]</td></tr>",
+                p.println(String.format("<tr><td align=left>%d %s "
+                                        +"<td><b>+</b> %.2f [A: <b>%.2f</b>/%d "
+                                        +"<td>!A: <b>%.2f</b>/%d]"
+                                        +"<td>  <b>-</b> %.2f [A: <b>%.2f</b>/%d"
+                                        +"<td> !A: <b>%.2f</b>/%d]</td></tr>",
                                         n, item.makeLink(),
                                         pPos, positiveTransitionsA, numTrialsActionTaken,
                                         positiveTransitionsNA, numTrialsActionNotTaken,

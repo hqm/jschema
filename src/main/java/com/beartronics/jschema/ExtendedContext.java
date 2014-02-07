@@ -108,7 +108,9 @@ public class ExtendedContext {
                     logger.info(String.format("item %s, onValueReliability: %s, offValueReliability: %s, on_succeeded: %s, on_failed: %s, off_succeeded: %s, off_failed: %s", item,onValueReliability, offValueReliability, on_succeeded, on_failed, off_succeeded, off_failed));
                 }
 
-                /*                if ( schema.activations >= stage.contextSpinoffMinTrials) {
+                if ( schema.activations >= stage.contextSpinoffMinTrials) {
+                    // TODO need to adjust this for number of trials; as number of trials increases
+                    // we should lower the threshold. Need a statistics expert to say what the formula is.
                     double threshold = 2.0D;
 
                     if ((onValueReliability / offValueReliability) > threshold) {

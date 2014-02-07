@@ -115,6 +115,7 @@ public class Schema {
 
     // Perform designated action
     public void activate() {
+        logger.info("activatd schema: "+this);
         activations += 1;
         action.activate(true);
         actionTaken = true;
@@ -539,14 +540,14 @@ public class Schema {
         /*        p.println("<b>xcontext</b>");
         p.println(xcontext.toHTML(stage, this));
         */
-        p.println("<table border=1>");
+        p.println("<table border=1 width=1600>");
         p.println("<tr><th>Extended Context</th>"
                   +" <th>Reliability When On<th>On When Succeeds<th>On When Fails"
                   + "<th>Reliability When Off<th>Off When Succeeds<th>Off When Fails"
                   + "<th>(Rel On)/(Rel Off)<th>(Rel Off)/(Rel On)</tr>");
         p.println(xcontext.toHTMLBarGraph(stage, this));
         p.println("</table>");
-        p.println("<table border=1>");
+        p.println("<table width=1600 border=1>");
         p.println("<tr><th>Extended Result</th><th>Pos Trans, A Taken<th>Pos Trans, A Not Taken<th>Neg Trans A Taken<th>Neg Trans A Not Taken</tr>");
         p.println(xresult.toHTML(stage, this));
         p.println("</table>");
