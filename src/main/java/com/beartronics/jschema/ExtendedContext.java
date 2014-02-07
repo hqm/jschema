@@ -103,7 +103,11 @@ public class ExtendedContext {
                 float onValueReliability = (float) on_succeeded / ((float) (on_succeeded + on_failed ));
                 float offValueReliability = (float) off_succeeded / ((float) (off_succeeded + off_failed ));
 
-                if ( schema.activations >= stage.contextSpinoffMinTrials) {
+                if (id == 8) {
+                    logger.info(String.format("item %s, onValueReliability: %s, offValueReliability: %s, on_succeeded: %s, on_failed: %s, off_succeeded: %s, off_failed: %s", item,onValueReliability, offValueReliability, on_succeeded, on_failed, off_succeeded, off_failed));
+                }
+
+                /*                if ( schema.activations >= stage.contextSpinoffMinTrials) {
                     double threshold = 2.0D;
 
                     if ((onValueReliability / offValueReliability) > threshold) {
@@ -114,6 +118,7 @@ public class ExtendedContext {
                         schema.spinoffWithNewContextItem(item, false);
                     }
                 }
+                */
             }
         }
     }
@@ -154,7 +159,7 @@ public class ExtendedContext {
         for (int n = 0; n < items.size(); n++) {
             Item item = items.get(n);
             if (item != null) {
-                p.println(describeContextItemBarGraph(item, maxval));
+                p.println("<tr><td align=left>"+describeContextItemBarGraph(item, maxval)+"</td></tr>");
             }
         }
 
@@ -164,23 +169,23 @@ public class ExtendedContext {
 
     String describeContextItemBarGraph(Item item, int maxval) {
         int n = item.id;
-        float reliabilityWhenOn = (float) onWhenActionSucceeds.get(n) /  (float) onWhenActionFails.get(n);
-        float reliabilityWhenOff =  (float) offWhenActionSucceeds.get(n) / (float) offWhenActionFails.get(n);
+        float reliabilityWhenOn = (float) onWhenActionSucceeds.get(n) /  ((float) onWhenActionFails.get(n) + (float) onWhenActionSucceeds.get(n));
+        float reliabilityWhenOff =  (float) offWhenActionSucceeds.get(n) / ((float) offWhenActionFails.get(n) + (float) offWhenActionSucceeds.get(n)); 
         if (onWhenActionSucceeds.get(n) == 0 && onWhenActionFails.get(n) == 0
             && offWhenActionSucceeds.get(n) == 0 && offWhenActionFails.get(n) == 0) {
             return "";
         }
 
 
-        return String.format("<span class=ecxtext>%d&nbsp;%s&nbsp;On&nbsp;%.2f</span>&nbsp;<span class=\"chart1\" style=\"width: %dpx;\">%d</span><span class=\"chart2\" style=\"width: %dpx;\">%d</span>"+
-                             "<span class=ecxtext>Off&nbsp;%.2f</span><span class=\"chart1\" style=\"width: %dpx;\">%d</span><span class=\"chart2\" style=\"width: %dpx;\">%d</span><span class=ecxtext>&nbsp;1/0&nbsp;%f&nbsp;0/1&nbsp;%f&nbsp;<b>%s</b>&nbsp;<b>%s</b></span>",
+        return String.format("<span class=ecxtext>%d %s </span> <td>On %.2f<td><span class=\"chart1\" style=\"width: %dpx;\">%d</span><td><span class=\"chart2\" style=\"width: %dpx;\">%d</span>"+
+                             "<td><span class=ecxtext>Off %.2f</span><td><span class=\"chart1\" style=\"width: %dpx;\">%d</span><td><span class=\"chart2\" style=\"width: %dpx;\">%d</span><td><span class=ecxtext> 1/0 %f<td> 0/1 %f <b>%s</b> <b>%s</b></span>",
                              n, item.makeLink(),
                              reliabilityWhenOn,
-                             Math.min(10, onWhenActionSucceeds.get(n)*4), Math.min(onWhenActionSucceeds.get(n)*4, 10),
-                             Math.min(10, onWhenActionFails.get(n)*4), Math.min(10, onWhenActionFails.get(n)*4),
+                             Math.max(10, onWhenActionSucceeds.get(n)*4), Math.max(onWhenActionSucceeds.get(n)*4, 10),
+                             Math.max(10, onWhenActionFails.get(n)*4), Math.max(10, onWhenActionFails.get(n)*4),
                              reliabilityWhenOff,
-                             Math.min(10, offWhenActionSucceeds.get(n)*4), Math.min(10, offWhenActionSucceeds.get(n)*4),
-                             Math.min(10, offWhenActionFails.get(n)*4), Math.min(10, offWhenActionFails.get(n)*4),
+                             Math.max(10, offWhenActionSucceeds.get(n)*4), Math.max(10, offWhenActionSucceeds.get(n)*4),
+                             Math.max(10, offWhenActionFails.get(n)*4), Math.max(10, offWhenActionFails.get(n)*4),
                              reliabilityWhenOn / reliabilityWhenOff,
                              reliabilityWhenOff / reliabilityWhenOn,
                              ignoreItemsOn.get(n) ? "IGNORE ON" : "",
@@ -213,7 +218,7 @@ public class ExtendedContext {
         float reliabilityWhenOff =  (float) offWhenActionSucceeds.get(n) / (float) offWhenActionFails.get(n);
 
 
-        return String.format("%d&nbsp;%s&nbsp;On&nbsp;%f&nbsp;[Succ.:&nbsp;<b>%s</b>,&nbsp;Fail:&nbsp;<b>%s</b>],&nbsp;&nbsp;Off&nbsp;%f&nbsp;[Succ.:&nbsp;<b>%s</b>,&nbsp;Fail:&nbsp;<b>%s</b>]&nbsp;1/0&nbsp;%f&nbsp;0/1&nbsp;%f&nbsp;<b>%s</b>&nbsp;<b>%s</b>",
+        return String.format("%d %s On %f [Succ.: <b>%s</b>, Fail: <b>%s</b>],  Off %f [Succ.: <b>%s</b>, Fail: <b>%s</b>] 1/0 %f 0/1 %f <b>%s</b> <b>%s</b>",
                              n, item.makeLink(),
                              reliabilityWhenOn,
                              onWhenActionSucceeds.get(n), onWhenActionFails.get(n),

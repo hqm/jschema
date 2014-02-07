@@ -537,15 +537,18 @@ public class Schema {
         /*        p.println("<b>xcontext</b>");
         p.println(xcontext.toHTML(stage, this));
         */
-        p.println("<table rows=2 border=1>");
-        p.println("<tr><th>Extended Context</th><th>Extended Result</th></tr>");
-        p.println("<tr><td align=left><pre>");
+        p.println("<table border=1>");
+        p.println("<tr><th>Extended Context</th>"
+                  +" <th>Reliability When On<th>On When Succeeds<th>On When Fails"
+                  + "<th>Reliability When Off<th>Off When Succeeds<th>Off When Fails"
+                  + "<th>(Rel On)/(Rel Off)<th>(Rel Off)/(Rel On)</tr>");
         p.println(xcontext.toHTMLBarGraph(stage, this));
-        p.println("</td>");
-        p.println("<td align=left><pre>");
-        p.println(xresult.toHTML(stage, this));
-        p.println("</td></tr>");
         p.println("</table>");
+        p.println("<table border=1>");
+        p.println("<tr><th>Extended Result</th><th>Pos Trans, A Taken<th>Pos Trans, A Not Taken<th>Neg Trans A Taken<th>Neg Trans A Not Taken</tr>");
+        p.println(xresult.toHTML(stage, this));
+        p.println("</table>");
+
         return s.toString();
     }
 

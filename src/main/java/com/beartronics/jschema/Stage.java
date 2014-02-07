@@ -178,6 +178,11 @@ public class Stage
         initSchemas();
         copySMSInputToItems(worldState);
         ensureXCRcapacities();
+
+        // DEBUG [TODO] move hand2 out of the way
+        sms.hand2.updateMouseJointPos(0,0);
+
+
     }
 
     // name some well known actions for debugging
