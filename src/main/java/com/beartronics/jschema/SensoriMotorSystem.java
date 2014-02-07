@@ -83,8 +83,8 @@ public class SensoriMotorSystem {
     public Hand hand2;
 
     // max number of gross and fine motor steps that arms can take
-    public int reachX = 3;
-    public int reachY = 3;
+    public int reachX = 1;
+    public int reachY = 1;
     // arm motor step size
     public int dGross = 100;
     public int dFine = 20;
@@ -383,9 +383,9 @@ public class SensoriMotorSystem {
         app.rectMode(PConstants.CENTER);
         app.translate(app.width-250,20);
 
-        for (Map.Entry<String, SensorInput> entry : w.inputs.entrySet())
+        for (Map.Entry<String, SensorItem> entry : w.items.entrySet())
         {
-            SensorInput s = entry.getValue();
+            SensorItem s = entry.getValue();
             int id = s.id;
             boolean v = s.value;
 
@@ -764,38 +764,38 @@ public class SensoriMotorSystem {
         // copies the bitmap into the pixels[] array for retina
         retina.loadPixels();
         // is fovea seeing a solid object?
-        worldState.setSensorInput("vision.fovea.object", sensorID++, vision.isObjectAtGaze(gazeAbsPosition()));
-        worldState.setSensorInput("vision.fovea.solid_object", sensorID++, vision.isSolidObjectAtGaze(gazeAbsPosition()));
-        worldState.setSensorInput("vision.fovea.hollow_object", sensorID++, vision.isHollowObjectAtGaze(gazeAbsPosition()));
-        worldState.setSensorInput("vision.fovea.round_object", sensorID++, vision.isRoundObjectAtGaze(gazeAbsPosition()));
-        worldState.setSensorInput("vision.fovea.flat_object", sensorID++, vision.isFlatObjectAtGaze(gazeAbsPosition()));
+        worldState.setSensorItem("vision.fovea.object", sensorID++, vision.isObjectAtGaze(gazeAbsPosition()));
+        worldState.setSensorItem("vision.fovea.solid_object", sensorID++, vision.isSolidObjectAtGaze(gazeAbsPosition()));
+        worldState.setSensorItem("vision.fovea.hollow_object", sensorID++, vision.isHollowObjectAtGaze(gazeAbsPosition()));
+        worldState.setSensorItem("vision.fovea.round_object", sensorID++, vision.isRoundObjectAtGaze(gazeAbsPosition()));
+        worldState.setSensorItem("vision.fovea.flat_object", sensorID++, vision.isFlatObjectAtGaze(gazeAbsPosition()));
 
-        worldState.setSensorInput("vision.fovea.flat_object", sensorID++, vision.isRedObjectAtGaze(gazeAbsPosition()));
-        worldState.setSensorInput("vision.fovea.flat_object", sensorID++, vision.isBlueObjectAtGaze(gazeAbsPosition()));
-        worldState.setSensorInput("vision.fovea.flat_object", sensorID++, vision.isGreenObjectAtGaze(gazeAbsPosition()));
+        worldState.setSensorItem("vision.fovea.flat_object", sensorID++, vision.isRedObjectAtGaze(gazeAbsPosition()));
+        worldState.setSensorItem("vision.fovea.flat_object", sensorID++, vision.isBlueObjectAtGaze(gazeAbsPosition()));
+        worldState.setSensorItem("vision.fovea.flat_object", sensorID++, vision.isGreenObjectAtGaze(gazeAbsPosition()));
 
-        worldState.setSensorInput("vision.fovea.flat_object", sensorID++, vision.isDarkObjectAtGaze(gazeAbsPosition()));
-        worldState.setSensorInput("vision.fovea.flat_object", sensorID++, vision.isLightObjectAtGaze(gazeAbsPosition()));
+        worldState.setSensorItem("vision.fovea.flat_object", sensorID++, vision.isDarkObjectAtGaze(gazeAbsPosition()));
+        worldState.setSensorItem("vision.fovea.flat_object", sensorID++, vision.isLightObjectAtGaze(gazeAbsPosition()));
 
         for (int angle = 0 ; angle < 180; angle+= 10) {
-            worldState.setSensorInput("vision.fovea.angle."+angle, sensorID++,
+            worldState.setSensorItem("vision.fovea.angle."+angle, sensorID++,
                                       vision.isGazeObjectAtAngle(gazeAbsPosition(), angle-10, angle));
         }
 
         // Look for closed and open boundary objects
-        //worldState.setSensorInput("vision.fovea.closed_object", sensorID++, closedObjectAt(0,0));
+        //worldState.setSensorItem("vision.fovea.closed_object", sensorID++, closedObjectAt(0,0));
         
         computeMotionSensors();
         for (int x = 0; x < NQUADRANT_X; x++) {
             for (int y = 0; y < NQUADRANT_Y; y++) {
-                worldState.setSensorInput("vision.peripheral.obj."+x+"."+y, sensorID++, vision.peripheralObjectAtQuadrant(x,y));
+                worldState.setSensorItem("vision.peripheral.obj."+x+"."+y, sensorID++, vision.peripheralObjectAtQuadrant(x,y));
 
                 VisualCell cell = vision.getCell(x,y);
-                worldState.setSensorInput("vision.peripheral.motion."+x+"."+y, sensorID++, cell.motionSensed);
-                worldState.setSensorInput("vision.peripheral.pos_x_motion."+x+"."+y, sensorID++, cell.motion.x > 0);
-                worldState.setSensorInput("vision.peripheral.neg_x_motion."+x+"."+y, sensorID++, cell.motion.x < 0);
-                worldState.setSensorInput("vision.peripheral.pos_y_motion."+x+"."+y, sensorID++, cell.motion.y > 0);
-                worldState.setSensorInput("vision.peripheral.neg_y_motion."+x+"."+y, sensorID++, cell.motion.y < 0);
+                worldState.setSensorItem("vision.peripheral.motion."+x+"."+y, sensorID++, cell.motionSensed);
+                worldState.setSensorItem("vision.peripheral.pos_x_motion."+x+"."+y, sensorID++, cell.motion.x > 0);
+                worldState.setSensorItem("vision.peripheral.neg_x_motion."+x+"."+y, sensorID++, cell.motion.x < 0);
+                worldState.setSensorItem("vision.peripheral.pos_y_motion."+x+"."+y, sensorID++, cell.motion.y > 0);
+                worldState.setSensorItem("vision.peripheral.neg_y_motion."+x+"."+y, sensorID++, cell.motion.y < 0);
             }
         }
     }
@@ -1183,13 +1183,13 @@ public class SensoriMotorSystem {
         Vec2 h2gross = hand2.actualGrossPosition();
         Vec2 h2fine = hand2.actualFinePosition();
 
-        for (int i = -3; i <= 3; i++) {
-            for (int j = -3; j <= 3; j++) {
-                worldState.setSensorInput("hand1.gross.("+i+","+j+")", sensorID++, ((int)(h1gross.x) == i) && ((int)(h1gross.y) == j));
-                worldState.setSensorInput("hand2.gross.("+i+","+j+")", sensorID++, ((int)(h2gross.x) == i) && ((int)(h2gross.y) == j));
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                worldState.setSensorItem("hand1.gross.("+i+","+j+")", sensorID++, ((int)(h1gross.x) == i) && ((int)(h1gross.y) == j));
+                worldState.setSensorItem("hand2.gross.("+i+","+j+")", sensorID++, ((int)(h2gross.x) == i) && ((int)(h2gross.y) == j));
 
-                //worldState.setSensorInput("hand1.fine."+i+","+j, sensorID++, ((int)(h1fine.x) == i) && ((int)(h1fine.y) == j));
-                //worldState.setSensorInput("hand2.fine."+i+","+j, sensorID++, ((int)(h2fine.x) == i) && ((int)(h2fine.y) == j));
+                //worldState.setSensorItem("hand1.fine."+i+","+j, sensorID++, ((int)(h1fine.x) == i) && ((int)(h1fine.y) == j));
+                //worldState.setSensorItem("hand2.fine."+i+","+j, sensorID++, ((int)(h2fine.x) == i) && ((int)(h2fine.y) == j));
 
             }
         }
@@ -1202,7 +1202,7 @@ public class SensoriMotorSystem {
         // gaze angle sensor
         for (int i = -5; i < 6; i++) {
             for (int j = -5; j < 6; j++) {
-                worldState.setSensorInput("gaze.gross.("+i+","+j+")",
+                worldState.setSensorItem("gaze.gross.("+i+","+j+")",
                                           sensorID++, Math.round(gazeXpos/50) == i && Math.round(gazeYpos/50) == j);
             }
         }
@@ -1217,46 +1217,46 @@ public class SensoriMotorSystem {
         float trq2 = hand2.getJointTorque();
         // forces should be normalized to range [-1.0, 1.0]
 
-        worldState.setSensorInput("hand1.force.x.neg", sensorID++, f1.x < 0);
-        worldState.setSensorInput("hand1.force.x.pos", sensorID++, f1.x > 0);
-        worldState.setSensorInput("hand1.force.y.neg", sensorID++, f1.y < 0);
-        worldState.setSensorInput("hand1.force.y.pos", sensorID++, f1.y > 0);
-        worldState.setSensorInput("hand1.torque.neg",  sensorID++,  trq1 < 0);
-        worldState.setSensorInput("hand1.torque.pos",  sensorID++,  trq1 > 0);
-        worldState.setSensorInput("hand2.force.x.neg", sensorID++, f2.x < 0);
-        worldState.setSensorInput("hand2.force.x.pos", sensorID++, f2.x > 0);
-        worldState.setSensorInput("hand2.force.y.neg", sensorID++, f2.y < 0);
-        worldState.setSensorInput("hand2.force.y.pos", sensorID++, f2.y > 0);
-        worldState.setSensorInput("hand2.torque.neg",  sensorID++,  trq2 < 0);
-        worldState.setSensorInput("hand2.torque.pos",  sensorID++,  trq2 > 0);
+        worldState.setSensorItem("hand1.force.x.neg", sensorID++, f1.x < 0);
+        worldState.setSensorItem("hand1.force.x.pos", sensorID++, f1.x > 0);
+        worldState.setSensorItem("hand1.force.y.neg", sensorID++, f1.y < 0);
+        worldState.setSensorItem("hand1.force.y.pos", sensorID++, f1.y > 0);
+        worldState.setSensorItem("hand1.torque.neg",  sensorID++,  trq1 < 0);
+        worldState.setSensorItem("hand1.torque.pos",  sensorID++,  trq1 > 0);
+        worldState.setSensorItem("hand2.force.x.neg", sensorID++, f2.x < 0);
+        worldState.setSensorItem("hand2.force.x.pos", sensorID++, f2.x > 0);
+        worldState.setSensorItem("hand2.force.y.neg", sensorID++, f2.y < 0);
+        worldState.setSensorItem("hand2.force.y.pos", sensorID++, f2.y > 0);
+        worldState.setSensorItem("hand2.torque.neg",  sensorID++,  trq2 < 0);
+        worldState.setSensorItem("hand2.torque.pos",  sensorID++,  trq2 > 0);
 
         // update gripper touch and force sensors
         int t1 = hand1.touchingSides();
-        worldState.setSensorInput("hand1.touch.left", sensorID++, (t1 & Hand.TOUCH_LEFT) != 0);
-        worldState.setSensorInput("hand1.touch.right", sensorID++, (t1 & Hand.TOUCH_RIGHT) != 0);
-        worldState.setSensorInput("hand1.touch.top", sensorID++, (t1 & Hand.TOUCH_TOP) != 0);
-        worldState.setSensorInput("hand1.touch.bottom", sensorID++, (t1 & Hand.TOUCH_BOTTOM) != 0);
+        worldState.setSensorItem("hand1.touch.left", sensorID++, (t1 & Hand.TOUCH_LEFT) != 0);
+        worldState.setSensorItem("hand1.touch.right", sensorID++, (t1 & Hand.TOUCH_RIGHT) != 0);
+        worldState.setSensorItem("hand1.touch.top", sensorID++, (t1 & Hand.TOUCH_TOP) != 0);
+        worldState.setSensorItem("hand1.touch.bottom", sensorID++, (t1 & Hand.TOUCH_BOTTOM) != 0);
 
         int h1ObjectsGrasped = hand1.getWeldedObjects().size();
-        worldState.setSensorInput("hand1.empty-grasp", sensorID++, h1ObjectsGrasped == 0);
-        worldState.setSensorInput("hand1.grasp-one", sensorID++, h1ObjectsGrasped == 1);
-        worldState.setSensorInput("hand1.grasp-two", sensorID++, h1ObjectsGrasped == 2);
-        worldState.setSensorInput("hand1.grasp-three", sensorID++, h1ObjectsGrasped == 3);
-        worldState.setSensorInput("hand1.grasp-many", sensorID++, h1ObjectsGrasped > 3);
+        worldState.setSensorItem("hand1.empty-grasp", sensorID++, h1ObjectsGrasped == 0);
+        worldState.setSensorItem("hand1.grasp-one", sensorID++, h1ObjectsGrasped == 1);
+        worldState.setSensorItem("hand1.grasp-two", sensorID++, h1ObjectsGrasped == 2);
+        worldState.setSensorItem("hand1.grasp-three", sensorID++, h1ObjectsGrasped == 3);
+        worldState.setSensorItem("hand1.grasp-many", sensorID++, h1ObjectsGrasped > 3);
 
         
         int t2 = hand2.touchingSides();
-        worldState.setSensorInput("hand1.touch.left", sensorID++, (t2 & Hand.TOUCH_LEFT) != 0);
-        worldState.setSensorInput("hand1.touch.right", sensorID++, (t2 & Hand.TOUCH_RIGHT) != 0);
-        worldState.setSensorInput("hand1.touch.top", sensorID++, (t2 & Hand.TOUCH_TOP) != 0);
-        worldState.setSensorInput("hand1.touch.bottom", sensorID++, (t2 & Hand.TOUCH_BOTTOM) != 0);
+        worldState.setSensorItem("hand1.touch.left", sensorID++, (t2 & Hand.TOUCH_LEFT) != 0);
+        worldState.setSensorItem("hand1.touch.right", sensorID++, (t2 & Hand.TOUCH_RIGHT) != 0);
+        worldState.setSensorItem("hand1.touch.top", sensorID++, (t2 & Hand.TOUCH_TOP) != 0);
+        worldState.setSensorItem("hand1.touch.bottom", sensorID++, (t2 & Hand.TOUCH_BOTTOM) != 0);
 
         int h2ObjectsGrasped = hand2.getWeldedObjects().size();
-        worldState.setSensorInput("hand2.empty-grasp", sensorID++, h2ObjectsGrasped == 0);
-        worldState.setSensorInput("hand2.grasp-one", sensorID++, h2ObjectsGrasped == 1);
-        worldState.setSensorInput("hand2.grasp-two", sensorID++, h2ObjectsGrasped == 2);
-        worldState.setSensorInput("hand2.grasp-three", sensorID++, h2ObjectsGrasped == 3);
-        worldState.setSensorInput("hand2.grasp-many", sensorID++, h2ObjectsGrasped > 3);
+        worldState.setSensorItem("hand2.empty-grasp", sensorID++, h2ObjectsGrasped == 0);
+        worldState.setSensorItem("hand2.grasp-one", sensorID++, h2ObjectsGrasped == 1);
+        worldState.setSensorItem("hand2.grasp-two", sensorID++, h2ObjectsGrasped == 2);
+        worldState.setSensorItem("hand2.grasp-three", sensorID++, h2ObjectsGrasped == 3);
+        worldState.setSensorItem("hand2.grasp-many", sensorID++, h2ObjectsGrasped > 3);
 
         
     }

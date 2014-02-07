@@ -208,10 +208,10 @@ public class Stage
             Action.Type.FOVEATE_NEXT_OBJECT_UP,
             Action.Type.FOVEATE_NEXT_OBJECT_DOWN, 
 
-            Action.Type.HAND2_LEFT, Action.Type.HAND2_RIGHT, Action.Type.HAND2_UP, Action.Type.HAND2_DOWN,
+            //            Action.Type.HAND2_LEFT, Action.Type.HAND2_RIGHT, Action.Type.HAND2_UP, Action.Type.HAND2_DOWN,
             //Action.Type.HAND1_FINE_LEFT, Action.Type.HAND1_FINE_RIGHT, Action.Type.HAND1_FINE_UP, Action.Type.HAND1_FINE_DOWN,
             //Action.Type.HAND2_FINE_LEFT, Action.Type.HAND2_FINE_RIGHT, Action.Type.HAND2_FINE_UP, Action.Type.HAND2_FINE_DOWN,
-            Action.Type.HAND2_GRASP, Action.Type.HAND2_UNGRASP,
+            //            Action.Type.HAND2_GRASP, Action.Type.HAND2_UNGRASP,
             Action.Type.HAND1_WELD, Action.Type.HAND2_WELD,
             Action.Type.HAND1_UNWELD, Action.Type.HAND2_UNWELD
 
@@ -275,8 +275,8 @@ public class Stage
         }
 
         // Update primitive items' values from the primitive inputs.
-        // Copy the state information from SensorInputs which changed state since the last action, to Items
-        for (SensorInput si : worldState.inputs.values()) {
+        // Copy the state information from SensorItems which changed state since the last action, to Items
+        for (SensorItem si : worldState.items.values()) {
             long mostRecentTransitionTime = Math.max(si.lastPosTransition, si.lastNegTransition);
             if (mostRecentTransitionTime >= lastActionTime) {
                 Item item = items.get(si.id);
@@ -346,13 +346,13 @@ public class Stage
 
     }
 
-    /** This is called once during init to create corresponding Items for the primitive SensorInputs
+    /** This is called once during init to create corresponding Items for the primitive SensorItems
         in the SensoriMotorSystem
      */
     void copySMSInputToItems(WorldState w) {
-        for (Map.Entry<String, SensorInput> entry : w.inputs.entrySet())
+        for (Map.Entry<String, SensorItem> entry : w.items.entrySet())
         {
-            SensorInput s = entry.getValue();
+            SensorItem s = entry.getValue();
             String path = s.path;
             boolean newValue = s.value;
 

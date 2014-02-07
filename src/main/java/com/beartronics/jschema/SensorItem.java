@@ -12,7 +12,7 @@ import org.jbox2d.collision.shapes.Shape;
 import processing.core.*;
 
 
-public class SensorInput {
+public class SensorItem {
     public String path;
     public int id; // a unique id for this input
 
@@ -21,7 +21,7 @@ public class SensorInput {
     public boolean value;
     public boolean prevValue;
 
-    SensorInput(String path, int id, boolean val) {
+    SensorItem(String path, int id, boolean val) {
         _construct(path, id, val);
     }
 

@@ -100,32 +100,20 @@ public class ExtendedContext {
                     }
                 }
 
-                float onValueReliability = (float) on_succeeded / ((float) (on_failed + on_succeeded));
+                float onValueReliability = (float) on_succeeded / ((float) (on_succeeded + on_failed ));
                 float offValueReliability = (float) off_succeeded / ((float) (off_succeeded + off_failed ));
 
-                int totalOnTrials = (int) (on_succeeded + on_failed);
-                int totalOffTrials = (int) (off_succeeded + off_failed);
+                if ( schema.activations >= stage.contextSpinoffMinTrials) {
+                    double threshold = 2.0D;
 
-                if ( totalOnTrials < stage.contextSpinoffMinTrials ||
-                     totalOffTrials < stage.contextSpinoffMinTrials ) {
-                    continue;
-                }
-
-                    
-                double threshold = 2.0D;
-
-                if (totalOnTrials > stage.contextSpinoffMinTrials &&  totalOffTrials > stage.contextSpinoffMinTrials) {
                     if ((onValueReliability / offValueReliability) > threshold) {
                         schema.spinoffWithNewContextItem(item, true);
                     }
-                }
-
-                if (totalOnTrials > stage.contextSpinoffMinTrials &&  totalOffTrials > stage.contextSpinoffMinTrials) {
+                    
                     if ((offValueReliability / onValueReliability) > threshold) {
                         schema.spinoffWithNewContextItem(item, false);
                     }
                 }
-
             }
         }
     }
@@ -184,15 +172,15 @@ public class ExtendedContext {
         }
 
 
-        return String.format("<span class=ecxtext>%d %s On %.2f</span> <span class=\"chart1\" style=\"width: %dpx;\">%d</span><span class=\"chart2\" style=\"width: %dpx;\">%d</span>"+
-                             "<span class=ecxtext>Off %.2f</span><span class=\"chart1\" style=\"width: %dpx;\">%d</span><span class=\"chart2\" style=\"width: %dpx;\">%d</span><span class=ecxtext> 1/0 %f 0/1 %f <b>%s</b> <b>%s</b></span>",
+        return String.format("<span class=ecxtext>%d&nbsp;%s&nbsp;On&nbsp;%.2f</span>&nbsp;<span class=\"chart1\" style=\"width: %dpx;\">%d</span><span class=\"chart2\" style=\"width: %dpx;\">%d</span>"+
+                             "<span class=ecxtext>Off&nbsp;%.2f</span><span class=\"chart1\" style=\"width: %dpx;\">%d</span><span class=\"chart2\" style=\"width: %dpx;\">%d</span><span class=ecxtext>&nbsp;1/0&nbsp;%f&nbsp;0/1&nbsp;%f&nbsp;<b>%s</b>&nbsp;<b>%s</b></span>",
                              n, item.makeLink(),
                              reliabilityWhenOn,
-                             onWhenActionSucceeds.get(n)*4, onWhenActionSucceeds.get(n)*4,
-                             onWhenActionFails.get(n)*4, onWhenActionFails.get(n)*4,
+                             Math.min(10, onWhenActionSucceeds.get(n)*4), Math.min(onWhenActionSucceeds.get(n)*4, 10),
+                             Math.min(10, onWhenActionFails.get(n)*4), Math.min(10, onWhenActionFails.get(n)*4),
                              reliabilityWhenOff,
-                             offWhenActionSucceeds.get(n)*4, offWhenActionSucceeds.get(n)*4,
-                             offWhenActionFails.get(n)*4, offWhenActionFails.get(n)*4,
+                             Math.min(10, offWhenActionSucceeds.get(n)*4), Math.min(10, offWhenActionSucceeds.get(n)*4),
+                             Math.min(10, offWhenActionFails.get(n)*4), Math.min(10, offWhenActionFails.get(n)*4),
                              reliabilityWhenOn / reliabilityWhenOff,
                              reliabilityWhenOff / reliabilityWhenOn,
                              ignoreItemsOn.get(n) ? "IGNORE ON" : "",
@@ -225,7 +213,7 @@ public class ExtendedContext {
         float reliabilityWhenOff =  (float) offWhenActionSucceeds.get(n) / (float) offWhenActionFails.get(n);
 
 
-        return String.format("%d %s On %f [Succ.: <b>%s</b>, Fail: <b>%s</b>],  Off %f [Succ.: <b>%s</b>, Fail: <b>%s</b>] 1/0 %f 0/1 %f <b>%s</b> <b>%s</b>",
+        return String.format("%d&nbsp;%s&nbsp;On&nbsp;%f&nbsp;[Succ.:&nbsp;<b>%s</b>,&nbsp;Fail:&nbsp;<b>%s</b>],&nbsp;&nbsp;Off&nbsp;%f&nbsp;[Succ.:&nbsp;<b>%s</b>,&nbsp;Fail:&nbsp;<b>%s</b>]&nbsp;1/0&nbsp;%f&nbsp;0/1&nbsp;%f&nbsp;<b>%s</b>&nbsp;<b>%s</b>",
                              n, item.makeLink(),
                              reliabilityWhenOn,
                              onWhenActionSucceeds.get(n), onWhenActionFails.get(n),

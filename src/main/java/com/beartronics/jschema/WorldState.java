@@ -16,7 +16,7 @@ public class WorldState {
     static Logger logger = Logger.getLogger(WorldState.class);
 
     public long clock = 0;
-    public HashMap<String,SensorInput> inputs = new HashMap<String,SensorInput>();
+    public HashMap<String,SensorItem> items = new HashMap<String,SensorItem>();
     
     // Actions which are to be performed on this clock step
     public ArrayList<Action> actions = new ArrayList<Action>();
@@ -28,11 +28,11 @@ public class WorldState {
         clock = c;
     }
 
-    SensorInput setSensorInput(String path, int id,  boolean val) {
-        SensorInput s = inputs.get(path);
+    SensorItem setSensorItem(String path, int id,  boolean val) {
+        SensorItem s = items.get(path);
         if (s == null) {
-            s = new SensorInput(path, id, val);
-            inputs.put(path, s);
+            s = new SensorItem(path, id, val);
+            items.put(path, s);
         }
 
         s.prevValue = s.value;
@@ -45,7 +45,7 @@ public class WorldState {
 
         /*
           if (s.id == 127 || s.id==126) {
-            logger.info("setSensorInput "+clock+" "+s+" lastPos="+s.lastPosTransition+" lastNeg="+s.lastNegTransition);
+            logger.info("setSensorItem "+clock+" "+s+" lastPos="+s.lastPosTransition+" lastNeg="+s.lastNegTransition);
         }
         */
         return s;
@@ -54,7 +54,7 @@ public class WorldState {
     public String toString() {
         StringBuilder out = new StringBuilder();
         ArrayList<String> list = new ArrayList<String>();
-        for (Map.Entry<String, SensorInput> entry : inputs.entrySet())
+        for (Map.Entry<String, SensorItem> entry : items.entrySet())
         {
             list.add(entry.getValue().toString());
         }
