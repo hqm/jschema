@@ -52,7 +52,7 @@ public class Stage
     public long clock = 0;
     public long clockStep() {
         if (clock % 100 == 0) {
-            logger.info(String.format("clock = %d", clock));
+            logger.debug(String.format("clock = %d", clock));
         }
         return clock++;
     }
@@ -402,7 +402,7 @@ public class Stage
         // Clock speed is 60Hz
         if (run && atActionStep()) { // perform an action, and do learning, every nth clock cycle
 
-            logger.info(String.format("processWorldStep clock=%d HAND1-Y=%s",clock, sms.hand1.grossY ));
+            //logger.debug(String.format("processWorldStep clock=%d HAND1-Y=%s",clock, sms.hand1.grossY ));
 
             updateMarginalAttribution(); // update statistics, from results of last action taken
 

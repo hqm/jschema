@@ -103,7 +103,8 @@ public class ExtendedContext {
                 float onValueReliability = (float) on_succeeded / ((float) (on_succeeded + on_failed ));
                 float offValueReliability = (float) off_succeeded / ((float) (off_succeeded + off_failed ));
 
-                if (id == 8) {
+                /// DEBUG TODO log item 4 = Hand @ (-1,1)
+                if (id == 4) {
                     logger.info(String.format("item %s, onValueReliability: %s, offValueReliability: %s, on_succeeded: %s, on_failed: %s, off_succeeded: %s, off_failed: %s", item,onValueReliability, offValueReliability, on_succeeded, on_failed, off_succeeded, off_failed));
                 }
 
@@ -181,11 +182,11 @@ public class ExtendedContext {
                              "<td><span class=ecxtext>Off %.2f</span><td><span class=\"chart1\" style=\"width: %dpx;\">%d</span><td><span class=\"chart2\" style=\"width: %dpx;\">%d</span><td><span class=ecxtext> 1/0 %f<td> 0/1 %f <b>%s</b> <b>%s</b></span>",
                              n, item.makeLink(),
                              reliabilityWhenOn,
-                             Math.max(10, onWhenActionSucceeds.get(n)*4), Math.max(onWhenActionSucceeds.get(n)*4, 10),
-                             Math.max(10, onWhenActionFails.get(n)*4), Math.max(10, onWhenActionFails.get(n)*4),
+                             Math.max(10, onWhenActionSucceeds.get(n)*4), onWhenActionSucceeds.get(n),
+                             Math.max(10, onWhenActionFails.get(n)*4), onWhenActionFails.get(n),
                              reliabilityWhenOff,
-                             Math.max(10, offWhenActionSucceeds.get(n)*4), Math.max(10, offWhenActionSucceeds.get(n)*4),
-                             Math.max(10, offWhenActionFails.get(n)*4), Math.max(10, offWhenActionFails.get(n)*4),
+                             Math.max(10, offWhenActionSucceeds.get(n)*4), offWhenActionSucceeds.get(n),
+                             Math.max(10, offWhenActionFails.get(n)*4), offWhenActionFails.get(n),
                              reliabilityWhenOn / reliabilityWhenOff,
                              reliabilityWhenOff / reliabilityWhenOn,
                              ignoreItemsOn.get(n) ? "IGNORE ON" : "",

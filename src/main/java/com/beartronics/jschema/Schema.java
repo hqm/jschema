@@ -33,6 +33,8 @@ public class Schema {
     // Was this action taken recently (within the last time window)
     public boolean actionTaken;
 
+    // When our extended context has more than one item in it, we make a 'conjunct' item for it
+    // that can be included as a result in a new schema by marginal attribution.
     public Item conjunctItem = null;
 
     public boolean succeeded = false;
