@@ -208,17 +208,17 @@ public class Stage
 
             //Action.Type.MOVE_LEFT, Action.Type.MOVE_RIGHT, Action.Type.MOVE_UP, Action.Type.MOVE_DOWN,
             Action.Type.GAZE_LEFT, Action.Type.GAZE_RIGHT, Action.Type.GAZE_UP, Action.Type.GAZE_DOWN,
-            Action.Type.FOVEATE_NEXT_OBJECT_LEFT,
-            Action.Type.FOVEATE_NEXT_OBJECT_RIGHT,
-            Action.Type.FOVEATE_NEXT_OBJECT_UP,
-            Action.Type.FOVEATE_NEXT_OBJECT_DOWN, 
+            //            Action.Type.FOVEATE_NEXT_OBJECT_LEFT,
+            //            Action.Type.FOVEATE_NEXT_OBJECT_RIGHT,
+            //            Action.Type.FOVEATE_NEXT_OBJECT_UP,
+            //            Action.Type.FOVEATE_NEXT_OBJECT_DOWN, 
 
             //            Action.Type.HAND2_LEFT, Action.Type.HAND2_RIGHT, Action.Type.HAND2_UP, Action.Type.HAND2_DOWN,
             //Action.Type.HAND1_FINE_LEFT, Action.Type.HAND1_FINE_RIGHT, Action.Type.HAND1_FINE_UP, Action.Type.HAND1_FINE_DOWN,
             //Action.Type.HAND2_FINE_LEFT, Action.Type.HAND2_FINE_RIGHT, Action.Type.HAND2_FINE_UP, Action.Type.HAND2_FINE_DOWN,
             //            Action.Type.HAND2_GRASP, Action.Type.HAND2_UNGRASP,
-            Action.Type.HAND1_WELD, Action.Type.HAND2_WELD,
-            Action.Type.HAND1_UNWELD, Action.Type.HAND2_UNWELD
+            //            Action.Type.HAND1_WELD, Action.Type.HAND2_WELD,
+            //            Action.Type.HAND1_UNWELD, Action.Type.HAND2_UNWELD
 
 
         };

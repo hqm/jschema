@@ -522,3 +522,96 @@ sense=false:= 2>Item-2 #2:hand1.gross.(-3,-2)  </a> On 0.000000 [Succ.: <b>0</b>
 
 saveStage() and loadStage() methods
 
+
+================================================================
+1.9.3-p484 :002 > Exception in thread "Animation Thread" java.lang.Error: spinning off OFF context item [Schema 13 []:~[]/[Action-1 HAND1_RIGHT]/null:~Item-10 PRIMITIVE #10:hand1.gross.(0,1)]
+
+
+	   	  	       	      ITEM was	ON/suc	ON/fail 	  OFF/suc      OFF/fail	   
+0 Item-0 #0:hand1.gross.(-1,-1)	      On NaN	0	0	Off 0.90	18	2	 1/0 NaN	 0/1 NaN
+1 Item-1 #1:hand2.gross.(-1,-1)	      On NaN	0	0	Off 0.90	18	2	 1/0 NaN	 0/1 NaN
+2 Item-2 #2:hand1.gross.(-1,0)	      On 1.00	1	0	Off 0.89	17	2	 1/0 1.117647	 0/1 0.894737
+3 Item-3 #3:hand2.gross.(-1,0)	      On NaN	0	0	Off 0.90	18	2	 1/0 NaN	 0/1 NaN
+4 Item-4 #4:hand1.gross.(-1,1)	      On 0.00	0	2	Off 1.00	18	0	 1/0 0.000000	 0/1 Infinity
+5 Item-5 #5:hand2.gross.(-1,1)	      On NaN	0	0	Off 0.89	17	2	 1/0 NaN	 0/1 NaN
+6 Item-6 #6:hand1.gross.(0,-1)	      On 1.00	1	0	Off 0.89	16	2	 1/0 1.125000	 0/1 0.888889
+7 Item-7 #7:hand2.gross.(0,-1)	      On NaN	0	0	Off 0.89	17	2	 1/0 NaN	 0/1 NaN
+8 Item-8 #8:hand1.gross.(0,0)	      On 1.00	1	0	Off 0.89	16	2	 1/0 1.125000	 0/1 0.888889
+9 Item-9 #9:hand2.gross.(0,0)	      On NaN	0	0	Off 0.89	17	2	 1/0 NaN	 0/1 NaN
+10 Item-10 #10:hand1.gross.(0,1)      On 1.00	5	0	Off 0.86	12	2	 1/0 1.166667	 0/1 0.857143
+11 Item-11 #11:hand2.gross.(0,1)      On NaN	0	0	Off 0.89	17	2	 1/0 NaN	 0/1 NaN
+12 Item-12 #12:hand1.gross.(1,-1)     On 1.00	2	0	Off 0.88	15	2	 1/0 1.133333	 0/1 0.882353
+13 Item-13 #13:hand2.gross.(1,-1)     On NaN	0	0	Off 0.89	17	2	 1/0 NaN	 0/1 NaN
+14 Item-14 #14:hand1.gross.(1,0) TRUE On 1.00	3	0	Off 0.88	14	2	 1/0 1.142857	 0/1 0.875000
+15 Item-15 #15:hand2.gross.(1,0)      On NaN	0	0	Off 0.89	17	2	 1/0 NaN	 0/1 NaN
+16 Item-16 #16:hand1.gross.(1,1)      On 1.00	4	0	Off 0.87	13	2	 1/0 1.153846	 0/1 0.866667
+17 Item-17 #17:hand2.gross.(1,1)      On NaN	0	0	Off 0.89	17	2	 1/0 NaN	 0/1 NaN
+
+This schema predicts that when we move HAND_RIGHT, Hand@(0,1) will be OFF.
+This schema of course succeeds almost all the time. 
+Why did system propose it? 
+Should the criteria for "schema succeeds" be that result item is in predicted state, or that it does a transition to predicted state?
+
+
+
+================================================================
+ updateContextItems Schema [Schema 14 []:~[]/[Action-2 HAND1_UP]/null:~Item-4 PRIMITIVE #4:hand1.gross.(-1,1)] succeeded=true
+ item Item-4 PRIMITIVE #4:hand1.gross.(-1,1), onValueReliability: 1.0, offValueReliability: 1.0, on_succeeded: 1, on_failed: 0, off_succeeded: 19, off_failed: 0
+ handleActivation [Schema 14 []:~[]/[Action-2 HAND1_UP]/null:~Item-4 PRIMITIVE #4:hand1.gross.(-1,1)] applicable=true, succeeded=true
+ Activated schema: [Schema 12 []:~[]/[Action-12 GAZE_DOWN]/null:~null]
+
+
+I'm starting with the bare schemas of primitive actions HAND_UP, HAND_DOWN, HAND_LEFT, HAND_RIGHT, as well as some other actions which don't affect anything, like GAZE_RIGHT, NULL_ACTION, HAND_GRASP. 
+
+I've set the sensorimotor system so that the hand moves just to nine discrete positions where  -1 < x < 1, and -1 < y < 1, so it perceives boolean hand location sensory-items like HAND@(0,0) HAND@(-1,1), HAND@(1,0) etc.
+
+
+So for example if you have HAND@(0,0) = true, then all other HAND@(x,y) are false, and if you move the hand with HAND_RIGHT, you get a negative transition on HAND@(0,0), and positive transition on HAND@(1,0). (note, if the hand is at 1,1, and you move it right, it can't move any further, so there is no change in location, and HAND@(1,1) remains on)
+
+After running for a while and taking extended-result statistics on the bare schemas, I see a spinoff schema get created:
+
+/HAND_UP/~HAND@(-1,1)
+
+Which says if I move HAND_UP, then sensory item HAND@(-1,1) turns off, designated as ~HAND@(-1,1). 
+
+~HAND@(-1,1) could happen in the cases where HAND@(-1,1) and the any of the actions HAND_UP, HAND_DOWN, or HAND_RIGHT are taken.
+HAND_LEFT would not cause any change in this case because the hand is at the left extent of it's travel, as we are only letting the hand x and y positions range from -1 to 1 in this experiment.
+
+Once the schema /HAND_UP/~HAND@(-1,1) has been created, then I am getting a problem with the extended context creation.
+
+Because in lots of cases, when this schema executes, it is regarded as having succeeded, because in almost any hand location,
+if you move the hand in any direction, you will find that HAND@(-1,1) is false. Because the criteria for 'success' I am using 
+now for a schema is that after the action is taken, the predicted state of the items in the result set are satisfied. So I'm
+not looking for the result items to make transitions to the predicted values, just that they have in those predicted values after the action is taken.
+
+The current criteria the extended result mechanism is using to define 'success' is threefold:
+
+1) The schema's context is satisfied (always trivially so in this case, because the context is empty)
+
+2) The action is taken
+
+3) The result conditions are satisfied after the action is taken
+
+So in this case I start getting lots of spinoff schemas from the extended-context phase of the form
+
+~HAND@(x,y) / HAND_UP / ~HAND@(-1,1)
+
+I.e., for almost every sensory item in the extended context of HAND_UP/~HAND@(-1,1), that item will be
+OFF when after schemas executes, and the schema pretty much always succeeds, since HAND@(-1,1) is usually false, so we increment the OFF_WHEN_SCHEMA_SUCCEEDS counter
+for those items, and soon the marginal attribution mechanism decides, for most x,y locations, that ~HAND@(x,y) causes this schema to reliably succeed.
+
+So I'm getting a bunch of spurious schemas with context items of the form
+
+~HAND@(0,0) /  HAND_UP / ~HAND@(-1,1)
+~HAND@(1,0) /  HAND_UP / ~HAND@(-1,1)
+~HAND@(1,1) /  HAND_UP / ~HAND@(-1,1)
+...
+
+Should I be doing some other criteria for success, like actually
+checking that the schema's result items actually make a transition to
+predicted values in that timestep, rather than just checking their
+final states match the schema's result set predicted value?
+
+
+
+

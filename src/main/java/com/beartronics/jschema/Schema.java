@@ -115,7 +115,7 @@ public class Schema {
 
     // Perform designated action
     public void activate() {
-        logger.info("activatd schema: "+this);
+        logger.info("Activated schema: "+this);
         activations += 1;
         action.activate(true);
         actionTaken = true;
@@ -317,7 +317,7 @@ public class Schema {
 
         We want to be careful not to spin off a result item that is our own synthetic item.
      */
-    public void spinoffWithNewResultItem(Item item, boolean sense) {
+    public void spinoffWithNewResultItem(Item item, boolean sense, double prob, int ntrials) {
         // check if this item is already in the result of a child schema
         if ((sense && posResultItemSpinoffs.contains(item)) ||
             (!sense && negResultItemSpinoffs.contains(item))) {
@@ -334,8 +334,14 @@ public class Schema {
 
 
         // print out the extended result table for logging purposes
-        logger.info("SPINNING OFF RESULT SCHEMA for item "+item+" sense="+sense);
+        logger.info("SPINNING OFF RESULT SCHEMA from "+this+" for "+item+", sense="+sense);
         logger.info(this.toHTML());
+        if (sense) {
+            logger.info(String.format("Spinning off positive-transition result %s %s pos-transition-correlation=%f #trials=%s", item, this, prob, ntrials));
+        } else {
+            logger.info(String.format("Spinning off neg-transition result %s %s neg-transition-correlation=%f #trials=%s", item, this, prob, ntrials));
+        }
+
 
         Schema schema = spinoffNewSchema();
         schema.bare = false;

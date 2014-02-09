@@ -145,15 +145,13 @@ public class ExtendedResult {
 
             if (positiveTransitionsA > stage.resultSpinoffMinTrials) {
                 if (pPos < P_THRESHOLD) {
-                    logger.info(String.format("Spinning off positive-transition result %s %s pos-transition-correlation=%f #trials=%s", item, schema, pPos, numTrialsActionTaken));
-                    schema.spinoffWithNewResultItem(item, true);
+                    schema.spinoffWithNewResultItem(item, true, pPos, numTrialsActionTaken);
                 }
             }
                 
             if (negativeTransitionsA > stage.resultSpinoffMinTrials) {
                 if (pNeg < P_THRESHOLD) {
-                    logger.info(String.format("Spinning off neg-transition result %s %s neg-transition-correlation=%f #trials=%s", item, schema, pNeg, numTrialsActionTaken));
-                    schema.spinoffWithNewResultItem(item, false);
+                    schema.spinoffWithNewResultItem(item, false, pNeg, numTrialsActionTaken);
                 }
             }
         }

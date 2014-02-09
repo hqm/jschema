@@ -114,14 +114,18 @@ public class ExtendedContext {
                     double threshold = 2.0D;
 
                     if ((onValueReliability / offValueReliability) > threshold) {
+                        logger.info("spinning-off ON CONTEXT item " + item + " "+schema);
+                        logger.info(schema.toHTML());
                         schema.spinoffWithNewContextItem(item, true);
                     }
                     
                     if ((offValueReliability / onValueReliability) > threshold) {
+                        logger.info("spinning-off OFF CONTEXT item " + item + " "+schema);
+                        logger.info(schema.toHTML());
+                        //throw new Error("spinning off OFF context item "+schema);
                         schema.spinoffWithNewContextItem(item, false);
                     }
                 }
-                */
             }
         }
     }
@@ -217,8 +221,8 @@ public class ExtendedContext {
 
     String describeContextItem(Item item) {
         int n = item.id;
-        float reliabilityWhenOn = (float) onWhenActionSucceeds.get(n) /  (float) onWhenActionFails.get(n);
-        float reliabilityWhenOff =  (float) offWhenActionSucceeds.get(n) / (float) offWhenActionFails.get(n);
+        float reliabilityWhenOn = (float) onWhenActionSucceeds.get(n) /  ((float) onWhenActionFails.get(n) + (float) onWhenActionSucceeds.get(n));
+        float reliabilityWhenOff =  (float) offWhenActionSucceeds.get(n) / ((float) offWhenActionFails.get(n) + (float) offWhenActionSucceeds.get(n)); 
 
 
         return String.format("%d %s On %f [Succ.: <b>%s</b>, Fail: <b>%s</b>],  Off %f [Succ.: <b>%s</b>, Fail: <b>%s</b>] 1/0 %f 0/1 %f <b>%s</b> <b>%s</b>",
