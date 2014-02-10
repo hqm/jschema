@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.BitSet;
 import java.io.*;
 
+import edu.northwestern.at.utils.math.statistics.FishersExactTest;
 import org.apache.log4j.Logger;
 
 // Holds the extended context or result arrays
@@ -26,6 +27,8 @@ public class ExtendedContext {
     TIntArrayList onWhenActionFails = new TIntArrayList();
     TIntArrayList offWhenActionSucceeds = new TIntArrayList();
     TIntArrayList offWhenActionFails = new TIntArrayList();
+
+    double P_THRESHOLD = (double) 0.10; //  10% significance for Fisher exact test
 
     /**
      * Made Up Minds Section 4.1.2  
@@ -100,26 +103,43 @@ public class ExtendedContext {
                     }
                 }
 
-                float onValueReliability = (float) on_succeeded / ((float) (on_succeeded + on_failed ));
-                float offValueReliability = (float) off_succeeded / ((float) (off_succeeded + off_failed ));
+                //             ITEM WAS ON           ITEM WAS OFF
+                // SUCCEED     n11                   n21
+                // FAILED      n12                   n22
 
-                /// DEBUG TODO log item 4 = Hand @ (-1,1)
-                if (id == 4) {
-                    logger.info(String.format("item %s, onValueReliability: %s, offValueReliability: %s, on_succeeded: %s, on_failed: %s, off_succeeded: %s, off_failed: %s", item,onValueReliability, offValueReliability, on_succeeded, on_failed, off_succeeded, off_failed));
-                }
+
+                //             ITEM WAS ON           ITEM WAS OFF
+                // SUCCEED     on_succeeded          off_succeeded
+                // FAILED      on_failed             off_failed
+
+            /*public static double[] fishersExactTest(int n11,
+                                        int n12,
+                                        int n21,
+                                        int n22)
+                                        Calculate Fisher's exact test from the four cell counts.
+                                        Parameters:
+                                        n11 - Frequency for cell(1,1).
+                                        n12 - Frequency for cell(1,2).
+                                        n21 - Frequency for cell(2,1).
+                                        n22 - Frequency for cell(2,2).
+                                        Returns:
+                                        double vector with three entries. [0] = two-sided Fisher's exact test. [1] = left-tail Fisher's exact test. [2] = right-tail Fisher's exact test.
+            */
+
+
+                double pPos = FishersExactTest.fishersExactTest(on_succeeded, on_failed, off_succeeded, off_failed)[0];
+                double pNeg = FishersExactTest.fishersExactTest(off_succeeded, off_failed, on_succeeded, on_failed)[0];
 
                 if ( schema.activations >= stage.contextSpinoffMinTrials) {
                     // TODO need to adjust this for number of trials; as number of trials increases
                     // we should lower the threshold. Need a statistics expert to say what the formula is.
-                    double threshold = 2.0D;
-
-                    if ((onValueReliability / offValueReliability) > threshold) {
+                    if (pPos < P_THRESHOLD) {
                         logger.info("spinning-off ON CONTEXT item " + item + " "+schema);
                         logger.info(schema.toHTML());
                         schema.spinoffWithNewContextItem(item, true);
                     }
                     
-                    if ((offValueReliability / onValueReliability) > threshold) {
+                    if (pNeg < P_THRESHOLD) {
                         logger.info("spinning-off OFF CONTEXT item " + item + " "+schema);
                         logger.info(schema.toHTML());
                         //throw new Error("spinning off OFF context item "+schema);
@@ -178,11 +198,6 @@ public class ExtendedContext {
         int n = item.id;
         float reliabilityWhenOn = (float) onWhenActionSucceeds.get(n) /  ((float) onWhenActionFails.get(n) + (float) onWhenActionSucceeds.get(n));
         float reliabilityWhenOff =  (float) offWhenActionSucceeds.get(n) / ((float) offWhenActionFails.get(n) + (float) offWhenActionSucceeds.get(n)); 
-        if (onWhenActionSucceeds.get(n) == 0 && onWhenActionFails.get(n) == 0
-            && offWhenActionSucceeds.get(n) == 0 && offWhenActionFails.get(n) == 0) {
-            return "";
-        }
-
 
         return String.format("<span class=ecxtext>%d %s </span> <td>On %.2f<td><span class=\"chart1\" style=\"width: %dpx;\">%d</span><td><span class=\"chart2\" style=\"width: %dpx;\">%d</span>"+
                              "<td><span class=ecxtext>Off %.2f</span><td><span class=\"chart1\" style=\"width: %dpx;\">%d</span><td><span class=\"chart2\" style=\"width: %dpx;\">%d</span><td><span class=ecxtext> 1/0 %f<td> 0/1 %f <b>%s</b> <b>%s</b></span>",

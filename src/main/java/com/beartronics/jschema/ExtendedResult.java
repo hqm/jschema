@@ -116,32 +116,17 @@ public class ExtendedResult {
                 */
             }
 
-
-            //             no-action  action
-            // transition     a          b
-            // no-transition  c          d  
-
-
-            int a = (int) positiveTransitionsNA;
-            int c = (int) numTrialsActionNotTaken;
-            int b = (int) positiveTransitionsA;
-            int d = (int) numTrialsActionTaken;
-
-            double pPos = FishersExactTest.fishersExactTest(a,b,c,d)[0];
-
-            int a2 = (int) negativeTransitionsNA;
-            int c2 = (int) numTrialsActionNotTaken;
-            int b2 = (int) negativeTransitionsA;
-            int d2 = (int) numTrialsActionTaken;
-
-            double pNeg = FishersExactTest.fishersExactTest(a2,b2,c2,d2)[0];
-
             /** per GLD: "My implementation used an ad hoc method that was tied to its
                 space-limited statistics collection method. But the real way to do it
                 is to use a threshold of statistical significance. So just pre-compute
                 a lookup table that says what the minimum correlation is that can be
                 supported by a given sample size."
             */
+            double pPos = computePosProbabilities((int) positiveTransitionsNA, (int) positiveTransitionsA,
+                                                  numTrialsActionTaken, numTrialsActionNotTaken);
+
+            double pNeg = computeNegProbabilities((int) negativeTransitionsNA, (int) negativeTransitionsA,
+                                                  numTrialsActionTaken, numTrialsActionNotTaken);
 
             if (positiveTransitionsA > stage.resultSpinoffMinTrials) {
                 if (pPos < P_THRESHOLD) {
@@ -155,6 +140,55 @@ public class ExtendedResult {
                 }
             }
         }
+    }
+
+
+
+            //             no-action  action
+            // transition     n11          n21
+            // no-transition  n12          n22  
+
+
+            //                   (placebo)
+            //                   ACTION NOT TAKEN                          ACTION TAKEN
+
+            // POS TRANSITION    posTransitionsNA                          posTransitionsA
+
+            // NO-TRANSITION     (numTrialsActionNotTaken-posTransitionsNA)  (numTrialsActionTaken -posTransitionsA)
+
+
+            /*public static double[] fishersExactTest(int n11,
+                                        int n12,
+                                        int n21,
+                                        int n22)
+                                        Calculate Fisher's exact test from the four cell counts.
+                                        Parameters:
+                                        n11 - Frequency for cell(1,1).
+                                        n12 - Frequency for cell(1,2).
+                                        n21 - Frequency for cell(2,1).
+                                        n22 - Frequency for cell(2,2).
+                                        Returns:
+                                        double vector with three entries. [0] = two-sided Fisher's exact test. [1] = left-tail Fisher's exact test. [2] = right-tail Fisher's exact test.
+            */
+
+    public double computePosProbabilities(int positiveTransitionsNA, int positiveTransitionsA, int numTrialsActionTaken, int numTrialsActionNotTaken) {
+            int p11 = (int) positiveTransitionsNA;
+            int p21 = (int) numTrialsActionNotTaken - positiveTransitionsNA;
+            int p12 = (int) positiveTransitionsA;
+            int p22 = (int) numTrialsActionTaken - positiveTransitionsA;
+
+            double pPos = FishersExactTest.fishersExactTest(p11,p12,p21,p22)[0];
+            return pPos;
+    }
+
+    public double computeNegProbabilities(int negativeTransitionsNA, int negativeTransitionsA, int numTrialsActionTaken, int numTrialsActionNotTaken) {
+            int n11 = (int) negativeTransitionsNA;
+            int n21 = (int) numTrialsActionNotTaken - negativeTransitionsNA;
+            int n12 = (int) negativeTransitionsA;
+            int n22 = (int) numTrialsActionTaken - negativeTransitionsA;
+
+            double pNeg = FishersExactTest.fishersExactTest(n11,n12,n21,n22)[0];
+            return pNeg;
     }
 
     public void resetCounters() {
@@ -198,35 +232,21 @@ public class ExtendedResult {
                 double negativeTransitionsNA = negTransitionActionNotTaken.get(n);
 
 
-                int totalPositiveTransitions = (int) (positiveTransitionsA + positiveTransitionsNA);
-                int totalNegativeTransitions = (int) (negativeTransitionsA + negativeTransitionsNA);
+                double pPos = computePosProbabilities((int)positiveTransitionsNA, (int)positiveTransitionsA, numTrialsActionTaken, numTrialsActionNotTaken);
+                double pNeg = computeNegProbabilities((int)negativeTransitionsNA, (int)negativeTransitionsA, numTrialsActionTaken, numTrialsActionNotTaken);
 
-                // probability of any positive transition
 
-            int a = (int) positiveTransitionsNA;
-            int c = (int) numTrialsActionNotTaken;
-            int b = (int) positiveTransitionsA;
-            int d = (int) numTrialsActionTaken;
-
-            double pPos = FishersExactTest.fishersExactTest(a,b,c,d)[0];
-
-            int a2 = (int) negativeTransitionsNA;
-            int c2 = (int) numTrialsActionNotTaken;
-            int b2 = (int) negativeTransitionsA;
-            int d2 = (int) numTrialsActionTaken;
-
-            double pNeg = FishersExactTest.fishersExactTest(a2,b2,c2,d2)[0];
 
                 // Compute Chi-squared value  = Sum (o-e)^2 / e
                 p.println(String.format("<tr><td align=left>%d %s "
-                                        +"<td><b>+</b> %.2f [A: <b>%.2f</b>/%d "
+                                        +"<td><b>+</b> %.2f [A: <b style=\"font-size:%dpx\">%.2f</b>/%d "
                                         +"<td>!A: <b>%.2f</b>/%d]"
-                                        +"<td>  <b>-</b> %.2f [A: <b>%.2f</b>/%d"
+                                        +"<td>  <b>-</b> %.2f [A: <b style=\"font-size:%dpx\">%.2f</b>/%d"
                                         +"<td> !A: <b>%.2f</b>/%d]</td></tr>",
                                         n, item.makeLink(),
-                                        pPos, positiveTransitionsA, numTrialsActionTaken,
+                                        pPos, positiveTransitionsA+6, positiveTransitionsA, numTrialsActionTaken,
                                         positiveTransitionsNA, numTrialsActionNotTaken,
-                                        pNeg, negativeTransitionsA, numTrialsActionTaken,
+                                        pNeg, negativeTransitionsA+6, negativeTransitionsA, numTrialsActionTaken,
                                         negativeTransitionsNA, numTrialsActionNotTaken));
             }
         }

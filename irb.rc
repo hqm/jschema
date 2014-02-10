@@ -5,6 +5,7 @@ $sms = $app.sms
 $vec2 = Java::org.jbox2d.common.Vec2
 java_import "org.jbox2d.common.Vec2"
 java_import "com.beartronics.jschema.JSchema"
+java_import "edu.northwestern.at.utils.math.statistics.FishersExactTest"
 $h1 = $sms.hand1
 $h2 = $sms.hand2
 

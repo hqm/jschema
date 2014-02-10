@@ -83,8 +83,8 @@ public class SensoriMotorSystem {
     public Hand hand2;
 
     // max number of gross and fine motor steps that arms can take
-    public int reachX = 2;
-    public int reachY = 2;
+    public int reachX = 1;
+    public int reachY = 1;
     // arm motor step size
     public int dGross = 100;
     public int dFine = 20;
@@ -1183,8 +1183,8 @@ public class SensoriMotorSystem {
         Vec2 h2gross = hand2.actualGrossPosition();
         Vec2 h2fine = hand2.actualFinePosition();
 
-        for (int i = -1; i <= 1; i++) {
-            for (int j = -1; j <= 1; j++) {
+        for (int i = -reachX; i <= reachX; i++) {
+            for (int j = -reachY; j <= reachY; j++) {
                 worldState.setSensorItem("hand1.gross.("+i+","+j+")", sensorID++, ((int)(h1gross.x) == i) && ((int)(h1gross.y) == j));
                 worldState.setSensorItem("hand2.gross.("+i+","+j+")", sensorID++, ((int)(h2gross.x) == i) && ((int)(h2gross.y) == j));
 

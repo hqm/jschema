@@ -539,6 +539,24 @@ public class Schema {
         p.println("value: " +value);
         p.println("lastTimeActivated: "+lastTimeActivated);
         p.println("lastTimeSucceeded: "+lastTimeSucceeded);
+        p.print("posResultItemSpinoffs: ");
+        if (posResultItemSpinoffs.size() > 0) {
+            for (Item item: posResultItemSpinoffs) {
+                p.println(item.makeLink());
+            }
+        } else {
+            p.println("none");
+        }
+
+        p.print("negResultItemSpinoffs: ");
+        if (negResultItemSpinoffs.size() > 0) {
+            for (Item item: negResultItemSpinoffs) {
+                p.println(item.makeLink());
+            }
+        } else {
+            p.println("none");
+        }
+
         p.println("duration: " +duration);
         p.println("cost: " +cost);
         p.println("correlation(): " +correlation());

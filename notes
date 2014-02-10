@@ -615,3 +615,11 @@ final states match the schema's result set predicted value?
 
 
 
+
+================================================================
+
+
+when spinoff context child schema, save the extended context of parent for debugging
+
+- do we have a sign error in spinoff of context OFF items? 
+
