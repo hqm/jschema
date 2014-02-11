@@ -14,12 +14,12 @@ public class Stage
 {
     static Logger logger = Logger.getLogger(Stage.class.getName());
 
-    Config config;
+    transient Config config;
 
     public int gravity = -50;
 
-    public JSchema app;
-    public SensoriMotorSystem sms;
+    public transient JSchema app;
+    public transient SensoriMotorSystem sms;
 
     public ArrayList<Schema> schemas = new ArrayList<Schema>();
     public ArrayList<Action> actions = new ArrayList<Action>();
@@ -39,7 +39,7 @@ public class Stage
 
     /** The time at which the most recent action was initiated */
     public long lastActionTime = -1000;
-    public WorldState worldState;
+    public transient WorldState worldState;
 
     public double xresultRecencyBias = 0.9;
     public boolean enableSyntheticItems = false;

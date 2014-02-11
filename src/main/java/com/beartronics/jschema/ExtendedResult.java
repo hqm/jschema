@@ -66,11 +66,11 @@ public class ExtendedResult {
 
             // read out the existing statistics on the probablity of result transition with/without the action
             
-            double positiveTransitionsA = posTransitionActionTaken.get(id) * stage.xresultRecencyBias;
-            double positiveTransitionsNA = posTransitionActionNotTaken.get(id)  * stage.xresultRecencyBias;
+            int positiveTransitionsA = (int) (posTransitionActionTaken.get(id) * stage.xresultRecencyBias);
+            int positiveTransitionsNA = (int) (posTransitionActionNotTaken.get(id)  * stage.xresultRecencyBias);
 
-            double negativeTransitionsA = negTransitionActionTaken.get(id)  * stage.xresultRecencyBias;
-            double negativeTransitionsNA = negTransitionActionNotTaken.get(id)  * stage.xresultRecencyBias;
+            int negativeTransitionsA = (int) (negTransitionActionTaken.get(id)  * stage.xresultRecencyBias);
+            int negativeTransitionsNA = (int) (negTransitionActionNotTaken.get(id)  * stage.xresultRecencyBias);
 
             // Update the item state transition counters 
 
@@ -80,21 +80,21 @@ public class ExtendedResult {
                 if (posTransition && item.predictedPositiveTransition == null) { // 0->1 transition
                     if (actionTaken) {
                         positiveTransitionsA++;
-                        logger.debug(String.format("POS-transition-AT %s %s %f", item, schema, positiveTransitionsA));
+                        logger.debug(String.format("POS-transition-AT %s %s %d", item, schema, positiveTransitionsA));
                         posTransitionActionTaken.set(id,  positiveTransitionsA);
                     } else {
                         positiveTransitionsNA++;
-                        logger.debug(String.format("POS-transition-NAT %s %s %f", item, schema, positiveTransitionsNA));
+                        logger.debug(String.format("POS-transition-NAT %s %s %d", item, schema, positiveTransitionsNA));
                         posTransitionActionNotTaken.set(id, positiveTransitionsNA);
                     }
                 } else if (negTransition && item.predictedNegativeTransition == null) { // 1->0 transition
                     if (actionTaken) {
                         negativeTransitionsA++;
-                        logger.debug(String.format("NEG-transition-AT %s %s %f", item, schema, negativeTransitionsA));
+                        logger.debug(String.format("NEG-transition-AT %s %s %d", item, schema, negativeTransitionsA));
                         negTransitionActionTaken.set(id, negativeTransitionsA);
                     } else {
                         negativeTransitionsNA++;
-                        logger.debug(String.format("NEG-transition-NAT %s %s %f", item, schema, negativeTransitionsNA));
+                        logger.debug(String.format("NEG-transition-NAT %s %s %d", item, schema, negativeTransitionsNA));
                         negTransitionActionNotTaken.set(id, negativeTransitionsNA);
                     }
                 }
@@ -225,24 +225,24 @@ public class ExtendedResult {
             if (item != null) {
 
 
-                double positiveTransitionsA = posTransitionActionTaken.get(n);
-                double positiveTransitionsNA = posTransitionActionNotTaken.get(n);
+                int positiveTransitionsA = (int) posTransitionActionTaken.get(n);
+                int positiveTransitionsNA = (int) posTransitionActionNotTaken.get(n);
 
-                double negativeTransitionsA = negTransitionActionTaken.get(n);
-                double negativeTransitionsNA = negTransitionActionNotTaken.get(n);
+                int negativeTransitionsA = (int) negTransitionActionTaken.get(n);
+                int negativeTransitionsNA = (int) negTransitionActionNotTaken.get(n);
 
 
-                double pPos = computePosProbabilities((int)positiveTransitionsNA, (int)positiveTransitionsA, numTrialsActionTaken, numTrialsActionNotTaken);
-                double pNeg = computeNegProbabilities((int)negativeTransitionsNA, (int)negativeTransitionsA, numTrialsActionTaken, numTrialsActionNotTaken);
+                double pPos = computePosProbabilities(positiveTransitionsNA, positiveTransitionsA, numTrialsActionTaken, numTrialsActionNotTaken);
+                double pNeg = computeNegProbabilities(negativeTransitionsNA, negativeTransitionsA, numTrialsActionTaken, numTrialsActionNotTaken);
 
 
 
                 // Compute Chi-squared value  = Sum (o-e)^2 / e
                 p.println(String.format("<tr><td align=left>%d %s "
-                                        +"<td><b>+</b> %.2f [A: <b style=\"font-size:%dpx\">%.2f</b>/%d "
-                                        +"<td>!A: <b>%.2f</b>/%d]"
-                                        +"<td>  <b>-</b> %.2f [A: <b style=\"font-size:%dpx\">%.2f</b>/%d"
-                                        +"<td> !A: <b>%.2f</b>/%d]</td></tr>",
+                                        +"<td><b>+</b> %.2f [A: <b style=\"font-size:%dpx\">%d</b>/%d "
+                                        +"<td>!A: <b>%d</b>/%d]"
+                                        +"<td>  <b>-</b> %.2f [A: <b style=\"font-size:%dpx\">%d</b>/%d"
+                                        +"<td> !A: <b>%d</b>/%d]</td></tr>",
                                         n, item.makeLink(),
                                         pPos, positiveTransitionsA+6, positiveTransitionsA, numTrialsActionTaken,
                                         positiveTransitionsNA, numTrialsActionNotTaken,

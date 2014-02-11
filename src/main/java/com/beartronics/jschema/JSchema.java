@@ -1,6 +1,8 @@
 package com.beartronics.jschema;
 
 import processing.core.PApplet;
+import com.google.gson.GsonBuilder;
+
 
 import com.shigeodayo.pframe.*;
 
@@ -50,7 +52,6 @@ import java.net.SocketAddress;
 import com.typesafe.config.*;
 
 // serialization lib
-import com.thoughtworks.xstream.*;
 import java.io.*;
 
 public class JSchema extends PApplet {
@@ -63,6 +64,9 @@ public class JSchema extends PApplet {
     public Stage stage;
 
     public boolean interactive = true;
+    
+    public GsonBuilder gsonBuilder;
+    public Gson gson;
 
     Config config;
 
@@ -73,6 +77,17 @@ public class JSchema extends PApplet {
         config = ConfigFactory.load();
         config.checkValid(ConfigFactory.defaultReference(), "application");
         logger.info(config.root().render());
+
+        // Setup for JSON serializer
+        gsonBuilder = new GsonBuilder();
+        new GraphAdapterBuilder()
+            .addType(Stage.class)
+            .addType(Item.class)
+            .addType(Action.class)
+            .addType(ExtendedResult.class)
+            .addType(ExtendedContext.class)
+            .registerOn(gsonBuilder);
+        gson  = gsonBuilder.create();
     }
 
     PBox2D box2d = null;
@@ -87,17 +102,13 @@ public class JSchema extends PApplet {
         try {
             OutputStream ostream = new FileOutputStream(fname);
             try {
-                XStream xstream = new XStream();
 
                 if (fname.endsWith(".gz")) {
                     ostream = new GZIPOutputStream(ostream);
                 }
 
                 Writer writer = new OutputStreamWriter(ostream,  "UTF-8");
-                xstream.omitField(Stage.class, "sms");
-                xstream.omitField(Stage.class, "app");
-                xstream.omitField(Stage.class, "config");
-                xstream.toXML(stg, writer);
+                gson.toJson(stg, writer);
                 writer.close();
             } catch (Exception e) {
                 logger.error("could not write serialization for Stage", e);
@@ -116,7 +127,7 @@ public class JSchema extends PApplet {
     public void saveStage(boolean compress) {
         Date now = new Date();
       SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-M-d-hh-mm");
-      String fname = "jschema-stage-"+dateFormatter.format(now)+".xml";
+      String fname = "jschema-stage-"+dateFormatter.format(now)+".json";
       if (compress) {
           fname += ".gz";
       }
@@ -128,16 +139,15 @@ public class JSchema extends PApplet {
     public Stage deserialize(String filename) {
         Stage s = null;
         try {
-            XStream xstream = new XStream();
             InputStream istream = new FileInputStream(filename);
             // Is it a compressed file?
             if (filename.endsWith(".gz")) {
                 istream = new GZIPInputStream(istream);
             }
-            xstream.omitField(Stage.class, "sms");
-            xstream.omitField(Stage.class, "app");
-            xstream.omitField(Stage.class, "worldState");
-            s = (Stage) xstream.fromXML(istream);
+
+            InputStreamReader reader = new InputStreamReader(istream, "UTF-8");
+
+            s = gson.fromJson(reader, Stage.class);
             this.stage = s;
         } catch (Exception e) {
             logger.error("could not read serialization for Stage from "+filename, e);
@@ -244,6 +254,27 @@ public class JSchema extends PApplet {
  static public void main(String[] passedArgs) {
      //    String[] appletArgs = new String[] { "--full-screen", "--bgcolor=#666666", "--stop-color=#cccccc", "com.beartronics.jschema.JSchema" };
      String[] appletArgs = new String[] { "--bgcolor=#666666", "--stop-color=#cccccc", "com.beartronics.jschema.JSchema" };
+
+     /* Test json serializer/deserializer */
+     A a = new A();
+     B b = new B(a);
+     a.b = b;
+     
+     GsonBuilder gsonBuilder = new GsonBuilder();
+     new GraphAdapterBuilder()
+         .addType(A.class)
+         .registerOn(gsonBuilder);
+     Gson gson = gsonBuilder.create();
+     System.out.println(gson.toJson(a));
+
+
+     StringReader reader = new StringReader(gson.toJson(a));
+
+     A thawed = gson.fromJson(reader, A.class);
+     System.out.println(thawed);
+
+     /* */
+
     if (passedArgs != null) {
         PApplet.main(concat(appletArgs, passedArgs));
     } else {

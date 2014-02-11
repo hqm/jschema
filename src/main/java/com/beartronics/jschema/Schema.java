@@ -307,7 +307,7 @@ public class Schema {
     }
 
     static final boolean POSITIVE = true;
-    static final boolean NEGATIVE = true;
+    static final boolean NEGATIVE = false;
 
     // We use these to do a fast lookup to see if we ever spun off a schema with this result item before
     public HashSet<Item> posResultItemSpinoffs = new HashSet<Item>();
@@ -359,6 +359,9 @@ public class Schema {
     }
 
     public void spinoffWithNewContextItem(Item item, boolean sense) {
+        if (sense == NEGATIVE) {
+            logger.info("****SPINOFF NEG ITEM "+item+", for schema "+this);
+        }
         logger.info("spinoffWithNewContextItem: "+this+ "sense="+sense+ ":= "+xcontext.describeContextItem(item));
         logger.info(this.toHTML());
 
