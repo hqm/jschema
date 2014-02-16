@@ -24,7 +24,7 @@ public class ExtendedResult {
     public BitSet ignoreItemsPos = new BitSet();
     public BitSet ignoreItemsNeg = new BitSet();
 
-    double P_THRESHOLD = (double) 0.20; //  20% significance for Fisher exact test
+    static double P_THRESHOLD = (double) 0.20; //  20% significance for Fisher exact test
 
     TDoubleArrayList posTransitionActionTaken = new TDoubleArrayList();
     TDoubleArrayList posTransitionActionNotTaken = new TDoubleArrayList();

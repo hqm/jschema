@@ -20,15 +20,14 @@ public class ExtendedContext {
     static Logger logger = Logger.getLogger(ExtendedContext.class);
 
     /* Ignore these items when doing marginal attribution */
-    public BitSet ignoreItemsOn = new BitSet();
-    public BitSet ignoreItemsOff = new BitSet();
+    public BitSet ignoreItemsOn = new BitSet();    public BitSet ignoreItemsOff = new BitSet();
 
     TIntArrayList onWhenActionSucceeds = new TIntArrayList();
     TIntArrayList onWhenActionFails = new TIntArrayList();
     TIntArrayList offWhenActionSucceeds = new TIntArrayList();
     TIntArrayList offWhenActionFails = new TIntArrayList();
 
-    double P_THRESHOLD = (double) 0.10; //  10% significance for Fisher exact test
+    static double P_THRESHOLD = (double) 0.10; //  10% significance for Fisher exact test
 
     /**
      * Made Up Minds Section 4.1.2  

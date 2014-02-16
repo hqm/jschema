@@ -12,7 +12,7 @@ import org.apache.log4j.Logger;
  */
 public class Stage
 {
-    static Logger logger = Logger.getLogger(Stage.class.getName());
+    static transient Logger logger = Logger.getLogger(Stage.class.getName());
 
     transient Config config;
 
@@ -154,8 +154,10 @@ public class Stage
         }
     }
 
-    List<Double> contextSpinoffReliabilityThresholds;
-    List<Double> resultSpinoffCorrelationThresholds;
+    // Maybe we want a table like this of trials / threshold
+    //List<Double> contextSpinoffReliabilityThresholds;
+    //List<Double> resultSpinoffCorrelationThresholds;
+
     int contextSpinoffMinTrials;
     int resultSpinoffMinTrials;
 

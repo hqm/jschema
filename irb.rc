@@ -5,7 +5,10 @@ $sms = $app.sms
 $vec2 = Java::org.jbox2d.common.Vec2
 java_import "org.jbox2d.common.Vec2"
 java_import "com.beartronics.jschema.JSchema"
+java_import "com.beartronics.jschema.Stage"
 java_import "edu.northwestern.at.utils.math.statistics.FishersExactTest"
+java_import "com.google.gson.GsonBuilder"
+java_import "com.beartronics.jschema.GraphAdapterBuilder"
 $h1 = $sms.hand1
 $h2 = $sms.hand2
 

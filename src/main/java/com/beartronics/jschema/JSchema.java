@@ -82,10 +82,6 @@ public class JSchema extends PApplet {
         gsonBuilder = new GsonBuilder();
         new GraphAdapterBuilder()
             .addType(Stage.class)
-            .addType(Item.class)
-            .addType(Action.class)
-            .addType(ExtendedResult.class)
-            .addType(ExtendedContext.class)
             .registerOn(gsonBuilder);
         gson  = gsonBuilder.create();
     }
@@ -126,13 +122,13 @@ public class JSchema extends PApplet {
 
     public void saveStage(boolean compress) {
         Date now = new Date();
-      SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-M-d-hh-mm");
-      String fname = "jschema-stage-"+dateFormatter.format(now)+".json";
-      if (compress) {
-          fname += ".gz";
-      }
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-M-d-hh-mm");
+        String fname = "jschema-stage-"+dateFormatter.format(now)+".json";
+        if (compress) {
+            fname += ".gz";
+        }
 
-      serialize(fname, stage);
+        serialize(fname, stage);
     }
 
     // reads a Stage in
