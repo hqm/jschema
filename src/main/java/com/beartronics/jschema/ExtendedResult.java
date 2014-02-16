@@ -239,15 +239,17 @@ public class ExtendedResult {
 
                 // Compute Chi-squared value  = Sum (o-e)^2 / e
                 p.println(String.format("<tr><td align=left>%d %s "
-                                        +"<td><b>+</b> %.2f [A: <b style=\"font-size:%dpx\">%d</b>/%d "
-                                        +"<td>!A: <b>%d</b>/%d]"
-                                        +"<td>  <b>-</b> %.2f [A: <b style=\"font-size:%dpx\">%d</b>/%d"
-                                        +"<td> !A: <b>%d</b>/%d]</td></tr>",
+                                        +"<td><b>+</b> %.2f <td><span class=\"chart1\" style=\"width: %dpx;\">%d/%d</span> "
+                                        +"<td><span class=\"chart2\" style=\"width: %dpx;\">%d/%d</span>"
+                                        +"<td><b>-</b> %.2f <td><span class=\"chart1\" style=\"width: %dpx;\">%d/%d</span>"
+                                        +"<td><span class=\"chart2\" style=\"width: %dpx;\">%d/%d</span></td></tr>",
                                         n, item.makeLink(),
-                                        pPos, positiveTransitionsA+6, positiveTransitionsA, numTrialsActionTaken,
-                                        positiveTransitionsNA, numTrialsActionNotTaken,
-                                        pNeg, negativeTransitionsA+6, negativeTransitionsA, numTrialsActionTaken,
-                                        negativeTransitionsNA, numTrialsActionNotTaken));
+                                        pPos,
+                                        Math.max(10, positiveTransitionsA*4), positiveTransitionsA, numTrialsActionTaken,
+                                        Math.max(10, positiveTransitionsNA*4), positiveTransitionsNA,  numTrialsActionNotTaken,
+                                        pNeg,
+                                        Math.max(10, negativeTransitionsA*4), negativeTransitionsA, numTrialsActionTaken,
+                                        Math.max(10, negativeTransitionsNA*4), negativeTransitionsNA, numTrialsActionNotTaken));
             }
         }
 

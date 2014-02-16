@@ -575,7 +575,7 @@ public class Schema {
         p.println(xcontext.toHTMLBarGraph(stage, this));
         p.println("</table>");
         p.println("<table width=1600 border=1>");
-        p.println("<tr><th>Extended Result</th><th>Pos Trans, A Taken<th>Pos Trans, A Not Taken<th>Neg Trans A Taken<th>Neg Trans A Not Taken</tr>");
+        p.println("<tr><th>Extended Result</th><th>P<sub>pos</sub><th>Pos Trans, A Taken<th>Pos Trans, A Not Taken<th>P<sub>neg</sub><th>Neg Trans A Taken<th>Neg Trans A Not Taken</tr>");
         p.println(xresult.toHTML(stage, this));
         p.println("</table>");
 
