@@ -306,9 +306,6 @@ public class Schema {
 
     }
 
-    static final boolean POSITIVE = true;
-    static final boolean NEGATIVE = false;
-
     // We use these to do a fast lookup to see if we ever spun off a schema with this result item before
     public HashSet<Item> posResultItemSpinoffs = new HashSet<Item>();
     public HashSet<Item> negResultItemSpinoffs = new HashSet<Item>();
@@ -346,7 +343,7 @@ public class Schema {
         Schema schema = spinoffNewSchema();
         schema.bare = false;
         children.add(schema);
-        if (sense == POSITIVE) {
+        if (sense) {
             schema.posResult = item;
         } else {
             schema.negResult = item;
@@ -359,9 +356,18 @@ public class Schema {
     }
 
     public void spinoffWithNewContextItem(Item item, boolean sense) {
-        if (sense == NEGATIVE) {
+        if (!sense) {
             logger.info("****SPINOFF NEG ITEM "+item+", for schema "+this);
         }
+
+        if (sense && xcontext.ignoreItemsOn.get(item.id)) {
+            logger.info("ignoreItemsOn set in %s for %s");
+            return;
+        } else if (xcontext.ignoreItemsOff.get(item.id)) {
+            logger.info("ignoreItemsOff set in %s for %s");
+            return;
+        }
+
         logger.info("spinoffWithNewContextItem: "+this+ "sense="+sense+ ":= "+xcontext.describeContextItem(item));
         logger.info(this.toHTML());
 
@@ -373,11 +379,11 @@ public class Schema {
         Schema child = spinoffNewSchema();
 
         // Section 4.1.3 supressing redundant attribution
-        xcontext.clearAllCounters();
+        //xcontext.clearAllCounters();
 
         child.bare = false;
         children.add(child);
-        if (sense == POSITIVE) {
+        if (sense) {
             child.posContext.add(item);
             logger.info("clearOnItems "+child+" item "+item);
         } else {

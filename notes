@@ -623,3 +623,44 @@ when spinoff context child schema, save the extended context of parent for debug
 
 - do we have a sign error in spinoff of context OFF items? 
 
+
+
+__________________________
+|       |        |        |
+|       |        |        |
+|(-1,-1)| (0,-1) | (1,-1) |
+|       |        |        |
+|       |        |        |
+|-------+--------+--------|
+|       |        |        |
+|       |        |        |
+|(-1,0) | (0, 0) | (1,0)  |
+|       |        |        |
+|       |        |        |
+|-------+--------+--------|
+|       |        |        |
+|       |        |        |
+|(-1, 1)| (0, 1) | (1, 1) |
+|       |        |        |
+|       |        |        |
+|_______|________|________|
+
+
+
+================
+The system comes up with
+
+/HAND_RIGHT/~HAND@(-1,1)
+
+At that point, every single hand1 position will satisfy that schema, so you get
+one of each
+
+HAND@(x,y)/HAND_RIGHT/~HAND@(-1,1)
+
+These schemas don't hurt anything I guess, but it seems like they aren't very useful. 
+They are good for turning off HAND@(-1,1) I guess. But it seems like there will be a lot of them;
+For all (x,y) , there will be x*y schemas which say how to end up with an  OFF state for hand@(x,y).
+
+
+
+

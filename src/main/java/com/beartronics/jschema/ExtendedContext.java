@@ -126,8 +126,9 @@ public class ExtendedContext {
             */
 
 
-                double pPos = FishersExactTest.fishersExactTest(on_succeeded, on_failed, off_succeeded, off_failed)[0];
-                double pNeg = FishersExactTest.fishersExactTest(off_succeeded, off_failed, on_succeeded, on_failed)[0];
+                double fresult[] = FishersExactTest.fishersExactTest(on_succeeded, off_succeeded, on_failed, off_failed);
+                double pPos = fresult[2];
+                double pNeg = fresult[1];
 
                 if ( schema.activations >= stage.contextSpinoffMinTrials) {
                     // TODO need to adjust this for number of trials; as number of trials increases
@@ -136,9 +137,7 @@ public class ExtendedContext {
                         logger.info("spinning-off ON CONTEXT item " + item + " "+schema);
                         logger.info(schema.toHTML());
                         schema.spinoffWithNewContextItem(item, true);
-                    }
-                    
-                    if (pNeg < P_THRESHOLD) {
+                    } else if (pNeg < P_THRESHOLD) {
                         logger.info("spinning-off OFF CONTEXT item " + item + " "+schema);
                         logger.info(schema.toHTML());
                         //throw new Error("spinning off OFF context item "+schema);
