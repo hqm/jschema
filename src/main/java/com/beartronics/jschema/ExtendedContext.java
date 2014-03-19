@@ -126,7 +126,7 @@ public class ExtendedContext {
             */
 
 
-                double fresult[] = FishersExactTest.fishersExactTest(on_succeeded, off_succeeded, on_failed, off_failed);
+                double fresult[] = FishersExactTest.fishersExactTest(on_succeeded, on_failed, off_succeeded, off_failed);
                 double pPos = fresult[2];
                 double pNeg = fresult[1];
 
@@ -139,7 +139,7 @@ public class ExtendedContext {
                     pSuccessXOn = on_succeeded / (on_succeeded + on_failed);
                 }
                 if (off_succeeded + off_failed > 0) {
-                    pSuccessXOn = off_succeeded / (off_succeeded + off_failed);
+                    pSuccessXOff = off_succeeded / (off_succeeded + off_failed);
                 }
 
                 if (schema.id == 1 && (id == 0 || id == 6)) {
