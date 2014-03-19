@@ -115,6 +115,20 @@ public class ExtendedResult {
                    }
                 */
             }
+            /* TODO [hqm 2014-03] implement this optimization
+               Section 4.1.2
+                "The machinery's sensitivity to relevant results is amplified by an embellishment
+                of marginal attribution: when a given schema is idle (i.e., it has not just completed
+                an activation), the updating of its extended result data is suppressed for any
+                state transition which is explained--meaning that the transition is predicted as the
+                result of a reliable schema whose activation has just completed. Consequently, a
+                given schema whose activation is a less frequent cause of some result needn't
+                compete with other, more frequent causes, once those causes have been identified;
+                in order for the result to be deemed relevant to the given schema, that schema need
+                only bring about the result more often than the result's other unexplained occurrences."
+            */
+
+
 
             /** per GLD: "My implementation used an ad hoc method that was tied to its
                 space-limited statistics collection method. But the real way to do it

@@ -130,16 +130,39 @@ public class ExtendedContext {
                 double pPos = fresult[2];
                 double pNeg = fresult[1];
 
+
+                float pSuccessXOn = 0;
+
+                float pSuccessXOff = 0;
+
+                if (on_failed + on_succeeded > 0) {
+                    pSuccessXOn = on_succeeded / (on_succeeded + on_failed);
+                }
+                if (off_succeeded + off_failed > 0) {
+                    pSuccessXOn = off_succeeded / (off_succeeded + off_failed);
+                }
+
+                if (schema.id == 1 && (id == 0 || id == 6)) {
+                    logger.info(String.format("item %s pPos=%f, pNeg=%f, PsuccOn=%f pSuccOff=%f, on_succeeded %s, off_succeeded %s, on_failed %s, off_failed %s",
+                                              item, pPos, pNeg, pSuccessXOn, pSuccessXOff,  on_succeeded, off_succeeded, on_failed, off_failed));
+                }
+
+
                 if ( schema.activations >= stage.contextSpinoffMinTrials) {
                     // TODO need to adjust this for number of trials; as number of trials increases
                     // we should lower the threshold. Need a statistics expert to say what the formula is.
                     if (pPos < P_THRESHOLD) {
                         logger.info("spinning-off ON CONTEXT item " + item + " "+schema);
+                    logger.info(String.format("item %s pPos=%f, pNeg=%f, PsuccOn=%f pSuccOff=%f, on_succeeded %s, off_succeeded %s, on_failed %s, off_failed %s",
+                                              item, pPos, pNeg, pSuccessXOn, pSuccessXOff,  on_succeeded, off_succeeded, on_failed, off_failed));
+
                         logger.info(schema.toHTML());
                         schema.spinoffWithNewContextItem(item, true);
                     } else if (pNeg < P_THRESHOLD) {
                         logger.info("spinning-off OFF CONTEXT item " + item + " "+schema);
-                        logger.info(schema.toHTML());
+                         logger.info(String.format("item %s pPos=%f, pNeg=%f, PsuccOn=%f pSuccOff=%f, on_succeeded %s, off_succeeded %s, on_failed %s, off_failed %s",
+                                              item, pPos, pNeg, pSuccessXOn, pSuccessXOff,  on_succeeded, off_succeeded, on_failed, off_failed));
+                   logger.info(schema.toHTML());
                         //throw new Error("spinning off OFF context item "+schema);
                         schema.spinoffWithNewContextItem(item, false);
                     }

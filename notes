@@ -687,3 +687,56 @@ __________________________
 |       |        |        |
 |       |        |        |
 |_______|________|________|
+
+
+
+___________________________
+|       |        |        |
+|       |left->! |        |
+|(-1,-1)| (0,-1) | (1,-1) |
+|       |        |        |
+|       |        |        |
+|-------+--------+--------|
+|       |        |        |
+|       |        |        |
+|(-1,0) | (0, 0) | (1,0)  |
+|       |        |        |
+|       |        |        |
+|-------+--------+--------|
+|       |        |        |
+|       |        |        |
+|(-1, 1)| (0, 1) | (1, 1) |
+|       |        |        |
+|       |        |        |
+|_______|________|________|
+
+================================================================
+
+Section 6.4 Beginnings of the persistent object concept
+
+Important idea: Schema serves as a "host" to a synthetic item
+
+
+Imitation: very important for learning by example
+
+ 4.3.2 Implicit activation and the representation of external actions
+ As noted in section 4. 1 .2, the marginal attribution facility considers a schema to
+ have been implicitly activated if the schema's action is initiated when the schema
+ is applicable, even if that schema was not selected for activation, and thus was not
+ responsible for the action 's initiation. Composite actions carry implicit activation
+ one step further. A composite action is considered to have been implicitly taken
+ whenever its goal state becomes satisfied—that is, makes a transition from Off
+ to On—even if that composite action was never initiated by an activated schema—
+ in fact, even if the goal state's achievement is due to external events entirely
+ uninfluenced by the mechanism. Consequently, a schema whose action is composite
+ is implicitly activated each time its action's goal state becomes satisfied
+ when the schema is applicable. Marginal attribution can thereby detect results
+ caused by the goal state, even if the goal state obtains due to external events.
+ Designating external events as actions combines with activation hysteresis
+ (section 3.4.2) to promote imitation by the schema mechanism of external events
+ that correspond to extant schemas. Hysteresis promotes the activation of a schema
+ that has been activated recently. Hysteresis applies even to implicitly activated
+ schemas, so if a schema is implicitly activated because an external event
+ achieved its action's goal state, the schema's chances for selection for explicit activation
+ are thereby boosted; its explicit activation would then repeat the achievement
+ of that goal state.
