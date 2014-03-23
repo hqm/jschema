@@ -19,12 +19,8 @@ import org.jbox2d.collision.AABB;
 import processing.core.*;
 
 import org.apache.log4j.Logger;
-public class SensoriMotorSystem {
+public class SensoriMotorSystem extends BaseSensoriMotorSystem {
     static Logger logger = Logger.getLogger(SensoriMotorSystem.class.getName());
-
-    public JSchema app;
-    public Stage stage;
-    public WorldState worldState;
 
     // Object planes
     public Plane plane0; // back plane
@@ -99,7 +95,7 @@ public class SensoriMotorSystem {
     PGraphics retina = null;
 
     public SensoriMotorSystem(JSchema a, PGraphics retina) {
-        this.app = a;
+        super(a, retina);
         this.retina = retina;
         System.out.println("SensoriMotorSystem constructor this.app = "+this.app);
     }
