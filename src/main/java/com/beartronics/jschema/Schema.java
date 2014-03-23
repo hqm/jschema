@@ -270,7 +270,35 @@ public class Schema {
                 }
             }
 
-            xcontext.updateContextItems(stage, this, succeeded, lastTimeActivated);
+
+
+
+
+            /* See 4.1.3 Suppressing redundant attribution, to avoid exponential spinoffs.
+               We check our lists of  "ignoreItems", to see if any item listed there has the specified value,
+               and if so we do not do marginal attribution. Some child schema that we spun off
+               will do the marginal attribution.
+            */
+
+            ArrayList<Item> items = stage.items;
+            boolean updateExtendedContext = true;
+            int nitems = items.size();
+            for (int id = 0; id < nitems; id++) {
+                Item item = items.get(id);
+                if (item != null && item.prevKnownState) {
+                    boolean val = item.prevValue;
+                    // Section 4.1.3 supressing redundant attribution 
+                    if ( (val && xcontext.ignoreItemsOn.get(item.id)) ||
+                         (!val && xcontext.ignoreItemsOff.get(item.id)) ) {
+                        updateExtendedContext = false;
+                        break;
+                    }
+                }
+            }
+
+            if (updateExtendedContext) {
+                xcontext.updateContextItems(stage, this, succeeded, lastTimeActivated);
+            }
 
             logger.info("handleActivation "+this+" applicable=true, succeeded="+succeeded);
 
@@ -356,16 +384,18 @@ public class Schema {
     }
 
     public void spinoffWithNewContextItem(Item item, boolean sense) {
-        if (!sense) {
-            logger.info("****SPINOFF NEG ITEM "+item+", for schema "+this);
+        // Don't spinoff a new schema with this item in it's context if we've already spun one off that has this item
+        if (sense && xcontext.ignoreItemsOn.get(item.id)) {
+            logger.info("ignoreItemsOn set in %s for %s, suppressing spinoff");
+            return;
+        } else if (!sense && xcontext.ignoreItemsOff.get(item.id)) {
+            logger.info("ignoreItemsOff set in %s for %s, suppressing spinoff");
+            return;
         }
 
-        if (sense && xcontext.ignoreItemsOn.get(item.id)) {
-            logger.info("ignoreItemsOn set in %s for %s");
-            return;
-        } else if (xcontext.ignoreItemsOff.get(item.id)) {
-            logger.info("ignoreItemsOff set in %s for %s");
-            return;
+
+        if (!sense) {
+            logger.info("****SPINOFF NEG ITEM "+item+", for schema "+this);
         }
 
         logger.info("spinoffWithNewContextItem: "+this+ "sense="+sense+ ":= "+xcontext.describeContextItem(item));
@@ -379,7 +409,7 @@ public class Schema {
         Schema child = spinoffNewSchema();
 
         // Section 4.1.3 supressing redundant attribution
-        //xcontext.clearAllCounters();
+        xcontext.clearAllCounters();
 
         child.bare = false;
         children.add(child);

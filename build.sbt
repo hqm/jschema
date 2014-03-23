@@ -2,7 +2,7 @@ import AssemblyKeys._ // put this at the top of the file
 
 assemblySettings  
 
-mainClass := Some("com.beartronics.jschema.JSchema")
+mainClass in (Compile,run) := Some("com.beartronics.jschema.JSchema")
 
 name := "jschema"
 
@@ -19,3 +19,4 @@ libraryDependencies += "log4j"                     %  "log4j"                  %
 libraryDependencies +=  "junit" 		   %  "junit"                  % "4.10"
 
 
+//javaOptions ++= Seq("-Djava.awt.headless=false")

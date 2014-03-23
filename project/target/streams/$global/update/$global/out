@@ -1,84 +1,63 @@
-[0m[[0minfo[0m] [0mUpdating {file:/Users/hminsky/src/jschema/project/}default-936d32...[0m
+[0m[[0minfo[0m] [0mUpdating {file:/Users/hqm/src/jschema/project/}default-81e018...[0m
 [0m[[0mdebug[0m] [0mpost 1.3 ivy file: using exact as default matcher[0m
-[0m[[0mdebug[0m] [0m:: resolving dependencies :: default#default-936d32;0.1-SNAPSHOT[0m
+[0m[[0mdebug[0m] [0m:: resolving dependencies :: default#default-81e018;0.1-SNAPSHOT[0m
 [0m[[0mdebug[0m] [0m	confs: [compile, runtime, test, provided, optional, compile-internal, runtime-internal, test-internal, plugin, sources, docs, pom][0m
 [0m[[0mdebug[0m] [0m	validate = true[0m
 [0m[[0mdebug[0m] [0m	refresh = false[0m
 [0m[[0mdebug[0m] [0mresolving dependencies for configuration 'compile'[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies for default#default-936d32;0.1-SNAPSHOT [compile][0m
-[0m[[0mdebug[0m] [0mloadData of default#default-936d32;0.1-SNAPSHOT of rootConf=compile[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies default#default-936d32;0.1-SNAPSHOT->com.eed3si9n#sbt-assembly;0.9.0 [compile->default(compile)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#default-81e018;0.1-SNAPSHOT [compile][0m
+[0m[[0mdebug[0m] [0mloadData of default#default-81e018;0.1-SNAPSHOT of rootConf=compile[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#default-81e018;0.1-SNAPSHOT->com.eed3si9n#sbt-assembly;0.9.0 [compile->default(compile)][0m
 [0m[[0mdebug[0m] [0mloadData of com.eed3si9n#sbt-assembly;0.9.0 of rootConf=compile[0m
 [0m[[0mdebug[0m] [0m	using sbt-chain to resolve com.eed3si9n#sbt-assembly;0.9.0[0m
 [0m[[0minfo[0m] [0mResolving com.eed3si9n#sbt-assembly;0.9.0 ...[0m
 [0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: com.eed3si9n#sbt-assembly;0.9.0 {compile=[default(compile)]}[0m
 [0m[[0mdebug[0m] [0msbt-chain: no namespace defined: using system[0m
-[0m[[0mdebug[0m] [0m	no ivy file in cache for com.eed3si9n#sbt-assembly;0.9.0: tried /Users/hminsky/.ivy2/cache/scala_2.9.2/sbt_0.12/com.eed3si9n/sbt-assembly/ivy-0.9.0.xml[0m
+[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/scala_2.9.2/sbt_0.12/com.eed3si9n/sbt-assembly/ivy-0.9.0.xml[0m
+[0m[[0mdebug[0m] [0mpost 1.3 ivy file: using exact as default matcher[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for com.eed3si9n#sbt-assembly;0.9.0 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/scala_2.9.2/sbt_0.12/com.eed3si9n/sbt-assembly/ivy-0.9.0.xml[0m
+[0m[[0mdebug[0m] [0msbt-chain: module revision found in cache: com.eed3si9n#sbt-assembly;0.9.0[0m
 [0m[[0mdebug[0m] [0msbt-chain: no latest strategy defined: using default[0m
 [0m[[0mdebug[0m] [0mtypesafe-ivy-releases: no namespace defined: using system[0m
-[0m[[0mdebug[0m] [0m	no ivy file in cache for com.eed3si9n#sbt-assembly;0.9.0: tried /Users/hminsky/.ivy2/cache/scala_2.9.2/sbt_0.12/com.eed3si9n/sbt-assembly/ivy-0.9.0.xml[0m
-[0m[[0mdebug[0m] [0m	 trying http://repo.typesafe.com/typesafe/ivy-releases/com.eed3si9n/sbt-assembly/scala_2.9.2/sbt_0.12/0.9.0/ivys/ivy.xml[0m
-[0m[[0mdebug[0m] [0m		tried http://repo.typesafe.com/typesafe/ivy-releases/com.eed3si9n/sbt-assembly/scala_2.9.2/sbt_0.12/0.9.0/ivys/ivy.xml[0m
-[0m[[0mdebug[0m] [0mHTTP response status: 404 url=http://repo.typesafe.com/typesafe/ivy-releases/com.eed3si9n/sbt-assembly/scala_2.9.2/sbt_0.12/0.9.0/ivys/ivy.xml[0m
-[0m[[0mdebug[0m] [0mCLIENT ERROR: Not Found url=http://repo.typesafe.com/typesafe/ivy-releases/com.eed3si9n/sbt-assembly/scala_2.9.2/sbt_0.12/0.9.0/ivys/ivy.xml[0m
-[0m[[0mdebug[0m] [0m	typesafe-ivy-releases: resource not reachable for com.eed3si9n#sbt-assembly;0.9.0: res=http://repo.typesafe.com/typesafe/ivy-releases/com.eed3si9n/sbt-assembly/scala_2.9.2/sbt_0.12/0.9.0/ivys/ivy.xml[0m
-[0m[[0mdebug[0m] [0m	typesafe-ivy-releases: no ivy file found for com.eed3si9n#sbt-assembly;0.9.0[0m
-[0m[[0mdebug[0m] [0msbt-plugin-releases: no namespace defined: using system[0m
-[0m[[0mdebug[0m] [0m	no ivy file in cache for com.eed3si9n#sbt-assembly;0.9.0: tried /Users/hminsky/.ivy2/cache/scala_2.9.2/sbt_0.12/com.eed3si9n/sbt-assembly/ivy-0.9.0.xml[0m
-[0m[[0mdebug[0m] [0m	 trying http://scalasbt.artifactoryonline.com/scalasbt/sbt-plugin-releases/com.eed3si9n/sbt-assembly/scala_2.9.2/sbt_0.12/0.9.0/ivys/ivy.xml[0m
-[0m[[0mdebug[0m] [0m		tried http://scalasbt.artifactoryonline.com/scalasbt/sbt-plugin-releases/com.eed3si9n/sbt-assembly/scala_2.9.2/sbt_0.12/0.9.0/ivys/ivy.xml[0m
-[0m[[0mdebug[0m] [0m	sbt-plugin-releases: found md file for com.eed3si9n#sbt-assembly;0.9.0[0m
-[0m[[0mdebug[0m] [0m		=> http://scalasbt.artifactoryonline.com/scalasbt/sbt-plugin-releases/com.eed3si9n/sbt-assembly/scala_2.9.2/sbt_0.12/0.9.0/ivys/ivy.xml (0.9.0)[0m
-[0m[[0mdebug[0m] [0m	parser = ivy parser[0m
-[0m[[0mdebug[0m] [0m	no ivy file in cache for com.eed3si9n#sbt-assembly;0.9.0: tried /Users/hminsky/.ivy2/cache/scala_2.9.2/sbt_0.12/com.eed3si9n/sbt-assembly/ivy-0.9.0.xml[0m
-[0m[[0mdebug[0m] [0mdownloading http://scalasbt.artifactoryonline.com/scalasbt/sbt-plugin-releases/com.eed3si9n/sbt-assembly/scala_2.9.2/sbt_0.12/0.9.0/ivys/ivy.xml ...[0m
-[0m[[0mdebug[0m] [0m	sbt-plugin-releases: downloading http://scalasbt.artifactoryonline.com/scalasbt/sbt-plugin-releases/com.eed3si9n/sbt-assembly/scala_2.9.2/sbt_0.12/0.9.0/ivys/ivy.xml[0m
-[0m[[0mdebug[0m] [0m		to /Users/hminsky/.ivy2/cache/scala_2.9.2/sbt_0.12/com.eed3si9n/sbt-assembly/ivy-0.9.0.xml.original.part[0m
-[0m[[0mdebug[0m] [0msha1 file found for http://scalasbt.artifactoryonline.com/scalasbt/sbt-plugin-releases/com.eed3si9n/sbt-assembly/scala_2.9.2/sbt_0.12/0.9.0/ivys/ivy.xml: checking...[0m
-[0m[[0mdebug[0m] [0m	sbt-plugin-releases: downloading http://scalasbt.artifactoryonline.com/scalasbt/sbt-plugin-releases/com.eed3si9n/sbt-assembly/scala_2.9.2/sbt_0.12/0.9.0/ivys/ivy.xml.sha1[0m
-[0m[[0mdebug[0m] [0m		to /var/folders/00/1t0mh000h01000cxqpysvccm00782k/T/ivytmp6316219649047182588sha1[0m
-[0m[[0mdebug[0m] [0msha1 OK for http://scalasbt.artifactoryonline.com/scalasbt/sbt-plugin-releases/com.eed3si9n/sbt-assembly/scala_2.9.2/sbt_0.12/0.9.0/ivys/ivy.xml[0m
-[0m[[0mdebug[0m] [0m	[SUCCESSFUL ] com.eed3si9n#sbt-assembly;0.9.0!ivy.xml(ivy.original) (687ms)[0m
-[0m[[0mdebug[0m] [0mpost 1.3 ivy file: using exact as default matcher[0m
-[0m[[0mdebug[0m] [0m	default-cache: parsed downloaded md file for com.eed3si9n#sbt-assembly;0.9.0; parsed=com.eed3si9n#sbt-assembly;0.9.0[0m
-[0m[[0mdebug[0m] [0m	checking com.eed3si9n#sbt-assembly;0.9.0 from sbt-plugin-releases against [none][0m
-[0m[[0mdebug[0m] [0m	module revision kept as first found: com.eed3si9n#sbt-assembly;0.9.0 from sbt-plugin-releases[0m
-[0m[[0mdebug[0m] [0m	found com.eed3si9n#sbt-assembly;0.9.0 in sbt-plugin-releases[0m
+[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/scala_2.9.2/sbt_0.12/com.eed3si9n/sbt-assembly/ivy-0.9.0.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for com.eed3si9n#sbt-assembly;0.9.0 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/scala_2.9.2/sbt_0.12/com.eed3si9n/sbt-assembly/ivy-0.9.0.xml[0m
+[0m[[0mdebug[0m] [0m	typesafe-ivy-releases: revision in cache: com.eed3si9n#sbt-assembly;0.9.0[0m
+[0m[[0mdebug[0m] [0m	checking com.eed3si9n#sbt-assembly;0.9.0 from sbt-chain against [none][0m
+[0m[[0mdebug[0m] [0m	module revision kept as first found: com.eed3si9n#sbt-assembly;0.9.0 from sbt-chain[0m
+[0m[[0mdebug[0m] [0m	found com.eed3si9n#sbt-assembly;0.9.0 in sbt-chain[0m
 [0m[[0mdebug[0m] [0mresolving dependencies for configuration 'runtime'[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies for default#default-936d32;0.1-SNAPSHOT [runtime][0m
-[0m[[0mdebug[0m] [0mloadData of default#default-936d32;0.1-SNAPSHOT of rootConf=runtime[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies for default#default-936d32;0.1-SNAPSHOT [compile][0m
-[0m[[0mdebug[0m] [0mloadData of default#default-936d32;0.1-SNAPSHOT of rootConf=runtime[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#default-81e018;0.1-SNAPSHOT [runtime][0m
+[0m[[0mdebug[0m] [0mloadData of default#default-81e018;0.1-SNAPSHOT of rootConf=runtime[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#default-81e018;0.1-SNAPSHOT [compile][0m
+[0m[[0mdebug[0m] [0mloadData of default#default-81e018;0.1-SNAPSHOT of rootConf=runtime[0m
 [0m[[0mdebug[0m] [0mruntime is loaded and no conf to load.  Skip loading[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies default#default-936d32;0.1-SNAPSHOT->com.eed3si9n#sbt-assembly;0.9.0 [compile->default(compile)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#default-81e018;0.1-SNAPSHOT->com.eed3si9n#sbt-assembly;0.9.0 [compile->default(compile)][0m
 [0m[[0mdebug[0m] [0mloadData of com.eed3si9n#sbt-assembly;0.9.0 of rootConf=runtime[0m
 [0m[[0mdebug[0m] [0mresolving dependencies for configuration 'test'[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies for default#default-936d32;0.1-SNAPSHOT [test][0m
-[0m[[0mdebug[0m] [0mloadData of default#default-936d32;0.1-SNAPSHOT of rootConf=test[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies for default#default-936d32;0.1-SNAPSHOT [runtime][0m
-[0m[[0mdebug[0m] [0mloadData of default#default-936d32;0.1-SNAPSHOT of rootConf=test[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#default-81e018;0.1-SNAPSHOT [test][0m
+[0m[[0mdebug[0m] [0mloadData of default#default-81e018;0.1-SNAPSHOT of rootConf=test[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#default-81e018;0.1-SNAPSHOT [runtime][0m
+[0m[[0mdebug[0m] [0mloadData of default#default-81e018;0.1-SNAPSHOT of rootConf=test[0m
 [0m[[0mdebug[0m] [0mtest is loaded and no conf to load.  Skip loading[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies for default#default-936d32;0.1-SNAPSHOT [compile][0m
-[0m[[0mdebug[0m] [0mloadData of default#default-936d32;0.1-SNAPSHOT of rootConf=test[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#default-81e018;0.1-SNAPSHOT [compile][0m
+[0m[[0mdebug[0m] [0mloadData of default#default-81e018;0.1-SNAPSHOT of rootConf=test[0m
 [0m[[0mdebug[0m] [0mtest is loaded and no conf to load.  Skip loading[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies default#default-936d32;0.1-SNAPSHOT->com.eed3si9n#sbt-assembly;0.9.0 [compile->default(compile)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#default-81e018;0.1-SNAPSHOT->com.eed3si9n#sbt-assembly;0.9.0 [compile->default(compile)][0m
 [0m[[0mdebug[0m] [0mloadData of com.eed3si9n#sbt-assembly;0.9.0 of rootConf=test[0m
 [0m[[0mdebug[0m] [0mresolving dependencies for configuration 'provided'[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies for default#default-936d32;0.1-SNAPSHOT [provided][0m
-[0m[[0mdebug[0m] [0mloadData of default#default-936d32;0.1-SNAPSHOT of rootConf=provided[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies default#default-936d32;0.1-SNAPSHOT->org.scala-sbt#sbt;0.12.2 [provided->default(compile)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#default-81e018;0.1-SNAPSHOT [provided][0m
+[0m[[0mdebug[0m] [0mloadData of default#default-81e018;0.1-SNAPSHOT of rootConf=provided[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#default-81e018;0.1-SNAPSHOT->org.scala-sbt#sbt;0.12.2 [provided->default(compile)][0m
 [0m[[0mdebug[0m] [0mloadData of org.scala-sbt#sbt;0.12.2 of rootConf=provided[0m
 [0m[[0mdebug[0m] [0m	using sbt-chain to resolve org.scala-sbt#sbt;0.12.2[0m
 [0m[[0minfo[0m] [0mResolving org.scala-sbt#sbt;0.12.2 ...[0m
 [0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: org.scala-sbt#sbt;0.12.2 {provided=[default(compile)]}[0m
-[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/sbt/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/sbt/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0mpost 1.3 ivy file: using exact as default matcher[0m
-[0m[[0mdebug[0m] [0m	resolver not found: null => trying to use the one configured for org.scala-sbt#sbt;0.12.2[0m
-[0m[[0mdebug[0m] [0m	configured resolver found for org.scala-sbt#sbt;0.12.2: sbt-chain: saving this data[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#sbt;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/sbt/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#sbt;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/sbt/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0msbt-chain: module revision found in cache: org.scala-sbt#sbt;0.12.2[0m
-[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/sbt/ivy-0.12.2.xml[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#sbt;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/sbt/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/sbt/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#sbt;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/sbt/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0m	typesafe-ivy-releases: revision in cache: org.scala-sbt#sbt;0.12.2[0m
 [0m[[0mdebug[0m] [0m	checking org.scala-sbt#sbt;0.12.2 from sbt-chain against [none][0m
 [0m[[0mdebug[0m] [0m	module revision kept as first found: org.scala-sbt#sbt;0.12.2 from sbt-chain[0m
@@ -88,14 +67,12 @@
 [0m[[0mdebug[0m] [0m	using sbt-chain to resolve org.scala-sbt#main;0.12.2[0m
 [0m[[0minfo[0m] [0mResolving org.scala-sbt#main;0.12.2 ...[0m
 [0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: org.scala-sbt#main;0.12.2 {compile=[default(compile)]}[0m
-[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/main/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/main/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0mpost 1.3 ivy file: using exact as default matcher[0m
-[0m[[0mdebug[0m] [0m	resolver not found: null => trying to use the one configured for org.scala-sbt#main;0.12.2[0m
-[0m[[0mdebug[0m] [0m	configured resolver found for org.scala-sbt#main;0.12.2: sbt-chain: saving this data[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#main;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/main/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#main;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/main/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0msbt-chain: module revision found in cache: org.scala-sbt#main;0.12.2[0m
-[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/main/ivy-0.12.2.xml[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#main;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/main/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/main/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#main;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/main/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0m	typesafe-ivy-releases: revision in cache: org.scala-sbt#main;0.12.2[0m
 [0m[[0mdebug[0m] [0m	checking org.scala-sbt#main;0.12.2 from sbt-chain against [none][0m
 [0m[[0mdebug[0m] [0m	module revision kept as first found: org.scala-sbt#main;0.12.2 from sbt-chain[0m
@@ -105,14 +82,12 @@
 [0m[[0mdebug[0m] [0m	using sbt-chain to resolve org.scala-sbt#actions;0.12.2[0m
 [0m[[0minfo[0m] [0mResolving org.scala-sbt#actions;0.12.2 ...[0m
 [0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: org.scala-sbt#actions;0.12.2 {compile=[default(compile)]}[0m
-[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/actions/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/actions/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0mpost 1.3 ivy file: using exact as default matcher[0m
-[0m[[0mdebug[0m] [0m	resolver not found: null => trying to use the one configured for org.scala-sbt#actions;0.12.2[0m
-[0m[[0mdebug[0m] [0m	configured resolver found for org.scala-sbt#actions;0.12.2: sbt-chain: saving this data[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#actions;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/actions/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#actions;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/actions/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0msbt-chain: module revision found in cache: org.scala-sbt#actions;0.12.2[0m
-[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/actions/ivy-0.12.2.xml[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#actions;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/actions/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/actions/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#actions;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/actions/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0m	typesafe-ivy-releases: revision in cache: org.scala-sbt#actions;0.12.2[0m
 [0m[[0mdebug[0m] [0m	checking org.scala-sbt#actions;0.12.2 from sbt-chain against [none][0m
 [0m[[0mdebug[0m] [0m	module revision kept as first found: org.scala-sbt#actions;0.12.2 from sbt-chain[0m
@@ -122,14 +97,12 @@
 [0m[[0mdebug[0m] [0m	using sbt-chain to resolve org.scala-sbt#classpath;0.12.2[0m
 [0m[[0minfo[0m] [0mResolving org.scala-sbt#classpath;0.12.2 ...[0m
 [0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: org.scala-sbt#classpath;0.12.2 {compile=[default(compile)]}[0m
-[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/classpath/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/classpath/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0mpost 1.3 ivy file: using exact as default matcher[0m
-[0m[[0mdebug[0m] [0m	resolver not found: null => trying to use the one configured for org.scala-sbt#classpath;0.12.2[0m
-[0m[[0mdebug[0m] [0m	configured resolver found for org.scala-sbt#classpath;0.12.2: sbt-chain: saving this data[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#classpath;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/classpath/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#classpath;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/classpath/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0msbt-chain: module revision found in cache: org.scala-sbt#classpath;0.12.2[0m
-[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/classpath/ivy-0.12.2.xml[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#classpath;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/classpath/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/classpath/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#classpath;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/classpath/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0m	typesafe-ivy-releases: revision in cache: org.scala-sbt#classpath;0.12.2[0m
 [0m[[0mdebug[0m] [0m	checking org.scala-sbt#classpath;0.12.2 from sbt-chain against [none][0m
 [0m[[0mdebug[0m] [0m	module revision kept as first found: org.scala-sbt#classpath;0.12.2 from sbt-chain[0m
@@ -139,14 +112,12 @@
 [0m[[0mdebug[0m] [0m	using sbt-chain to resolve org.scala-sbt#launcher-interface;0.12.2[0m
 [0m[[0minfo[0m] [0mResolving org.scala-sbt#launcher-interface;0.12.2 ...[0m
 [0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: org.scala-sbt#launcher-interface;0.12.2 {compile=[default(compile)]}[0m
-[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/launcher-interface/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/launcher-interface/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0mpost 1.3 ivy file: using exact as default matcher[0m
-[0m[[0mdebug[0m] [0m	resolver not found: null => trying to use the one configured for org.scala-sbt#launcher-interface;0.12.2[0m
-[0m[[0mdebug[0m] [0m	configured resolver found for org.scala-sbt#launcher-interface;0.12.2: sbt-chain: saving this data[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#launcher-interface;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/launcher-interface/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#launcher-interface;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/launcher-interface/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0msbt-chain: module revision found in cache: org.scala-sbt#launcher-interface;0.12.2[0m
-[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/launcher-interface/ivy-0.12.2.xml[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#launcher-interface;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/launcher-interface/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/launcher-interface/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#launcher-interface;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/launcher-interface/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0m	typesafe-ivy-releases: revision in cache: org.scala-sbt#launcher-interface;0.12.2[0m
 [0m[[0mdebug[0m] [0m	checking org.scala-sbt#launcher-interface;0.12.2 from sbt-chain against [none][0m
 [0m[[0mdebug[0m] [0m	module revision kept as first found: org.scala-sbt#launcher-interface;0.12.2 from sbt-chain[0m
@@ -156,14 +127,12 @@
 [0m[[0mdebug[0m] [0m	using sbt-chain to resolve org.scala-lang#scala-library;2.9.2[0m
 [0m[[0minfo[0m] [0mResolving org.scala-lang#scala-library;2.9.2 ...[0m
 [0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: org.scala-lang#scala-library;2.9.2 {compile=[default(compile)]}[0m
-[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-lang/scala-library/ivy-2.9.2.xml[0m
+[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-lang/scala-library/ivy-2.9.2.xml[0m
 [0m[[0mdebug[0m] [0mpost 1.3 ivy file: using exact as default matcher[0m
-[0m[[0mdebug[0m] [0m	resolver not found: redefined-public => trying to use the one configured for org.scala-lang#scala-library;2.9.2[0m
-[0m[[0mdebug[0m] [0m	configured resolver found for org.scala-lang#scala-library;2.9.2: sbt-chain: saving this data[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-lang#scala-library;2.9.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-lang/scala-library/ivy-2.9.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-lang#scala-library;2.9.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-lang/scala-library/ivy-2.9.2.xml[0m
 [0m[[0mdebug[0m] [0msbt-chain: module revision found in cache: org.scala-lang#scala-library;2.9.2[0m
-[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-lang/scala-library/ivy-2.9.2.xml[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-lang#scala-library;2.9.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-lang/scala-library/ivy-2.9.2.xml[0m
+[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-lang/scala-library/ivy-2.9.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-lang#scala-library;2.9.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-lang/scala-library/ivy-2.9.2.xml[0m
 [0m[[0mdebug[0m] [0m	typesafe-ivy-releases: revision in cache: org.scala-lang#scala-library;2.9.2[0m
 [0m[[0mdebug[0m] [0m	checking org.scala-lang#scala-library;2.9.2 from sbt-chain against [none][0m
 [0m[[0mdebug[0m] [0m	module revision kept as first found: org.scala-lang#scala-library;2.9.2 from sbt-chain[0m
@@ -179,14 +148,12 @@
 [0m[[0mdebug[0m] [0m	using sbt-chain to resolve org.scala-sbt#interface;0.12.2[0m
 [0m[[0minfo[0m] [0mResolving org.scala-sbt#interface;0.12.2 ...[0m
 [0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: org.scala-sbt#interface;0.12.2 {compile=[default(compile)]}[0m
-[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/interface/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/interface/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0mpost 1.3 ivy file: using exact as default matcher[0m
-[0m[[0mdebug[0m] [0m	resolver not found: null => trying to use the one configured for org.scala-sbt#interface;0.12.2[0m
-[0m[[0mdebug[0m] [0m	configured resolver found for org.scala-sbt#interface;0.12.2: sbt-chain: saving this data[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#interface;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/interface/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#interface;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/interface/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0msbt-chain: module revision found in cache: org.scala-sbt#interface;0.12.2[0m
-[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/interface/ivy-0.12.2.xml[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#interface;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/interface/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/interface/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#interface;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/interface/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0m	typesafe-ivy-releases: revision in cache: org.scala-sbt#interface;0.12.2[0m
 [0m[[0mdebug[0m] [0m	checking org.scala-sbt#interface;0.12.2 from sbt-chain against [none][0m
 [0m[[0mdebug[0m] [0m	module revision kept as first found: org.scala-sbt#interface;0.12.2 from sbt-chain[0m
@@ -208,14 +175,12 @@
 [0m[[0mdebug[0m] [0m	using sbt-chain to resolve org.scala-sbt#io;0.12.2[0m
 [0m[[0minfo[0m] [0mResolving org.scala-sbt#io;0.12.2 ...[0m
 [0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: org.scala-sbt#io;0.12.2 {compile=[default(compile)]}[0m
-[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/io/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/io/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0mpost 1.3 ivy file: using exact as default matcher[0m
-[0m[[0mdebug[0m] [0m	resolver not found: null => trying to use the one configured for org.scala-sbt#io;0.12.2[0m
-[0m[[0mdebug[0m] [0m	configured resolver found for org.scala-sbt#io;0.12.2: sbt-chain: saving this data[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#io;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/io/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#io;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/io/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0msbt-chain: module revision found in cache: org.scala-sbt#io;0.12.2[0m
-[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/io/ivy-0.12.2.xml[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#io;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/io/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/io/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#io;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/io/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0m	typesafe-ivy-releases: revision in cache: org.scala-sbt#io;0.12.2[0m
 [0m[[0mdebug[0m] [0m	checking org.scala-sbt#io;0.12.2 from sbt-chain against [none][0m
 [0m[[0mdebug[0m] [0m	module revision kept as first found: org.scala-sbt#io;0.12.2 from sbt-chain[0m
@@ -225,14 +190,12 @@
 [0m[[0mdebug[0m] [0m	using sbt-chain to resolve org.scala-sbt#control;0.12.2[0m
 [0m[[0minfo[0m] [0mResolving org.scala-sbt#control;0.12.2 ...[0m
 [0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: org.scala-sbt#control;0.12.2 {compile=[default(compile)]}[0m
-[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/control/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/control/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0mpost 1.3 ivy file: using exact as default matcher[0m
-[0m[[0mdebug[0m] [0m	resolver not found: null => trying to use the one configured for org.scala-sbt#control;0.12.2[0m
-[0m[[0mdebug[0m] [0m	configured resolver found for org.scala-sbt#control;0.12.2: sbt-chain: saving this data[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#control;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/control/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#control;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/control/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0msbt-chain: module revision found in cache: org.scala-sbt#control;0.12.2[0m
-[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/control/ivy-0.12.2.xml[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#control;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/control/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/control/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#control;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/control/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0m	typesafe-ivy-releases: revision in cache: org.scala-sbt#control;0.12.2[0m
 [0m[[0mdebug[0m] [0m	checking org.scala-sbt#control;0.12.2 from sbt-chain against [none][0m
 [0m[[0mdebug[0m] [0m	module revision kept as first found: org.scala-sbt#control;0.12.2 from sbt-chain[0m
@@ -278,14 +241,12 @@
 [0m[[0mdebug[0m] [0m	using sbt-chain to resolve org.scala-lang#scala-compiler;2.9.2[0m
 [0m[[0minfo[0m] [0mResolving org.scala-lang#scala-compiler;2.9.2 ...[0m
 [0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: org.scala-lang#scala-compiler;2.9.2 {compile=[default(compile)]}[0m
-[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-lang/scala-compiler/ivy-2.9.2.xml[0m
+[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-lang/scala-compiler/ivy-2.9.2.xml[0m
 [0m[[0mdebug[0m] [0mpost 1.3 ivy file: using exact as default matcher[0m
-[0m[[0mdebug[0m] [0m	resolver not found: redefined-public => trying to use the one configured for org.scala-lang#scala-compiler;2.9.2[0m
-[0m[[0mdebug[0m] [0m	configured resolver found for org.scala-lang#scala-compiler;2.9.2: sbt-chain: saving this data[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-lang#scala-compiler;2.9.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-lang/scala-compiler/ivy-2.9.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-lang#scala-compiler;2.9.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-lang/scala-compiler/ivy-2.9.2.xml[0m
 [0m[[0mdebug[0m] [0msbt-chain: module revision found in cache: org.scala-lang#scala-compiler;2.9.2[0m
-[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-lang/scala-compiler/ivy-2.9.2.xml[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-lang#scala-compiler;2.9.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-lang/scala-compiler/ivy-2.9.2.xml[0m
+[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-lang/scala-compiler/ivy-2.9.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-lang#scala-compiler;2.9.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-lang/scala-compiler/ivy-2.9.2.xml[0m
 [0m[[0mdebug[0m] [0m	typesafe-ivy-releases: revision in cache: org.scala-lang#scala-compiler;2.9.2[0m
 [0m[[0mdebug[0m] [0m	checking org.scala-lang#scala-compiler;2.9.2 from sbt-chain against [none][0m
 [0m[[0mdebug[0m] [0m	module revision kept as first found: org.scala-lang#scala-compiler;2.9.2 from sbt-chain[0m
@@ -310,14 +271,12 @@
 [0m[[0mdebug[0m] [0m	using sbt-chain to resolve org.scala-sbt#completion;0.12.2[0m
 [0m[[0minfo[0m] [0mResolving org.scala-sbt#completion;0.12.2 ...[0m
 [0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: org.scala-sbt#completion;0.12.2 {compile=[default(compile)]}[0m
-[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/completion/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/completion/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0mpost 1.3 ivy file: using exact as default matcher[0m
-[0m[[0mdebug[0m] [0m	resolver not found: null => trying to use the one configured for org.scala-sbt#completion;0.12.2[0m
-[0m[[0mdebug[0m] [0m	configured resolver found for org.scala-sbt#completion;0.12.2: sbt-chain: saving this data[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#completion;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/completion/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#completion;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/completion/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0msbt-chain: module revision found in cache: org.scala-sbt#completion;0.12.2[0m
-[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/completion/ivy-0.12.2.xml[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#completion;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/completion/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/completion/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#completion;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/completion/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0m	typesafe-ivy-releases: revision in cache: org.scala-sbt#completion;0.12.2[0m
 [0m[[0mdebug[0m] [0m	checking org.scala-sbt#completion;0.12.2 from sbt-chain against [none][0m
 [0m[[0mdebug[0m] [0m	module revision kept as first found: org.scala-sbt#completion;0.12.2 from sbt-chain[0m
@@ -327,14 +286,12 @@
 [0m[[0mdebug[0m] [0m	using sbt-chain to resolve org.scala-sbt#collections;0.12.2[0m
 [0m[[0minfo[0m] [0mResolving org.scala-sbt#collections;0.12.2 ...[0m
 [0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: org.scala-sbt#collections;0.12.2 {compile=[default(compile)]}[0m
-[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/collections/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/collections/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0mpost 1.3 ivy file: using exact as default matcher[0m
-[0m[[0mdebug[0m] [0m	resolver not found: null => trying to use the one configured for org.scala-sbt#collections;0.12.2[0m
-[0m[[0mdebug[0m] [0m	configured resolver found for org.scala-sbt#collections;0.12.2: sbt-chain: saving this data[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#collections;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/collections/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#collections;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/collections/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0msbt-chain: module revision found in cache: org.scala-sbt#collections;0.12.2[0m
-[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/collections/ivy-0.12.2.xml[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#collections;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/collections/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/collections/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#collections;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/collections/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0m	typesafe-ivy-releases: revision in cache: org.scala-sbt#collections;0.12.2[0m
 [0m[[0mdebug[0m] [0m	checking org.scala-sbt#collections;0.12.2 from sbt-chain against [none][0m
 [0m[[0mdebug[0m] [0m	module revision kept as first found: org.scala-sbt#collections;0.12.2 from sbt-chain[0m
@@ -374,14 +331,12 @@
 [0m[[0mdebug[0m] [0m	using sbt-chain to resolve jline#jline;1.0[0m
 [0m[[0minfo[0m] [0mResolving jline#jline;1.0 ...[0m
 [0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: jline#jline;1.0 {compile=[default(compile)]}[0m
-[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/jline/jline/ivy-1.0.xml[0m
+[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/jline/jline/ivy-1.0.xml[0m
 [0m[[0mdebug[0m] [0mpost 1.3 ivy file: using exact as default matcher[0m
-[0m[[0mdebug[0m] [0m	resolver not found: null => trying to use the one configured for jline#jline;1.0[0m
-[0m[[0mdebug[0m] [0m	configured resolver found for jline#jline;1.0: sbt-chain: saving this data[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for jline#jline;1.0 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/jline/jline/ivy-1.0.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for jline#jline;1.0 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/jline/jline/ivy-1.0.xml[0m
 [0m[[0mdebug[0m] [0msbt-chain: module revision found in cache: jline#jline;1.0[0m
-[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/jline/jline/ivy-1.0.xml[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for jline#jline;1.0 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/jline/jline/ivy-1.0.xml[0m
+[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/jline/jline/ivy-1.0.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for jline#jline;1.0 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/jline/jline/ivy-1.0.xml[0m
 [0m[[0mdebug[0m] [0m	typesafe-ivy-releases: revision in cache: jline#jline;1.0[0m
 [0m[[0mdebug[0m] [0m	checking jline#jline;1.0 from sbt-chain against [none][0m
 [0m[[0mdebug[0m] [0m	module revision kept as first found: jline#jline;1.0 from sbt-chain[0m
@@ -397,14 +352,12 @@
 [0m[[0mdebug[0m] [0m	using sbt-chain to resolve org.scala-sbt#api;0.12.2[0m
 [0m[[0minfo[0m] [0mResolving org.scala-sbt#api;0.12.2 ...[0m
 [0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: org.scala-sbt#api;0.12.2 {compile=[default(compile)]}[0m
-[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/api/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/api/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0mpost 1.3 ivy file: using exact as default matcher[0m
-[0m[[0mdebug[0m] [0m	resolver not found: null => trying to use the one configured for org.scala-sbt#api;0.12.2[0m
-[0m[[0mdebug[0m] [0m	configured resolver found for org.scala-sbt#api;0.12.2: sbt-chain: saving this data[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#api;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/api/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#api;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/api/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0msbt-chain: module revision found in cache: org.scala-sbt#api;0.12.2[0m
-[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/api/ivy-0.12.2.xml[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#api;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/api/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/api/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#api;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/api/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0m	typesafe-ivy-releases: revision in cache: org.scala-sbt#api;0.12.2[0m
 [0m[[0mdebug[0m] [0m	checking org.scala-sbt#api;0.12.2 from sbt-chain against [none][0m
 [0m[[0mdebug[0m] [0m	module revision kept as first found: org.scala-sbt#api;0.12.2 from sbt-chain[0m
@@ -429,14 +382,12 @@
 [0m[[0mdebug[0m] [0m	using sbt-chain to resolve org.scala-sbt#compiler-integration;0.12.2[0m
 [0m[[0minfo[0m] [0mResolving org.scala-sbt#compiler-integration;0.12.2 ...[0m
 [0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: org.scala-sbt#compiler-integration;0.12.2 {compile=[default(compile)]}[0m
-[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/compiler-integration/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/compiler-integration/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0mpost 1.3 ivy file: using exact as default matcher[0m
-[0m[[0mdebug[0m] [0m	resolver not found: null => trying to use the one configured for org.scala-sbt#compiler-integration;0.12.2[0m
-[0m[[0mdebug[0m] [0m	configured resolver found for org.scala-sbt#compiler-integration;0.12.2: sbt-chain: saving this data[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#compiler-integration;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/compiler-integration/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#compiler-integration;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/compiler-integration/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0msbt-chain: module revision found in cache: org.scala-sbt#compiler-integration;0.12.2[0m
-[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/compiler-integration/ivy-0.12.2.xml[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#compiler-integration;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/compiler-integration/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/compiler-integration/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#compiler-integration;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/compiler-integration/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0m	typesafe-ivy-releases: revision in cache: org.scala-sbt#compiler-integration;0.12.2[0m
 [0m[[0mdebug[0m] [0m	checking org.scala-sbt#compiler-integration;0.12.2 from sbt-chain against [none][0m
 [0m[[0mdebug[0m] [0m	module revision kept as first found: org.scala-sbt#compiler-integration;0.12.2 from sbt-chain[0m
@@ -446,14 +397,12 @@
 [0m[[0mdebug[0m] [0m	using sbt-chain to resolve org.scala-sbt#incremental-compiler;0.12.2[0m
 [0m[[0minfo[0m] [0mResolving org.scala-sbt#incremental-compiler;0.12.2 ...[0m
 [0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: org.scala-sbt#incremental-compiler;0.12.2 {compile=[default(compile)]}[0m
-[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/incremental-compiler/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/incremental-compiler/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0mpost 1.3 ivy file: using exact as default matcher[0m
-[0m[[0mdebug[0m] [0m	resolver not found: null => trying to use the one configured for org.scala-sbt#incremental-compiler;0.12.2[0m
-[0m[[0mdebug[0m] [0m	configured resolver found for org.scala-sbt#incremental-compiler;0.12.2: sbt-chain: saving this data[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#incremental-compiler;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/incremental-compiler/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#incremental-compiler;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/incremental-compiler/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0msbt-chain: module revision found in cache: org.scala-sbt#incremental-compiler;0.12.2[0m
-[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/incremental-compiler/ivy-0.12.2.xml[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#incremental-compiler;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/incremental-compiler/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/incremental-compiler/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#incremental-compiler;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/incremental-compiler/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0m	typesafe-ivy-releases: revision in cache: org.scala-sbt#incremental-compiler;0.12.2[0m
 [0m[[0mdebug[0m] [0m	checking org.scala-sbt#incremental-compiler;0.12.2 from sbt-chain against [none][0m
 [0m[[0mdebug[0m] [0m	module revision kept as first found: org.scala-sbt#incremental-compiler;0.12.2 from sbt-chain[0m
@@ -472,14 +421,12 @@
 [0m[[0mdebug[0m] [0m	using sbt-chain to resolve org.scala-sbt#logging;0.12.2[0m
 [0m[[0minfo[0m] [0mResolving org.scala-sbt#logging;0.12.2 ...[0m
 [0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: org.scala-sbt#logging;0.12.2 {compile=[default(compile)]}[0m
-[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/logging/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/logging/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0mpost 1.3 ivy file: using exact as default matcher[0m
-[0m[[0mdebug[0m] [0m	resolver not found: null => trying to use the one configured for org.scala-sbt#logging;0.12.2[0m
-[0m[[0mdebug[0m] [0m	configured resolver found for org.scala-sbt#logging;0.12.2: sbt-chain: saving this data[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#logging;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/logging/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#logging;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/logging/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0msbt-chain: module revision found in cache: org.scala-sbt#logging;0.12.2[0m
-[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/logging/ivy-0.12.2.xml[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#logging;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/logging/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/logging/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#logging;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/logging/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0m	typesafe-ivy-releases: revision in cache: org.scala-sbt#logging;0.12.2[0m
 [0m[[0mdebug[0m] [0m	checking org.scala-sbt#logging;0.12.2 from sbt-chain against [none][0m
 [0m[[0mdebug[0m] [0m	module revision kept as first found: org.scala-sbt#logging;0.12.2 from sbt-chain[0m
@@ -492,14 +439,12 @@
 [0m[[0mdebug[0m] [0m	using sbt-chain to resolve org.scala-sbt#process;0.12.2[0m
 [0m[[0minfo[0m] [0mResolving org.scala-sbt#process;0.12.2 ...[0m
 [0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: org.scala-sbt#process;0.12.2 {compile=[default(compile)]}[0m
-[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/process/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/process/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0mpost 1.3 ivy file: using exact as default matcher[0m
-[0m[[0mdebug[0m] [0m	resolver not found: null => trying to use the one configured for org.scala-sbt#process;0.12.2[0m
-[0m[[0mdebug[0m] [0m	configured resolver found for org.scala-sbt#process;0.12.2: sbt-chain: saving this data[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#process;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/process/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#process;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/process/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0msbt-chain: module revision found in cache: org.scala-sbt#process;0.12.2[0m
-[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/process/ivy-0.12.2.xml[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#process;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/process/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/process/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#process;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/process/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0m	typesafe-ivy-releases: revision in cache: org.scala-sbt#process;0.12.2[0m
 [0m[[0mdebug[0m] [0m	checking org.scala-sbt#process;0.12.2 from sbt-chain against [none][0m
 [0m[[0mdebug[0m] [0m	module revision kept as first found: org.scala-sbt#process;0.12.2 from sbt-chain[0m
@@ -548,14 +493,12 @@
 [0m[[0mdebug[0m] [0m	using sbt-chain to resolve org.scala-sbt#compile;0.12.2[0m
 [0m[[0minfo[0m] [0mResolving org.scala-sbt#compile;0.12.2 ...[0m
 [0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: org.scala-sbt#compile;0.12.2 {compile=[default(compile)]}[0m
-[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/compile/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/compile/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0mpost 1.3 ivy file: using exact as default matcher[0m
-[0m[[0mdebug[0m] [0m	resolver not found: null => trying to use the one configured for org.scala-sbt#compile;0.12.2[0m
-[0m[[0mdebug[0m] [0m	configured resolver found for org.scala-sbt#compile;0.12.2: sbt-chain: saving this data[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#compile;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/compile/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#compile;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/compile/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0msbt-chain: module revision found in cache: org.scala-sbt#compile;0.12.2[0m
-[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/compile/ivy-0.12.2.xml[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#compile;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/compile/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/compile/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#compile;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/compile/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0m	typesafe-ivy-releases: revision in cache: org.scala-sbt#compile;0.12.2[0m
 [0m[[0mdebug[0m] [0m	checking org.scala-sbt#compile;0.12.2 from sbt-chain against [none][0m
 [0m[[0mdebug[0m] [0m	module revision kept as first found: org.scala-sbt#compile;0.12.2 from sbt-chain[0m
@@ -592,14 +535,12 @@
 [0m[[0mdebug[0m] [0m	using sbt-chain to resolve org.scala-sbt#persist;0.12.2[0m
 [0m[[0minfo[0m] [0mResolving org.scala-sbt#persist;0.12.2 ...[0m
 [0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: org.scala-sbt#persist;0.12.2 {compile=[default(compile)]}[0m
-[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/persist/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/persist/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0mpost 1.3 ivy file: using exact as default matcher[0m
-[0m[[0mdebug[0m] [0m	resolver not found: null => trying to use the one configured for org.scala-sbt#persist;0.12.2[0m
-[0m[[0mdebug[0m] [0m	configured resolver found for org.scala-sbt#persist;0.12.2: sbt-chain: saving this data[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#persist;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/persist/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#persist;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/persist/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0msbt-chain: module revision found in cache: org.scala-sbt#persist;0.12.2[0m
-[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/persist/ivy-0.12.2.xml[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#persist;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/persist/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/persist/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#persist;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/persist/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0m	typesafe-ivy-releases: revision in cache: org.scala-sbt#persist;0.12.2[0m
 [0m[[0mdebug[0m] [0m	checking org.scala-sbt#persist;0.12.2 from sbt-chain against [none][0m
 [0m[[0mdebug[0m] [0m	module revision kept as first found: org.scala-sbt#persist;0.12.2 from sbt-chain[0m
@@ -627,14 +568,12 @@
 [0m[[0mdebug[0m] [0m	using sbt-chain to resolve org.scala-tools.sbinary#sbinary_2.9.0;0.4.0[0m
 [0m[[0minfo[0m] [0mResolving org.scala-tools.sbinary#sbinary_2.9.0;0.4.0 ...[0m
 [0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: org.scala-tools.sbinary#sbinary_2.9.0;0.4.0 {compile=[default(compile)]}[0m
-[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-tools.sbinary/sbinary_2.9.0/ivy-0.4.0.xml[0m
+[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-tools.sbinary/sbinary_2.9.0/ivy-0.4.0.xml[0m
 [0m[[0mdebug[0m] [0mpost 1.3 ivy file: using exact as default matcher[0m
-[0m[[0mdebug[0m] [0m	resolver not found: null => trying to use the one configured for org.scala-tools.sbinary#sbinary_2.9.0;0.4.0[0m
-[0m[[0mdebug[0m] [0m	configured resolver found for org.scala-tools.sbinary#sbinary_2.9.0;0.4.0: sbt-chain: saving this data[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-tools.sbinary#sbinary_2.9.0;0.4.0 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-tools.sbinary/sbinary_2.9.0/ivy-0.4.0.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-tools.sbinary#sbinary_2.9.0;0.4.0 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-tools.sbinary/sbinary_2.9.0/ivy-0.4.0.xml[0m
 [0m[[0mdebug[0m] [0msbt-chain: module revision found in cache: org.scala-tools.sbinary#sbinary_2.9.0;0.4.0[0m
-[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-tools.sbinary/sbinary_2.9.0/ivy-0.4.0.xml[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-tools.sbinary#sbinary_2.9.0;0.4.0 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-tools.sbinary/sbinary_2.9.0/ivy-0.4.0.xml[0m
+[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-tools.sbinary/sbinary_2.9.0/ivy-0.4.0.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-tools.sbinary#sbinary_2.9.0;0.4.0 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-tools.sbinary/sbinary_2.9.0/ivy-0.4.0.xml[0m
 [0m[[0mdebug[0m] [0m	typesafe-ivy-releases: revision in cache: org.scala-tools.sbinary#sbinary_2.9.0;0.4.0[0m
 [0m[[0mdebug[0m] [0m	checking org.scala-tools.sbinary#sbinary_2.9.0;0.4.0 from sbt-chain against [none][0m
 [0m[[0mdebug[0m] [0m	module revision kept as first found: org.scala-tools.sbinary#sbinary_2.9.0;0.4.0 from sbt-chain[0m
@@ -653,14 +592,12 @@
 [0m[[0mdebug[0m] [0m	using sbt-chain to resolve org.scala-sbt#classfile;0.12.2[0m
 [0m[[0minfo[0m] [0mResolving org.scala-sbt#classfile;0.12.2 ...[0m
 [0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: org.scala-sbt#classfile;0.12.2 {compile=[default(compile)]}[0m
-[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/classfile/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/classfile/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0mpost 1.3 ivy file: using exact as default matcher[0m
-[0m[[0mdebug[0m] [0m	resolver not found: null => trying to use the one configured for org.scala-sbt#classfile;0.12.2[0m
-[0m[[0mdebug[0m] [0m	configured resolver found for org.scala-sbt#classfile;0.12.2: sbt-chain: saving this data[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#classfile;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/classfile/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#classfile;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/classfile/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0msbt-chain: module revision found in cache: org.scala-sbt#classfile;0.12.2[0m
-[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/classfile/ivy-0.12.2.xml[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#classfile;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/classfile/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/classfile/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#classfile;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/classfile/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0m	typesafe-ivy-releases: revision in cache: org.scala-sbt#classfile;0.12.2[0m
 [0m[[0mdebug[0m] [0m	checking org.scala-sbt#classfile;0.12.2 from sbt-chain against [none][0m
 [0m[[0mdebug[0m] [0m	module revision kept as first found: org.scala-sbt#classfile;0.12.2 from sbt-chain[0m
@@ -703,14 +640,12 @@
 [0m[[0mdebug[0m] [0m	using sbt-chain to resolve org.scala-sbt#compiler-ivy-integration;0.12.2[0m
 [0m[[0minfo[0m] [0mResolving org.scala-sbt#compiler-ivy-integration;0.12.2 ...[0m
 [0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: org.scala-sbt#compiler-ivy-integration;0.12.2 {compile=[default(compile)]}[0m
-[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/compiler-ivy-integration/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/compiler-ivy-integration/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0mpost 1.3 ivy file: using exact as default matcher[0m
-[0m[[0mdebug[0m] [0m	resolver not found: null => trying to use the one configured for org.scala-sbt#compiler-ivy-integration;0.12.2[0m
-[0m[[0mdebug[0m] [0m	configured resolver found for org.scala-sbt#compiler-ivy-integration;0.12.2: sbt-chain: saving this data[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#compiler-ivy-integration;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/compiler-ivy-integration/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#compiler-ivy-integration;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/compiler-ivy-integration/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0msbt-chain: module revision found in cache: org.scala-sbt#compiler-ivy-integration;0.12.2[0m
-[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/compiler-ivy-integration/ivy-0.12.2.xml[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#compiler-ivy-integration;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/compiler-ivy-integration/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/compiler-ivy-integration/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#compiler-ivy-integration;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/compiler-ivy-integration/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0m	typesafe-ivy-releases: revision in cache: org.scala-sbt#compiler-ivy-integration;0.12.2[0m
 [0m[[0mdebug[0m] [0m	checking org.scala-sbt#compiler-ivy-integration;0.12.2 from sbt-chain against [none][0m
 [0m[[0mdebug[0m] [0m	module revision kept as first found: org.scala-sbt#compiler-ivy-integration;0.12.2 from sbt-chain[0m
@@ -720,14 +655,12 @@
 [0m[[0mdebug[0m] [0m	using sbt-chain to resolve org.scala-sbt#ivy;0.12.2[0m
 [0m[[0minfo[0m] [0mResolving org.scala-sbt#ivy;0.12.2 ...[0m
 [0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: org.scala-sbt#ivy;0.12.2 {compile=[default(compile)]}[0m
-[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/ivy/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/ivy/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0mpost 1.3 ivy file: using exact as default matcher[0m
-[0m[[0mdebug[0m] [0m	resolver not found: null => trying to use the one configured for org.scala-sbt#ivy;0.12.2[0m
-[0m[[0mdebug[0m] [0m	configured resolver found for org.scala-sbt#ivy;0.12.2: sbt-chain: saving this data[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#ivy;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/ivy/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#ivy;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/ivy/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0msbt-chain: module revision found in cache: org.scala-sbt#ivy;0.12.2[0m
-[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/ivy/ivy-0.12.2.xml[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#ivy;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/ivy/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/ivy/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#ivy;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/ivy/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0m	typesafe-ivy-releases: revision in cache: org.scala-sbt#ivy;0.12.2[0m
 [0m[[0mdebug[0m] [0m	checking org.scala-sbt#ivy;0.12.2 from sbt-chain against [none][0m
 [0m[[0mdebug[0m] [0m	module revision kept as first found: org.scala-sbt#ivy;0.12.2 from sbt-chain[0m
@@ -761,14 +694,12 @@
 [0m[[0mdebug[0m] [0m	using sbt-chain to resolve org.apache.ivy#ivy;2.3.0-rc1[0m
 [0m[[0minfo[0m] [0mResolving org.apache.ivy#ivy;2.3.0-rc1 ...[0m
 [0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: org.apache.ivy#ivy;2.3.0-rc1 {compile=[default(compile)]}[0m
-[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.apache.ivy/ivy/ivy-2.3.0-rc1.xml[0m
+[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.apache.ivy/ivy/ivy-2.3.0-rc1.xml[0m
 [0m[[0mdebug[0m] [0mpost 1.3 ivy file: using exact as default matcher[0m
-[0m[[0mdebug[0m] [0m	resolver not found: null => trying to use the one configured for org.apache.ivy#ivy;2.3.0-rc1[0m
-[0m[[0mdebug[0m] [0m	configured resolver found for org.apache.ivy#ivy;2.3.0-rc1: sbt-chain: saving this data[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.apache.ivy#ivy;2.3.0-rc1 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.apache.ivy/ivy/ivy-2.3.0-rc1.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.apache.ivy#ivy;2.3.0-rc1 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.apache.ivy/ivy/ivy-2.3.0-rc1.xml[0m
 [0m[[0mdebug[0m] [0msbt-chain: module revision found in cache: org.apache.ivy#ivy;2.3.0-rc1[0m
-[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.apache.ivy/ivy/ivy-2.3.0-rc1.xml[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.apache.ivy#ivy;2.3.0-rc1 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.apache.ivy/ivy/ivy-2.3.0-rc1.xml[0m
+[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.apache.ivy/ivy/ivy-2.3.0-rc1.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.apache.ivy#ivy;2.3.0-rc1 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.apache.ivy/ivy/ivy-2.3.0-rc1.xml[0m
 [0m[[0mdebug[0m] [0m	typesafe-ivy-releases: revision in cache: org.apache.ivy#ivy;2.3.0-rc1[0m
 [0m[[0mdebug[0m] [0m	checking org.apache.ivy#ivy;2.3.0-rc1 from sbt-chain against [none][0m
 [0m[[0mdebug[0m] [0m	module revision kept as first found: org.apache.ivy#ivy;2.3.0-rc1 from sbt-chain[0m
@@ -784,14 +715,12 @@
 [0m[[0mdebug[0m] [0m	using sbt-chain to resolve com.jcraft#jsch;0.1.46[0m
 [0m[[0minfo[0m] [0mResolving com.jcraft#jsch;0.1.46 ...[0m
 [0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: com.jcraft#jsch;0.1.46 {compile=[default(compile)]}[0m
-[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/com.jcraft/jsch/ivy-0.1.46.xml[0m
+[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/com.jcraft/jsch/ivy-0.1.46.xml[0m
 [0m[[0mdebug[0m] [0mpost 1.3 ivy file: using exact as default matcher[0m
-[0m[[0mdebug[0m] [0m	resolver not found: null => trying to use the one configured for com.jcraft#jsch;0.1.46[0m
-[0m[[0mdebug[0m] [0m	configured resolver found for com.jcraft#jsch;0.1.46: sbt-chain: saving this data[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for com.jcraft#jsch;0.1.46 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/com.jcraft/jsch/ivy-0.1.46.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for com.jcraft#jsch;0.1.46 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/com.jcraft/jsch/ivy-0.1.46.xml[0m
 [0m[[0mdebug[0m] [0msbt-chain: module revision found in cache: com.jcraft#jsch;0.1.46[0m
-[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/com.jcraft/jsch/ivy-0.1.46.xml[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for com.jcraft#jsch;0.1.46 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/com.jcraft/jsch/ivy-0.1.46.xml[0m
+[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/com.jcraft/jsch/ivy-0.1.46.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for com.jcraft#jsch;0.1.46 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/com.jcraft/jsch/ivy-0.1.46.xml[0m
 [0m[[0mdebug[0m] [0m	typesafe-ivy-releases: revision in cache: com.jcraft#jsch;0.1.46[0m
 [0m[[0mdebug[0m] [0m	checking com.jcraft#jsch;0.1.46 from sbt-chain against [none][0m
 [0m[[0mdebug[0m] [0m	module revision kept as first found: com.jcraft#jsch;0.1.46 from sbt-chain[0m
@@ -807,14 +736,12 @@
 [0m[[0mdebug[0m] [0m	using sbt-chain to resolve commons-httpclient#commons-httpclient;3.1[0m
 [0m[[0minfo[0m] [0mResolving commons-httpclient#commons-httpclient;3.1 ...[0m
 [0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: commons-httpclient#commons-httpclient;3.1 {compile=[default(compile)]}[0m
-[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/commons-httpclient/commons-httpclient/ivy-3.1.xml[0m
+[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/commons-httpclient/commons-httpclient/ivy-3.1.xml[0m
 [0m[[0mdebug[0m] [0mpost 1.3 ivy file: using exact as default matcher[0m
-[0m[[0mdebug[0m] [0m	resolver not found: null => trying to use the one configured for commons-httpclient#commons-httpclient;3.1[0m
-[0m[[0mdebug[0m] [0m	configured resolver found for commons-httpclient#commons-httpclient;3.1: sbt-chain: saving this data[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for commons-httpclient#commons-httpclient;3.1 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/commons-httpclient/commons-httpclient/ivy-3.1.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for commons-httpclient#commons-httpclient;3.1 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/commons-httpclient/commons-httpclient/ivy-3.1.xml[0m
 [0m[[0mdebug[0m] [0msbt-chain: module revision found in cache: commons-httpclient#commons-httpclient;3.1[0m
-[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/commons-httpclient/commons-httpclient/ivy-3.1.xml[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for commons-httpclient#commons-httpclient;3.1 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/commons-httpclient/commons-httpclient/ivy-3.1.xml[0m
+[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/commons-httpclient/commons-httpclient/ivy-3.1.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for commons-httpclient#commons-httpclient;3.1 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/commons-httpclient/commons-httpclient/ivy-3.1.xml[0m
 [0m[[0mdebug[0m] [0m	typesafe-ivy-releases: revision in cache: commons-httpclient#commons-httpclient;3.1[0m
 [0m[[0mdebug[0m] [0m	checking commons-httpclient#commons-httpclient;3.1 from sbt-chain against [none][0m
 [0m[[0mdebug[0m] [0m	module revision kept as first found: commons-httpclient#commons-httpclient;3.1 from sbt-chain[0m
@@ -828,14 +755,12 @@
 [0m[[0mdebug[0m] [0m	using sbt-chain to resolve commons-logging#commons-logging;1.0.4[0m
 [0m[[0minfo[0m] [0mResolving commons-logging#commons-logging;1.0.4 ...[0m
 [0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: commons-logging#commons-logging;1.0.4 {compile=[compile(*), master(*)], runtime=[runtime(*)]}[0m
-[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/commons-logging/commons-logging/ivy-1.0.4.xml[0m
+[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/commons-logging/commons-logging/ivy-1.0.4.xml[0m
 [0m[[0mdebug[0m] [0mpost 1.3 ivy file: using exact as default matcher[0m
-[0m[[0mdebug[0m] [0m	resolver not found: null => trying to use the one configured for commons-logging#commons-logging;1.0.4[0m
-[0m[[0mdebug[0m] [0m	configured resolver found for commons-logging#commons-logging;1.0.4: sbt-chain: saving this data[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for commons-logging#commons-logging;1.0.4 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/commons-logging/commons-logging/ivy-1.0.4.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for commons-logging#commons-logging;1.0.4 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/commons-logging/commons-logging/ivy-1.0.4.xml[0m
 [0m[[0mdebug[0m] [0msbt-chain: module revision found in cache: commons-logging#commons-logging;1.0.4[0m
-[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/commons-logging/commons-logging/ivy-1.0.4.xml[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for commons-logging#commons-logging;1.0.4 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/commons-logging/commons-logging/ivy-1.0.4.xml[0m
+[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/commons-logging/commons-logging/ivy-1.0.4.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for commons-logging#commons-logging;1.0.4 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/commons-logging/commons-logging/ivy-1.0.4.xml[0m
 [0m[[0mdebug[0m] [0m	typesafe-ivy-releases: revision in cache: commons-logging#commons-logging;1.0.4[0m
 [0m[[0mdebug[0m] [0m	checking commons-logging#commons-logging;1.0.4 from sbt-chain against [none][0m
 [0m[[0mdebug[0m] [0m	module revision kept as first found: commons-logging#commons-logging;1.0.4 from sbt-chain[0m
@@ -847,14 +772,12 @@
 [0m[[0mdebug[0m] [0m	using sbt-chain to resolve commons-codec#commons-codec;1.2[0m
 [0m[[0minfo[0m] [0mResolving commons-codec#commons-codec;1.2 ...[0m
 [0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: commons-codec#commons-codec;1.2 {compile=[compile(*), master(*)], runtime=[runtime(*)]}[0m
-[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/commons-codec/commons-codec/ivy-1.2.xml[0m
+[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/commons-codec/commons-codec/ivy-1.2.xml[0m
 [0m[[0mdebug[0m] [0mpost 1.3 ivy file: using exact as default matcher[0m
-[0m[[0mdebug[0m] [0m	resolver not found: null => trying to use the one configured for commons-codec#commons-codec;1.2[0m
-[0m[[0mdebug[0m] [0m	configured resolver found for commons-codec#commons-codec;1.2: sbt-chain: saving this data[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for commons-codec#commons-codec;1.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/commons-codec/commons-codec/ivy-1.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for commons-codec#commons-codec;1.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/commons-codec/commons-codec/ivy-1.2.xml[0m
 [0m[[0mdebug[0m] [0msbt-chain: module revision found in cache: commons-codec#commons-codec;1.2[0m
-[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/commons-codec/commons-codec/ivy-1.2.xml[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for commons-codec#commons-codec;1.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/commons-codec/commons-codec/ivy-1.2.xml[0m
+[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/commons-codec/commons-codec/ivy-1.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for commons-codec#commons-codec;1.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/commons-codec/commons-codec/ivy-1.2.xml[0m
 [0m[[0mdebug[0m] [0m	typesafe-ivy-releases: revision in cache: commons-codec#commons-codec;1.2[0m
 [0m[[0mdebug[0m] [0m	checking commons-codec#commons-codec;1.2 from sbt-chain against [none][0m
 [0m[[0mdebug[0m] [0m	module revision kept as first found: commons-codec#commons-codec;1.2 from sbt-chain[0m
@@ -906,14 +829,12 @@
 [0m[[0mdebug[0m] [0m	using sbt-chain to resolve org.scala-sbt#run;0.12.2[0m
 [0m[[0minfo[0m] [0mResolving org.scala-sbt#run;0.12.2 ...[0m
 [0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: org.scala-sbt#run;0.12.2 {compile=[default(compile)]}[0m
-[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/run/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/run/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0mpost 1.3 ivy file: using exact as default matcher[0m
-[0m[[0mdebug[0m] [0m	resolver not found: null => trying to use the one configured for org.scala-sbt#run;0.12.2[0m
-[0m[[0mdebug[0m] [0m	configured resolver found for org.scala-sbt#run;0.12.2: sbt-chain: saving this data[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#run;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/run/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#run;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/run/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0msbt-chain: module revision found in cache: org.scala-sbt#run;0.12.2[0m
-[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/run/ivy-0.12.2.xml[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#run;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/run/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/run/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#run;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/run/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0m	typesafe-ivy-releases: revision in cache: org.scala-sbt#run;0.12.2[0m
 [0m[[0mdebug[0m] [0m	checking org.scala-sbt#run;0.12.2 from sbt-chain against [none][0m
 [0m[[0mdebug[0m] [0m	module revision kept as first found: org.scala-sbt#run;0.12.2 from sbt-chain[0m
@@ -947,14 +868,12 @@
 [0m[[0mdebug[0m] [0m	using sbt-chain to resolve org.scala-sbt#task-system;0.12.2[0m
 [0m[[0minfo[0m] [0mResolving org.scala-sbt#task-system;0.12.2 ...[0m
 [0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: org.scala-sbt#task-system;0.12.2 {compile=[default(compile)]}[0m
-[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/task-system/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/task-system/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0mpost 1.3 ivy file: using exact as default matcher[0m
-[0m[[0mdebug[0m] [0m	resolver not found: null => trying to use the one configured for org.scala-sbt#task-system;0.12.2[0m
-[0m[[0mdebug[0m] [0m	configured resolver found for org.scala-sbt#task-system;0.12.2: sbt-chain: saving this data[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#task-system;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/task-system/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#task-system;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/task-system/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0msbt-chain: module revision found in cache: org.scala-sbt#task-system;0.12.2[0m
-[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/task-system/ivy-0.12.2.xml[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#task-system;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/task-system/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/task-system/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#task-system;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/task-system/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0m	typesafe-ivy-releases: revision in cache: org.scala-sbt#task-system;0.12.2[0m
 [0m[[0mdebug[0m] [0m	checking org.scala-sbt#task-system;0.12.2 from sbt-chain against [none][0m
 [0m[[0mdebug[0m] [0m	module revision kept as first found: org.scala-sbt#task-system;0.12.2 from sbt-chain[0m
@@ -964,14 +883,12 @@
 [0m[[0mdebug[0m] [0m	using sbt-chain to resolve org.scala-sbt#tasks;0.12.2[0m
 [0m[[0minfo[0m] [0mResolving org.scala-sbt#tasks;0.12.2 ...[0m
 [0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: org.scala-sbt#tasks;0.12.2 {compile=[default(compile)], test=[test]}[0m
-[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/tasks/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/tasks/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0mpost 1.3 ivy file: using exact as default matcher[0m
-[0m[[0mdebug[0m] [0m	resolver not found: null => trying to use the one configured for org.scala-sbt#tasks;0.12.2[0m
-[0m[[0mdebug[0m] [0m	configured resolver found for org.scala-sbt#tasks;0.12.2: sbt-chain: saving this data[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#tasks;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/tasks/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#tasks;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/tasks/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0msbt-chain: module revision found in cache: org.scala-sbt#tasks;0.12.2[0m
-[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/tasks/ivy-0.12.2.xml[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#tasks;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/tasks/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/tasks/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#tasks;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/tasks/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0m	typesafe-ivy-releases: revision in cache: org.scala-sbt#tasks;0.12.2[0m
 [0m[[0mdebug[0m] [0m	checking org.scala-sbt#tasks;0.12.2 from sbt-chain against [none][0m
 [0m[[0mdebug[0m] [0m	module revision kept as first found: org.scala-sbt#tasks;0.12.2 from sbt-chain[0m
@@ -1026,14 +943,12 @@
 [0m[[0mdebug[0m] [0m	using sbt-chain to resolve org.scala-sbt#tracking;0.12.2[0m
 [0m[[0minfo[0m] [0mResolving org.scala-sbt#tracking;0.12.2 ...[0m
 [0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: org.scala-sbt#tracking;0.12.2 {compile=[default(compile)]}[0m
-[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/tracking/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/tracking/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0mpost 1.3 ivy file: using exact as default matcher[0m
-[0m[[0mdebug[0m] [0m	resolver not found: null => trying to use the one configured for org.scala-sbt#tracking;0.12.2[0m
-[0m[[0mdebug[0m] [0m	configured resolver found for org.scala-sbt#tracking;0.12.2: sbt-chain: saving this data[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#tracking;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/tracking/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#tracking;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/tracking/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0msbt-chain: module revision found in cache: org.scala-sbt#tracking;0.12.2[0m
-[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/tracking/ivy-0.12.2.xml[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#tracking;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/tracking/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/tracking/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#tracking;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/tracking/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0m	typesafe-ivy-releases: revision in cache: org.scala-sbt#tracking;0.12.2[0m
 [0m[[0mdebug[0m] [0m	checking org.scala-sbt#tracking;0.12.2 from sbt-chain against [none][0m
 [0m[[0mdebug[0m] [0m	module revision kept as first found: org.scala-sbt#tracking;0.12.2 from sbt-chain[0m
@@ -1043,14 +958,12 @@
 [0m[[0mdebug[0m] [0m	using sbt-chain to resolve org.scala-sbt#cache;0.12.2[0m
 [0m[[0minfo[0m] [0mResolving org.scala-sbt#cache;0.12.2 ...[0m
 [0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: org.scala-sbt#cache;0.12.2 {compile=[default(compile)]}[0m
-[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/cache/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/cache/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0mpost 1.3 ivy file: using exact as default matcher[0m
-[0m[[0mdebug[0m] [0m	resolver not found: null => trying to use the one configured for org.scala-sbt#cache;0.12.2[0m
-[0m[[0mdebug[0m] [0m	configured resolver found for org.scala-sbt#cache;0.12.2: sbt-chain: saving this data[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#cache;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/cache/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#cache;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/cache/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0msbt-chain: module revision found in cache: org.scala-sbt#cache;0.12.2[0m
-[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/cache/ivy-0.12.2.xml[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#cache;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/cache/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/cache/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#cache;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/cache/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0m	typesafe-ivy-releases: revision in cache: org.scala-sbt#cache;0.12.2[0m
 [0m[[0mdebug[0m] [0m	checking org.scala-sbt#cache;0.12.2 from sbt-chain against [none][0m
 [0m[[0mdebug[0m] [0m	module revision kept as first found: org.scala-sbt#cache;0.12.2 from sbt-chain[0m
@@ -1105,14 +1018,12 @@
 [0m[[0mdebug[0m] [0m	using sbt-chain to resolve org.scala-sbt#testing;0.12.2[0m
 [0m[[0minfo[0m] [0mResolving org.scala-sbt#testing;0.12.2 ...[0m
 [0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: org.scala-sbt#testing;0.12.2 {compile=[default(compile)]}[0m
-[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/testing/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/testing/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0mpost 1.3 ivy file: using exact as default matcher[0m
-[0m[[0mdebug[0m] [0m	resolver not found: null => trying to use the one configured for org.scala-sbt#testing;0.12.2[0m
-[0m[[0mdebug[0m] [0m	configured resolver found for org.scala-sbt#testing;0.12.2: sbt-chain: saving this data[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#testing;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/testing/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#testing;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/testing/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0msbt-chain: module revision found in cache: org.scala-sbt#testing;0.12.2[0m
-[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/testing/ivy-0.12.2.xml[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#testing;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/testing/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/testing/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#testing;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/testing/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0m	typesafe-ivy-releases: revision in cache: org.scala-sbt#testing;0.12.2[0m
 [0m[[0mdebug[0m] [0m	checking org.scala-sbt#testing;0.12.2 from sbt-chain against [none][0m
 [0m[[0mdebug[0m] [0m	module revision kept as first found: org.scala-sbt#testing;0.12.2 from sbt-chain[0m
@@ -1134,14 +1045,12 @@
 [0m[[0mdebug[0m] [0m	using sbt-chain to resolve org.scala-sbt#test-agent;0.12.2[0m
 [0m[[0minfo[0m] [0mResolving org.scala-sbt#test-agent;0.12.2 ...[0m
 [0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: org.scala-sbt#test-agent;0.12.2 {compile=[default(compile)]}[0m
-[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/test-agent/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/test-agent/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0mpost 1.3 ivy file: using exact as default matcher[0m
-[0m[[0mdebug[0m] [0m	resolver not found: null => trying to use the one configured for org.scala-sbt#test-agent;0.12.2[0m
-[0m[[0mdebug[0m] [0m	configured resolver found for org.scala-sbt#test-agent;0.12.2: sbt-chain: saving this data[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#test-agent;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/test-agent/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#test-agent;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/test-agent/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0msbt-chain: module revision found in cache: org.scala-sbt#test-agent;0.12.2[0m
-[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/test-agent/ivy-0.12.2.xml[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#test-agent;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/test-agent/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/test-agent/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#test-agent;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/test-agent/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0m	typesafe-ivy-releases: revision in cache: org.scala-sbt#test-agent;0.12.2[0m
 [0m[[0mdebug[0m] [0m	checking org.scala-sbt#test-agent;0.12.2 from sbt-chain against [none][0m
 [0m[[0mdebug[0m] [0m	module revision kept as first found: org.scala-sbt#test-agent;0.12.2 from sbt-chain[0m
@@ -1163,14 +1072,12 @@
 [0m[[0mdebug[0m] [0m	using sbt-chain to resolve org.scala-tools.testing#test-interface;0.5[0m
 [0m[[0minfo[0m] [0mResolving org.scala-tools.testing#test-interface;0.5 ...[0m
 [0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: org.scala-tools.testing#test-interface;0.5 {compile=[default(compile)]}[0m
-[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-tools.testing/test-interface/ivy-0.5.xml[0m
+[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-tools.testing/test-interface/ivy-0.5.xml[0m
 [0m[[0mdebug[0m] [0mpost 1.3 ivy file: using exact as default matcher[0m
-[0m[[0mdebug[0m] [0m	resolver not found: null => trying to use the one configured for org.scala-tools.testing#test-interface;0.5[0m
-[0m[[0mdebug[0m] [0m	configured resolver found for org.scala-tools.testing#test-interface;0.5: sbt-chain: saving this data[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-tools.testing#test-interface;0.5 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-tools.testing/test-interface/ivy-0.5.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-tools.testing#test-interface;0.5 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-tools.testing/test-interface/ivy-0.5.xml[0m
 [0m[[0mdebug[0m] [0msbt-chain: module revision found in cache: org.scala-tools.testing#test-interface;0.5[0m
-[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-tools.testing/test-interface/ivy-0.5.xml[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-tools.testing#test-interface;0.5 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-tools.testing/test-interface/ivy-0.5.xml[0m
+[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-tools.testing/test-interface/ivy-0.5.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-tools.testing#test-interface;0.5 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-tools.testing/test-interface/ivy-0.5.xml[0m
 [0m[[0mdebug[0m] [0m	typesafe-ivy-releases: revision in cache: org.scala-tools.testing#test-interface;0.5[0m
 [0m[[0mdebug[0m] [0m	checking org.scala-tools.testing#test-interface;0.5 from sbt-chain against [none][0m
 [0m[[0mdebug[0m] [0m	module revision kept as first found: org.scala-tools.testing#test-interface;0.5 from sbt-chain[0m
@@ -1243,14 +1150,12 @@
 [0m[[0mdebug[0m] [0m	using sbt-chain to resolve org.scala-sbt#command;0.12.2[0m
 [0m[[0minfo[0m] [0mResolving org.scala-sbt#command;0.12.2 ...[0m
 [0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: org.scala-sbt#command;0.12.2 {compile=[default(compile)]}[0m
-[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/command/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/command/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0mpost 1.3 ivy file: using exact as default matcher[0m
-[0m[[0mdebug[0m] [0m	resolver not found: null => trying to use the one configured for org.scala-sbt#command;0.12.2[0m
-[0m[[0mdebug[0m] [0m	configured resolver found for org.scala-sbt#command;0.12.2: sbt-chain: saving this data[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#command;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/command/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#command;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/command/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0msbt-chain: module revision found in cache: org.scala-sbt#command;0.12.2[0m
-[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/command/ivy-0.12.2.xml[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#command;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/command/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/command/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#command;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/command/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0m	typesafe-ivy-releases: revision in cache: org.scala-sbt#command;0.12.2[0m
 [0m[[0mdebug[0m] [0m	checking org.scala-sbt#command;0.12.2 from sbt-chain against [none][0m
 [0m[[0mdebug[0m] [0m	module revision kept as first found: org.scala-sbt#command;0.12.2 from sbt-chain[0m
@@ -1302,14 +1207,12 @@
 [0m[[0mdebug[0m] [0m	using sbt-chain to resolve org.scala-sbt#compiler-interface;0.12.2[0m
 [0m[[0minfo[0m] [0mResolving org.scala-sbt#compiler-interface;0.12.2 ...[0m
 [0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: org.scala-sbt#compiler-interface;0.12.2 {compile=[default(compile)]}[0m
-[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/compiler-interface/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/compiler-interface/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0mpost 1.3 ivy file: using exact as default matcher[0m
-[0m[[0mdebug[0m] [0m	resolver not found: null => trying to use the one configured for org.scala-sbt#compiler-interface;0.12.2[0m
-[0m[[0mdebug[0m] [0m	configured resolver found for org.scala-sbt#compiler-interface;0.12.2: sbt-chain: saving this data[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#compiler-interface;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/compiler-interface/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#compiler-interface;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/compiler-interface/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0msbt-chain: module revision found in cache: org.scala-sbt#compiler-interface;0.12.2[0m
-[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/compiler-interface/ivy-0.12.2.xml[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#compiler-interface;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/compiler-interface/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/compiler-interface/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#compiler-interface;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/compiler-interface/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0m	typesafe-ivy-releases: revision in cache: org.scala-sbt#compiler-interface;0.12.2[0m
 [0m[[0mdebug[0m] [0m	checking org.scala-sbt#compiler-interface;0.12.2 from sbt-chain against [none][0m
 [0m[[0mdebug[0m] [0m	module revision kept as first found: org.scala-sbt#compiler-interface;0.12.2 from sbt-chain[0m
@@ -1346,14 +1249,12 @@
 [0m[[0mdebug[0m] [0m	using sbt-chain to resolve org.scala-sbt#precompiled-2_8_2;0.12.2[0m
 [0m[[0minfo[0m] [0mResolving org.scala-sbt#precompiled-2_8_2;0.12.2 ...[0m
 [0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: org.scala-sbt#precompiled-2_8_2;0.12.2 {compile=[default(compile)]}[0m
-[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/precompiled-2_8_2/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/precompiled-2_8_2/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0mpost 1.3 ivy file: using exact as default matcher[0m
-[0m[[0mdebug[0m] [0m	resolver not found: null => trying to use the one configured for org.scala-sbt#precompiled-2_8_2;0.12.2[0m
-[0m[[0mdebug[0m] [0m	configured resolver found for org.scala-sbt#precompiled-2_8_2;0.12.2: sbt-chain: saving this data[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#precompiled-2_8_2;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/precompiled-2_8_2/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#precompiled-2_8_2;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/precompiled-2_8_2/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0msbt-chain: module revision found in cache: org.scala-sbt#precompiled-2_8_2;0.12.2[0m
-[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/precompiled-2_8_2/ivy-0.12.2.xml[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#precompiled-2_8_2;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/precompiled-2_8_2/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/precompiled-2_8_2/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#precompiled-2_8_2;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/precompiled-2_8_2/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0m	typesafe-ivy-releases: revision in cache: org.scala-sbt#precompiled-2_8_2;0.12.2[0m
 [0m[[0mdebug[0m] [0m	checking org.scala-sbt#precompiled-2_8_2;0.12.2 from sbt-chain against [none][0m
 [0m[[0mdebug[0m] [0m	module revision kept as first found: org.scala-sbt#precompiled-2_8_2;0.12.2 from sbt-chain[0m
@@ -1398,14 +1299,12 @@
 [0m[[0mdebug[0m] [0m	using sbt-chain to resolve org.scala-sbt#precompiled-2_10_0;0.12.2[0m
 [0m[[0minfo[0m] [0mResolving org.scala-sbt#precompiled-2_10_0;0.12.2 ...[0m
 [0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: org.scala-sbt#precompiled-2_10_0;0.12.2 {compile=[default(compile)]}[0m
-[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/precompiled-2_10_0/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/precompiled-2_10_0/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0mpost 1.3 ivy file: using exact as default matcher[0m
-[0m[[0mdebug[0m] [0m	resolver not found: null => trying to use the one configured for org.scala-sbt#precompiled-2_10_0;0.12.2[0m
-[0m[[0mdebug[0m] [0m	configured resolver found for org.scala-sbt#precompiled-2_10_0;0.12.2: sbt-chain: saving this data[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#precompiled-2_10_0;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/precompiled-2_10_0/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#precompiled-2_10_0;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/precompiled-2_10_0/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0msbt-chain: module revision found in cache: org.scala-sbt#precompiled-2_10_0;0.12.2[0m
-[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hminsky/.ivy2/cache/org.scala-sbt/precompiled-2_10_0/ivy-0.12.2.xml[0m
-[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#precompiled-2_10_0;0.12.2 (resolved by sbt-chain): /Users/hminsky/.ivy2/cache/org.scala-sbt/precompiled-2_10_0/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : /Users/hqm/.ivy2/cache/org.scala-sbt/precompiled-2_10_0/ivy-0.12.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-sbt#precompiled-2_10_0;0.12.2 (resolved by sbt-chain): /Users/hqm/.ivy2/cache/org.scala-sbt/precompiled-2_10_0/ivy-0.12.2.xml[0m
 [0m[[0mdebug[0m] [0m	typesafe-ivy-releases: revision in cache: org.scala-sbt#precompiled-2_10_0;0.12.2[0m
 [0m[[0mdebug[0m] [0m	checking org.scala-sbt#precompiled-2_10_0;0.12.2 from sbt-chain against [none][0m
 [0m[[0mdebug[0m] [0m	module revision kept as first found: org.scala-sbt#precompiled-2_10_0;0.12.2 from sbt-chain[0m
@@ -1457,36 +1356,36 @@
 [0m[[0mdebug[0m] [0m== resolving dependencies org.scala-sbt#sbt;0.12.2->org.scala-lang#scala-library;2.9.2 [compile->master][0m
 [0m[[0mdebug[0m] [0mloadData of org.scala-lang#scala-library;2.9.2 of rootConf=provided[0m
 [0m[[0mdebug[0m] [0mprovided is loaded and no conf to load.  Skip loading[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies default#default-936d32;0.1-SNAPSHOT->org.scala-lang#scala-library;2.9.2 [provided->default(compile)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#default-81e018;0.1-SNAPSHOT->org.scala-lang#scala-library;2.9.2 [provided->default(compile)][0m
 [0m[[0mdebug[0m] [0mloadData of org.scala-lang#scala-library;2.9.2 of rootConf=provided[0m
 [0m[[0mdebug[0m] [0mprovided is loaded and no conf to load.  Skip loading[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies default#default-936d32;0.1-SNAPSHOT->org.scala-lang#scala-library;2.9.2 [provided->runtime][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#default-81e018;0.1-SNAPSHOT->org.scala-lang#scala-library;2.9.2 [provided->runtime][0m
 [0m[[0mdebug[0m] [0mloadData of org.scala-lang#scala-library;2.9.2 of rootConf=provided[0m
 [0m[[0mdebug[0m] [0mprovided is loaded and no conf to load.  Skip loading[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies default#default-936d32;0.1-SNAPSHOT->org.scala-lang#scala-library;2.9.2 [provided->compile][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#default-81e018;0.1-SNAPSHOT->org.scala-lang#scala-library;2.9.2 [provided->compile][0m
 [0m[[0mdebug[0m] [0mloadData of org.scala-lang#scala-library;2.9.2 of rootConf=provided[0m
 [0m[[0mdebug[0m] [0mprovided is loaded and no conf to load.  Skip loading[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies default#default-936d32;0.1-SNAPSHOT->org.scala-lang#scala-library;2.9.2 [provided->master][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#default-81e018;0.1-SNAPSHOT->org.scala-lang#scala-library;2.9.2 [provided->master][0m
 [0m[[0mdebug[0m] [0mloadData of org.scala-lang#scala-library;2.9.2 of rootConf=provided[0m
 [0m[[0mdebug[0m] [0mprovided is loaded and no conf to load.  Skip loading[0m
 [0m[[0mdebug[0m] [0mresolving dependencies for configuration 'optional'[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies for default#default-936d32;0.1-SNAPSHOT [optional][0m
-[0m[[0mdebug[0m] [0mloadData of default#default-936d32;0.1-SNAPSHOT of rootConf=optional[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#default-81e018;0.1-SNAPSHOT [optional][0m
+[0m[[0mdebug[0m] [0mloadData of default#default-81e018;0.1-SNAPSHOT of rootConf=optional[0m
 [0m[[0mdebug[0m] [0mresolving dependencies for configuration 'compile-internal'[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies for default#default-936d32;0.1-SNAPSHOT [compile-internal][0m
-[0m[[0mdebug[0m] [0mloadData of default#default-936d32;0.1-SNAPSHOT of rootConf=compile-internal[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies for default#default-936d32;0.1-SNAPSHOT [compile][0m
-[0m[[0mdebug[0m] [0mloadData of default#default-936d32;0.1-SNAPSHOT of rootConf=compile-internal[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#default-81e018;0.1-SNAPSHOT [compile-internal][0m
+[0m[[0mdebug[0m] [0mloadData of default#default-81e018;0.1-SNAPSHOT of rootConf=compile-internal[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#default-81e018;0.1-SNAPSHOT [compile][0m
+[0m[[0mdebug[0m] [0mloadData of default#default-81e018;0.1-SNAPSHOT of rootConf=compile-internal[0m
 [0m[[0mdebug[0m] [0mcompile-internal is loaded and no conf to load.  Skip loading[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies default#default-936d32;0.1-SNAPSHOT->com.eed3si9n#sbt-assembly;0.9.0 [compile->default(compile)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#default-81e018;0.1-SNAPSHOT->com.eed3si9n#sbt-assembly;0.9.0 [compile->default(compile)][0m
 [0m[[0mdebug[0m] [0mloadData of com.eed3si9n#sbt-assembly;0.9.0 of rootConf=compile-internal[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies for default#default-936d32;0.1-SNAPSHOT [optional][0m
-[0m[[0mdebug[0m] [0mloadData of default#default-936d32;0.1-SNAPSHOT of rootConf=compile-internal[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#default-81e018;0.1-SNAPSHOT [optional][0m
+[0m[[0mdebug[0m] [0mloadData of default#default-81e018;0.1-SNAPSHOT of rootConf=compile-internal[0m
 [0m[[0mdebug[0m] [0mcompile-internal is loaded and no conf to load.  Skip loading[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies for default#default-936d32;0.1-SNAPSHOT [provided][0m
-[0m[[0mdebug[0m] [0mloadData of default#default-936d32;0.1-SNAPSHOT of rootConf=compile-internal[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#default-81e018;0.1-SNAPSHOT [provided][0m
+[0m[[0mdebug[0m] [0mloadData of default#default-81e018;0.1-SNAPSHOT of rootConf=compile-internal[0m
 [0m[[0mdebug[0m] [0mcompile-internal is loaded and no conf to load.  Skip loading[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies default#default-936d32;0.1-SNAPSHOT->org.scala-sbt#sbt;0.12.2 [provided->default(compile)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#default-81e018;0.1-SNAPSHOT->org.scala-sbt#sbt;0.12.2 [provided->default(compile)][0m
 [0m[[0mdebug[0m] [0mloadData of org.scala-sbt#sbt;0.12.2 of rootConf=compile-internal[0m
 [0m[[0mdebug[0m] [0m== resolving dependencies org.scala-sbt#sbt;0.12.2->org.scala-sbt#main;0.12.2 [compile->default(compile)][0m
 [0m[[0mdebug[0m] [0mloadData of org.scala-sbt#main;0.12.2 of rootConf=compile-internal[0m
@@ -2295,53 +2194,53 @@
 [0m[[0mdebug[0m] [0m== resolving dependencies org.scala-sbt#sbt;0.12.2->org.scala-lang#scala-library;2.9.2 [compile->master][0m
 [0m[[0mdebug[0m] [0mloadData of org.scala-lang#scala-library;2.9.2 of rootConf=compile-internal[0m
 [0m[[0mdebug[0m] [0mcompile-internal is loaded and no conf to load.  Skip loading[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies default#default-936d32;0.1-SNAPSHOT->org.scala-lang#scala-library;2.9.2 [provided->default(compile)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#default-81e018;0.1-SNAPSHOT->org.scala-lang#scala-library;2.9.2 [provided->default(compile)][0m
 [0m[[0mdebug[0m] [0mloadData of org.scala-lang#scala-library;2.9.2 of rootConf=compile-internal[0m
 [0m[[0mdebug[0m] [0mcompile-internal is loaded and no conf to load.  Skip loading[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies default#default-936d32;0.1-SNAPSHOT->org.scala-lang#scala-library;2.9.2 [provided->runtime][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#default-81e018;0.1-SNAPSHOT->org.scala-lang#scala-library;2.9.2 [provided->runtime][0m
 [0m[[0mdebug[0m] [0mloadData of org.scala-lang#scala-library;2.9.2 of rootConf=compile-internal[0m
 [0m[[0mdebug[0m] [0mcompile-internal is loaded and no conf to load.  Skip loading[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies default#default-936d32;0.1-SNAPSHOT->org.scala-lang#scala-library;2.9.2 [provided->compile][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#default-81e018;0.1-SNAPSHOT->org.scala-lang#scala-library;2.9.2 [provided->compile][0m
 [0m[[0mdebug[0m] [0mloadData of org.scala-lang#scala-library;2.9.2 of rootConf=compile-internal[0m
 [0m[[0mdebug[0m] [0mcompile-internal is loaded and no conf to load.  Skip loading[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies default#default-936d32;0.1-SNAPSHOT->org.scala-lang#scala-library;2.9.2 [provided->master][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#default-81e018;0.1-SNAPSHOT->org.scala-lang#scala-library;2.9.2 [provided->master][0m
 [0m[[0mdebug[0m] [0mloadData of org.scala-lang#scala-library;2.9.2 of rootConf=compile-internal[0m
 [0m[[0mdebug[0m] [0mcompile-internal is loaded and no conf to load.  Skip loading[0m
 [0m[[0mdebug[0m] [0mresolving dependencies for configuration 'runtime-internal'[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies for default#default-936d32;0.1-SNAPSHOT [runtime-internal][0m
-[0m[[0mdebug[0m] [0mloadData of default#default-936d32;0.1-SNAPSHOT of rootConf=runtime-internal[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies for default#default-936d32;0.1-SNAPSHOT [runtime][0m
-[0m[[0mdebug[0m] [0mloadData of default#default-936d32;0.1-SNAPSHOT of rootConf=runtime-internal[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#default-81e018;0.1-SNAPSHOT [runtime-internal][0m
+[0m[[0mdebug[0m] [0mloadData of default#default-81e018;0.1-SNAPSHOT of rootConf=runtime-internal[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#default-81e018;0.1-SNAPSHOT [runtime][0m
+[0m[[0mdebug[0m] [0mloadData of default#default-81e018;0.1-SNAPSHOT of rootConf=runtime-internal[0m
 [0m[[0mdebug[0m] [0mruntime-internal is loaded and no conf to load.  Skip loading[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies for default#default-936d32;0.1-SNAPSHOT [compile][0m
-[0m[[0mdebug[0m] [0mloadData of default#default-936d32;0.1-SNAPSHOT of rootConf=runtime-internal[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#default-81e018;0.1-SNAPSHOT [compile][0m
+[0m[[0mdebug[0m] [0mloadData of default#default-81e018;0.1-SNAPSHOT of rootConf=runtime-internal[0m
 [0m[[0mdebug[0m] [0mruntime-internal is loaded and no conf to load.  Skip loading[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies default#default-936d32;0.1-SNAPSHOT->com.eed3si9n#sbt-assembly;0.9.0 [compile->default(compile)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#default-81e018;0.1-SNAPSHOT->com.eed3si9n#sbt-assembly;0.9.0 [compile->default(compile)][0m
 [0m[[0mdebug[0m] [0mloadData of com.eed3si9n#sbt-assembly;0.9.0 of rootConf=runtime-internal[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies for default#default-936d32;0.1-SNAPSHOT [optional][0m
-[0m[[0mdebug[0m] [0mloadData of default#default-936d32;0.1-SNAPSHOT of rootConf=runtime-internal[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#default-81e018;0.1-SNAPSHOT [optional][0m
+[0m[[0mdebug[0m] [0mloadData of default#default-81e018;0.1-SNAPSHOT of rootConf=runtime-internal[0m
 [0m[[0mdebug[0m] [0mruntime-internal is loaded and no conf to load.  Skip loading[0m
 [0m[[0mdebug[0m] [0mresolving dependencies for configuration 'test-internal'[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies for default#default-936d32;0.1-SNAPSHOT [test-internal][0m
-[0m[[0mdebug[0m] [0mloadData of default#default-936d32;0.1-SNAPSHOT of rootConf=test-internal[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies for default#default-936d32;0.1-SNAPSHOT [test][0m
-[0m[[0mdebug[0m] [0mloadData of default#default-936d32;0.1-SNAPSHOT of rootConf=test-internal[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#default-81e018;0.1-SNAPSHOT [test-internal][0m
+[0m[[0mdebug[0m] [0mloadData of default#default-81e018;0.1-SNAPSHOT of rootConf=test-internal[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#default-81e018;0.1-SNAPSHOT [test][0m
+[0m[[0mdebug[0m] [0mloadData of default#default-81e018;0.1-SNAPSHOT of rootConf=test-internal[0m
 [0m[[0mdebug[0m] [0mtest-internal is loaded and no conf to load.  Skip loading[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies for default#default-936d32;0.1-SNAPSHOT [runtime][0m
-[0m[[0mdebug[0m] [0mloadData of default#default-936d32;0.1-SNAPSHOT of rootConf=test-internal[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#default-81e018;0.1-SNAPSHOT [runtime][0m
+[0m[[0mdebug[0m] [0mloadData of default#default-81e018;0.1-SNAPSHOT of rootConf=test-internal[0m
 [0m[[0mdebug[0m] [0mtest-internal is loaded and no conf to load.  Skip loading[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies for default#default-936d32;0.1-SNAPSHOT [compile][0m
-[0m[[0mdebug[0m] [0mloadData of default#default-936d32;0.1-SNAPSHOT of rootConf=test-internal[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#default-81e018;0.1-SNAPSHOT [compile][0m
+[0m[[0mdebug[0m] [0mloadData of default#default-81e018;0.1-SNAPSHOT of rootConf=test-internal[0m
 [0m[[0mdebug[0m] [0mtest-internal is loaded and no conf to load.  Skip loading[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies default#default-936d32;0.1-SNAPSHOT->com.eed3si9n#sbt-assembly;0.9.0 [compile->default(compile)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#default-81e018;0.1-SNAPSHOT->com.eed3si9n#sbt-assembly;0.9.0 [compile->default(compile)][0m
 [0m[[0mdebug[0m] [0mloadData of com.eed3si9n#sbt-assembly;0.9.0 of rootConf=test-internal[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies for default#default-936d32;0.1-SNAPSHOT [optional][0m
-[0m[[0mdebug[0m] [0mloadData of default#default-936d32;0.1-SNAPSHOT of rootConf=test-internal[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#default-81e018;0.1-SNAPSHOT [optional][0m
+[0m[[0mdebug[0m] [0mloadData of default#default-81e018;0.1-SNAPSHOT of rootConf=test-internal[0m
 [0m[[0mdebug[0m] [0mtest-internal is loaded and no conf to load.  Skip loading[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies for default#default-936d32;0.1-SNAPSHOT [provided][0m
-[0m[[0mdebug[0m] [0mloadData of default#default-936d32;0.1-SNAPSHOT of rootConf=test-internal[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#default-81e018;0.1-SNAPSHOT [provided][0m
+[0m[[0mdebug[0m] [0mloadData of default#default-81e018;0.1-SNAPSHOT of rootConf=test-internal[0m
 [0m[[0mdebug[0m] [0mtest-internal is loaded and no conf to load.  Skip loading[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies default#default-936d32;0.1-SNAPSHOT->org.scala-sbt#sbt;0.12.2 [provided->default(compile)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#default-81e018;0.1-SNAPSHOT->org.scala-sbt#sbt;0.12.2 [provided->default(compile)][0m
 [0m[[0mdebug[0m] [0mloadData of org.scala-sbt#sbt;0.12.2 of rootConf=test-internal[0m
 [0m[[0mdebug[0m] [0m== resolving dependencies org.scala-sbt#sbt;0.12.2->org.scala-sbt#main;0.12.2 [compile->default(compile)][0m
 [0m[[0mdebug[0m] [0mloadData of org.scala-sbt#main;0.12.2 of rootConf=test-internal[0m
@@ -3150,30 +3049,30 @@
 [0m[[0mdebug[0m] [0m== resolving dependencies org.scala-sbt#sbt;0.12.2->org.scala-lang#scala-library;2.9.2 [compile->master][0m
 [0m[[0mdebug[0m] [0mloadData of org.scala-lang#scala-library;2.9.2 of rootConf=test-internal[0m
 [0m[[0mdebug[0m] [0mtest-internal is loaded and no conf to load.  Skip loading[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies default#default-936d32;0.1-SNAPSHOT->org.scala-lang#scala-library;2.9.2 [provided->default(compile)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#default-81e018;0.1-SNAPSHOT->org.scala-lang#scala-library;2.9.2 [provided->default(compile)][0m
 [0m[[0mdebug[0m] [0mloadData of org.scala-lang#scala-library;2.9.2 of rootConf=test-internal[0m
 [0m[[0mdebug[0m] [0mtest-internal is loaded and no conf to load.  Skip loading[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies default#default-936d32;0.1-SNAPSHOT->org.scala-lang#scala-library;2.9.2 [provided->runtime][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#default-81e018;0.1-SNAPSHOT->org.scala-lang#scala-library;2.9.2 [provided->runtime][0m
 [0m[[0mdebug[0m] [0mloadData of org.scala-lang#scala-library;2.9.2 of rootConf=test-internal[0m
 [0m[[0mdebug[0m] [0mtest-internal is loaded and no conf to load.  Skip loading[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies default#default-936d32;0.1-SNAPSHOT->org.scala-lang#scala-library;2.9.2 [provided->compile][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#default-81e018;0.1-SNAPSHOT->org.scala-lang#scala-library;2.9.2 [provided->compile][0m
 [0m[[0mdebug[0m] [0mloadData of org.scala-lang#scala-library;2.9.2 of rootConf=test-internal[0m
 [0m[[0mdebug[0m] [0mtest-internal is loaded and no conf to load.  Skip loading[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies default#default-936d32;0.1-SNAPSHOT->org.scala-lang#scala-library;2.9.2 [provided->master][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#default-81e018;0.1-SNAPSHOT->org.scala-lang#scala-library;2.9.2 [provided->master][0m
 [0m[[0mdebug[0m] [0mloadData of org.scala-lang#scala-library;2.9.2 of rootConf=test-internal[0m
 [0m[[0mdebug[0m] [0mtest-internal is loaded and no conf to load.  Skip loading[0m
 [0m[[0mdebug[0m] [0mresolving dependencies for configuration 'plugin'[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies for default#default-936d32;0.1-SNAPSHOT [plugin][0m
-[0m[[0mdebug[0m] [0mloadData of default#default-936d32;0.1-SNAPSHOT of rootConf=plugin[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#default-81e018;0.1-SNAPSHOT [plugin][0m
+[0m[[0mdebug[0m] [0mloadData of default#default-81e018;0.1-SNAPSHOT of rootConf=plugin[0m
 [0m[[0mdebug[0m] [0mresolving dependencies for configuration 'sources'[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies for default#default-936d32;0.1-SNAPSHOT [sources][0m
-[0m[[0mdebug[0m] [0mloadData of default#default-936d32;0.1-SNAPSHOT of rootConf=sources[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#default-81e018;0.1-SNAPSHOT [sources][0m
+[0m[[0mdebug[0m] [0mloadData of default#default-81e018;0.1-SNAPSHOT of rootConf=sources[0m
 [0m[[0mdebug[0m] [0mresolving dependencies for configuration 'docs'[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies for default#default-936d32;0.1-SNAPSHOT [docs][0m
-[0m[[0mdebug[0m] [0mloadData of default#default-936d32;0.1-SNAPSHOT of rootConf=docs[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#default-81e018;0.1-SNAPSHOT [docs][0m
+[0m[[0mdebug[0m] [0mloadData of default#default-81e018;0.1-SNAPSHOT of rootConf=docs[0m
 [0m[[0mdebug[0m] [0mresolving dependencies for configuration 'pom'[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies for default#default-936d32;0.1-SNAPSHOT [pom][0m
-[0m[[0mdebug[0m] [0mloadData of default#default-936d32;0.1-SNAPSHOT of rootConf=pom[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#default-81e018;0.1-SNAPSHOT [pom][0m
+[0m[[0mdebug[0m] [0mloadData of default#default-81e018;0.1-SNAPSHOT of rootConf=pom[0m
 [0m[[0mdebug[0m] [0mNbr of module to sort : 42[0m
 [0m[[0mdebug[0m] [0mSort dependencies of : com.eed3si9n#sbt-assembly;0.9.0 / Number of dependencies = 2[0m
 [0m[[0mdebug[0m] [0mNon matching revision detected when sorting.  com.eed3si9n#sbt-assembly depends on org.scala-sbt#sbt;0.12.1, doesn't match org.scala-sbt#sbt;0.12.2[0m
@@ -3419,18 +3318,9 @@
 [0m[[0mdebug[0m] [0morg.scala-lang#scala-compiler;2.9.2 in test-internal: excluding org.scala-lang#scala-compiler;2.9.2!scala-compiler.jar[0m
 [0m[[0mdebug[0m] [0morg.scala-lang#scala-compiler;2.9.2 in provided: excluding org.scala-lang#scala-compiler;2.9.2!scala-compiler.jar[0m
 [0m[[0mdebug[0m] [0morg.scala-lang#scala-compiler;2.9.2 in compile-internal: excluding org.scala-lang#scala-compiler;2.9.2!scala-compiler.jar[0m
-[0m[[0mdebug[0m] [0m	resolved ivy file produced in /Users/hminsky/src/jschema/project/target/resolution-cache/default/default-936d32/scala_2.9.2/sbt_0.12/0.1-SNAPSHOT/resolved.xml.xml[0m
+[0m[[0mdebug[0m] [0m	resolved ivy file produced in /Users/hqm/src/jschema/project/target/resolution-cache/default/default-81e018/scala_2.9.2/sbt_0.12/0.1-SNAPSHOT/resolved.xml.xml[0m
 [0m[[0mdebug[0m] [0m:: downloading artifacts ::[0m
-[0m[[0mdebug[0m] [0m	 trying http://scalasbt.artifactoryonline.com/scalasbt/sbt-plugin-releases/com.eed3si9n/sbt-assembly/scala_2.9.2/sbt_0.12/0.9.0/jars/sbt-assembly.jar[0m
-[0m[[0mdebug[0m] [0m		tried http://scalasbt.artifactoryonline.com/scalasbt/sbt-plugin-releases/com.eed3si9n/sbt-assembly/scala_2.9.2/sbt_0.12/0.9.0/jars/sbt-assembly.jar[0m
-[0m[[0minfo[0m] [0mdownloading http://scalasbt.artifactoryonline.com/scalasbt/sbt-plugin-releases/com.eed3si9n/sbt-assembly/scala_2.9.2/sbt_0.12/0.9.0/jars/sbt-assembly.jar ...[0m
-[0m[[0mdebug[0m] [0m	sbt-plugin-releases: downloading http://scalasbt.artifactoryonline.com/scalasbt/sbt-plugin-releases/com.eed3si9n/sbt-assembly/scala_2.9.2/sbt_0.12/0.9.0/jars/sbt-assembly.jar[0m
-[0m[[0mdebug[0m] [0m		to /Users/hminsky/.ivy2/cache/scala_2.9.2/sbt_0.12/com.eed3si9n/sbt-assembly/jars/sbt-assembly-0.9.0.jar.part[0m
-[0m[[0mdebug[0m] [0msha1 file found for http://scalasbt.artifactoryonline.com/scalasbt/sbt-plugin-releases/com.eed3si9n/sbt-assembly/scala_2.9.2/sbt_0.12/0.9.0/jars/sbt-assembly.jar: checking...[0m
-[0m[[0mdebug[0m] [0m	sbt-plugin-releases: downloading http://scalasbt.artifactoryonline.com/scalasbt/sbt-plugin-releases/com.eed3si9n/sbt-assembly/scala_2.9.2/sbt_0.12/0.9.0/jars/sbt-assembly.jar.sha1[0m
-[0m[[0mdebug[0m] [0m		to /var/folders/00/1t0mh000h01000cxqpysvccm00782k/T/ivytmp2180982840076142668sha1[0m
-[0m[[0mdebug[0m] [0msha1 OK for http://scalasbt.artifactoryonline.com/scalasbt/sbt-plugin-releases/com.eed3si9n/sbt-assembly/scala_2.9.2/sbt_0.12/0.9.0/jars/sbt-assembly.jar[0m
-[0m[[0minfo[0m] [0m	[SUCCESSFUL ] com.eed3si9n#sbt-assembly;0.9.0!sbt-assembly.jar (1164ms)[0m
+[0m[[0mdebug[0m] [0m	[NOT REQUIRED] com.eed3si9n#sbt-assembly;0.9.0!sbt-assembly.jar[0m
 [0m[[0mdebug[0m] [0m	[NOT REQUIRED] org.scala-sbt#sbt;0.12.2!sbt.jar[0m
 [0m[[0mdebug[0m] [0morg.scala-lang#scala-library;2.9.2 in test-internal: excluding org.scala-lang#scala-library;2.9.2!scala-library.jar[0m
 [0m[[0mdebug[0m] [0morg.scala-lang#scala-library;2.9.2 in provided: excluding org.scala-lang#scala-library;2.9.2!scala-library.jar[0m
@@ -3483,19 +3373,19 @@
 [0m[[0mdebug[0m] [0m	[NOT REQUIRED] org.scala-sbt#cache;0.12.2!cache.jar[0m
 [0m[[0mdebug[0m] [0m	[NOT REQUIRED] org.scala-sbt#test-agent;0.12.2!test-agent.jar[0m
 [0m[[0mdebug[0m] [0m	[NOT REQUIRED] org.scala-tools.testing#test-interface;0.5!test-interface.jar[0m
-[0m[[0mdebug[0m] [0m:: resolution report :: resolve 3233ms :: artifacts dl 1202ms[0m
+[0m[[0mdebug[0m] [0m:: resolution report :: resolve 1656ms :: artifacts dl 36ms[0m
 [0m[[0mdebug[0m] [0mNbr of module to sort : 1[0m
 [0m[[0mdebug[0m] [0mSort dependencies of : com.eed3si9n#sbt-assembly;0.9.0 / Number of dependencies = 2[0m
 [0m[[0mdebug[0m] [0mSort done for : com.eed3si9n#sbt-assembly;0.9.0[0m
-[0m[[0mdebug[0m] [0m	report for default#default-936d32;0.1-SNAPSHOT compile produced in /Users/hminsky/src/jschema/project/target/resolution-cache/reports/default-default-936d32/compile-resolved.xml[0m
+[0m[[0mdebug[0m] [0m	report for default#default-81e018;0.1-SNAPSHOT compile produced in /Users/hqm/src/jschema/project/target/resolution-cache/reports/default-default-81e018/compile-resolved.xml[0m
 [0m[[0mdebug[0m] [0mNbr of module to sort : 1[0m
 [0m[[0mdebug[0m] [0mSort dependencies of : com.eed3si9n#sbt-assembly;0.9.0 / Number of dependencies = 2[0m
 [0m[[0mdebug[0m] [0mSort done for : com.eed3si9n#sbt-assembly;0.9.0[0m
-[0m[[0mdebug[0m] [0m	report for default#default-936d32;0.1-SNAPSHOT runtime produced in /Users/hminsky/src/jschema/project/target/resolution-cache/reports/default-default-936d32/runtime-resolved.xml[0m
+[0m[[0mdebug[0m] [0m	report for default#default-81e018;0.1-SNAPSHOT runtime produced in /Users/hqm/src/jschema/project/target/resolution-cache/reports/default-default-81e018/runtime-resolved.xml[0m
 [0m[[0mdebug[0m] [0mNbr of module to sort : 1[0m
 [0m[[0mdebug[0m] [0mSort dependencies of : com.eed3si9n#sbt-assembly;0.9.0 / Number of dependencies = 2[0m
 [0m[[0mdebug[0m] [0mSort done for : com.eed3si9n#sbt-assembly;0.9.0[0m
-[0m[[0mdebug[0m] [0m	report for default#default-936d32;0.1-SNAPSHOT test produced in /Users/hminsky/src/jschema/project/target/resolution-cache/reports/default-default-936d32/test-resolved.xml[0m
+[0m[[0mdebug[0m] [0m	report for default#default-81e018;0.1-SNAPSHOT test produced in /Users/hqm/src/jschema/project/target/resolution-cache/reports/default-default-81e018/test-resolved.xml[0m
 [0m[[0mdebug[0m] [0mNbr of module to sort : 41[0m
 [0m[[0mdebug[0m] [0mSort dependencies of : org.scala-sbt#sbt;0.12.2 / Number of dependencies = 6[0m
 [0m[[0mdebug[0m] [0mSort dependencies of : org.scala-sbt#main;0.12.2 / Number of dependencies = 12[0m
@@ -3731,9 +3621,9 @@
 [0m[[0mdebug[0m] [0mModule descriptor is processed : org.scala-sbt#compiler-interface;0.12.2[0m
 [0m[[0mdebug[0m] [0mModule descriptor is processed : org.scala-sbt#precompiled-2_8_2;0.12.2[0m
 [0m[[0mdebug[0m] [0mModule descriptor is processed : org.scala-sbt#precompiled-2_10_0;0.12.2[0m
-[0m[[0mdebug[0m] [0m	report for default#default-936d32;0.1-SNAPSHOT provided produced in /Users/hminsky/src/jschema/project/target/resolution-cache/reports/default-default-936d32/provided-resolved.xml[0m
+[0m[[0mdebug[0m] [0m	report for default#default-81e018;0.1-SNAPSHOT provided produced in /Users/hqm/src/jschema/project/target/resolution-cache/reports/default-default-81e018/provided-resolved.xml[0m
 [0m[[0mdebug[0m] [0mNbr of module to sort : 0[0m
-[0m[[0mdebug[0m] [0m	report for default#default-936d32;0.1-SNAPSHOT optional produced in /Users/hminsky/src/jschema/project/target/resolution-cache/reports/default-default-936d32/optional-resolved.xml[0m
+[0m[[0mdebug[0m] [0m	report for default#default-81e018;0.1-SNAPSHOT optional produced in /Users/hqm/src/jschema/project/target/resolution-cache/reports/default-default-81e018/optional-resolved.xml[0m
 [0m[[0mdebug[0m] [0mNbr of module to sort : 42[0m
 [0m[[0mdebug[0m] [0mSort dependencies of : com.eed3si9n#sbt-assembly;0.9.0 / Number of dependencies = 2[0m
 [0m[[0mdebug[0m] [0mNon matching revision detected when sorting.  com.eed3si9n#sbt-assembly depends on org.scala-sbt#sbt;0.12.1, doesn't match org.scala-sbt#sbt;0.12.2[0m
@@ -3973,11 +3863,11 @@
 [0m[[0mdebug[0m] [0mModule descriptor is processed : org.scala-sbt#compiler-interface;0.12.2[0m
 [0m[[0mdebug[0m] [0mModule descriptor is processed : org.scala-sbt#precompiled-2_8_2;0.12.2[0m
 [0m[[0mdebug[0m] [0mModule descriptor is processed : org.scala-sbt#precompiled-2_10_0;0.12.2[0m
-[0m[[0mdebug[0m] [0m	report for default#default-936d32;0.1-SNAPSHOT compile-internal produced in /Users/hminsky/src/jschema/project/target/resolution-cache/reports/default-default-936d32/compile-internal-resolved.xml[0m
+[0m[[0mdebug[0m] [0m	report for default#default-81e018;0.1-SNAPSHOT compile-internal produced in /Users/hqm/src/jschema/project/target/resolution-cache/reports/default-default-81e018/compile-internal-resolved.xml[0m
 [0m[[0mdebug[0m] [0mNbr of module to sort : 1[0m
 [0m[[0mdebug[0m] [0mSort dependencies of : com.eed3si9n#sbt-assembly;0.9.0 / Number of dependencies = 2[0m
 [0m[[0mdebug[0m] [0mSort done for : com.eed3si9n#sbt-assembly;0.9.0[0m
-[0m[[0mdebug[0m] [0m	report for default#default-936d32;0.1-SNAPSHOT runtime-internal produced in /Users/hminsky/src/jschema/project/target/resolution-cache/reports/default-default-936d32/runtime-internal-resolved.xml[0m
+[0m[[0mdebug[0m] [0m	report for default#default-81e018;0.1-SNAPSHOT runtime-internal produced in /Users/hqm/src/jschema/project/target/resolution-cache/reports/default-default-81e018/runtime-internal-resolved.xml[0m
 [0m[[0mdebug[0m] [0mNbr of module to sort : 42[0m
 [0m[[0mdebug[0m] [0mSort dependencies of : com.eed3si9n#sbt-assembly;0.9.0 / Number of dependencies = 2[0m
 [0m[[0mdebug[0m] [0mNon matching revision detected when sorting.  com.eed3si9n#sbt-assembly depends on org.scala-sbt#sbt;0.12.1, doesn't match org.scala-sbt#sbt;0.12.2[0m
@@ -4217,14 +4107,14 @@
 [0m[[0mdebug[0m] [0mModule descriptor is processed : org.scala-sbt#compiler-interface;0.12.2[0m
 [0m[[0mdebug[0m] [0mModule descriptor is processed : org.scala-sbt#precompiled-2_8_2;0.12.2[0m
 [0m[[0mdebug[0m] [0mModule descriptor is processed : org.scala-sbt#precompiled-2_10_0;0.12.2[0m
-[0m[[0mdebug[0m] [0m	report for default#default-936d32;0.1-SNAPSHOT test-internal produced in /Users/hminsky/src/jschema/project/target/resolution-cache/reports/default-default-936d32/test-internal-resolved.xml[0m
+[0m[[0mdebug[0m] [0m	report for default#default-81e018;0.1-SNAPSHOT test-internal produced in /Users/hqm/src/jschema/project/target/resolution-cache/reports/default-default-81e018/test-internal-resolved.xml[0m
 [0m[[0mdebug[0m] [0mNbr of module to sort : 0[0m
-[0m[[0mdebug[0m] [0m	report for default#default-936d32;0.1-SNAPSHOT plugin produced in /Users/hminsky/src/jschema/project/target/resolution-cache/reports/default-default-936d32/plugin-resolved.xml[0m
+[0m[[0mdebug[0m] [0m	report for default#default-81e018;0.1-SNAPSHOT plugin produced in /Users/hqm/src/jschema/project/target/resolution-cache/reports/default-default-81e018/plugin-resolved.xml[0m
 [0m[[0mdebug[0m] [0mNbr of module to sort : 0[0m
-[0m[[0mdebug[0m] [0m	report for default#default-936d32;0.1-SNAPSHOT sources produced in /Users/hminsky/src/jschema/project/target/resolution-cache/reports/default-default-936d32/sources-resolved.xml[0m
+[0m[[0mdebug[0m] [0m	report for default#default-81e018;0.1-SNAPSHOT sources produced in /Users/hqm/src/jschema/project/target/resolution-cache/reports/default-default-81e018/sources-resolved.xml[0m
 [0m[[0mdebug[0m] [0mNbr of module to sort : 0[0m
-[0m[[0mdebug[0m] [0m	report for default#default-936d32;0.1-SNAPSHOT docs produced in /Users/hminsky/src/jschema/project/target/resolution-cache/reports/default-default-936d32/docs-resolved.xml[0m
+[0m[[0mdebug[0m] [0m	report for default#default-81e018;0.1-SNAPSHOT docs produced in /Users/hqm/src/jschema/project/target/resolution-cache/reports/default-default-81e018/docs-resolved.xml[0m
 [0m[[0mdebug[0m] [0mNbr of module to sort : 0[0m
-[0m[[0mdebug[0m] [0m	report for default#default-936d32;0.1-SNAPSHOT pom produced in /Users/hminsky/src/jschema/project/target/resolution-cache/reports/default-default-936d32/pom-resolved.xml[0m
-[0m[[0mdebug[0m] [0m	resolve done (3233ms resolve - 1202ms download)[0m
+[0m[[0mdebug[0m] [0m	report for default#default-81e018;0.1-SNAPSHOT pom produced in /Users/hqm/src/jschema/project/target/resolution-cache/reports/default-default-81e018/pom-resolved.xml[0m
+[0m[[0mdebug[0m] [0m	resolve done (1656ms resolve - 36ms download)[0m
 [0m[[0minfo[0m] [0mDone updating.[0m

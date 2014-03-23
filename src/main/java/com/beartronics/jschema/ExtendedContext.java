@@ -44,30 +44,18 @@ public class ExtendedContext {
         logger.info("*********************");
         logger.info(String.format("updateContextItems Schema %s succeeded=%s", schema, succeeded));
 
-        /* See 4.1.3 Suppressing redundant attribution, to avoid exponential spinoffs.
-           We check our lists of  "ignoreItems", to see if any item listed there has the specified value,
-           and if so we do not do marginal attribution. Some child schema that we spun off
-           will do the marginal attribution.
-        */
-
+        
         int nitems = items.size();
+        // Map over all items, tabulating their state vs schema's success/failure
         for (int id = 0; id < nitems; id++) {
             Item item = items.get(id);
-            if (item.prevKnownState) {
-                boolean val = item.prevValue;
-                // Section 4.1.3 supressing redundant attribution
-                if ( (ignoreItemsOn.get(id) && val) ||
-                     (ignoreItemsOff.get(id) && !val) ) {
-                    logger.info("updateContextItems suppressed by "+item);
-                    return;
-                }
-            }
-        }
 
 
-        for (int id = 0; id < nitems; id++) {
-            Item item = items.get(id);
-            if (item != null && item.type != Item.ItemType.CONTEXT_CONJUNCTION) {
+            if (item != null
+                && item.type != Item.ItemType.CONTEXT_CONJUNCTION
+                // TODO verify if this condition is needed!
+                && (! (schema.posContext.contains(item) || schema.negContext.contains(item)))  
+                ) {
 
                 int on_succeeded = onWhenActionSucceeds.get(id);
                 int on_failed = onWhenActionFails.get(id);
@@ -143,8 +131,9 @@ public class ExtendedContext {
                 }
 
                 if (schema.id == 1 && (id == 0 || id == 6)) {
-                    logger.info(String.format("item %s pPos=%f, pNeg=%f, PsuccOn=%f pSuccOff=%f, on_succeeded %s, off_succeeded %s, on_failed %s, off_failed %s",
-                                              item, pPos, pNeg, pSuccessXOn, pSuccessXOff,  on_succeeded, off_succeeded, on_failed, off_failed));
+                    logger.info(String.format(
+                   "DEBUG schema 1, item 0|6 item %s pPos=%f, pNeg=%f, PsuccOn=%f pSuccOff=%f, on_succeeded %s, off_succeeded %s, on_failed %s, off_failed %s",
+                   item, pPos, pNeg, pSuccessXOn, pSuccessXOff,  on_succeeded, off_succeeded, on_failed, off_failed));
                 }
 
 
@@ -152,17 +141,20 @@ public class ExtendedContext {
                     // TODO need to adjust this for number of trials; as number of trials increases
                     // we should lower the threshold. Need a statistics expert to say what the formula is.
                     if (pPos < P_THRESHOLD) {
-                        logger.info("spinning-off ON CONTEXT item " + item + " "+schema);
-                    logger.info(String.format("item %s pPos=%f, pNeg=%f, PsuccOn=%f pSuccOff=%f, on_succeeded %s, off_succeeded %s, on_failed %s, off_failed %s",
-                                              item, pPos, pNeg, pSuccessXOn, pSuccessXOff,  on_succeeded, off_succeeded, on_failed, off_failed));
 
-                        logger.info(schema.toHTML());
+                        logger.info("spinning-off ON CONTEXT item " + item + " "+schema);
+                        logger.info(String.format(
+"item %s pPos=%f, pNeg=%f, PsuccOn=%f pSuccOff=%f, on_succeeded %s, off_succeeded %s, on_failed %s, off_failed %s, activations: %d",
+item, pPos, pNeg, pSuccessXOn, pSuccessXOff,  on_succeeded, off_succeeded, on_failed, off_failed, schema.activations));
+
+                        //                        logger.info(schema.toHTML());
                         schema.spinoffWithNewContextItem(item, true);
                     } else if (pNeg < P_THRESHOLD) {
                         logger.info("spinning-off OFF CONTEXT item " + item + " "+schema);
-                         logger.info(String.format("item %s pPos=%f, pNeg=%f, PsuccOn=%f pSuccOff=%f, on_succeeded %s, off_succeeded %s, on_failed %s, off_failed %s",
-                                              item, pPos, pNeg, pSuccessXOn, pSuccessXOff,  on_succeeded, off_succeeded, on_failed, off_failed));
-                   logger.info(schema.toHTML());
+                        logger.info(String.format(
+"item %s pPos=%f, pNeg=%f, PsuccOn=%f pSuccOff=%f, on_succeeded %s, off_succeeded %s, on_failed %s, off_failed %s, activations: %d",
+item, pPos, pNeg, pSuccessXOn, pSuccessXOff,  on_succeeded, off_succeeded, on_failed, off_failed, schema.activations));
+                        //                        logger.info(schema.toHTML());
                         //throw new Error("spinning off OFF context item "+schema);
                         schema.spinoffWithNewContextItem(item, false);
                     }
