@@ -796,7 +796,7 @@ public class SensoriMotorSystem extends BaseSensoriMotorSystem {
         }
     }
 
-    static final double MOTION_THRESHOLD = 1;
+    static final double MOTION_THRESHOLD = 0.1;
 
     /** This attempts to compute all quadrants which are covered by an objects bounding box */
     public void computeMotionSensorsBBOX() {

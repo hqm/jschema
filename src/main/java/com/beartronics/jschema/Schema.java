@@ -165,7 +165,9 @@ public class Schema {
         ArrayList<Item> items     = stage.items;
         
         for (int i = 0; i < nitems; i++) {
-            xresult.updateResultItem(stage, this, items.get(i), actionTaken, lastActivityTime);
+            if (items.get(i) !=null) {
+                xresult.updateResultItem(stage, this, items.get(i), actionTaken, lastActivityTime);
+            }
         }
     }
 
