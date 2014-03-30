@@ -13,18 +13,12 @@ public class SensoriMotorTest extends TestCase {
 
     SimpleSensoriMotorSystem sms;
 
-    public static Test suite()
-    {
-        return new TestSuite( SensoriMotorTest.class );
-    }
-
-
     protected void setUp() {
         sms = new SimpleSensoriMotorSystem(null, null);
     }
 
     public void testItemTransition() {
-	assertTrue(true);
+    assertTrue(true);
     }
 
 }
