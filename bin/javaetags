@@ -1,0 +1,4 @@
+#!/bin/bash
+find . -type f -name "*.java" -exec etags --append -o TAGS {} \;
+
+
