@@ -19,7 +19,7 @@ public class Stage
     public int gravity = -50;
 
     public transient JSchema app;
-    public transient SensoriMotorSystem sms;
+    public transient BaseSensoriMotorSystem sms;
 
     public ArrayList<Schema> schemas = new ArrayList<Schema>();
     public ArrayList<Action> actions = new ArrayList<Action>();
@@ -137,7 +137,7 @@ public class Stage
     }
 
 
-    public Stage(SensoriMotorSystem s, Config config) {
+    public Stage(BaseSensoriMotorSystem s, Config config) {
         this.config = config;
         this.sms = s;
         s.stage = this;
@@ -182,8 +182,8 @@ public class Stage
         ensureXCRcapacities();
 
         // DEBUG [TODO] move hand2 out of the way
-        sms.hand2.updateMouseJointPos(0,0);
-
+        //sms.hand2.updateMouseJointPos(0,0);
+        sms.moveHand2(0,0);
 
     }
 
@@ -394,7 +394,7 @@ public class Stage
         This is a placeholder method for a real action-selection mechanism. It also eventually needs
         to be able to chain together schema action sequences for compound actions.
     */
-    void processWorldStep(SensoriMotorSystem sms) {
+    void processWorldStep() {
         // deactivate any prior actions from last time step
         for (Action a: worldState.actions) {
             a.activated = false;
@@ -465,5 +465,7 @@ public class Stage
         int nitems = items.size();
         return String.format("{{ stage %s: nitems=%d nactions=%d schemas=%d }}", this.hashCode(), nitems, actions.size(), schemas.size());
     }
+
+
 }
 

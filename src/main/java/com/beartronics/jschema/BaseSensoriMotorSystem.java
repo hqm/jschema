@@ -27,6 +27,22 @@ abstract class BaseSensoriMotorSystem {
 
     abstract void stepPhysicalWorld();
 
+    public void keyReleased() {
+    }
+
+    public void mousePressed() {
+    }
+
+    public void mouseReleased() {
+    }
+
+    // debugging methods
+
+    public void moveHand2(int x, int y) {
+    }
+
+    public void moveHand1(int x, int y) {
+    }
 
 }
 

@@ -215,7 +215,7 @@ public class JSchema extends PApplet {
                 if (sms.run || sms.singleStep || sms.multiStep) {
                     // The Schema engine will read the worldState from the sms, and
                     // set any motor actions it wants to
-                    stage.processWorldStep(sms);
+                    stage.processWorldStep();
                     retinaView.set(0,0,retinaImage);
                     stage.clockStep();
                 }

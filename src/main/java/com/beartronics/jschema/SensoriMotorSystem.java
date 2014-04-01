@@ -595,11 +595,11 @@ public class SensoriMotorSystem extends BaseSensoriMotorSystem {
         return downKeys[k] == 1;
     }
 
-    void mouseReleased() {
+    public void mouseReleased() {
         currentPlane.mouseReleased();
     }
 
-    void mousePressed() {
+    public void mousePressed() {
         currentPlane.mousePressed();
     }
 
@@ -1258,7 +1258,9 @@ public class SensoriMotorSystem extends BaseSensoriMotorSystem {
     }
 
 
-
+    public void moveHand2(int x, int y) {
+        hand2.updateMouseJointPos(x,y);
+    }
 
 }
 
