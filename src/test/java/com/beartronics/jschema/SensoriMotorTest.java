@@ -15,10 +15,15 @@ public class SensoriMotorTest extends TestCase {
 
     protected void setUp() {
         sms = new SimpleSensoriMotorSystem(null, null);
+	System.out.println("running setUp");
     }
 
     public void testItemTransition() {
-    assertTrue(true);
+	assertTrue("this should succeed", true);
+    }
+
+    public void test2() {
+	assertTrue("this should succeed", true);
     }
 
 }
