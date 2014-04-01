@@ -1262,6 +1262,12 @@ public class SensoriMotorSystem extends BaseSensoriMotorSystem {
         hand2.updateMouseJointPos(x,y);
     }
 
+    public void moveHand1(int x, int y) {
+        hand2.updateMouseJointPos(x,y);
+    }
+
+
+
 }
 
 
