@@ -27,7 +27,8 @@ public class Action {
             HAND1_GRASP, HAND1_UNGRASP,
             HAND2_GRASP, HAND2_UNGRASP,
             HAND1_WELD, HAND2_WELD,
-            HAND1_UNWELD, HAND2_UNWELD
+	HAND1_UNWELD, HAND2_UNWELD,
+	HAND1_HOME
     }
 
 

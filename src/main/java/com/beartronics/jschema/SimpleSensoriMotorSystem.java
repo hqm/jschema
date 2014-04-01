@@ -12,8 +12,8 @@ import processing.core.*;
 
 public class SimpleSensoriMotorSystem extends BaseSensoriMotorSystem {
 
-    public SimpleSensoriMotorSystem(JSchema a, PGraphics retina) {
-	super(a, retina);
+    public SimpleSensoriMotorSystem(JSchema a, WorldState w, PGraphics retina) {
+	super(a, w, retina);
     }
 
     public void processActions(WorldState w) {

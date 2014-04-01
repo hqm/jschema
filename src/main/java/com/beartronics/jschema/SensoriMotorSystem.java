@@ -94,8 +94,8 @@ public class SensoriMotorSystem extends BaseSensoriMotorSystem {
     // An image context to render the retina view into
     PGraphics retina = null;
 
-    public SensoriMotorSystem(JSchema a, PGraphics retina) {
-        super(a, retina);
+    public SensoriMotorSystem(JSchema a, WorldState w, PGraphics retina) {
+        super(a, w, retina);
         this.retina = retina;
         System.out.println("SensoriMotorSystem constructor this.app = "+this.app);
     }
@@ -190,8 +190,6 @@ public class SensoriMotorSystem extends BaseSensoriMotorSystem {
         /*        plane0.addBox(800, 100, 100, 100, 4, app.color(255,40,30));
                   plane0.addBox(1000, 100, 50, 50, 8, app.color(87,191,22));
         */
-
-        worldState = new WorldState();
 
         // move body into initial position
         moveBody(xpos,ypos);

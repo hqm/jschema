@@ -15,8 +15,9 @@ abstract class BaseSensoriMotorSystem {
     public Stage stage;
     public WorldState worldState;
 
-    public BaseSensoriMotorSystem(JSchema a, PGraphics retina) {
+    public BaseSensoriMotorSystem(JSchema a, WorldState w, PGraphics retina) {
         this.app = a;
+	this.worldState = w;
     }
 
     public WorldState getWorldState() {

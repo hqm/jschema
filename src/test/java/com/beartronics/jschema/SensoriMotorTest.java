@@ -26,4 +26,8 @@ public class SensoriMotorTest extends TestCase {
 	assertTrue("this should succeed", true);
     }
 
+    public void testMoveHand() {
+	assertTrue("this should succeed", true);
+    }
+
 }
