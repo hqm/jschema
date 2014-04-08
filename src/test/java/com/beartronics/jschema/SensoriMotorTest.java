@@ -14,20 +14,21 @@ public class SensoriMotorTest extends TestCase {
     SimpleSensoriMotorSystem sms;
 
     protected void setUp() {
-        sms = new SimpleSensoriMotorSystem(null, null);
-	System.out.println("running setUp");
+        WorldState worldState = new WorldState();
+        sms = new SimpleSensoriMotorSystem(null, worldState, null);
+        System.out.println("running setUp");
     }
 
     public void testItemTransition() {
-	assertTrue("this should succeed", true);
+    assertTrue("this should succeed", true);
     }
 
     public void test2() {
-	assertTrue("this should succeed", true);
+    assertTrue("this should succeed", true);
     }
 
     public void testMoveHand() {
-	assertTrue("this should succeed", true);
+    assertTrue("this should succeed", true);
     }
 
 }
