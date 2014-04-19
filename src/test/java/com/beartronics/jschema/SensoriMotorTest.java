@@ -7,16 +7,19 @@ import junit.framework.TestSuite;
 import java.util.*;
 
 public class SensoriMotorTest extends TestCase {
-
+    //setup, activity and looking for values
     public SensoriMotorTest() {
     }
 
     SimpleSensoriMotorSystem sms;
+    Stage stage;
+    WorldState worldState;
 
     protected void setUp() {
-        WorldState worldState = new WorldState();
+        worldState = new WorldState();
         sms = new SimpleSensoriMotorSystem(null, worldState, null);
-        System.out.println("running setUp");
+	stage = new Stage(sms,null);
+      System.out.println("running setUp");
     }
 
     public void testItemTransition() {
@@ -28,6 +31,9 @@ public class SensoriMotorTest extends TestCase {
     }
 
     public void testMoveHand() {
+	Action a = new Action(stage,Action.Type.HAND1_HOME,Action.Type.HAND1_HOME,0);
+        worldState.actions.clear();
+	worldState.actions.add(a);
     assertTrue("this should succeed", true);
     }
 

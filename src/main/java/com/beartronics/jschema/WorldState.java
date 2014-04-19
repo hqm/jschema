@@ -15,7 +15,6 @@ import org.apache.log4j.Logger;
 public class WorldState {
     static Logger logger = Logger.getLogger(WorldState.class);
 
-    public long clock = 0;
     public HashMap<String,SensorItem> items = new HashMap<String,SensorItem>();
     
     // Actions which are to be performed on this clock step
@@ -24,11 +23,8 @@ public class WorldState {
     public WorldState() {        
     }
 
-    public void setClock(long c) {
-        clock = c;
-    }
 
-    SensorItem setSensorItem(String path, int id,  boolean val) {
+    SensorItem setSensorItem(String path, int id,  boolean val, long clock) {
         SensorItem s = items.get(path);
         if (s == null) {
             s = new SensorItem(path, id, val);
