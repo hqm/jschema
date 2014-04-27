@@ -402,15 +402,15 @@ public class Stage
         worldState.actions.clear();
 
         // Clock speed is 60Hz
-        if (run && atActionStep()) { // perform an action, and do learning, every nth clock cycle
+        if (run && atActionStep()) { // perform an action, and run main learning algorithm, every nth clock cycle
 
-            //logger.debug(String.format("processWorldStep clock=%d HAND1-Y=%s",clock, sms.hand1.grossY ));
-
-            updateMarginalAttribution(); // update statistics, from results of last action taken
+           
+	    // Run main learning algorithm:update statistics, from results of last action taken
+            updateMarginalAttribution(); 
 
             if (currentAction != null) {
                 for (Schema schema: currentAction.schemas) {
-                    // Sec. 4.1.2 pp. 73
+                    //Heuristic: Has a list of what's expected to happen -  Sec. 4.1.2 pp. 73
                     schema.clearPredictedTransitions();
                 }
             }
@@ -421,15 +421,11 @@ public class Stage
 
             currentAction = actions.get(rand.nextInt(actions.size()));
 
-            /*currentAction = actions.get((int)(clock / actionStepTime) % actions.size());
-             currentSchema = currentAction.schemas.get(0);
-            */
-
             if (currentAction.type == Action.Type.COMPOSITE) {
-                throw new RuntimeException("setMotorActions: we do not support the mapping from compound actions to primitive actions yet");
+                throw new RuntimeException("setMotorActions: No support to map from compound actions to primitive actions yet");
             }
 
-            // Need to implicitly activate any schemas who share the newly chosen action
+            // Need to implicitly activate any schemas which share the newly chosen action
             for (Schema schema: currentAction.schemas) {
                 schema.activate();
                 activatedSchemas.add(schema);

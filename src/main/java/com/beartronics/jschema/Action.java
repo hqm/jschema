@@ -42,6 +42,7 @@ public class Action {
     ActionController controller;
     Stage stage;
 
+    // An option object points back to schemas that use this action
     public ArrayList<Schema> schemas = new ArrayList<Schema>();
 
     public void activate(boolean val) {

@@ -8,49 +8,77 @@ package com.beartronics.jschema;
 
 import java.util.*;
 import processing.core.*;
+import pbox2d.*;
+import org.jbox2d.collision.shapes.*;
+import org.jbox2d.common.*;
+import org.jbox2d.dynamics.*;
+
 
 
 public class SimpleSensoriMotorSystem extends BaseSensoriMotorSystem {
 
-    int hand1_x,hand2_x;
-    int hand1_y,hand2_y;
+    Vec2 hand1pos = new Vec2();
+    Vec2 hand2pos = new Vec2();
 
     public SimpleSensoriMotorSystem(JSchema a, WorldState w, PGraphics retina) {
 	super(a, w, retina);
     }
 
     public void hand1Home() {
-	hand1_x = 0;
-	hand1_y = 0;
+	hand1pos.x = 0;
+	hand1pos.y = 0;
     }
 
     public void  hand1Up() {
-	hand1_x = 0;
-	hand1_y -= 1;
+	hand1pos.x = 0;
+	hand1pos.y -= 1;
     }
 
     public void hand1Down() {
-	hand1_x = 0;
-	hand1_y += 1;
+	hand1pos.x = 0;
+	hand1pos.y += 1;
     }
 
     public void hand2Home() {
-	hand2_x = 0;
-	hand2_y = 0;
+	hand2pos.x = 0;
+	hand2pos.y = 0;
     }
 
     public void  hand2Up() {
-	hand2_x = 0;
-	hand2_y -= 1;
+	hand2pos.x = 0;
+	hand2pos.y -= 1;
     }
 
     public void hand2Down() {
-	hand2_x = 0;
-	hand2_y += 1;
+	hand2pos.x = 0;
+	hand2pos.y += 1;
     }
 
     public void stepPhysicalWorld() {
+	computeWorldState();
+    }
 
+    /// Fills in the sensory input values
+    public WorldState computeWorldState() {
+        if (stage != null) {
+            computeTouchSensors();
+        }
+        return worldState;
+    }
+
+    public static int reachX = 3;
+    public static int reachY = 3;
+
+    public void computeTouchSensors() {
+        // update joint position sensors
+	int sensorID = 0;
+        for (int i = -reachX; i <= reachX; i++) {
+            for (int j = -reachY; j <= reachY; j++) {
+                worldState.setSensorItem("hand1@("+i+","+j+")",sensorID++, ((int)(hand1pos.x) == i) && ((int)(hand1pos.y) == j), stage.clock);
+                worldState.setSensorItem("hand2@("+i+","+j+")",sensorID++, ((int)(hand2pos.x) == i) && ((int)(hand2pos.y) == j), stage.clock);
+
+            }
+        }
     }
 
     public void processActions(WorldState w) {
