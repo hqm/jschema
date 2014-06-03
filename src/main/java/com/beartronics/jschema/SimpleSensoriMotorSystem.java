@@ -21,41 +21,41 @@ public class SimpleSensoriMotorSystem extends BaseSensoriMotorSystem {
     Vec2 hand2pos = new Vec2();
 
     public SimpleSensoriMotorSystem(JSchema a, WorldState w, PGraphics retina) {
-	super(a, w, retina);
+        super(a, w, retina);
     }
 
     public void hand1Home() {
-	hand1pos.x = 0;
-	hand1pos.y = 0;
+        hand1pos.x = 0;
+        hand1pos.y = 0;
     }
 
     public void  hand1Up() {
-	hand1pos.x = 0;
-	hand1pos.y -= 1;
+        hand1pos.x = 0;
+        hand1pos.y -= 1;
     }
 
     public void hand1Down() {
-	hand1pos.x = 0;
-	hand1pos.y += 1;
+        hand1pos.x = 0;
+        hand1pos.y += 1;
     }
 
     public void hand2Home() {
-	hand2pos.x = 0;
-	hand2pos.y = 0;
+        hand2pos.x = 0;
+        hand2pos.y = 0;
     }
 
     public void  hand2Up() {
-	hand2pos.x = 0;
-	hand2pos.y -= 1;
+        hand2pos.x = 0;
+        hand2pos.y -= 1;
     }
 
     public void hand2Down() {
-	hand2pos.x = 0;
-	hand2pos.y += 1;
+        hand2pos.x = 0;
+        hand2pos.y += 1;
     }
 
     public void stepPhysicalWorld() {
-	computeWorldState();
+        computeWorldState();
     }
 
     /// Fills in the sensory input values
@@ -71,7 +71,7 @@ public class SimpleSensoriMotorSystem extends BaseSensoriMotorSystem {
 
     public void computeTouchSensors() {
         // update joint position sensors
-	int sensorID = 0;
+        int sensorID = 0;
         for (int i = -reachX; i <= reachX; i++) {
             for (int j = -reachY; j <= reachY; j++) {
                 worldState.setSensorItem("hand1@("+i+","+j+")",sensorID++, ((int)(hand1pos.x) == i) && ((int)(hand1pos.y) == j), stage.clock);
@@ -87,22 +87,22 @@ public class SimpleSensoriMotorSystem extends BaseSensoriMotorSystem {
             // CODE HERE To execute actions
             switch (action.type) {
               case HAND2_UP:
-		  hand2Up();
+                hand2Up();
                 break;
               case HAND2_DOWN:
-		  hand2Down();
+                hand2Down();
                 break;
               case HAND1_UP:
-		  hand1Up();
+                hand1Up();
                 break;
               case HAND1_DOWN:
-		  hand1Down();
+                hand1Down();
                 break;
               case HAND1_HOME:
-		  hand1Home();
+                hand1Home();
                 break;
               case HAND2_HOME:
-		  hand2Home();
+                hand2Home();
                 break;
               case NULL_ACTION:
                 break;

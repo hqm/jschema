@@ -53,8 +53,8 @@ public class ExtendedResult {
         int id = item.id;
 
         // Was there a transition since the action was taken?
-        boolean posTransition = item.lastPosTransition > actionTime;
-        boolean negTransition = item.lastNegTransition > actionTime;
+        boolean posTransition = item.lastPosTransition >= actionTime;
+        boolean negTransition = item.lastNegTransition >= actionTime;
         
         boolean knownState = item.knownState;
 
