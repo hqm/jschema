@@ -1,0 +1,101 @@
+#!/bin/bash
+
+SBT_JAR=sbt-launch-0.13.0.jar
+
+CUR_DIR=$(/bin/pwd)
+
+EXE_PATH="$0"
+if [ -L "$EXE_PATH" ] ; then
+    EXE_PATH=$(readlink $EXE_PATH)
+    cd $(dirname $0)
+    cd $(dirname $EXE_PATH)
+else
+    cd $(dirname $EXE_PATH)
+fi
+SCRIPT_HOME=/Users/hqm/nest/services/bin
+
+# Attempt to test if we are in the foreground (in which case we want
+# jline support) or background (in which case we don't)
+case $(ps -o stat -p $$) in
+  *+*) BACKGROUND= ;;
+  *) BACKGROUND="true" ;;
+esac
+
+if [ ! -t 1 ] || [ ! -z "$BACKGROUND" ] ; then
+    # setting jline.terminal=jline.UnsupportedTerminal prevents sbt
+    # from blocking for input while backgrounded
+    JAVA_OPTS="$JAVA_OPTS -Djline.terminal=jline.UnsupportedTerminal"
+fi
+
+# Don't print color if stdout isn't a terminal. This keeps escape characters
+# from crudding up the CI build logs.
+[ -t 1 ] || JAVA_OPTS="$JAVA_OPTS -Dsbt.log.noformat=true"
+
+headless="-Djava.awt.headless=false"
+
+# sbt does a lot of class loading by default, and we did run out of permgen space in moderate size
+# edit-compile sessions. We should revisit this after moving the sbt 0.10. Also at some point we
+# enabled the 'forkrun' option, which launches our applications in a separate jvm from sbt and reduces
+# permgen pressure.
+
+# I need this to be an absolute path
+keystore=$SCRIPT_HOME/../ops/certs/allkeystore.jks
+keystore_password=password
+
+#keystore=/System/Library/Java/Support/CoreDeploy.bundle/Contents/Home/lib/security/cacerts
+#keystore_password=changeit
+
+REPOSITORIES=$SCRIPT_HOME/../vendor/sbt/sbt13.nest.repositories
+
+MAXMEM="1280M"
+MAXPERM="768M"
+RESCCSIZE="192m"
+
+while getopts 'm:p:c:g' OPT; do
+  if [ "?" == "$OPT" ]; then exit; fi
+  echo "ARG: $OPT"
+  case $OPT in
+    m) MAXMEM=$OPTARG ;;
+    p) MAXPERM=$OPTARG ;;
+    c) RESCCSIZE=$OPTARG ;;
+    g) headless= ;;
+  esac
+done
+OPTSKIP=$(($OPTIND - 1))
+shift $OPTSKIP
+
+JAVA_OPTS="$JAVA_OPTS -XX:+OptimizeStringConcat -XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:+CMSParallelRemarkEnabled -XX:+HeapDumpOnOutOfMemoryError -XX:+CMSClassUnloadingEnabled"
+if java -version 2>&1 | grep -q 'build 1.6' ; then
+    JAVA_OPTS="$JAVA_OPTS -XX:+UseCompressedStrings"
+fi
+
+export JAVA_OPTS
+
+cd $CUR_DIR
+
+# includes some nest-specific Java environment variables so that 
+# NestConfig works for the sbt "console" target
+java $JAVA_OPTS \
+    $headless \
+    -Duser.timezone=UTC \
+    -Djava.net.preferIPv4Stack=true \
+    -Xmx$MAXMEM \
+    -Xss2m \
+    -XX:MaxPermSize=$MAXPERM \
+    -XX:ReservedCodeCacheSize=$RESCCSIZE \
+    -Djavax.net.ssl.keyStore=$keystore \
+    -Djavax.net.ssl.keyStorePassword=$keystore_password \
+    -Djavax.net.ssl.trustStore=$keystore \
+    -Djavax.net.ssl.trustStorePassword=$keystore_password \
+    -DPROJECT_HOME=$SCRIPT_HOME/../jvm \
+    -DNEST_DOMAIN=nestlabs.com \
+    -DNEST_REGION=iad02 \
+    -DNEST_POD=rts01 \
+    -Dnest.config.file=$SCRIPT_HOME/../config/nonprod.conf \
+    -Dsbt.override.build.repos=true \
+    -Dsbt.repository.config=$REPOSITORIES \
+    -Dscalac.patmat.analysisBudget=off \
+    $BOOT_PROPS \
+    -jar $SCRIPT_HOME/../vendor/sbt/$SBT_JAR \
+    "$@"
+
