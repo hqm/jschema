@@ -1,0 +1,29 @@
+<component name="libraryTable">
+  <library name="commons-io-2.4">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/commons-io-2.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/commons-math3-3.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/controlP5.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/core.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/gluegen-rt.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/gson-2.2.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jbox2d_2.1.2_ds_v2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jogl-all.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jruby-complete-1.7.10.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jsc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/log4j.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/pbox2d.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/PFrame.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/simple-5.1.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/slf4j-api-1.6.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/slf4j-log4j12-1.7.5.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/trove4j-3.0.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/typesafe-config.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/xstream-1.4.5.jar!/" />
+      <root url="file://$PROJECT_DIR$/lib/xstream" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <jarDirectory url="file://$PROJECT_DIR$/lib/xstream" recursive="false" />
+  </library>
+</component>

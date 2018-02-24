@@ -1,14 +1,10 @@
-import AssemblyKeys._ // put this at the top of the file
-
-assemblySettings  
-
 mainClass in (Compile,run) := Some("com.beartronics.jschema.JSchema")
 
 name := "jschema"
 
 version := "1.1"
 
-scalaVersion := "2.10.0"
+//scalaVersion := Option(System.getProperty("scala.version")).getOrElse("2.11.4")
 
 resolvers += "twitter shit" at "http://maven.twttr.com/"
 
@@ -19,6 +15,8 @@ libraryDependencies += "log4j"                     %  "log4j"                  %
 libraryDependencies +=  "junit"                    % "junit"                   % "4.11"       % "test"
 
 libraryDependencies += "com.novocode" % "junit-interface" % "0.10" % "test"
+
+libraryDependencies += "com.eed3si9n" %% "sbt-assembly" 
 
 
 
