@@ -12,13 +12,15 @@ import processing.core.*;
 
 abstract class BaseSensoriMotorSystem {
     public JSchema app;
-    public Stage stage;
     public WorldState worldState;
 
     public BaseSensoriMotorSystem(JSchema a, WorldState w, PGraphics retina) {
         this.app = a;
-	this.worldState = w;
+    this.worldState = w;
     }
+
+    long clock = 0;
+
 
     public WorldState getWorldState() {
         return worldState;

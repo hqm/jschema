@@ -27,8 +27,8 @@ public class Action {
             HAND1_GRASP, HAND1_UNGRASP,
             HAND2_GRASP, HAND2_UNGRASP,
             HAND1_WELD, HAND2_WELD,
-	HAND1_UNWELD, HAND2_UNWELD,
-	HAND1_HOME, HAND2_HOME
+    HAND1_UNWELD, HAND2_UNWELD,
+    HAND1_HOME, HAND2_HOME
     }
 
 
@@ -39,52 +39,20 @@ public class Action {
 
     Type  type;
 
-    ActionController controller;
-    Stage stage;
-
-    // An option object points back to schemas that use this action
-    public ArrayList<Schema> schemas = new ArrayList<Schema>();
 
     public void activate(boolean val) {
-        if (val == true) {
-            this.lastActivatedAt = stage.clock;
-        }
     }
 
-    public Action(Stage stage, String name, int index) {
-        this.stage = stage;
+    public Action(String name, int index) {
         this.name = name;
         this.index = index;
         this.type = Type.HAND1_GRASP;
-        this.controller = new ActionController(this);
     }
 
-    public Action(Stage stage, String name, Type type, int index) {
-        this.stage = stage;
+    public Action(String name, Type type, int index) {
         this.name = name;
         this.index = index;
         this.type = type;
-        this.controller = new ActionController(this);
-    }
-
-    public String toHTML() {
-        StringWriter s = new StringWriter();
-        PrintWriter p = new PrintWriter(s);
-        p.println("<h1>Action "+index+": "+name+ " "+type+"</h1>");
-        p.println("<pre>");
-        p.println("activated: "+activated);
-        p.println("Schemas containing this action:");
-        for (Schema schema: stage.schemas) {
-            if (schema.action == this) {
-                p.println(schema.makeLink());
-            }
-        }
-
-        return s.toString();
-    }
-
-    public String makeLink() {
-        return "<a href=\"/items/action?id="+index+"\">Action-"+index+ " " +name + "</a>";
     }
 
     public String toString() {

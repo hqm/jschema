@@ -60,9 +60,8 @@ public class SimpleSensoriMotorSystem extends BaseSensoriMotorSystem {
 
     /// Fills in the sensory input values
     public WorldState computeWorldState() {
-        if (stage != null) {
-            computeTouchSensors();
-        }
+        computeTouchSensors();
+
         return worldState;
     }
 
@@ -74,8 +73,8 @@ public class SimpleSensoriMotorSystem extends BaseSensoriMotorSystem {
         int sensorID = 0;
         for (int i = -reachX; i <= reachX; i++) {
             for (int j = -reachY; j <= reachY; j++) {
-                worldState.setSensorItem("hand1@("+i+","+j+")",sensorID++, ((int)(hand1pos.x) == i) && ((int)(hand1pos.y) == j), stage.clock);
-                worldState.setSensorItem("hand2@("+i+","+j+")",sensorID++, ((int)(hand2pos.x) == i) && ((int)(hand2pos.y) == j), stage.clock);
+                worldState.setSensorItem("hand1@("+i+","+j+")",sensorID++, ((int)(hand1pos.x) == i) && ((int)(hand1pos.y) == j), clock);
+                worldState.setSensorItem("hand2@("+i+","+j+")",sensorID++, ((int)(hand2pos.x) == i) && ((int)(hand2pos.y) == j), clock);
 
             }
         }
