@@ -7,18 +7,13 @@ package com.beartronics.jschema;
 // Basic example of falling rectangles
 
 import pbox2d.*;
-import org.jbox2d.collision.shapes.*;
-import org.jbox2d.common.*;
 import org.jbox2d.dynamics.*;
 import java.util.*;
 
-import org.jbox2d.dynamics.joints.*;
-import org.jbox2d.collision.shapes.Shape;
 import org.jbox2d.dynamics.contacts.*;
 import org.jbox2d.callbacks.ContactListener;
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.collision.Manifold;
-import org.jbox2d.collision.ManifoldPoint;
 
 
 import processing.core.*;
@@ -30,7 +25,7 @@ public class Plane implements ContactListener {
     // A reference to our box2d world
     public PBox2D box2d;
     public JSchema app;
-    public SensoriMotorSystem sms;
+    public Box2DSensoriMotorSystem sms;
 
     int borderColor = 0;
 

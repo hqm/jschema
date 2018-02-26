@@ -1,19 +1,14 @@
 package com.beartronics.jschema;
-import pbox2d.*;
-import org.jbox2d.collision.shapes.*;
 import org.jbox2d.common.*;
-import org.jbox2d.dynamics.*;
-import java.util.*;
 
-import org.jbox2d.dynamics.joints.*;
-import org.jbox2d.collision.shapes.Shape;
+import java.util.*;
 
 import processing.core.*;
 
 
 public class VisualRegion {
     JSchema app;
-    SensoriMotorSystem sms;
+    Box2DSensoriMotorSystem sms;
     PGraphics retina;
     VisualCell cells[][];
     /** Number of cells in x and y dimension */
@@ -21,7 +16,7 @@ public class VisualRegion {
     /** cell size in pixels */
     int cellsize;
         
-    VisualRegion(SensoriMotorSystem sms) {
+    VisualRegion(Box2DSensoriMotorSystem sms) {
         this.sms = sms;
         this.app = sms.app;
         this.retina = sms.retina;

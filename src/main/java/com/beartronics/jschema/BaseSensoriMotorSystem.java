@@ -11,24 +11,21 @@ import processing.core.*;
 
 
 abstract class BaseSensoriMotorSystem {
-    public JSchema app;
-    public WorldState worldState;
+    public SensorState  sensorState;
+    JSchema app;
 
-    public BaseSensoriMotorSystem(JSchema a, WorldState w, PGraphics retina) {
+    public BaseSensoriMotorSystem(JSchema a, PGraphics retina) {
         this.app = a;
-    this.worldState = w;
+        this.sensorState = new SensorState();
     }
 
     long clock = 0;
 
-
-    public WorldState getWorldState() {
-        return worldState;
+    public SensorState getSensorState() {
+        return sensorState;
     }
 
-    abstract public void processActions(WorldState w);
-
-    abstract void stepPhysicalWorld();
+    abstract void stepPhysicalWorld(List<String> actions);
 
     public void keyReleased() {
     }

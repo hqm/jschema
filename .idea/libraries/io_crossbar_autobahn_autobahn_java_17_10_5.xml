@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="io.crossbar.autobahn:autobahn-java:17.10.5" type="repository">
+    <properties maven-id="io.crossbar.autobahn:autobahn-java:17.10.5" />
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/io/crossbar/autobahn/autobahn-java/17.10.5/autobahn-java-17.10.5.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-core/2.8.8/jackson-core-2.8.8.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
