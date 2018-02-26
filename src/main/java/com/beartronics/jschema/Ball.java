@@ -33,8 +33,9 @@ public class Ball extends Object2D {
     final static int MAX_DENSITY = 10;
     int color;
 
-    Ball(Plane plane, float x, float y, float r_, int color) {
+    Ball(Plane plane, float x, float y, float r_, int color, String name) {
         super(plane);
+        this.name = name;
         this.color = color;
         r = r_;
         // This function puts the particle in the Box2d world

@@ -68,8 +68,6 @@ public class Plane implements ContactListener {
         // Create ArrayLists  
         physobjs = new ArrayList<Object2D>();
 
-        // Make the spring (it doesn't really get initialized until the mouse is clicked)
-        worldState = new WorldState();
     }
 
 
@@ -110,14 +108,30 @@ public class Plane implements ContactListener {
     }
 
 
-    Hand addHand(float x, float y,float w,float h, float density, int color) {
-        Hand hand = new Hand(this, x,  y, w, h, density, color);
+    Hand addHand(float x, float y,float w,float h, float density, int color, String name) {
+        Hand hand = new Hand(this, x,  y, w, h, density, color, name);
         addPhysobj(hand, color);
         return hand;
     }
 
+    Box addBox(float x, float y,float w,float h, float density, int color, String name) {
+        Box box = new Box(this, x, y, w, h, density, color);
+        box.name = name;
+        addPhysobj(box, color);
+        return box;
+    }
+
     Box addBox(float x, float y,float w,float h, float density, int color) {
         Box box = new Box(this, x, y, w, h, density, color);
+        addPhysobj(box, color);
+        return box;
+    }
+
+    Box addBox(float x, float y,float w,float h, float density, String name) {
+        int color = sms.getNextObjectColor();
+        Box box = new Box(this, x, y, w, h, density, color);
+        box.name = name;
+        app.logger.info("adding box color "+color +" " +box);
         addPhysobj(box, color);
         return box;
     }
@@ -130,10 +144,10 @@ public class Plane implements ContactListener {
         return box;
     }
 
-    
-    Ball addBall(float x, float y,float r) {
+
+    Ball addBall(float x, float y,float r, String name) {
         int color = sms.getNextObjectColor();
-        Ball b = new Ball(this, x, y, r, color);
+        Ball b = new Ball(this, x, y, r, color, name);
         addPhysobj(b, color);
         return b;
     }
@@ -350,19 +364,14 @@ public class Plane implements ContactListener {
         pg.popMatrix();
     }
 
-    WorldState worldState;
 
-    public WorldState getWorldState() {
-        return worldState;
-    }
 
     /// Fills in the sensory input values
-    public WorldState computeWorldState() {
+    public void computeWorldState() {
         computeTouchSensors();
         computeVisionSensor();
         computeAudioSensors();
         
-        return worldState;
     }
 
     void computeAudioSensors() {

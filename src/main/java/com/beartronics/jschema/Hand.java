@@ -43,8 +43,9 @@ public class Hand extends Box {
     // public final void applyLinearImpulse(Vec2 impulse, Vec2 point)
 
     // Constructor
-    Hand(Plane p, float x, float y, float w, float h, float density, int color) {
+    Hand(Plane p, float x, float y, float w, float h, float density, int color, String name) {
         super(p,x,y,w,h,density,color);
+        this.name = name;
         GROSS_DIST = app.sms.dGross;
         FINE_DIST = app.sms.dFine; 
         setFixedRotation(true);

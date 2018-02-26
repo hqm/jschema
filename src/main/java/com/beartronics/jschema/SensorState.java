@@ -68,12 +68,10 @@ public class SensorState  implements JSONAware, Serializable {
 
     }
 
-    static long id = 1;
-
     public SensorInput setSensorValue(String name,  boolean val, long clock) {
         SensorInput s = items.get(name);
         if (s == null) {
-            s = new SensorInput(name, val, _id++);
+            s = new SensorInput(name, val);
             items.put(name, s);
         } else {
             s.setValue(val, clock);

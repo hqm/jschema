@@ -7,8 +7,8 @@ import java.util.*;
 
 public class SensorInput implements JSONAware, Serializable {
     public String name;
-    public boolean value;
     public long clock;
+    static int _id = 1;
 
     public int id; // a unique id for this input
 
@@ -20,6 +20,7 @@ public class SensorInput implements JSONAware, Serializable {
     SensorInput(String name, boolean val) {
         this.name = name;
         this.value = val;
+        this.id = _id++;
     }
     
     public void setValue(boolean val, long time) {

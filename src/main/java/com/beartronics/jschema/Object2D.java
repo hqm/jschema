@@ -42,8 +42,10 @@ public abstract class Object2D {
     public  WeldJoint gripJoint;
     public DistanceJoint distanceJoint;
     public int index;
-    static int counter = 0;
+    static int counter = 1;
     public Vec2 motionVector = new Vec2();
+
+    public String name;
 
     public Vec2 getMotion() {
         return body.getLinearVelocity();
@@ -58,6 +60,7 @@ public abstract class Object2D {
         this.app = plane.app;
         this.box2d = plane.box2d;
         this.index = Object2D.counter++;
+        this.name = "_obj"+index; // default name
     }
 
     public void lock(boolean v) {

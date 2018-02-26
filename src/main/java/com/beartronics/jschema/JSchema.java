@@ -53,19 +53,10 @@ public class JSchema extends PApplet {
     RetinaView retinaView = null;
     PGraphics retinaImage = null;
     
-    public void step() {
-        //sms.processActions();
-        List<String> actions = new ArrayList<String>();
-        sms.stepPhysicalWorld(actions);
-        retinaView.set(0,0,retinaImage);
-    }
 
     // We don't want to really call stepPhysicalWorld here, this is just placeholder until
     // someone calls it from some brain loop.
     public void draw() {
-        List<String> actions = new ArrayList<String>();
-
-        sms.stepPhysicalWorld(actions);
         retinaView.set(0,0,retinaImage);
     }
 
@@ -88,8 +79,8 @@ public class JSchema extends PApplet {
         frameRate(1024);
 
         SMSCrossbarClient smsclient = new SMSCrossbarClient( sms );
-        smsclient.initializeSensoriMotorSystem();
         smsclient.connect();
+
     }
 
 
