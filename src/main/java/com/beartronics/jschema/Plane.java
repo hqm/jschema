@@ -32,12 +32,16 @@ public class Plane implements ContactListener {
     // For debugging, the user can grab an object with the mouse interactively
     Object2D pickedThing = null;
 
-    public Plane(JSchema a, int color) {
+    public Plane(JSchema a, int color, int timescale) {
         this.app = a;
         this.sms = a.sms;
+        this.nsteps = timescale;
         this.borderColor = color;
         System.out.println("Plane constructor this.app = "+this.app);
     }
+
+    // How many steps of 'real time' per brain/action stepPhysicalWorld
+    int nsteps;
 
     boolean transparent = false;
     int alpha = 255;
@@ -307,12 +311,8 @@ public class Plane implements ContactListener {
             } 
         }
 
-
-
-
         app.pushMatrix();
         app.translate(-translateX+(app.width/2), 0);
-
 
         app.pushStyle();
         if (transparent) {
@@ -323,7 +323,9 @@ public class Plane implements ContactListener {
             pickedThing.updateMouseJointPos(mouseX(),mouseY());
         }
 
-        box2d.step();
+        for (int i = 0; i < nsteps; i++) {
+            box2d.step();
+        }
 
         // Display all the physobjs
         for (Object2D b: physobjs) {

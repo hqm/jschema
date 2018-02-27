@@ -14,6 +14,13 @@ import java.util.*;
 
 
 import com.typesafe.config.*;
+import org.apache.commons.cli.DefaultParser; 
+import org.apache.commons.cli.CommandLine; 
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.Options; 
+
+import java.net.*;
 
 // serialization lib
 
@@ -26,20 +33,47 @@ public class JSchema extends PApplet {
     public static JSchema app;
     public static Box2DSensoriMotorSystem sms;
 
+    public static Config config;
+    static String configFile;
+
     public boolean interactive = true;
 
     float gravity = -25.0f;
-
-    Config config;
+    
+    /** number of physics clock steps simulated per 'brain action' step */
+    int nsteps = 60;
 
     public JSchema() {
+        try {
         JSchema.app = this;
         logger.info("JSchema app created.");
         // load config file
-        config = ConfigFactory.load();
-        config.checkValid(ConfigFactory.defaultReference(), "box2d");
-        logger.info(config.root().render());
 
+        Options opts = new Options();
+        Option configFileOpt = new Option("f", "config-file", true,
+                "Specify the name of the config file to read.");
+        configFileOpt.setArgName("file-name");
+        opts.addOption(configFileOpt);
+
+        CommandLineParser parser = new DefaultParser();
+        CommandLine cmdLine = parser.parse(opts, args);
+
+        configFile = cmdLine.hasOption("config-file") ?
+            ((String)cmdLine.getParsedOptionValue("config-file")) : "application.conf";
+
+        // load config file
+        config = ConfigFactory.load(configFile);
+        config.checkValid(ConfigFactory.defaultReference());
+        logger.info(config.root().render());
+        doConfig();
+        } catch (org.apache.commons.cli.ParseException e) {
+            System.err.println("error starting up "+e);
+        }
+    }
+
+    void doConfig() {
+        nsteps = config.getInt("action-step-time");
+        gravity = (float) config.getDouble("gravity");
     }
 
     PBox2D box2d = null;
@@ -74,7 +108,7 @@ public class JSchema extends PApplet {
         background(255);
 
         sms = new Box2DSensoriMotorSystem(this, retinaImage);
-        sms.setupDisplay();
+        sms.setupDisplay(nsteps);
         sms.computeWorldState();
         frameRate(1024);
 

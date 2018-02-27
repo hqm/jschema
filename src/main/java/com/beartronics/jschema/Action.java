@@ -17,11 +17,11 @@ public class Action {
         FOVEATE_NEXT_OBJECT_UP,
         FOVEATE_NEXT_OBJECT_DOWN, 
         FOVEATE_NEXT_MOTION,
-        HAND1_LEFT, HAND1_RIGHT, HAND1_UP, HAND1_DOWN,
+        handl, handr, handf, handb,
         HAND2_LEFT, HAND2_RIGHT, HAND2_UP, HAND2_DOWN,
         HAND1_FINE_LEFT, HAND1_FINE_RIGHT, HAND1_FINE_UP, HAND1_FINE_DOWN,
         HAND2_FINE_LEFT, HAND2_FINE_RIGHT, HAND2_FINE_UP, HAND2_FINE_DOWN,
-        HAND1_GRASP, HAND1_UNGRASP,
+        grasp, ungrasp,
         HAND2_GRASP, HAND2_UNGRASP,
         HAND1_WELD, HAND2_WELD,
         HAND1_UNWELD, HAND2_UNWELD,
@@ -39,11 +39,11 @@ public class Action {
             Type.FOVEATE_NEXT_OBJECT_UP,
             Type.FOVEATE_NEXT_OBJECT_DOWN, 
             Type.FOVEATE_NEXT_MOTION,
-            Type.HAND1_LEFT, Type.HAND1_RIGHT, Type.HAND1_UP, Type.HAND1_DOWN,
+            Type.handl, Type.handr, Type.handf, Type.handb,
             Type.HAND2_LEFT, Type.HAND2_RIGHT, Type.HAND2_UP, Type.HAND2_DOWN,
             Type.HAND1_FINE_LEFT, Type.HAND1_FINE_RIGHT, Type.HAND1_FINE_UP, Type.HAND1_FINE_DOWN,
             Type.HAND2_FINE_LEFT, Type.HAND2_FINE_RIGHT, Type.HAND2_FINE_UP, Type.HAND2_FINE_DOWN,
-            Type.HAND1_GRASP, Type.HAND1_UNGRASP,
+            Type.grasp, Type.ungrasp,
             Type.HAND2_GRASP, Type.HAND2_UNGRASP,
             Type.HAND1_WELD, Type.HAND2_WELD,
             Type.HAND1_UNWELD, Type.HAND2_UNWELD,
@@ -67,11 +67,7 @@ public class Action {
     public void activate(boolean val) {
     }
 
-    public Action(String name, int index) {
-        this.name = name;
-        this.index = index;
-        this.type = Type.HAND1_GRASP;
-    }
+
 
     public Action(String name, Type type, int index) {
         this.name = name;

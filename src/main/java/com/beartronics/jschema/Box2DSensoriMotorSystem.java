@@ -67,6 +67,8 @@ public class Box2DSensoriMotorSystem extends BaseSensoriMotorSystem {
         return findObjByColor(-14277082);
     }
 
+    public SensorState getSensorState() { return sensors; }
+
     ////////////////////////////////////////////////////////////////
     // Head and Eyes Controls
 
@@ -139,14 +141,17 @@ public class Box2DSensoriMotorSystem extends BaseSensoriMotorSystem {
 
     static final int RETINA_SIZE = 1000;
 
-    void setupDisplay() {
+    /**
+       nsteps is how many 2d physics simulator steps per 'action step' from the brain
+     */
+    void setupDisplay(int nsteps) {
         // Initial body position
         xpos = app.width/2;
         ypos = app.height/2+100;
 
         // Initialize box2d physics and create the world
-        plane0 = new Plane(app, app.color(255, 55, 55));
-        plane1 = new Plane(app, app.color(0,0,0));
+        plane0 = new Plane(app, app.color(255, 55, 55), nsteps);
+        plane1 = new Plane(app, app.color(0,0,0), nsteps);
 
         marker_color = app.color(189,22,198,128);
         // Initialize box2d physics and create the world
@@ -597,6 +602,7 @@ public class Box2DSensoriMotorSystem extends BaseSensoriMotorSystem {
      */
     public void processActions(List<String> actions) {
         //HashMap<String,Action> outputList
+        sensors.actions = actions;
         for (String aname : actions) {
             Action.Type action = Action.Type.valueOf(aname);
             // CODE HERE To execute actions
@@ -665,16 +671,16 @@ public class Box2DSensoriMotorSystem extends BaseSensoriMotorSystem {
                 hand2.vjog(0,1);
                 break;
 
-              case HAND1_LEFT:  // move left hand, gross motor
+              case handl:  // move left hand, gross motor
                 hand1.hjog(-1,0);
                 break;
-              case HAND1_RIGHT:
+              case handr:
                 hand1.hjog(1,0);
                 break;
-              case HAND1_UP:
+              case handf:
                 hand1.vjog(-1, 0);
                 break;
-              case HAND1_DOWN:
+              case handb:
                 hand1.vjog(1,0);
                 break;
               case HAND1_FINE_LEFT: // move left hand, fine motor
@@ -693,10 +699,10 @@ public class Box2DSensoriMotorSystem extends BaseSensoriMotorSystem {
 
 
 
-              case HAND1_GRASP:
+              case grasp:
                 hand1.weldContacts();
                 break;
-              case HAND1_UNGRASP:
+              case ungrasp:
                 hand1.removeWeldJoints();
                 break;
               case HAND2_GRASP:
