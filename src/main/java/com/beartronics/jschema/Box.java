@@ -76,7 +76,11 @@ public class Box extends Object2D {
 
         // Draw box id number
         pg.fill(0);
-        pg.text(index, 0,0);
+            try {
+                pg.text(String.format("%d", index), 0, 0);
+            } catch (Exception e) {
+                System.err.println("caught exception "+e);
+            }
 
         pg.popMatrix();
         pg.popStyle();

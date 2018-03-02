@@ -91,6 +91,7 @@ public class JSchema extends PApplet {
     // We don't want to really call stepPhysicalWorld here, this is just placeholder until
     // someone calls it from some brain loop.
     public void draw() {
+        sms.stepPhysicalWorld();
         retinaView.set(0,0,retinaImage);
     }
 
@@ -110,7 +111,7 @@ public class JSchema extends PApplet {
         sms = new Box2DSensoriMotorSystem(this, retinaImage);
         sms.setupDisplay(nsteps);
         sms.computeWorldState();
-        frameRate(1024);
+        frameRate(30);
 
         SMSCrossbarClient smsclient = new SMSCrossbarClient( sms );
         smsclient.connect();

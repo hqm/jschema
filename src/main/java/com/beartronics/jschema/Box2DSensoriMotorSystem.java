@@ -305,8 +305,16 @@ public class Box2DSensoriMotorSystem extends BaseSensoriMotorSystem {
     }
 
 
+    /** empty list, for when we don't want to do anything, but still run clock step of physics simulation */
+    ArrayList<String> noactions = new ArrayList<>();
+
+    public void stepPhysicalWorld() {
+        stepPhysicalWorld(noactions);
+    }
+
+
     // Do one timestep of simulation of the world
-    void stepPhysicalWorld(List<String> actions) {
+    public void stepPhysicalWorld(List<String> actions) {
         processActions(actions);
 
         app.rectMode(PConstants.CORNER);
@@ -340,20 +348,24 @@ public class Box2DSensoriMotorSystem extends BaseSensoriMotorSystem {
 
 
     void displayInfoText() {
-        app.fill(0);
-        app.text("alt-click to create box, click to grasp, ctrl-click to lift, L and R key to rotate grip, shift for transparent, space/enter toggle single-step", 20,12);
-        app.text("clock = "+clock + " plane="+planes.indexOf(currentPlane), 20,22);
-        app.text("xpos="+xpos+ "   ypos="+ypos,20,32);
-        app.text("hand1 "+showHandInfo(hand1),20,42);
-        app.text("hand2 "+showHandInfo(hand2),20,52);
-        app.text("gazeX="+gazeXpos+" gazeY="+gazeYpos, 20, 62);
+        try {
+            app.fill(0);
+            app.text("alt-click to create box, click to grasp, ctrl-click to lift, L and R key to rotate grip, shift for transparent, space/enter toggle single-step", 20, 12);
+            app.text("clock = " + clock + " plane=" + planes.indexOf(currentPlane), 20, 22);
+            app.text("xpos=" + xpos + "   ypos=" + ypos, 20, 32);
+            app.text("hand1 " + showHandInfo(hand1), 20, 42);
+            app.text("hand2 " + showHandInfo(hand2), 20, 52);
+            app.text("gazeX=" + gazeXpos + " gazeY=" + gazeYpos, 20, 62);
 
-        String desc = sensors.actions.toString();
-        if (!desc.equals("[]")) {
-            lastActionString = desc;
+            String desc = sensors.actions.toString();
+            if (!desc.equals("[]")) {
+                lastActionString = desc;
+            }
+            app.text(String.format("current actions: %s", sensors.actions), 20, 82);
+            app.text(String.format("last actions: %s", lastActionString), 20, 92);
+        } catch (Exception e) {
+            System.err.println("exception in displayInfoText "+e);
         }
-        app.text(String.format("current actions: %s", sensors.actions), 20, 82);
-        app.text(String.format("last actions: %s", lastActionString), 20, 92);
     }
 
     void displayRetinaView() {
@@ -722,6 +734,10 @@ public class Box2DSensoriMotorSystem extends BaseSensoriMotorSystem {
                 break;
               case HAND2_UNWELD:
                 hand2.unWeldGraspedObjects();
+                break;
+              case HAND1_HOME:
+                break;
+              case HAND2_HOME:
                 break;
               case NULL_ACTION:
                 break;
@@ -1261,8 +1277,6 @@ public class Box2DSensoriMotorSystem extends BaseSensoriMotorSystem {
     }
 
 
-
-    ArrayList<String> noactions = new ArrayList<>();
 
     /**
      Return map containing {sensors: {items: { }, actions: [a1,a2,...  ]}}

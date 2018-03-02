@@ -8,6 +8,7 @@ import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
 
 import io.crossbar.autobahn.wamp.Client;
@@ -124,14 +125,22 @@ public class SMSCrossbarClient {
      */
     List<Object> handleGetCapabilities(List<Object> args, InvocationDetails details) {
         System.out.println("SMSCrossbarClient received get_capabilities command");
-        return Arrays.asList(sms.getCapabilities(), details.session.getID(), "Java");
+        HashMap actions = sms.getCapabilities();
+        System.out.println("Box2d handleGetCapabilities returns "+actions);
+        return Arrays.asList(actions, details.session.getID(), "Java");
     }
 
     private List<Object> handleStepWorld(List<Object> args, InvocationDetails details) {
+        try {
         sms.stepPhysicalWorld( (List<String>) args.get(0));
         SensorState sensors = sms.getSensorState();
         Map<String, Object> stateMap = sensors.toMap();
         return Arrays.asList(stateMap, details.session.getID(), "Java");
+        } catch (Exception e) {
+            System.err.println("caught error in SMSCrossbarClient.handleStepWorld "+e);
+            e.printStackTrace();
+            throw e;
+        }
     }
 
     private List<Object> handleGetObjects(List<Object> args, InvocationDetails details) {
